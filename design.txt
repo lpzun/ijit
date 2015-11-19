@@ -1,0 +1,56 @@
+=====================================================================
+design note:
+  date  : Nov 13, 2015
+  author: Peizun Liu
+=====================================================================
+
+The implementation:
+	1. parsers
+		--preimage
+		--postimage
+	2. compute preimage/postimage
+		--class pred
+		  compute_cover_predecessor
+		
+		class post
+		  compute_cover_successor
+		  
+	3. data structure
+		--global_state
+		
+		--shared_state
+		
+		--local_state
+			typedef unsigned short pc;
+			typedef vector<bool> vstate; //
+			
+			
+		
+		typedef bool val;
+		
+		--control flow graph: cfg
+		fws_adj_list;
+		bws_adj_list;
+		
+		--class edge  // base class
+			size_pc pc
+			size_pc _pc
+			STMT stmt; // statement type
+			
+			-- class bws_edge: public edge {
+			  string wp; // weakest   precondition
+			}
+			
+			-- class fws_edge: public edge {
+			  string sp; // strongest postcondition
+			}
+			
+		-- enum class STMT {
+		
+		};
+		
+		
+		
+		
+	
+	
