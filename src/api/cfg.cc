@@ -9,13 +9,58 @@
 
 namespace otf {
 
-cfg::cfg() {
-	// TODO Auto-generated constructor stub
+/**
+ * @brief default constructor
+ */
+cfg::cfg() :
+		A(adj_list(refs::PC_NUM)), E(vector<edge>(refs::PC_NUM)) {
+}
+
+/**
+ * @brief constructor with max PC
+ * @param max_PC
+ */
+cfg::cfg(const size_pc& size_A, const size_pc& size_E) :
+		A(adj_list(size_A)), E(vector<edge>(size_E)) {
+}
+
+/**
+ * @brief constructor with adjacent list A and edge set E
+ * @param A
+ * @param E
+ */
+cfg::cfg(const adj_list& A, const vector<edge>& E) :
+		A(A), E(E) {
 
 }
 
+/**
+ * @brief default destructor
+ */
 cfg::~cfg() {
-	// TODO Auto-generated destructor stub
+}
+
+/**
+ * @brief append an edge to E in CFG
+ * @param e
+ */
+void cfg::add_edge(const edge& e) {
+	E.emplace_back(e);
+}
+
+/**
+ * @brief insert edge in location idx if applicable (i.e., idx <= E.size());
+ *        throw an exception if idx > E.size();
+ * @param idx
+ * @param e
+ */
+void cfg::add_edge(const size_pc& idx, const edge& e) {
+	if (idx < E.size())
+		E[idx] = e;
+	else if (idx == E.size())
+		E.emplace_back(e);
+	else
+		throw;
 }
 
 /**
@@ -34,6 +79,15 @@ edge::edge() :
  */
 edge::edge(const size_pc& src, const size_pc& dest, const STMT& stmt) :
 		src(src), dest(dest), stmt(stmt) {
+
+}
+
+/**
+ * @brief copy constructor
+ * @param e
+ */
+edge::edge(const edge& e) :
+		src(e.get_src()), dest(e.get_dest()), stmt(e.get_stmt()) {
 
 }
 
@@ -79,6 +133,16 @@ fws_edge::fws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt,
 }
 
 /**
+ * @brief copy constructor
+ * @param fe
+ */
+fws_edge::fws_edge(const fws_edge& fe) :
+		edge(fe.get_src(), fe.get_dest(), fe.get_stmt()), sps(fe.get_sps()), spl(
+				fe.get_spl()) {
+
+}
+
+/**
  * @brief default destructor
  */
 fws_edge::~fws_edge() {
@@ -115,6 +179,15 @@ bws_edge::bws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt) :
 bws_edge::bws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt,
 		const vector<value_v>& wp) :
 		edge(src, dest, stmt), wp(wp) {
+
+}
+
+/**
+ * @brief copy constructor
+ * @param be
+ */
+bws_edge::bws_edge(const bws_edge& be) :
+		edge(be.get_src(), be.get_dest(), be.get_stmt()), wp(be.get_wp()) {
 
 }
 

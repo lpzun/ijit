@@ -8,7 +8,7 @@
 #ifndef API_IMAGE_HH_
 #define API_IMAGE_HH_
 
-#include "../util/state.hh"
+#include "cfg.hh"
 
 namespace otf {
 
@@ -25,9 +25,9 @@ public:
 	}
 
 	virtual deque<global_state> step(const global_state& tau) = 0;
-
 private:
-
+	virtual void parser(const string& filename) = 0;
+	virtual cfg build_CFG(const string& filename) = 0;
 };
 
 /**
@@ -45,6 +45,9 @@ private:
 	deque<global_state> compute_cov_predecessors(const global_state& _tau);
 	deque<global_state> compute_drc_precedessors(const global_state& _tau);
 	deque<global_state> compute_exp_predecessors(const global_state& _tau);
+
+	virtual void parser(const string& filename) override;
+	virtual cfg build_CFG(const string& filename) override;
 };
 
 /**
@@ -59,7 +62,10 @@ public:
 
 	virtual deque<global_state> step(const global_state& tau) override;
 private:
-	deque<global_state> compute_cov_successors(const global_state& tau);
+	deque<global_state> compute_cov_successors(const global_state& tau, const cfg& G);
+
+	virtual void parser(const string& filename) override;
+	virtual cfg build_CFG(const string& filename) override;
 };
 
 } /* namespace otf */

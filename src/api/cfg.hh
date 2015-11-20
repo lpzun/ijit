@@ -36,12 +36,6 @@ enum class STMT {
 	WPIN = -9
 };
 
-class cfg {
-public:
-	cfg();
-	virtual ~cfg();
-};
-
 /**
  * @brief data structure: edge, the base class
  *        src : source pc of CFG edge
@@ -52,6 +46,7 @@ class edge {
 public:
 	edge();
 	edge(const size_pc& src, const size_pc& dest, const STMT& stmt);
+	edge(const edge& e);
 	virtual ~edge();
 
 	size_pc get_dest() const {
@@ -84,7 +79,16 @@ public:
 	fws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt);
 	fws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt,
 			const vector<value_v>& sps, const vector<value_v>& spl);
+	fws_edge(const fws_edge& fe);
 	virtual ~fws_edge();
+
+	const vector<value_v>& get_spl() const {
+		return spl;
+	}
+
+	const vector<value_v>& get_sps() const {
+		return sps;
+	}
 
 private:
 	vector<value_v> sps; /// strongest postcondition of shared part
@@ -103,11 +107,45 @@ public:
 	bws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt);
 	bws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt,
 			const vector<value_v>& wp);
+	bws_edge(const bws_edge& be);
 	virtual ~bws_edge();
+
+	const vector<value_v>& get_wp() const {
+		return wp;
+	}
 
 private:
 	vector<value_v> wp; /// weakest precondition of statement stmt
 };
+
+using adj_list = vector<deque<size_pc>>;
+
+/**
+ * @brief define Control Flow Graph
+ */
+class cfg {
+public:
+	cfg();
+	cfg(const size_pc& size_A, const size_pc& size_E);
+	cfg(const adj_list& A, const vector<edge>& E);
+	~cfg();
+
+	const adj_list& get_A() const {
+		return A;
+	}
+
+	const vector<edge>& get_E() const {
+		return E;
+	}
+
+	void add_edge(const edge& e);
+	void add_edge(const size_pc& idx, const edge& e);
+
+private:
+	adj_list A;
+	vector<edge> E;
+};
+
 } /* namespace otf */
 
 #endif /* API_CFG_HH_ */

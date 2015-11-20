@@ -19,6 +19,7 @@ public:
 
 	static ushort SHARED_VARS_NUM;
 	static ushort LOCAL_VARS_NUM;
+	static ushort PC_NUM;
 
 };
 
