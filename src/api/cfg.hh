@@ -23,8 +23,9 @@ namespace otf {
  *         GOTO = -7: goto statement
  *         ASSG = -8: assignment statement
  *         WPIN = -9: invariant in weakest precondition
+ *         IFEL = -10: if (<expr>) then <sseq> else <sseq> fi;
  */
-enum class STMT {
+enum class type_stmt {
 	NORM = -1,
 	NTHR = -2,
 	WAIT = -3,
@@ -37,6 +38,51 @@ enum class STMT {
 };
 
 /**
+ * @brief data structure expr
+ *        extract an expression from a string
+ */
+class expr {
+public:
+	expr();
+	expr(const deque<string>& se);
+	expr(const expr& e);
+	~expr();
+
+	value_v eval(const state_v& sh, const state_v& lo);
+
+	const deque<string>& get_se() const {
+		return se;
+	}
+
+private:
+	deque<string> se;
+};
+
+/**
+ * @brief data structure stmt
+ *        store statement
+ */
+class stmt {
+public:
+	stmt();
+	stmt(const type_stmt& type, const expr& precondition);
+	stmt(const stmt& s);
+	~stmt();
+
+	const expr& get_precondition() const {
+		return precondition;
+	}
+
+	type_stmt get_type() const {
+		return type;
+	}
+
+private:
+	type_stmt type;
+	expr precondition;
+};
+
+/**
  * @brief data structure: edge, the base class
  *        src : source pc of CFG edge
  *        dest: destination pc of CFG edge
@@ -45,9 +91,9 @@ enum class STMT {
 class edge {
 public:
 	edge();
-	edge(const size_pc& src, const size_pc& dest, const STMT& stmt);
+	edge(const size_pc& src, const size_pc& dest, const stmt& st);
 	edge(const edge& e);
-	virtual ~edge();
+	~edge();
 
 	size_pc get_dest() const {
 		return dest;
@@ -57,65 +103,14 @@ public:
 		return src;
 	}
 
-	STMT get_stmt() const {
-		return stmt;
+	const stmt& get_stmt() const {
+		return st;
 	}
 
 private:
 	size_pc src;
 	size_pc dest;
-	STMT stmt;
-};
-
-/**
- * @brief data structure: fws_edge: a derived class of edge via public
- *        inheritance
- *        to define the forward edge
- * @note  post-image computation relies on forward edge
- */
-class fws_edge: public edge {
-public:
-	fws_edge();
-	fws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt);
-	fws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt,
-			const vector<value_v>& sps, const vector<value_v>& spl);
-	fws_edge(const fws_edge& fe);
-	virtual ~fws_edge();
-
-	const vector<value_v>& get_spl() const {
-		return spl;
-	}
-
-	const vector<value_v>& get_sps() const {
-		return sps;
-	}
-
-private:
-	vector<value_v> sps; /// strongest postcondition of shared part
-	vector<value_v> spl; /// strongest postcondition of local  part
-};
-
-/**
- * @brief data structure: bws_edge: a derived class of edge via public
- *        inheritance
- *        to define the backward edge
- * @note  pre-image computation relies on backward edge
- */
-class bws_edge: public edge {
-public:
-	bws_edge();
-	bws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt);
-	bws_edge(const size_pc& src, const size_pc& dest, const STMT& stmt,
-			const vector<value_v>& wp);
-	bws_edge(const bws_edge& be);
-	virtual ~bws_edge();
-
-	const vector<value_v>& get_wp() const {
-		return wp;
-	}
-
-private:
-	vector<value_v> wp; /// weakest precondition of statement stmt
+	stmt st;
 };
 
 using adj_list = vector<deque<size_pc>>;

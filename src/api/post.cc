@@ -9,36 +9,6 @@
 
 namespace otf {
 
-pre_image::pre_image() {
-
-}
-
-pre_image::~pre_image() {
-
-}
-
-/**
- * @brief implement the pure virtual function <step> from base case image
- * @param tau
- * @return cover predecessors
- *         a set of cover predecessors
- */
-deque<global_state> pre_image::step(const global_state& tau) {
-	return this->compute_cov_predecessors(tau);
-}
-
-/**
- * @brief compute cover predecessors of configuration tau
- * @param _tau
- * @return the set of cover predecessors
- */
-deque<global_state> pre_image::compute_cov_predecessors(
-		const global_state& _tau) {
-	deque<global_state> cov;
-
-	return cov;
-}
-
 post_image::post_image() {
 
 }
@@ -77,21 +47,21 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 			const auto& e = G.get_E()[*ipc]; /// get the edge point by pc
 			const auto& _pc = e.get_dest();
 			switch (e.get_stmt()) {
-			case STMT::NTHR:
+			case type_stmt::NTHR:
 				break;
-			case STMT::WAIT:
+			case type_stmt::WAIT:
 				break;
-			case STMT::BCST:
+			case type_stmt::BCST:
 				break;
-			case STMT::ATOM:
+			case type_stmt::ATOM:
 				break;
-			case STMT::ETHR:
+			case type_stmt::ETHR:
 				break;
-			case STMT::GOTO:
+			case type_stmt::GOTO:
 				break;
-			case STMT::ASSG:
+			case type_stmt::ASSG:
 				break;
-			case STMT::WPIN:
+			case type_stmt::WPIN:
 				break;
 			default:
 				local_state _lo(_pc, lo);
@@ -99,6 +69,15 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 		}
 	}
 	return cov;
+}
+
+void post_image::parser(const string& filename) {
+
+}
+
+cfg post_image::build_CFG(const string& filename) {
+	cfg G;
+	return G;
 }
 
 } /* namespace otf */
