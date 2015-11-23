@@ -10,7 +10,7 @@
 
 #include "../util/state.hh"
 
-namespace otf {
+namespace iotf {
 
 /**
  * @breif some special statement type
@@ -34,7 +34,8 @@ enum class type_stmt {
 	ETHR = -6,
 	GOTO = -7,
 	ASSG = -8,
-	WPIN = -9
+	WPIN = -9,
+	IFEL = -10
 };
 
 /**
@@ -48,12 +49,12 @@ public:
 	expr(const expr& e);
 	~expr();
 
-	value_v eval(const state_v& sh, const state_v& lo);
-
+	/// getter
 	const deque<string>& get_se() const {
 		return se;
 	}
 
+	value_v eval(const state_v& sh, const state_v& lo);
 private:
 	deque<string> se;
 };

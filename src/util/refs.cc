@@ -7,7 +7,7 @@
 
 #include "refs.hh"
 
-namespace otf {
+namespace iotf {
 
 refs::refs() {
 	// TODO Auto-generated constructor stub

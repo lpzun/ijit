@@ -42,7 +42,7 @@
 
 #include "api/image.hh"
 
-using namespace otf;
+using namespace iotf;
 
 int main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!

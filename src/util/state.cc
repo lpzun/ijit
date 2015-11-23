@@ -8,7 +8,7 @@
 
 #include "state.hh"
 
-namespace otf {
+namespace iotf {
 
 /**
  * @brief default constructor
@@ -146,7 +146,7 @@ global_state::global_state() :
  * @param s
  * @param locals
  */
-global_state::global_state(const shared_state& s, const local_states& locals) :
+global_state::global_state(const shared_state& s, const cab_locals& locals) :
 		s(s), locals(locals) {
 
 }

@@ -7,7 +7,7 @@
 
 #include "image.hh"
 
-namespace otf {
+namespace iotf {
 
 post_image::post_image() {
 
@@ -46,7 +46,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				++ipc) {
 			const auto& e = G.get_E()[*ipc]; /// get the edge point by pc
 			const auto& _pc = e.get_dest();
-			switch (e.get_stmt()) {
+			switch (e.get_stmt().get_type()) {
 			case type_stmt::NTHR:
 				break;
 			case type_stmt::WAIT:
@@ -63,7 +63,9 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				break;
 			case type_stmt::WPIN:
 				break;
-			default:
+			case type_stmt::IFEL:
+				break;
+			default: /// successor local state: l'.pc = l.pc + 1
 				local_state _lo(_pc, lo);
 			}
 		}

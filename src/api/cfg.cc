@@ -7,7 +7,7 @@
 
 #include "cfg.hh"
 
-namespace otf {
+namespace iotf {
 
 /**
  * @brief default constructor
@@ -162,6 +162,73 @@ expr::expr(const expr& e) :
  */
 expr::~expr() {
 
+}
+
+/**
+ * @brief evaluation function:
+ *
+ * @param sh
+ * @param lo
+ * @return value_v
+ */
+value_v expr::eval(const state_v& sh, const state_v& lo) {
+	stack<value_v> comp_result_stack;
+	for (auto ifac = se.cbegin(); ifac != se.cend(); ++ifac) {
+		const string& factor = *ifac;
+		value_v operand1, operand2;
+		if (factor.compare("&&") == 0) { /// and
+			operand1 = comp_result_stack.top();
+			comp_result_stack.pop();
+			operand2 = comp_result_stack.top();
+			comp_result_stack.pop();
+			comp_result_stack.push(operand2 && operand1);
+		} else if (factor.compare("||") == 0) { /// or
+			operand1 = comp_result_stack.top();
+			comp_result_stack.pop();
+			operand2 = comp_result_stack.top();
+			comp_result_stack.pop();
+			comp_result_stack.push(operand2 || operand1);
+		} else if (factor.compare("==") == 0) { /// equal
+			operand1 = comp_result_stack.top();
+			comp_result_stack.pop();
+			operand2 = comp_result_stack.top();
+			comp_result_stack.pop();
+			comp_result_stack.push(operand2 == operand1);
+		} else if (factor.compare("!=") == 0) { /// not equal
+			operand1 = comp_result_stack.top();
+			comp_result_stack.pop();
+			operand2 = comp_result_stack.top();
+			comp_result_stack.pop();
+			comp_result_stack.push(operand2 != operand1);
+		} else if (factor.compare("^") == 0) { /// exclusive OR
+			operand1 = comp_result_stack.top();
+			comp_result_stack.pop();
+			operand2 = comp_result_stack.top();
+			comp_result_stack.pop();
+			comp_result_stack.push(operand2 ^ operand1);
+		} else if (factor.compare("()") == 0) { /// parenthesis
+			operand1 = comp_result_stack.top();
+			comp_result_stack.pop();
+			comp_result_stack.push(operand1);
+		} else if (factor.compare("!") == 0) { /// negation
+			operand1 = comp_result_stack.top();
+			comp_result_stack.pop();
+			comp_result_stack.push(!operand1);
+		} else if (factor.compare("0") == 0) { /// constant 0
+			comp_result_stack.push(false);
+		} else if (factor.compare("1") == 0) { /// constant 1
+			comp_result_stack.push(true);
+		} else if (factor.compare("*")) {
+			return true;
+		} else { // variables
+			short index = std::stoi(factor);
+			if (index < refs::SHARED_VARS_NUM)
+				comp_result_stack.push(sh[index]);
+			else
+				comp_result_stack.push(lo[index - refs::SHARED_VARS_NUM]);
+		}
+	}
+	return comp_result_stack.top();
 }
 
 }

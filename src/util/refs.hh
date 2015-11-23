@@ -10,7 +10,7 @@
 
 #include "head.hh"
 
-namespace otf {
+namespace iotf {
 
 class refs {
 public:
@@ -21,6 +21,18 @@ public:
 	static ushort LOCAL_VARS_NUM;
 	static ushort PC_NUM;
 
+	/// used in expression
+	static const string NON_DET;
+	static const string TRUE;
+	static const string FALSE;
+
+	static const string AND;
+	static const string OR;
+	static const string XOR;
+	static const string NEG;
+
+	static const string R_PAREN;
+	static const string L_PAREN;
 };
 
 } /* namespace otf */

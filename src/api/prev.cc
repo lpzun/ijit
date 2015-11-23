@@ -7,7 +7,7 @@
 
 #include "image.hh"
 
-namespace otf {
+namespace iotf {
 
 
 pre_image::pre_image() {

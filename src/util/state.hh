@@ -12,7 +12,7 @@
 #include "head.hh"
 #include "refs.hh"
 
-namespace otf {
+namespace iotf {
 
 /// define the value of variables in Boolean programs
 using value_v = bool;
@@ -280,9 +280,9 @@ inline bool operator !=(const thread_state& t1, const thread_state& t2) {
 	return !(t1 == t2);
 }
 
-/// define the date structure to store local states that
-/// are represented in counter abstraction.
-using local_states = map<local_state, size_th>;
+/// define the date structure to store LOCAL stateS that
+/// are represented in Counter ABstraction.
+using cab_locals = map<local_state, size_th>;
 
 /**
  * @brief define data structure global state
@@ -293,15 +293,15 @@ using local_states = map<local_state, size_th>;
 class global_state {
 public:
 	global_state();
-	global_state(const shared_state& s, const local_states& locals);
+	global_state(const shared_state& s, const cab_locals& locals);
 	global_state(const global_state& g);
 	~global_state();
 
-	const local_states& get_locals() const {
+	const cab_locals& get_locals() const {
 		return locals;
 	}
 
-	void set_locals(const local_states& locals) {
+	void set_locals(const cab_locals& locals) {
 		this->locals = locals;
 	}
 
@@ -315,7 +315,7 @@ public:
 
 private:
 	shared_state s;
-	local_states locals;
+	cab_locals locals;
 
 	friend ostream& operator <<(ostream& out, const global_state& g);
 };

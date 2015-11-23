@@ -7,6 +7,6 @@
 
 #include "algs.hh"
 
-namespace otf {
+namespace iotf {
 
 } /* namespace otf */

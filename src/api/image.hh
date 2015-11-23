@@ -10,7 +10,7 @@
 
 #include "cfg.hh"
 
-namespace otf {
+namespace iotf {
 
 /**
  * @brief data structure: image: a derived class of image
