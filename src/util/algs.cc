@@ -16,8 +16,8 @@ namespace iotf {
  * @param Z
  * @return local states, represented in counter abstraction form
  */
-cab_locals update_counters(const local_state& t_in, const local_state& t_de,
-		const cab_locals& Z) {
+cab_locals alg::update_counters(const local_state& t_in,
+		const local_state& t_de, const cab_locals& Z) {
 	if (t_in == t_de)
 		return Z;
 
@@ -39,29 +39,54 @@ cab_locals update_counters(const local_state& t_in, const local_state& t_de,
 
 /**
  * @brief This function is used to increment/decrement the counters for
+ * 		  all local states in T_in/T_de.
+ * @param T_in
+ * @param t_de
+ * @param Z
+ * @return
+ */
+cab_locals alg::update_counters(const deque<local_state>& T_in,
+		const local_state& t_de, const cab_locals& Z) {
+	auto _Z = Z;
+
+	for (const auto& t_in : T_in)
+		merge(t_in, 1, _Z);
+
+	auto ifind = _Z.find(t_de);
+	if (ifind != _Z.end()) {
+		if (--ifind->second == 0)
+			_Z.erase(ifind);
+	}
+
+	return _Z;
+}
+
+/**
+ * @brief This function is used to increment/decrement the counters for
  * 			  all local states in T_in/T_de. It calls function merge.
  * @param T_in: local states whose counter is to be incremented
  * @param T_de: local states whose counter is to to be decremented
  * @param Z: thread counter, represented in counter-abstracted form
  * @return thread counter, represented in counter-abstracted form
  */
-cab_locals update_counters(const deque<local_state>& T_in,
-		const deque<local_state>& T_de, const map<local_state, ushort>& Z) {
-	auto locals = Z;
+cab_locals alg::update_counters(const deque<local_state>& T_in,
+		const deque<local_state>& T_de, const cab_locals& Z) {
+	auto _Z = Z;
 
-	for (auto iTin = T_in.begin(), iend = T_in.end(); iTin != iend; iTin++) {
-		merge(*iTin, 1, locals);
+	for (const auto& t_in : T_in) {
+		merge(t_in, 1, _Z);
 	}
 
-	for (auto iTde = T_de.begin(), iend = T_de.end(); iTde != iend; iTde++) {
-		auto ifind = locals.find(*iTde);
-		if (ifind != locals.end()) {
+	for (const auto& t_de : T_de) {
+		auto ifind = _Z.find(t_de);
+		if (ifind != _Z.end()) {
 			ifind->second--;
 			if (ifind->second == 0)
-				locals.erase(ifind);
+				_Z.erase(ifind);
 		}
 	}
-	return locals;
+
+	return _Z;
 }
 
 /**
@@ -72,7 +97,7 @@ cab_locals update_counters(const deque<local_state>& T_in,
  * @param n
  * @param Z
  */
-void merge(const local_state& local, const ushort& n, cab_locals& Z) {
+void alg::merge(const local_state& local, const ushort& n, cab_locals& Z) {
 	auto ifind = Z.find(local);
 	if (ifind != Z.end()) {
 		ifind->second += n;

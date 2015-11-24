@@ -1,8 +1,8 @@
 /**
- * cfg.hh
+ * @brief cfg.hh
  *
- *  Created on: Nov 17, 2015
- *      Author: lpzun
+ * @date: Nov 17, 2015
+ * @author: Peizun Liu
  */
 
 #ifndef API_CFG_HH_
@@ -14,28 +14,32 @@ namespace iotf {
 
 /**
  * @breif some special statement type
- *         NORM = -1: all other statement
- *         NTHR = -2: thread creation statement
- *         WAIT = -3: wait statement
- *         BCST = -4: broadcast statement
- *         ATOM = -5: atomic beginning
- *         ETHR = -6: thread termination statement
- *         GOTO = -7: goto statement
- *         ASSG = -8: assignment statement
- *         WPIN = -9: invariant in weakest precondition
- *         IFEL = -10: if (<expr>) then <sseq> else <sseq> fi;
+ *         SKIP = -1 : all other statement
+ *         GOTO = -2 : goto statement
+ *         ASSG = -3 : assignment statement
+ *         IFEL = -4 : if (<expr>) then <sseq> else <sseq>; fi;
+ *         ASSE = -5 : assertion statement
+ *         ASSU = -6 : assume statement
+ *         NTHR = -7 : thread creation statement
+ *         ETHR = -8 : thread termination statement
+ *         ATOM = -9 : atomic beginning
+ *         EATM = -10: invariant in weakest precondition
+ *         BCST = -11: broadcast statement
+ *         WAIT = -12: wait statement
  */
 enum class type_stmt {
-	NORM = -1,
-	NTHR = -2,
-	WAIT = -3,
-	BCST = -4,
-	ATOM = -5,
-	ETHR = -6,
-	GOTO = -7,
-	ASSG = -8,
-	WPIN = -9,
-	IFEL = -10
+	SKIP = -1,
+	GOTO = -2,
+	ASSG = -3,
+	IFEL = -4,
+	ASSE = -5,
+	ASSU = -6,
+	NTHR = -7,
+	ETHR = -8,
+	ATOM = -9,
+	EATM = -10,
+	BCST = -11,
+	WAIT = -12
 };
 
 /**
@@ -54,6 +58,7 @@ public:
 		return se;
 	}
 
+	const value_v eval(const state_v& sh, const state_v& lo) const;
 	value_v eval(const state_v& sh, const state_v& lo);
 private:
 	deque<string> se;

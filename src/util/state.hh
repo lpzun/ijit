@@ -120,7 +120,7 @@ public:
 		return pc;
 	}
 
-	void set_pc(size_pc pc) {
+	void set_pc(const size_pc& pc) {
 		this->pc = pc;
 	}
 
@@ -384,5 +384,5 @@ inline bool operator !=(const global_state& g1, const global_state& g2) {
 	return !(g1 == g2);
 }
 
-} /* namespace otf */
+} /* namespace iotf */
 #endif /* UTIL_STATE_HH_ */

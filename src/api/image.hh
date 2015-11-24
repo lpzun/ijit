@@ -8,6 +8,7 @@
 #ifndef API_IMAGE_HH_
 #define API_IMAGE_HH_
 
+#include "../util/algs.hh"
 #include "cfg.hh"
 
 namespace iotf {
@@ -62,7 +63,10 @@ public:
 
 	virtual deque<global_state> step(const global_state& tau) override;
 private:
-	deque<global_state> compute_cov_successors(const global_state& tau, const cfg& G);
+	deque<global_state> compute_cov_successors(const global_state& tau,
+			const cfg& G);
+	deque<local_state> compute_image_atom_sect(shared_state& s,
+			const local_state& l);
 
 	virtual void parser(const string& filename) override;
 	virtual cfg build_CFG(const string& filename) override;

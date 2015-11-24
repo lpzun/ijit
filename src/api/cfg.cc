@@ -171,7 +171,7 @@ expr::~expr() {
  * @param lo
  * @return value_v
  */
-value_v expr::eval(const state_v& sh, const state_v& lo) {
+const value_v expr::eval(const state_v& sh, const state_v& lo) const {
 	stack<value_v> comp_result_stack;
 	for (auto ifac = se.cbegin(); ifac != se.cend(); ++ifac) {
 		const string& factor = *ifac;
@@ -229,6 +229,17 @@ value_v expr::eval(const state_v& sh, const state_v& lo) {
 		}
 	}
 	return comp_result_stack.top();
+}
+
+/**
+ * @brief evaluation function:
+ *        non-const version
+ * @param sh
+ * @param lo
+ * @return
+ */
+value_v expr::eval(const state_v& sh, const state_v& lo) {
+	return static_cast<value_v>(static_cast<const expr&>(*this).eval(sh, lo));
 }
 
 }
