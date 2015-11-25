@@ -43,9 +43,16 @@ public:
 	virtual deque<global_state> step(const global_state& tau) override;
 
 private:
-	deque<global_state> compute_cov_predecessors(const global_state& _tau);
-	deque<global_state> compute_drc_precedessors(const global_state& _tau);
-	deque<global_state> compute_exp_predecessors(const global_state& _tau);
+	deque<global_state> compute_cov_predecessors(const global_state& _tau,
+			const cfg& G);
+	deque<global_state> compute_drc_precedessors(const global_state& _tau,
+			const cfg& G);
+	deque<global_state> compute_exp_predecessors(const global_state& _tau,
+			const cfg& G);
+
+	deque<local_state> compute_image_atom_sect(shared_state& s,
+			const local_state& l);
+	deque<local_state> compute_image_bcst_stmt(const local_state& l);
 
 	virtual void parser(const string& filename) override;
 	virtual cfg build_CFG(const string& filename) override;

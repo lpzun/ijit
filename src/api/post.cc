@@ -60,7 +60,8 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 			case type_stmt::GOTO: {
 				/// goto statement
 				///   pc: goto <_pc>;
-				/// pc+1: ...
+				///    ...
+				///  _pc: ...
 				///
 				/// SEMANTIC: nondeterministic goto
 				local_state _local(_pc, lo);
@@ -75,7 +76,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				///
 				/// SEMANTIC: assignment statement, postcondition of
 				/// vars might have to satisfy the constraint
-
+				// TODO
 			}
 				break;
 			case type_stmt::IFEL: {
@@ -124,6 +125,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				/// thread that starts execution at the program location label.
 				/// It gets a copy of the local variables of the current thread,
 				/// which continues execution at the proceeding statement.
+
 				deque<local_state> T_in;
 				/// create a new thread whose l''.pc = label and append it to T_in
 				T_in.emplace_back(_pc, lo);
