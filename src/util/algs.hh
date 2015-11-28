@@ -1,8 +1,8 @@
 /**
- * algs.hh
+ * @brief cfg.hh
  *
- *  Created on: Nov 16, 2015
- *      Author: lpzun
+ * @date   Nov 16, 2015
+ * @author Peizun Liu
  */
 
 #ifndef UTIL_ALGS_HH_

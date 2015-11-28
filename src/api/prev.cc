@@ -1,8 +1,8 @@
 /**
- * prev.cc
+ * @brief prev.cc
  *
- *  Created on: Nov 22, 2015
- *      Author: lpzun
+ * @date   Nov 22, 2015
+ * @author Peizun Liu
  */
 
 #include "image.hh"
@@ -214,7 +214,6 @@ deque<global_state> pre_image::compute_drc_precedessors(
 			}
 				break;
 			default: {
-
 				local_state local(pc, _local.get_vars());
 				auto Z = alg::update_counters(local, _local, _Z);
 				drc_predecessors.emplace_back(local, Z);

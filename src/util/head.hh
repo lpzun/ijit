@@ -1,8 +1,8 @@
 /**
  * head.hh
  *
- * @date  : Nov 13, 2015
- * @author: Peizun Liu
+ * @date   Nov 13, 2015
+ * @author Peizun Liu
  */
 
 #ifndef UTIL_HEAD_HH_

@@ -1,8 +1,8 @@
 /**
  * @brief cfg.hh
  *
- * @date: Nov 17, 2015
- * @author: Peizun Liu
+ * @date   Nov 17, 2015
+ * @author Peizun Liu
  */
 
 #ifndef API_CFG_HH_

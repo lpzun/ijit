@@ -1,8 +1,8 @@
 /**
- * algs.cc
+ * @brief algs.cc
  *
- *  Created on: Nov 16, 2015
- *      Author: lpzun
+ * @date   Nov 17, 2015
+ * @author Peizun Liu
  */
 
 #include "algs.hh"

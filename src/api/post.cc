@@ -1,8 +1,8 @@
 /**
- * image.cc
+ * @brief post.cc
  *
- *  Created on: Nov 16, 2015
- *      Author: lpzun
+ * @date   Nov 16, 2015
+ * @author Peizun Liu
  */
 
 #include "image.hh"

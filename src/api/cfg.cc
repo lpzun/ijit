@@ -1,8 +1,8 @@
 /**
- * cfg.cc
+ * @brief cfg.cc
  *
- *  Created on: Nov 17, 2015
- *      Author: lpzun
+ * @date   Nov 17, 2015
+ * @author Peizun Liu
  */
 
 #include "cfg.hh"

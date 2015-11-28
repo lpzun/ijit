@@ -11,7 +11,6 @@ namespace iotf {
 
 refs::refs() {
 	// TODO Auto-generated constructor stub
-
 }
 
 refs::~refs() {

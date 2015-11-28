@@ -1,8 +1,8 @@
 /**
- * image.hh
+ * @brief image.hh
  *
- *  Created on: Nov 16, 2015
- *      Author: lpzun
+ * @date   Nov 16, 2015
+ * @author Peizun Liu
  */
 
 #ifndef API_IMAGE_HH_
