@@ -28,10 +28,19 @@ deque<global_state> pre_image::step(const global_state& tau) {
 	return this->compute_cov_predecessors(tau, G);
 }
 
+/**
+ * @brief a parser for Boolean Program
+ * @param filename
+ */
 void pre_image::parser(const string& filename) {
 
 }
 
+/**
+ * @brief build a Control Flow Graph, in the interface
+ * @param filename
+ * @return
+ */
 cfg pre_image::build_CFG(const string& filename) {
 	cfg G;
 	return G;
@@ -113,7 +122,14 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				/// pc+1: ...
 				///
 				/// SEMANTIC: assertion statement: encoding bad states
-
+				/// The idea is that: if there is an assertion but we do not care about
+				/// it in one specific verification, then we advance the PC when the
+				/// assertion is satisfiable.
+				if (e.get_stmt().get_precondition().eval(_sh.get_vars(), _lo)) {
+					local_state local(pc, _lo);
+					auto Z = alg::update_counters(local, _local, _Z);
+					drc_predecessors.emplace_back(_sh, Z);
+				}
 			}
 				break;
 			case type_stmt::ASSU: {
@@ -169,11 +185,33 @@ deque<global_state> pre_image::compute_drc_precedessors(
 			}
 				break;
 			case type_stmt::ETHR: {
+				/// thread termination statement
+				///   pc: end_thread;
+				/// pc+1: ...
+				///
+				/// SEMANTIC: the end_thread statement terminates the actual thread,
+				/// i.e., has no successor state.
+				///
+				/// We treat this as a skip statement
 
 			}
 				break;
 			case type_stmt::EATM: {
+				/// the ending statement of atomic section
+				///   pc: atomic_begin;
+				///   ...
+				///  pc': atomic_end;
+				/// SEMANTIC: the atomic_end statement prevents the scheduler from
+				/// a context switch to an other thread
+				/// NOTE    : the atomic_begin statement is not processed here, but
+				/// in the subroutine.
 
+				/// ns, i.e., new shared state, is to store the final shared state
+				/// after across atomic section
+				auto ns = _sh;
+				auto T_in = this->compute_image_atom_sect(ns, _local);
+				auto Z = alg::update_counters(T_in, _local, _Z);
+				drc_predecessors.emplace_back(ns, _Z);
 			}
 				break;
 			case type_stmt::BCST: {
@@ -205,18 +243,29 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				Z = alg::update_counters(local, _local, Z);
 				/// extract all post-wait threads
 				for (auto iw = Z.begin(); iw != Z.end(); ++iw) {
-					// TODO
+
 				}
 			}
 				break;
 			case type_stmt::WAIT: {
-
+				/// the wait statement
+				///   pc: wait;
+				/// pc+1: ...
+				/// SEMANTIC: blocks the execution of a thread.
+				/// There is no pre-image just by itself. It has to be paired
+				/// with broadcast.
 			}
 				break;
 			default: {
+				/// it mostly says the skip statement
+				///   pc: skip;
+				/// pc+1: ...
+				/// SEMANTIC: advance the pc to pc + 1
+
+				/// successor local state: l'.pc = l.pc + 1
 				local_state local(pc, _local.get_vars());
 				auto Z = alg::update_counters(local, _local, _Z);
-				drc_predecessors.emplace_back(local, Z);
+				drc_predecessors.emplace_back(_sh, Z);
 			}
 				break;
 			}
@@ -237,6 +286,35 @@ deque<global_state> pre_image::compute_exp_predecessors(
 	deque<global_state> exp_predecessors;
 
 	return exp_predecessors;
+}
+
+/**
+ * @brief compute pre images across an atomic section:
+ *        Be careful that an atomic section could contain various statements.
+ *
+ * @param s: shared state at the end of atomic section (atomic_end).
+ *           It is also used to return the final shared state before the atomic
+ *           section.
+ * @param l: local state at the end of atomic section
+ * @return preceding local states across atomic section
+ */
+deque<local_state> pre_image::compute_image_atom_sect(shared_state& s,
+		const local_state& l) {
+	deque<local_state> locals;
+
+	return locals;
+}
+
+/**
+ * @brief compute pre images for broadcast statement. It involves all post-wait
+ *        threads
+ *        TODO: this is not the final version.
+ * @param pw
+ */
+void pre_image::compute_image_bcst_stmt(deque<local_state>& pw) {
+	for (auto il = pw.begin(); il != pw.end(); ++il) {
+		il->set_pc(il->get_pc() - 1);
+	}
 }
 
 }

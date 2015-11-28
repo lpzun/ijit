@@ -142,6 +142,9 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				///
 				/// SEMANTIC: the end_thread statement terminates the actual thread,
 				/// i.e., has no successor state.
+				auto _Z(Z);
+				alg::decrement(local, _Z);
+				successors.emplace_back(sh, _Z);
 			}
 				break;
 			case type_stmt::ATOM: {
@@ -206,7 +209,12 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 			}
 				break;
 			case type_stmt::WAIT: {
-				/// do nothing
+				/// the wait statement
+				///   pc: wait;
+				/// pc+1: ...
+				/// SEMANTIC: blocks the execution of a thread.
+				/// There is no pre-image just by itself. It has to be paired
+				/// with broadcast.
 			}
 				break;
 			default: {
@@ -229,7 +237,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 
 /**
  * @brief compute post images across an atomic section:
- *        Becareful that an atomic section could contain various statements.
+ *        Be careful that an atomic section could contain various statements.
  *
  * @param s: shared state at the beginning of atomic section
  *           It's also used to return the final shared state after the

@@ -52,7 +52,7 @@ private:
 
 	deque<local_state> compute_image_atom_sect(shared_state& s,
 			const local_state& l);
-	deque<local_state> compute_image_bcst_stmt(const local_state& l);
+	void compute_image_bcst_stmt(deque<local_state>& pw);
 
 	virtual void parser(const string& filename) override;
 	virtual cfg build_CFG(const string& filename) override;
