@@ -27,6 +27,52 @@ using size_pc = unsigned short;
 /// define the data structure to store the thread count
 using size_th = unsigned short;
 
+enum class sbool {
+	F = 0, T = 1, N = 2
+};
+
+inline sbool operator !(const sbool& v) {
+	if (v == sbool::F)
+		return sbool::T;
+	if (v == sbool::T)
+		return sbool::F;
+	return sbool::N;
+}
+
+/**
+ * @brief sbool AND operator & The truth table is as follows:
+ *			v1:	 F		F		T		N		F		T		T		N		N
+ *			v2:	 F		T		F		F		N		T		N		T		N
+ *			re:	 F		F		F		F		F		T		N		N		N
+ * @param s1
+ * @param s2
+ * @return see above table
+ */
+inline sbool operator &(const sbool& v1, const sbool& v2) {
+	if (v1 == sbool::F || v2 == sbool::F)
+		return sbool::F;
+	if (v1 == sbool::T && v2 == sbool::T)
+		return sbool::T;
+	return sbool::N;
+}
+
+/**
+ * @brief symbol OR operator ||. The truth table is as follows:
+ *			v1:	 F		F		T		N		F		T		T		N		N
+ *			v2:	 F		T		F		F		N		T		N		T		N
+ *			re:	 F		T		T		N		N		T		N		N		N
+ * @param s1
+ * @param s2
+ * @return see above table
+ */
+inline sbool operator |(const sbool& s1, const sbool& s2) {
+	if (s1 == sbool::N || s2 == sbool::N)
+		return sbool::N;
+	if (s1 == sbool::F && s2 == sbool::F)
+		return sbool::F;
+	return sbool::T;
+}
+
 /**
  * @brief define data structure shared state
  * 		  vars  to store valuation for shared variables

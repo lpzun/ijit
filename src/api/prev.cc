@@ -96,7 +96,6 @@ deque<global_state> pre_image::compute_drc_precedessors(
 			case type_stmt::ASSG: {
 				/// parallel statement
 				///   pc: <id>+ := <expr>+ constrain <expr>;
-				/// pc+1: ...
 				///
 				/// SEMANTIC: assignment statement, postcondition of
 				/// vars might have to satisfy the constraint
@@ -109,7 +108,7 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				/// pc+1: ...
 				///
 				/// SEMANTIC:
-				if (e.get_stmt().get_precondition().eval(_sh.get_vars(), _lo)) {
+				if (e.get_stmt().get_condition().eval(_sh.get_vars(), _lo)) {
 					//TODO
 				} else {
 					//TODO
@@ -125,7 +124,7 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				/// The idea is that: if there is an assertion but we do not care about
 				/// it in one specific verification, then we advance the PC when the
 				/// assertion is satisfiable.
-				if (e.get_stmt().get_precondition().eval(_sh.get_vars(), _lo)) {
+				if (e.get_stmt().get_condition().eval(_sh.get_vars(), _lo)) {
 					local_state local(pc, _lo);
 					auto Z = alg::update_counters(local, _local, _Z);
 					drc_predecessors.emplace_back(_sh, Z);
@@ -139,7 +138,7 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				///
 				/// SEMANTIC: advance if expr is evaluated to be true;
 				/// block otherwise.
-				if (e.get_stmt().get_precondition().eval(_sh.get_vars(), _lo)) {
+				if (e.get_stmt().get_condition().eval(_sh.get_vars(), _lo)) {
 					local_state local(pc, _lo);
 					auto Z = alg::update_counters(local, _local, _Z);
 					drc_predecessors.emplace_back(_sh, Z);

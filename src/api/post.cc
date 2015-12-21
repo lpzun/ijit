@@ -28,10 +28,20 @@ deque<global_state> post_image::step(const global_state& tau) {
 	return this->compute_cov_successors(tau, G);
 }
 
+/**
+ * @brief parse a Boolean program and extract postconditions that are used
+ *        to compute post images
+ * @param filename
+ */
 void post_image::parser(const string& filename) {
 
 }
 
+/**
+ * @brief build control flow graph are used to compute post images
+ * @param filename
+ * @return control flow graph
+ */
 cfg post_image::build_CFG(const string& filename) {
 	cfg G;
 	return G;
@@ -53,7 +63,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 		const auto& pc = local.get_pc();    /// current pc
 		const auto& lo = local.get_vars();  /// local vars
 		for (auto ipc = G.get_A()[pc].cbegin(); ipc != G.get_A()[pc].cend();
-				++ipc) {
+				++ipc) { /// iterate over all succeeding statements
 			const auto& e = G.get_E()[*ipc]; /// get the edge point by pc
 			const auto& _pc = e.get_dest();
 			switch (e.get_stmt().get_type()) {
@@ -85,7 +95,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				/// pc+1: ...
 				///
 				/// SEMANTIC:
-				if (e.get_stmt().get_precondition().eval(sh.get_vars(), lo)) {
+				if (e.get_stmt().get_condition().eval(sh.get_vars(), lo)) {
 					// TODO
 				} else {
 					// TODO
@@ -108,7 +118,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				///
 				/// SEMANTIC: advance if expr is evaluated to be true;
 				/// block otherwise.
-				if (e.get_stmt().get_precondition().eval(sh.get_vars(), lo)) {
+				if (e.get_stmt().get_condition().eval(sh.get_vars(), lo)) {
 					/// successor local state: l'.pc = l.pc + 1
 					local_state _local(_pc, lo);
 					auto _Z = alg::update_counters(_local, local, Z);

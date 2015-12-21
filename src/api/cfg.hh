@@ -75,8 +75,8 @@ public:
 	stmt(const stmt& s);
 	~stmt();
 
-	const expr& get_precondition() const {
-		return precondition;
+	const expr& get_condition() const {
+		return condition;
 	}
 
 	type_stmt get_type() const {
@@ -85,7 +85,7 @@ public:
 
 private:
 	type_stmt type;
-	expr precondition;
+	expr condition;
 };
 
 /**

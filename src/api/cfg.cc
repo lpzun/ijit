@@ -102,7 +102,7 @@ edge::~edge() {
  * @brief default constructor
  */
 stmt::stmt() :
-		type(), precondition() {
+		type(), condition() {
 
 }
 
@@ -112,7 +112,7 @@ stmt::stmt() :
  * @param precondition
  */
 stmt::stmt(const type_stmt& type, const expr& precondition) :
-		type(type), precondition(precondition) {
+		type(type), condition(precondition) {
 
 }
 
@@ -121,7 +121,7 @@ stmt::stmt(const type_stmt& type, const expr& precondition) :
  * @param s
  */
 stmt::stmt(const stmt& s) :
-		type(s.get_type()), precondition(s.get_precondition()) {
+		type(s.get_type()), condition(s.get_condition()) {
 
 }
 

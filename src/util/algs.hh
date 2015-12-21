@@ -52,6 +52,8 @@ public:
 			throw;
 		}
 	}
+
+	static deque<vector<sbool>> split(const vector<sbool>& vs);
 };
 } /* namespace iotf */
 

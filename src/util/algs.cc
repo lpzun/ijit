@@ -106,4 +106,36 @@ void alg::merge(const local_state& local, const ushort& n, cab_locals& Z) {
 	}
 }
 
+/**
+ * @brief split all nondeterministic * values
+ * @param vs: probably contains some *
+ * @return the result after split
+ */
+deque<vector<sbool>> alg::split(const vector<sbool>& vs) {
+	deque<vector<sbool>> result;
+	if (vs.size() == 0)
+		return result;
+
+	queue<vector<sbool>> worklist;
+	worklist.push(vs);
+	while (!worklist.empty()) {
+		auto curr = worklist.front();
+		worklist.pop();
+		bool is_nondet = false;
+		for (auto i = 0; i < curr.size(); ++i) {
+			if (curr[i] == sbool::N) {
+				curr[i] = sbool::T;
+				worklist.push(curr);
+				curr[i] = sbool::F;
+				worklist.push(curr);
+				/// mark there exist a *
+				is_nondet = true;
+			}
+		}
+		if (!is_nondet)
+			result.emplace_back(curr);
+	}
+	return result;
+}
+
 } /* namespace otf */

@@ -13,6 +13,20 @@
 
 namespace iotf {
 
+class convert{
+public:
+	convert(){
+
+	}
+
+	virtual ~convert(){
+
+	}
+private:
+	virtual vector<bool> convert_ss_to_ps(const unsigned int& ss);
+	virtual unsigned int convert_ps_to_ss(const vector<bool>& ps);
+};
+
 /**
  * @brief data structure: image: a derived class of image
  *        to compute pre images of a configuration
@@ -26,6 +40,7 @@ public:
 	}
 
 	virtual deque<global_state> step(const global_state& tau) = 0;
+
 private:
 	virtual void parser(const string& filename) = 0;
 	virtual cfg build_CFG(const string& filename) = 0;

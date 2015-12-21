@@ -15,6 +15,7 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <queue>
 #include <stack>
 #include <set>
 #include <unordered_set>
@@ -34,6 +35,7 @@ using std::string;
 /// container
 using std::vector;
 using std::deque;
+using std::queue;
 using std::stack;
 using std::map;
 using std::unordered_map;
