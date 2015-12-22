@@ -13,13 +13,13 @@
 
 namespace iotf {
 
-class convert{
+class convert {
 public:
-	convert(){
+	convert() {
 
 	}
 
-	virtual ~convert(){
+	virtual ~convert() {
 
 	}
 private:
@@ -89,6 +89,9 @@ private:
 			const cfg& G);
 	deque<local_state> compute_image_atom_sect(shared_state& s,
 			const local_state& l);
+
+	state_v compute_image_assg_stmt(const vector<expr>& assgs,
+			const state_v& sh, const state_v& lo);
 
 	virtual void parser(const string& filename) override;
 	virtual cfg build_CFG(const string& filename) override;

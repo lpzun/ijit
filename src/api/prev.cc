@@ -70,12 +70,13 @@ deque<global_state> pre_image::compute_cov_predecessors(
 deque<global_state> pre_image::compute_drc_precedessors(
 		const global_state& _tau, const cfg& G) {
 	deque<global_state> drc_predecessors;
-	const auto& _sh = _tau.get_s();
-	const auto& _Z = _tau.get_locals();
+	const auto& _share = _tau.get_s(); /// shared state
+	const auto& _sv = _share.get_vars(); /// valuation vector of shared variables
+	const auto& _Z = _tau.get_locals();  /// the local part of _tau
 	for (auto il = _Z.begin(); il != _Z.end(); ++il) {
 		const auto& _local = il->first;
 		const auto& _pc = _local.get_pc();   /// current pc
-		const auto& _lo = _local.get_vars(); /// local vars
+		const auto& _lv = _local.get_vars(); /// local vars
 		for (auto ipc = G.get_A()[_pc].cbegin(); ipc != G.get_A()[_pc].cend();
 				++ipc) {
 			const auto& e = G.get_E()[*ipc]; /// get the edge by pc
@@ -88,9 +89,9 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				///  _pc: ...
 				///
 				/// SEMANTIC: nondeterministic goto
-				local_state local(pc, _lo);
+				local_state local(pc, _lv);
 				auto Z = alg::update_counters(local, _local, _Z);
-				drc_predecessors.emplace_back(_sh, Z);
+				drc_predecessors.emplace_back(_share, Z);
 			}
 				break;
 			case type_stmt::ASSG: {
@@ -108,7 +109,7 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				/// pc+1: ...
 				///
 				/// SEMANTIC:
-				if (e.get_stmt().get_condition().eval(_sh.get_vars(), _lo)) {
+				if (e.get_stmt().get_condition().eval(_sv, _lv)) {
 					//TODO
 				} else {
 					//TODO
@@ -120,14 +121,14 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				///   pc: assert ( <expr> );
 				/// pc+1: ...
 				///
-				/// SEMANTIC: assertion statement: encoding bad states
-				/// The idea is that: if there is an assertion but we do not care about
-				/// it in one specific verification, then we advance the PC when the
-				/// assertion is satisfiable.
-				if (e.get_stmt().get_condition().eval(_sh.get_vars(), _lo)) {
-					local_state local(pc, _lo);
+				/// SEMANTIC: assertion statement: encoding bad states:
+				/// The idea is that: if there is an assertion but we do NOT
+				/// care about it in one specific verification, then we adv-
+				/// ance the PC when the assertion is satisfiable.
+				if (e.get_stmt().get_condition().eval(_share.get_vars(), _lv)) {
+					local_state local(pc, _lv);
 					auto Z = alg::update_counters(local, _local, _Z);
-					drc_predecessors.emplace_back(_sh, Z);
+					drc_predecessors.emplace_back(_share, Z);
 				}
 			}
 				break;
@@ -138,10 +139,10 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				///
 				/// SEMANTIC: advance if expr is evaluated to be true;
 				/// block otherwise.
-				if (e.get_stmt().get_condition().eval(_sh.get_vars(), _lo)) {
-					local_state local(pc, _lo);
+				if (e.get_stmt().get_condition().eval(_sv, _lv)) {
+					local_state local(pc, _lv);
 					auto Z = alg::update_counters(local, _local, _Z);
-					drc_predecessors.emplace_back(_sh, Z);
+					drc_predecessors.emplace_back(_share, Z);
 				}
 			}
 				break;
@@ -168,18 +169,18 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				///      case 1: _local.pc == new_thr_pc // don't need this
 				///      case 2: _local.pc == pc + 1
 
-				local_state slocal(pc + 1, _lo); /// succeeding local state
+				local_state slocal(pc + 1, _lv); /// succeeding local state
 				auto ifind = _Z.find(slocal);
 				if (ifind != _Z.end()) {
 					auto Z(_Z);
 					/// increment the source local state
-					local_state plocal(pc, _lo);
+					local_state plocal(pc, _lv);
 					alg::increment(plocal, Z);
 					/// decrement the new and succeeding local states
 					alg::decrement(_local, Z);
 					alg::decrement(slocal, Z);
 
-					drc_predecessors.emplace_back(_sh, Z);
+					drc_predecessors.emplace_back(_share, Z);
 				}
 			}
 				break;
@@ -207,7 +208,7 @@ deque<global_state> pre_image::compute_drc_precedessors(
 
 				/// ns, i.e., new shared state, is to store the final shared state
 				/// after across atomic section
-				auto ns = _sh;
+				auto ns = _share;
 				auto T_in = this->compute_image_atom_sect(ns, _local);
 				auto Z = alg::update_counters(T_in, _local, _Z);
 				drc_predecessors.emplace_back(ns, _Z);
@@ -264,7 +265,7 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				/// successor local state: l'.pc = l.pc + 1
 				local_state local(pc, _local.get_vars());
 				auto Z = alg::update_counters(local, _local, _Z);
-				drc_predecessors.emplace_back(_sh, Z);
+				drc_predecessors.emplace_back(_share, Z);
 			}
 				break;
 			}

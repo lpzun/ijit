@@ -56,12 +56,13 @@ cfg post_image::build_CFG(const string& filename) {
 deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 		const cfg& G) {
 	deque<global_state> successors;
-	const auto& sh = tau.get_s(); /// shared state
-	const auto& Z = tau.get_locals();
+	const auto& share = tau.get_s(); /// shared state
+	const auto& sv = share.get_vars(); /// valuation vector of shared variables
+	const auto& Z = tau.get_locals();  /// the local part of tau
 	for (auto il = Z.cbegin(); il != Z.cend(); ++il) {
 		const auto& local = il->first;
 		const auto& pc = local.get_pc();    /// current pc
-		const auto& lo = local.get_vars();  /// local vars
+		const auto& lv = local.get_vars();  /// local vars
 		for (auto ipc = G.get_A()[pc].cbegin(); ipc != G.get_A()[pc].cend();
 				++ipc) { /// iterate over all succeeding statements
 			const auto& e = G.get_E()[*ipc]; /// get the edge point by pc
@@ -74,9 +75,9 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				///  _pc: ...
 				///
 				/// SEMANTIC: nondeterministic goto
-				local_state _local(_pc, lo);
+				local_state _local(_pc, lv);
 				auto _Z = alg::update_counters(_local, local, Z);
-				successors.emplace_back(sh, _Z);
+				successors.emplace_back(share, _Z);
 			}
 				break;
 			case type_stmt::ASSG: {
@@ -86,7 +87,12 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				///
 				/// SEMANTIC: assignment statement, postcondition of
 				/// vars might have to satisfy the constraint
-				// TODO
+				vector<expr> assgs;
+				const auto& _sv = this->compute_image_assg_stmt(assgs, sv, lv);
+				const auto& _lv = this->compute_image_assg_stmt(assgs, sv, lv);
+				if (e.get_stmt().get_condition().eval(_sv, _lv)) {
+
+				}
 			}
 				break;
 			case type_stmt::IFEL: {
@@ -95,7 +101,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				/// pc+1: ...
 				///
 				/// SEMANTIC:
-				if (e.get_stmt().get_condition().eval(sh.get_vars(), lo)) {
+				if (e.get_stmt().get_condition().eval(sv, lv)) {
 					// TODO
 				} else {
 					// TODO
@@ -118,11 +124,11 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				///
 				/// SEMANTIC: advance if expr is evaluated to be true;
 				/// block otherwise.
-				if (e.get_stmt().get_condition().eval(sh.get_vars(), lo)) {
+				if (e.get_stmt().get_condition().eval(sv, lv)) {
 					/// successor local state: l'.pc = l.pc + 1
-					local_state _local(_pc, lo);
+					local_state _local(_pc, lv);
 					auto _Z = alg::update_counters(_local, local, Z);
-					successors.emplace_back(sh, _Z);
+					successors.emplace_back(share, _Z);
 				}
 			}
 				break;
@@ -138,11 +144,11 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 
 				deque<local_state> T_in;
 				/// create a new thread whose l''.pc = label and append it to T_in
-				T_in.emplace_back(_pc, lo);
+				T_in.emplace_back(_pc, lv);
 				/// update current thread that l'.pc = l.pc + 1 and append it T_in
-				T_in.emplace_back(_pc + 1, lo);
+				T_in.emplace_back(_pc + 1, lv);
 				auto _Z = alg::update_counters(T_in, local, Z);
-				successors.emplace_back(sh, _Z);
+				successors.emplace_back(share, _Z);
 			}
 				break;
 			case type_stmt::ETHR: {
@@ -154,7 +160,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				/// i.e., has no successor state.
 				auto _Z(Z);
 				alg::decrement(local, _Z);
-				successors.emplace_back(sh, _Z);
+				successors.emplace_back(share, _Z);
 			}
 				break;
 			case type_stmt::ATOM: {
@@ -169,7 +175,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 
 				/// ns, i.e., new shared state, is to store the final shared state
 				/// after across atomic section
-				auto ns = sh;
+				auto ns = share;
 				auto T_in = this->compute_image_atom_sect(ns, local);
 				auto _Z = alg::update_counters(T_in, local, Z);
 				successors.emplace_back(ns, _Z);
@@ -215,7 +221,7 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				auto l_bcst(local);
 				l_bcst.set_pc(local.get_pc() + 1);
 				_Z = alg::update_counters(l_bcst, local, _Z);
-				successors.emplace_back(sh, _Z);
+				successors.emplace_back(share, _Z);
 			}
 				break;
 			case type_stmt::WAIT: {
@@ -234,9 +240,9 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				/// SEMANTIC: advance the pc to pc + 1
 
 				/// successor local state: l'.pc = l.pc + 1
-				local_state _local(_pc, lo);
+				local_state _local(_pc, lv);
 				auto _Z = alg::update_counters(_local, local, Z);
-				successors.emplace_back(sh, _Z);
+				successors.emplace_back(share, _Z);
 			}
 				break;
 			}
@@ -245,6 +251,21 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 	return successors;
 }
 
+/**
+ * @brief compute post image after an assignment statement
+ * @param assgs:
+ * @return a state vector
+ */
+state_v post_image::compute_image_assg_stmt(const vector<expr>& assgs,
+		const state_v& sh, const state_v& lo) {
+	state_v s(sh);
+	for (auto i = 0; i < assgs.size(); ++i) {
+		if (assgs[i].is_valid()) {
+			s[i] = assgs[i].eval(sh, lo);
+		}
+	}
+	return s;
+}
 /**
  * @brief compute post images across an atomic section:
  *        Be careful that an atomic section could contain various statements.

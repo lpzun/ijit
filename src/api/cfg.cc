@@ -111,8 +111,8 @@ stmt::stmt() :
  * @param type
  * @param precondition
  */
-stmt::stmt(const type_stmt& type, const expr& precondition) :
-		type(type), condition(precondition) {
+stmt::stmt(const type_stmt& type, const expr& condition) :
+		type(type), condition(condition) {
 
 }
 

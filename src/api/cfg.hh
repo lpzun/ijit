@@ -51,11 +51,16 @@ public:
 	expr();
 	expr(const deque<string>& se);
 	expr(const expr& e);
+
 	~expr();
 
 	/// getter
 	const deque<string>& get_se() const {
 		return se;
+	}
+
+	const bool is_valid() const {
+		return !se.empty();
 	}
 
 	const value_v eval(const state_v& sh, const state_v& lo) const;
@@ -71,21 +76,31 @@ private:
 class stmt {
 public:
 	stmt();
-	stmt(const type_stmt& type, const expr& precondition);
+	stmt(const type_stmt& type, const expr& condition);
 	stmt(const stmt& s);
 	~stmt();
 
+	/**
+	 * @brief return the precondition if computing the preimage, or
+	 *        postcondition if computing the postimage.
+	 * @return precondition or postcondition
+	 */
 	const expr& get_condition() const {
 		return condition;
 	}
 
+	/**
+	 * @brief return statement type
+	 * @return
+	 */
 	type_stmt get_type() const {
 		return type;
 	}
 
 private:
-	type_stmt type;
-	expr condition;
+	// TODO using static member to store assignments
+	type_stmt type; /// statement type
+	expr condition; /// precondition or postcondition
 };
 
 /**
