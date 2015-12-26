@@ -59,7 +59,7 @@ void parser::parse_in_post_mode(const string& filename) {
  * @param Z
  * @return a program state
  */
-global_state converter::convert(const uint& s, const map<uint, uint>& Z) {
+global_state converter::convert(const syst_state& ss) {
 	// TODO
 	return global_state();
 }
@@ -70,7 +70,7 @@ global_state converter::convert(const uint& s, const map<uint, uint>& Z) {
  * @param gs
  * @return a pair
  */
-pair<uint, map<uint, uint>> converter::convert(const global_state& gs) {
+syst_state converter::convert(const global_state& ps) {
 	// TODO
 	return std::make_pair<uint, map<uint, uint>>(0, map<uint, uint>());
 }

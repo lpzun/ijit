@@ -33,6 +33,10 @@ private:
 	void parse_in_post_mode(const string& filename);
 };
 
+/// system state
+using syst_state = pair<uint, map<uint, uint>>;
+using prog_state = global_state;
+
 /**
  * @brief a converter: convert a program state to a system state, and vice
  *        versa.
@@ -45,8 +49,8 @@ public:
 	virtual ~converter() {
 	}
 
-	virtual global_state convert(const uint& s, const map<uint, uint>& Z);
-	virtual pair<uint, map<uint, uint>> convert(const global_state& gs);
+	virtual prog_state convert(const syst_state& ss);
+	virtual syst_state convert(const prog_state& ps);
 
 private:
 	vector<bool> convert_ss_to_ps(const uint& ss);
@@ -65,7 +69,7 @@ public:
 	virtual ~image() {
 	}
 
-	virtual deque<global_state> step(const global_state& tau) = 0;
+	virtual deque<prog_state> step(const prog_state& tau) = 0;
 
 private:
 
@@ -80,7 +84,7 @@ class pre_image: public image {
 public:
 	pre_image();
 	virtual ~pre_image();
-	virtual deque<global_state> step(const global_state& tau) override;
+	virtual deque<prog_state> step(const prog_state& tau) override;
 
 private:
 	deque<global_state> compute_cov_predecessors(const global_state& _tau,
@@ -112,7 +116,8 @@ public:
 	post_image();
 	virtual ~post_image();
 
-	virtual deque<global_state> step(const global_state& tau) override;
+	virtual deque<prog_state> step(const prog_state& tau) override;
+
 private:
 	deque<global_state> compute_cov_successors(const global_state& tau,
 			const cfg& G);

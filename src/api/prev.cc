@@ -23,7 +23,7 @@ pre_image::~pre_image() {
  * @return cover predecessors
  *         a set of cover predecessors
  */
-deque<global_state> pre_image::step(const global_state& tau) {
+deque<prog_state> pre_image::step(const prog_state& tau) {
 	cfg G;
 	return this->compute_cov_predecessors(tau, G);
 }

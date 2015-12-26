@@ -1,5 +1,8 @@
 /**
- * @brief post.cc
+ * @brief prop.cc: it serves as a supporting source file to store all other
+ *        class declared in the header image.hh, like
+ *        class parser and converter (the default implementations for virtual
+ *        functions)
  *
  * @date   Nov 16, 2015
  * @author Peizun Liu
@@ -23,7 +26,7 @@ post_image::~post_image() {
  * @return cover successors
  *         a set of cover successors
  */
-deque<global_state> post_image::step(const global_state& tau) {
+deque<prog_state> post_image::step(const prog_state& tau) {
 	cfg G;
 	return this->compute_cov_successors(tau, G);
 }
