@@ -40,8 +40,9 @@ using std::stack;
 using std::map;
 using std::unordered_map;
 using std::set;
+using std::pair;
 
-typedef unsigned short ushort;
-
+using ushort = unsigned short;
+using uint = unsigned int;
 
 #endif /* UTIL_HEAD_HH_ */

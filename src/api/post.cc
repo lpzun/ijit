@@ -24,27 +24,8 @@ post_image::~post_image() {
  *         a set of cover successors
  */
 deque<global_state> post_image::step(const global_state& tau) {
-	auto G = this->build_CFG("");
-	return this->compute_cov_successors(tau, G);
-}
-
-/**
- * @brief parse a Boolean program and extract postconditions that are used
- *        to compute post images
- * @param filename
- */
-void post_image::parser(const string& filename) {
-
-}
-
-/**
- * @brief build control flow graph are used to compute post images
- * @param filename
- * @return control flow graph
- */
-cfg post_image::build_CFG(const string& filename) {
 	cfg G;
-	return G;
+	return this->compute_cov_successors(tau, G);
 }
 
 /**
@@ -87,11 +68,23 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				///
 				/// SEMANTIC: assignment statement, postcondition of
 				/// vars might have to satisfy the constraint
-				vector<expr> assgs;
-				const auto& _sv = this->compute_image_assg_stmt(assgs, sv, lv);
-				const auto& _lv = this->compute_image_assg_stmt(assgs, sv, lv);
-				if (e.get_stmt().get_condition().eval(_sv, _lv)) {
+				vector<expr> assgs; //  TODO: need to do sth....
 
+				/// compute shared state
+				state_v _sv(sv);
+				this->compute_image_assg_stmt(_sv, 0, assgs, sv, lv);
+
+				/// compute local  state
+				state_v _lv(lv);
+				this->compute_image_assg_stmt(_lv, sv.size(), assgs, sv, lv);
+
+				if (e.get_stmt().get_condition().eval(_sv, _lv)) {
+					shared_state _share(_sv);
+					local_state _local(_pc, _lv);
+
+					auto _Z = alg::update_counters(_local, local, Z);
+
+					successors.emplace_back(_share, _Z);
 				}
 			}
 				break;
@@ -229,8 +222,9 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 				///   pc: wait;
 				/// pc+1: ...
 				/// SEMANTIC: blocks the execution of a thread.
-				/// There is no pre-image just by itself. It has to be paired
-				/// with broadcast.
+				/// There is NO pre-image just by itself. It has to be paired
+				/// with broadcast. Thus, it would be handled in broadcast
+				/// statement.
 			}
 				break;
 			default: {
@@ -253,18 +247,19 @@ deque<global_state> post_image::compute_cov_successors(const global_state& tau,
 
 /**
  * @brief compute post image after an assignment statement
- * @param assgs:
- * @return a state vector
+ * @param s
+ * @param start
+ * @param assgs
+ * @param sh
+ * @param lo
  */
-state_v post_image::compute_image_assg_stmt(const vector<expr>& assgs,
-		const state_v& sh, const state_v& lo) {
-	state_v s(sh);
-	for (auto i = 0; i < assgs.size(); ++i) {
+void post_image::compute_image_assg_stmt(state_v& s, const size_t& start,
+		const vector<expr>& assgs, const state_v& sh, const state_v& lo) {
+	for (auto i = start; i < assgs.size(); ++i) {
 		if (assgs[i].is_valid()) {
 			s[i] = assgs[i].eval(sh, lo);
 		}
 	}
-	return s;
 }
 /**
  * @brief compute post images across an atomic section:

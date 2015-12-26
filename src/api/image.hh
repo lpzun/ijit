@@ -13,18 +13,44 @@
 
 namespace iotf {
 
-class convert {
+enum class mode {
+	PREV, POST
+};
+
+/**
+ * @brief a parser: parse a Boolean program, build its control flow graph
+ *        and extract its weakest preconditions/strongest postconditions
+ */
+class parser {
 public:
-	convert() {
+	parser();
 
-	}
+	~parser();
 
-	virtual ~convert() {
-
-	}
+	void parse(const string& filename, const mode& m = mode::PREV);
 private:
-	virtual vector<bool> convert_ss_to_ps(const unsigned int& ss);
-	virtual unsigned int convert_ps_to_ss(const vector<bool>& ps);
+	void parse_in_prev_mode(const string& filename);
+	void parse_in_post_mode(const string& filename);
+};
+
+/**
+ * @brief a converter: convert a program state to a system state, and vice
+ *        versa.
+ */
+class converter {
+public:
+	converter() {
+	}
+
+	virtual ~converter() {
+	}
+
+	virtual global_state convert(const uint& s, const map<uint, uint>& Z);
+	virtual pair<uint, map<uint, uint>> convert(const global_state& gs);
+
+private:
+	vector<bool> convert_ss_to_ps(const uint& ss);
+	uint convert_ps_to_ss(const vector<bool>& ps);
 };
 
 /**
@@ -42,8 +68,7 @@ public:
 	virtual deque<global_state> step(const global_state& tau) = 0;
 
 private:
-	virtual void parser(const string& filename) = 0;
-	virtual cfg build_CFG(const string& filename) = 0;
+
 };
 
 /**
@@ -69,8 +94,12 @@ private:
 			const local_state& l);
 	void compute_image_bcst_stmt(deque<local_state>& pw);
 
-	virtual void parser(const string& filename) override;
-	virtual cfg build_CFG(const string& filename) override;
+	deque<pair<state_v, state_v>> compute_image_assg_stmt(const state_v& _sv,
+			const state_v& _lv);
+	deque<pair<state_v, state_v>> weakest_precondition(const state_v& _sv,
+			const state_v& _lv);
+
+	deque<state_v> all_sat_solver();
 };
 
 /**
@@ -90,11 +119,8 @@ private:
 	deque<local_state> compute_image_atom_sect(shared_state& s,
 			const local_state& l);
 
-	state_v compute_image_assg_stmt(const vector<expr>& assgs,
-			const state_v& sh, const state_v& lo);
-
-	virtual void parser(const string& filename) override;
-	virtual cfg build_CFG(const string& filename) override;
+	void compute_image_assg_stmt(state_v& s, const size_t& start,
+			const vector<expr>& assgs, const state_v& sh, const state_v& lo);
 };
 
 } /* namespace otf */

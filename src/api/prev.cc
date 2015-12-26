@@ -24,26 +24,8 @@ pre_image::~pre_image() {
  *         a set of cover predecessors
  */
 deque<global_state> pre_image::step(const global_state& tau) {
-	const auto& G = this->build_CFG("");
-	return this->compute_cov_predecessors(tau, G);
-}
-
-/**
- * @brief a parser for Boolean Program
- * @param filename
- */
-void pre_image::parser(const string& filename) {
-
-}
-
-/**
- * @brief build a Control Flow Graph, in the interface
- * @param filename
- * @return
- */
-cfg pre_image::build_CFG(const string& filename) {
 	cfg G;
-	return G;
+	return this->compute_cov_predecessors(tau, G);
 }
 
 /**
@@ -100,7 +82,18 @@ deque<global_state> pre_image::compute_drc_precedessors(
 				///
 				/// SEMANTIC: assignment statement, postcondition of
 				/// vars might have to satisfy the constraint
-				// TODO
+				if (e.get_stmt().get_condition().eval(_sv, _lv)) {
+					/// compute all direct predecessors via weakest
+					/// precondition and SAT solvers
+					auto P = this->compute_image_assg_stmt(_sv, _lv);
+					for (auto ip = P.cbegin(); ip != P.cend(); ++ip) {
+						shared_state share(ip->first);
+						local_state local(pc, ip->second);
+
+						auto Z = alg::update_counters(local, _local, _Z);
+						drc_predecessors.emplace_back(share, Z);
+					}
+				}
 			}
 				break;
 			case type_stmt::IFEL: {
@@ -315,6 +308,22 @@ void pre_image::compute_image_bcst_stmt(deque<local_state>& pw) {
 	for (auto il = pw.begin(); il != pw.end(); ++il) {
 		il->set_pc(il->get_pc() - 1);
 	}
+}
+
+/**
+ * @brief compute the pre images for an assignment statement
+ * @param _sv
+ * @param _lv
+ * @return a list of valuations for shared and local variables
+ */
+deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
+		const state_v& _sv, const state_v& _lv) {
+
+}
+
+deque<pair<state_v, state_v>> pre_image::weakest_precondition(
+		const state_v& _sv, const state_v& _lv) {
+
 }
 
 }
