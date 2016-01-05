@@ -5,8 +5,8 @@
  * @author Peizun Liu
  */
 
-#ifndef API_IMAGE_HH_
-#define API_IMAGE_HH_
+#ifndef API_IOTF_HH_
+#define API_IOTF_HH_
 
 #include "../util/algs.hh"
 #include "cfg.hh"
@@ -27,10 +27,10 @@ public:
 
 	~parser();
 
-	void parse(const string& filename, const mode& m = mode::PREV);
+	static void parse(const string& filename, const mode& m = mode::PREV);
 private:
-	void parse_in_prev_mode(const string& filename);
-	void parse_in_post_mode(const string& filename);
+	static void parse_in_prev_mode(const string& filename);
+	static void parse_in_post_mode(const string& filename);
 };
 
 /// system state
@@ -70,9 +70,6 @@ public:
 	}
 
 	virtual deque<prog_state> step(const prog_state& tau) = 0;
-
-private:
-
 };
 
 /**
@@ -130,4 +127,4 @@ private:
 
 } /* namespace otf */
 
-#endif /* API_IMAGE_HH_ */
+#endif /* API_IOTF_HH_ */

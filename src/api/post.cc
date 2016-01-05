@@ -8,7 +8,7 @@
  * @author Peizun Liu
  */
 
-#include "image.hh"
+#include "iotf.hh"
 
 namespace iotf {
 

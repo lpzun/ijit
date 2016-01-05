@@ -40,7 +40,7 @@
 
 #include <iostream>
 
-#include "api/image.hh"
+#include "api/iotf.hh"
 
 using namespace iotf;
 

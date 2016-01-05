@@ -5,7 +5,7 @@
  *      Author: lpzun
  */
 
-#include "image.hh"
+#include "iotf.hh"
 
 namespace iotf {
 
@@ -30,9 +30,9 @@ parser::~parser() {
  */
 void parser::parse(const string& filename, const mode& m) {
 	if (m == mode::PREV) {
-		this->parse_in_prev_mode(filename);
+		parse_in_prev_mode(filename);
 	} else if (m == mode::PREV) {
-		this->parse_in_post_mode(filename);
+		parse_in_post_mode(filename);
 	}
 }
 
@@ -59,7 +59,7 @@ void parser::parse_in_post_mode(const string& filename) {
  * @param Z
  * @return a program state
  */
-global_state converter::convert(const syst_state& ss) {
+prog_state converter::convert(const syst_state& ss) {
 	// TODO
 	return global_state();
 }
@@ -70,7 +70,7 @@ global_state converter::convert(const syst_state& ss) {
  * @param gs
  * @return a pair
  */
-syst_state converter::convert(const global_state& ps) {
+syst_state converter::convert(const prog_state& ps) {
 	// TODO
 	return std::make_pair<uint, map<uint, uint>>(0, map<uint, uint>());
 }
@@ -96,7 +96,12 @@ vector<bool> converter::convert_ss_to_ps(const uint& ss) {
  * @return
  */
 uint converter::convert_ps_to_ss(const vector<bool>& ps) {
-
+	uint ss = 0;
+	for (int i = 0; i < ps.size(); ++i) {
+		if (ps[i])
+			ss += 1 >> i;
+	}
+	return ss;
 }
 
 } /* namespace otf */
