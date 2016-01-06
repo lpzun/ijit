@@ -1,14 +1,12 @@
 /**
- * @brief prop.cc: it serves as a supporting source file to store all other
- *        class declared in the header image.hh, like
- *        class parser and converter (the default implementations for virtual
- *        functions)
+ * @brief post.cc: it serves as a supporting source file
+ *        to implement the postimage computation
  *
  * @date   Nov 16, 2015
  * @author Peizun Liu
  */
 
-#include "iotf.hh"
+#include "../iotf.hh"
 
 namespace iotf {
 
@@ -37,12 +35,12 @@ deque<prog_state> post_image::step(const prog_state& tau) {
  * @param G
  * @return
  */
-deque<global_state> post_image::compute_cov_successors(const global_state& tau,
+deque<prog_state> post_image::compute_cov_successors(const prog_state& tau,
 		const cfg& G) {
-	deque<global_state> successors;
+	deque<prog_state> successors;
 	const auto& share = tau.get_s(); /// shared state
-	const auto& sv = share.get_vars(); /// valuation vector of shared variables
-	const auto& Z = tau.get_locals();  /// the local part of tau
+	const auto& sv = share.get_vars(); /// the valuation of shared variables
+	const auto& Z = tau.get_locals();  /// the local part of tau: counter abs.
 	for (auto il = Z.cbegin(); il != Z.cend(); ++il) {
 		const auto& local = il->first;
 		const auto& pc = local.get_pc();    /// current pc

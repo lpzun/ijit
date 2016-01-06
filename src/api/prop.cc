@@ -1,11 +1,14 @@
 /**
- * image.cc
+ * @brief prop.cc: it serves as a supporting source file to store all other
+ *        class declared in the header image.hh, like
+ *        class parser and converter (the default implementations for virtual
+ *        functions)
  *
- *  Created on: Dec 26, 2015
- *      Author: lpzun
+ * @date   Dec 26, 2015
+ * @author Peizun Liu
  */
 
-#include "iotf.hh"
+#include "../iotf.hh"
 
 namespace iotf {
 

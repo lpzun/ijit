@@ -1,11 +1,12 @@
 /**
- * @brief prev.cc
+ * @brief prev.cc:  it serves as a supporting source file
+ *        to implement the preimage computation
  *
  * @date   Nov 22, 2015
  * @author Peizun Liu
  */
 
-#include "iotf.hh"
+#include "../iotf.hh"
 
 namespace iotf {
 
@@ -34,8 +35,8 @@ deque<prog_state> pre_image::step(const prog_state& tau) {
  * @param G
  * @return the set of cover predecessors
  */
-deque<global_state> pre_image::compute_cov_predecessors(
-		const global_state& _tau, const cfg& G) {
+deque<prog_state> pre_image::compute_cov_predecessors(
+		const prog_state& _tau, const cfg& G) {
 	auto cov = this->compute_drc_precedessors(_tau, G); /// direct   predecessors
 	auto exp = this->compute_exp_predecessors(_tau, G); /// expanded predecessors
 	cov.insert(cov.end(), exp.begin(), exp.end()); /// combine them together
@@ -47,11 +48,11 @@ deque<global_state> pre_image::compute_cov_predecessors(
  * @param _tau
  * @param G
  * @return direct predecessors
- *         store in deque<global_state>
+ *         store in deque<prog_state>
  */
-deque<global_state> pre_image::compute_drc_precedessors(
-		const global_state& _tau, const cfg& G) {
-	deque<global_state> drc_predecessors;
+deque<prog_state> pre_image::compute_drc_precedessors(
+		const prog_state& _tau, const cfg& G) {
+	deque<prog_state> drc_predecessors;
 	const auto& _share = _tau.get_s(); /// shared state
 	const auto& _sv = _share.get_vars(); /// valuation vector of shared variables
 	const auto& _Z = _tau.get_locals();  /// the local part of _tau
@@ -274,9 +275,9 @@ deque<global_state> pre_image::compute_drc_precedessors(
  * @param G
  * @return expanded cover predecessors
  */
-deque<global_state> pre_image::compute_exp_predecessors(
-		const global_state& _tau, const cfg& G) {
-	deque<global_state> exp_predecessors;
+deque<prog_state> pre_image::compute_exp_predecessors(
+		const prog_state& _tau, const cfg& G) {
+	deque<prog_state> exp_predecessors;
 
 	return exp_predecessors;
 }
