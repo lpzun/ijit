@@ -319,12 +319,20 @@ void pre_image::compute_image_bcst_stmt(deque<local_state>& pw) {
  */
 deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
 		const state_v& _sv, const state_v& _lv) {
-
+	deque<pair<state_v, state_v>> result;
+	return result;
 }
 
+/**
+ * @brief compute weakest precondition
+ * @param _sv
+ * @param _lv
+ * @return a deque of pair<state_v, state_v>
+ */
 deque<pair<state_v, state_v>> pre_image::weakest_precondition(
 		const state_v& _sv, const state_v& _lv) {
-
+	deque<pair<state_v, state_v>> result;
+	return result;
 }
 
 }

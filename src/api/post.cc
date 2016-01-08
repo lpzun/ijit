@@ -37,6 +37,7 @@ deque<prog_state> post_image::step(const prog_state& tau) {
  */
 deque<prog_state> post_image::compute_cov_successors(const prog_state& tau,
 		const cfg& G) {
+	cout<<" I am in the compute_cov_successors...\n";
 	deque<prog_state> successors;
 	const auto& share = tau.get_s(); /// shared state
 	const auto& sv = share.get_vars(); /// the valuation of shared variables
@@ -63,7 +64,7 @@ deque<prog_state> post_image::compute_cov_successors(const prog_state& tau,
 			}
 				break;
 			case type_stmt::ASSG: {
-				/// parallel statement
+				/// parallel assignment statement
 				///   pc: <id>+ := <expr>+ constrain <expr>;
 				/// pc+1: ...
 				///
@@ -79,12 +80,14 @@ deque<prog_state> post_image::compute_cov_successors(const prog_state& tau,
 				state_v _lv(lv);
 				this->compute_image_assg_stmt(_lv, sv.size(), assgs, sv, lv);
 
+				/// NOTE: the "constrain <expr>" could involve the valuations
+				/// for shared and local variables before and after executing
+				/// assignment statement ...
+				/// TODO: This has to be changed ...
 				if (e.get_stmt().get_condition().eval(_sv, _lv)) {
 					shared_state _share(_sv);
 					local_state _local(_pc, _lv);
-
 					auto _Z = alg::update_counters(_local, local, Z);
-
 					successors.emplace_back(_share, _Z);
 				}
 			}
@@ -108,7 +111,7 @@ deque<prog_state> post_image::compute_cov_successors(const prog_state& tau,
 				/// pc+1: ...
 				///
 				/// SEMANTIC: assertion statement: encoding bad states
-
+				/// This is a deadend statement
 			}
 				break;
 			case type_stmt::ASSU: {
@@ -170,6 +173,7 @@ deque<prog_state> post_image::compute_cov_successors(const prog_state& tau,
 				/// ns, i.e., new shared state, is to store the final shared state
 				/// after across atomic section
 				auto ns = share;
+				/// this should return a deque of program state
 				auto T_in = this->compute_image_atom_sect(ns, local);
 				auto _Z = alg::update_counters(T_in, local, Z);
 				successors.emplace_back(ns, _Z);
@@ -179,8 +183,8 @@ deque<prog_state> post_image::compute_cov_successors(const prog_state& tau,
 				/// the broadcast statement
 				///   pc: broadcast;
 				/// pc+1: ...
-				/// SEMANTIC: advance the pc of active thread, and wake up all waiting
-				/// thread via advancing their pcs.
+				/// SEMANTIC: advance the pc of active thread, and wake up all
+				/// waiting thread via advancing their pcs.
 				///
 				/// An example of broadcast:
 				///      10: wait;
@@ -247,7 +251,7 @@ deque<prog_state> post_image::compute_cov_successors(const prog_state& tau,
 }
 
 /**
- * @brief compute post image after an assignment statement
+ * @brief compute post image after an parallel assignment statement
  * @param s
  * @param start
  * @param assgs
@@ -275,6 +279,7 @@ void post_image::compute_image_assg_stmt(state_v& s, const size_t& start,
 deque<local_state> post_image::compute_image_atom_sect(shared_state& s,
 		const local_state& l) {
 	deque<local_state> T_in;
+
 	return T_in;
 }
 

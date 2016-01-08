@@ -236,7 +236,7 @@ const value_v expr::eval(const state_v& sh, const state_v& lo) const {
  *        non-const version
  * @param sh
  * @param lo
- * @return
+ * @return a valuation
  */
 value_v expr::eval(const state_v& sh, const state_v& lo) {
 	return static_cast<value_v>(static_cast<const expr&>(*this).eval(sh, lo));
