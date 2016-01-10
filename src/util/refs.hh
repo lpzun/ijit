@@ -1,5 +1,6 @@
 /**
- * @brief refs.hh
+ * @brief refs.hh: this file defines some constant/static variables
+ *        used across the API.
  *
  * @date   Nov 13, 2015
  * @author Peizun Liu
@@ -14,25 +15,34 @@ namespace iotf {
 
 class refs {
 public:
-	refs();
-	virtual ~refs();
+    refs() {
+    }
+    ~refs() {
+    }
 
-	static ushort SHARED_VARS_NUM;
-	static ushort LOCAL_VARS_NUM;
-	static ushort PC_NUM;
+    static ushort SHARED_VARS_NUM;
+    static ushort LOCAL_VARS_NUM;
+    static ushort PC_NUM;
 
-	/// used in expression
-	static const string NON_DET;
-	static const string TRUE;
-	static const string FALSE;
+    /// constant expression
+    static const string CONST_N; /// constant nondeterministic choice
+    static const string CONST_T; /// constant true
+    static const string CONST_F; /// constant false
 
-	static const string AND;
-	static const string OR;
-	static const string XOR;
-	static const string NEG;
+    ///  unary expression
+    static const string NEG; /// !, negation
 
-	static const string R_PAREN;
-	static const string L_PAREN;
+    /// binary expression
+    static const string AND; /// &, and
+    static const string OR;  /// |, or
+    static const string XOR; /// ^, exclusive or
+    static const string EQ;  /// =, equal
+    static const string NEQ; /// !=, not equal
+    static const string IMPLIES; /// =>, implies
+
+    /// parentheses "()"
+    static const string PAREN_L;
+    static const string PAREN_R;
 };
 
 } /* namespace otf */

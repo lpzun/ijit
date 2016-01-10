@@ -42,12 +42,24 @@
 #define IOTF_HH_
 
 #include "util/algs.hh"
+#include "util/excp.hh"
+
 #include "api/cfg.hh"
 
 namespace iotf {
 
+/// system state
+using syst_state = pair<uint, map<uint, uint>>;
+using prog_state = global_state;
+
+using initl_ps = deque<prog_state>;
+using final_ps = deque<prog_state>;
+
+/**
+ * @brief the mode of parser: probably compute prev-/post- images of a global state
+ */
 enum class mode {
-	PREV, POST
+    PREV, POST
 };
 
 /**
@@ -56,19 +68,28 @@ enum class mode {
  */
 class parser {
 public:
-	parser();
+    parser();
 
-	~parser();
+    ~parser();
 
-	static void parse(const string& filename, const mode& m = mode::PREV);
+    static pair<initl_ps, final_ps> parse(const string& filename,
+            const mode& m = mode::PREV);
+
+    static const cfg& get_post_G() {
+        return post_G;
+    }
+
+    static const cfg& get_prev_G() {
+        return prev_G;
+    }
+
 private:
-	static void parse_in_prev_mode(const string& filename);
-	static void parse_in_post_mode(const string& filename);
-};
+    static pair<initl_ps, final_ps> parse_in_prev_mode(const string& filename);
+    static pair<initl_ps, final_ps> parse_in_post_mode(const string& filename);
 
-/// system state
-using syst_state = pair<uint, map<uint, uint>>;
-using prog_state = global_state;
+    static cfg prev_G; /// control flow graph in PREV mode
+    static cfg post_G; /// control flow graph in POST mode
+};
 
 /**
  * @brief a converter: convert a program state to a system state, and vice
@@ -76,18 +97,20 @@ using prog_state = global_state;
  */
 class converter {
 public:
-	converter() {
-	}
+    converter() {
+    }
 
-	virtual ~converter() {
-	}
+    virtual ~converter() {
+    }
 
-	virtual prog_state convert(const syst_state& ss);
-	virtual syst_state convert(const prog_state& ps);
+    virtual deque<prog_state> convert(const deque<syst_state>& ss);
+    virtual deque<syst_state> convert(const deque<prog_state>& ps);
+    virtual prog_state convert(const syst_state& ss);
+    virtual syst_state convert(const prog_state& ps);
 
 private:
-	vector<bool> convert_ss_to_ps(const uint& ss);
-	uint convert_ps_to_ss(const vector<bool>& ps);
+    vector<bool> convert_ss_to_ps(const uint& ss);
+    uint convert_ps_to_ss(const vector<bool>& ps);
 };
 
 /**
@@ -96,13 +119,13 @@ private:
  */
 class image {
 public:
-	image() {
-	}
+    image() {
+    }
 
-	virtual ~image() {
-	}
+    virtual ~image() {
+    }
 
-	virtual deque<prog_state> step(const prog_state& tau) = 0;
+    virtual deque<prog_state> step(const prog_state& tau) = 0;
 };
 
 /**
@@ -112,28 +135,25 @@ public:
  */
 class pre_image: public image {
 public:
-	pre_image();
-	virtual ~pre_image();
-	virtual deque<prog_state> step(const prog_state& tau) override;
+    pre_image();
+    virtual ~pre_image();
+    virtual deque<prog_state> step(const prog_state& tau) override;
 
 private:
-	deque<prog_state> compute_cov_predecessors(const prog_state& _tau,
-			const cfg& G);
-	deque<prog_state> compute_drc_precedessors(const prog_state& _tau,
-			const cfg& G);
-	deque<prog_state> compute_exp_predecessors(const prog_state& _tau,
-			const cfg& G);
+    deque<prog_state> compute_cov_predecessors(const prog_state& _tau);
+    deque<prog_state> compute_drc_precedessors(const prog_state& _tau);
+    deque<prog_state> compute_exp_predecessors(const prog_state& _tau);
 
-	deque<local_state> compute_image_atom_sect(shared_state& s,
-			const local_state& l);
-	void compute_image_bcst_stmt(deque<local_state>& pw);
+    deque<local_state> compute_image_atom_sect(shared_state& s,
+            const local_state& l);
+    void compute_image_bcst_stmt(deque<local_state>& pw);
 
-	deque<pair<state_v, state_v>> compute_image_assg_stmt(const state_v& _sv,
-			const state_v& _lv);
-	deque<pair<state_v, state_v>> weakest_precondition(const state_v& _sv,
-			const state_v& _lv);
+    deque<pair<state_v, state_v>> compute_image_assg_stmt(const state_v& _sv,
+            const state_v& _lv);
+    deque<pair<state_v, state_v>> weakest_precondition(const state_v& _sv,
+            const state_v& _lv);
 
-	deque<state_v> all_sat_solver();
+    deque<state_v> all_sat_solver();
 };
 
 /**
@@ -143,20 +163,23 @@ private:
  */
 class post_image: public image {
 public:
-	post_image();
-	virtual ~post_image();
+    post_image();
+    virtual ~post_image();
 
-	virtual deque<prog_state> step(const prog_state& tau) override;
+    virtual deque<prog_state> step(const prog_state& tau) override;
 
 private:
-	deque<prog_state> compute_cov_successors(const prog_state& tau,
-			const cfg& G);
-	deque<local_state> compute_image_atom_sect(shared_state& s,
-			const local_state& l);
-	void compute_image_assg_stmt(state_v& s, const size_t& start,
-			const vector<expr>& assgs, const state_v& sh, const state_v& lo);
+    deque<prog_state> compute_cov_successors(const prog_state& tau);
 
+    void compute_image_assg_stmt(state_v& s, const size_t& start,
+            const vector<expr>& assgs, const state_v& sh, const state_v& lo);
 
+    local_state compute_image_ifth_stmt(const local_state& l,
+            const size_pc& _pc);
+    local_state compute_image_else_stmt(const local_state& l);
+
+    void compute_image_atom_sect(const shared_state& s, const local_state& l,
+            deque<shared_state>& _s, deque<local_state>& _l);
 };
 
 } /* namespace otf */

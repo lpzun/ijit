@@ -1,6 +1,15 @@
 /**
- * @brief  state.hh
- *
+ * @brief  state.hh: defines the following data structure:
+ *         value_v     : the value of  variable in Boolean programs
+ *         sbool       : symbolic value of a variable used in Boolean program: {F, T, N}
+ *         state_v     : vector<bool>
+ *         size_pc     : the domain of pc
+ *         size_tc     : the domain of thread counts;
+ *         shared_state: shared state, a valuation for shared variables
+ *         local_state : local state,  a valuation for local  variables
+ *         thread_state: a combination of shared and local states
+ *         cab_locals  : map<local_state, size_tc>, represented in counter abstraction
+ *         global_state: a global configuration stored in counter abstraction form
  *
  * @date   Nov 13, 2015
  * @author Peizun Liu
@@ -25,7 +34,7 @@ using state_v = vector<bool>;
 using size_pc = unsigned short;
 
 /// define the data structure to store the thread count
-using size_th = unsigned short;
+using size_tc = unsigned short;
 
 enum class sbool {
 	F = 0, T = 1, N = 2
@@ -326,9 +335,15 @@ inline bool operator !=(const thread_state& t1, const thread_state& t2) {
 	return !(t1 == t2);
 }
 
-/// define the date structure to store LOCAL stateS that
-/// are represented in Counter ABstraction.
-using cab_locals = map<local_state, size_th>;
+/**
+ * @brief define the date structure to store LOCAL stateS that
+ *        are represented in Counter ABstraction.
+ * @note  A thing we have to keep in mind is that: when we use
+ *        counter abstraction, we always assume that the system
+ *        is symmetric: the ordering of thread does not matter.
+ *        We might extend this to the a symmetric system in the future.
+ */
+using cab_locals = map<local_state, size_tc>;
 
 /**
  * @brief define data structure global state

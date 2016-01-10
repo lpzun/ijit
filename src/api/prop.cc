@@ -3,6 +3,9 @@
  *        class declared in the header image.hh, like
  *        class parser and converter (the default implementations for virtual
  *        functions)
+ *        Q: Why I named it as prop.cc?
+ *        A: Because I think this file defines the common properties of the
+ *        entire API. That's it!
  *
  * @date   Dec 26, 2015
  * @author Peizun Liu
@@ -11,6 +14,9 @@
 #include "../iotf.hh"
 
 namespace iotf {
+
+cfg parser::prev_G; /// control flow graph in PREV mode
+cfg parser::post_G; /// control flow graph in POST mode
 
 /**
  * @brief default constructor
@@ -31,28 +37,66 @@ parser::~parser() {
  * @param filename: Boolean program
  * @param m       : mode
  */
-void parser::parse(const string& filename, const mode& m) {
-	if (m == mode::PREV) {
-		parse_in_prev_mode(filename);
-	} else if (m == mode::PREV) {
-		parse_in_post_mode(filename);
-	}
+pair<initl_ps, final_ps> parser::parse(const string& filename, const mode& m) {
+    if (m == mode::PREV) {
+        return parse_in_prev_mode(filename);
+    } else if (m == mode::POST) {
+        return parse_in_post_mode(filename);
+    } else {
+        throw iotf_runtime_error("there is no such mode!");
+    }
 }
 
 /**
  * @brief parse Boolean programs in  preimage mode
  * @param filename
  */
-void parser::parse_in_prev_mode(const string& filename) {
-
+pair<initl_ps, final_ps> parser::parse_in_prev_mode(const string& filename) {
+    initl_ps I;
+    final_ps Q;
+    // TODO initialize prev_G
+    return std::make_pair(I, Q);
 }
 
 /**
  * @brief parse Boolean programs in postimage mode
  * @param filename
  */
-void parser::parse_in_post_mode(const string& filename) {
+pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
+    initl_ps I;
+    final_ps Q;
+    // TODO initialize post_G
+    return std::make_pair(I, Q);
+}
 
+///////////////////////////////////////////////////////////////////////////////
+/// from here: all member definitions of class converter                    ///
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @brief convert a list of system states (user-form global state) to a list of
+ *        program states (our otf-form global state)
+ * @param ss: a list of system states
+ * @return    a list of program states
+ */
+deque<prog_state> converter::convert(const deque<syst_state>& ss) {
+    deque<prog_state> ps;
+    for (const auto& s : ss)
+        ps.emplace_back(this->convert(s));
+    return ps;
+}
+
+/**
+ * @brief convert a list of program states (user-form global state) to a list of
+ *        system states (our otf-form global state)
+ * @param ss: a list of program states
+ * @return    a list of system states
+ */
+deque<syst_state> converter::convert(const deque<prog_state>& ps) {
+    deque<syst_state> ss;
+    for (const auto& p : ps)
+        ss.emplace_back(this->convert(p));
+    return ss;
 }
 
 /**
@@ -63,8 +107,8 @@ void parser::parse_in_post_mode(const string& filename) {
  * @return a program state
  */
 prog_state converter::convert(const syst_state& ss) {
-	// TODO
-	return global_state();
+    // TODO
+    return global_state();
 }
 
 /**
@@ -74,37 +118,37 @@ prog_state converter::convert(const syst_state& ss) {
  * @return a pair
  */
 syst_state converter::convert(const prog_state& ps) {
-	// TODO
-	return std::make_pair<uint, map<uint, uint>>(0, map<uint, uint>());
+    // TODO
+    return std::make_pair<uint, map<uint, uint>>(0, map<uint, uint>());
 }
 
 /**
  * @brief convert a shared system state to a shared program state
  * @param ss
- * @return
+ * @return a shared program state
  */
 vector<bool> converter::convert_ss_to_ps(const uint& ss) {
-	vector<bool> sv(refs::SHARED_VARS_NUM, false);
-	int pos = 0;
-	while (pos < refs::SHARED_VARS_NUM) {
-		if ((ss >> pos) & 1)
-			sv[pos] = true;
-	}
-	return sv;
+    vector<bool> sv(refs::SHARED_VARS_NUM, false);
+    int pos = 0;
+    while (pos < refs::SHARED_VARS_NUM) {
+        if ((ss >> pos) & 1)
+            sv[pos] = true;
+    }
+    return sv;
 }
 
 /**
- * @brief
+ * @brief convert a shared program state to a shared system state
  * @param ps
- * @return
+ * @return a shared system state
  */
 uint converter::convert_ps_to_ss(const vector<bool>& ps) {
-	uint ss = 0;
-	for (int i = 0; i < ps.size(); ++i) {
-		if (ps[i])
-			ss += 1 >> i;
-	}
-	return ss;
+    uint ss = 0;
+    for (int i = 0; i < ps.size(); ++i) {
+        if (ps[i])
+            ss += 1 >> i;
+    }
+    return ss;
 }
 
 } /* namespace otf */
