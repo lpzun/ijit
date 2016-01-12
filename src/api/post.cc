@@ -78,16 +78,13 @@ deque<prog_state> post_image::compute_cov_successors(const prog_state& tau) {
 
                 /// compute shared state
                 state_v _sv(sv);
-                this->compute_image_assg_stmt(_sv, 0, assgs, sv, lv);
-
                 /// compute local  state
                 state_v _lv(lv);
-                this->compute_image_assg_stmt(_lv, sv.size(), assgs, sv, lv);
+                this->compute_image_assg_stmt(_sv, _lv, sv, lv, pc);
 
                 /// NOTE: the "constrain <expr>" could involve the valuations
                 /// for shared and local variables before and after executing
                 /// assignment statement ...
-                /// TODO: This has to be changed ...
                 if (e.get_stmt().get_condition().eval(_sv, _lv)) {
                     shared_state _share(_sv);
                     local_state _local(_pc, _lv);
@@ -272,11 +269,19 @@ deque<prog_state> post_image::compute_cov_successors(const prog_state& tau) {
  * @param sh
  * @param lo
  */
-void post_image::compute_image_assg_stmt(state_v& s, const size_t& start,
-        const vector<expr>& assgs, const state_v& sh, const state_v& lo) {
-    for (auto i = start; i < assgs.size(); ++i) {
-        if (assgs[i].is_valid()) {
-            s[i] = assgs[i].eval(sh, lo);
+void post_image::compute_image_assg_stmt(state_v& _s, state_v& _l,
+        const state_v& s, const state_v& l, const size_pc& pc) {
+    auto ifind = parser::get_post_G().get_assignments().find(pc);
+    if (ifind != parser::get_post_G().get_assignments().end()) {
+        const auto& sh = ifind->second.sh;
+        for (auto i = 0; i < sh.size(); ++i) {
+            if (sh[i].is_valid())
+                _s[i] = sh[i].eval(s, l);
+        }
+        const auto& lo = ifind->second.lo;
+        for (auto i = 0; i < lo.size(); ++i) {
+            if (lo[i].is_valid())
+                _l[i] = lo[i].eval(s, l);
         }
     }
 }

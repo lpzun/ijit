@@ -111,22 +111,22 @@ void alg::merge(const local_state& local, const ushort& n, cab_locals& Z) {
  * @param vs: probably contains some *
  * @return the result after split
  */
-deque<vector<sbool>> alg::split(const vector<sbool>& vs) {
-	deque<vector<sbool>> result;
+deque<vector<sool>> alg::split(const vector<sool>& vs) {
+	deque<vector<sool>> result;
 	if (vs.size() == 0)
 		return result;
 
-	queue<vector<sbool>> worklist;
+	queue<vector<sool>> worklist;
 	worklist.push(vs);
 	while (!worklist.empty()) {
 		auto curr = worklist.front();
 		worklist.pop();
 		bool is_nondet = false;
 		for (auto i = 0; i < curr.size(); ++i) {
-			if (curr[i] == sbool::N) {
-				curr[i] = sbool::T;
+			if (curr[i] == sool::N) {
+				curr[i] = sool::T;
 				worklist.push(curr);
-				curr[i] = sbool::F;
+				curr[i] = sool::F;
 				worklist.push(curr);
 				/// mark there exist a *
 				is_nondet = true;

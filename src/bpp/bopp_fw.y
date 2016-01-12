@@ -1,32 +1,77 @@
 /*************************************************************************************
  ** Name:    	BoPP: parser
  ** Authors: 	Peizun Liu
- ** Version: 	0.4
+ ** Version: 	0.5
  ** Copyright: 	It belongs to Thomas Wahl's group in CAR Lab, CCIS, NEU
- ** Date:       Feb, 2014
- ** Decription: BoPP is a C++ version of Boolean Program Parser. It aims to 
- *		parse Boolean programs and generate its control folow graph 
- *		and the corresponding weakest precondition function for each
- *              statement.
+ ** Create on:  Feb, 2014
+ ** Modified :  Jan, 2016
+ ** Decription: BoPP is a Boolean Program Parser written with C++. It aims at parsing
+ *		Boolean programs to generate a control folow graph and the correspon-
+ *		ding weakest preconditions (strongest postconditions) for each state-
+ *              ment when computing a preimage (postimage).
  *
  *              parser: 
- *              
- *              This version is to generate the DIMACS CNF format of WP, which
- *              can be used in (most) SAT solver directly
+ *              v0.5: adding the forward-based CFG and so on
  ************************************************************************************/
 %language "C++"
 %defines
 %locations
 
 %define parser_class_name "fw" // define the parser's name
+%{
+%}
+
+%union {
+  int t_val; // token's value
+  char *t_str; // token's name
+}
+
+/* declare tokens */
+%token T_BEGIN "begin"
+%token T_END "end"
+
+%token T_DECL "decl"
+%token T_GOTO "goto"
+%token T_ASSUME "assume"
+%token T_SKIP "skip"
+%token T_ASSERT "assert"
+%token T_IF "if"
+%token T_FI "fi"
+%token T_THEN "then"
+%token T_VOID "void"
+%token T_CSTR "constrain"
+%token T_START_THREAD "start_thread"
+%token T_END_THREAD "end_thread"
+%token T_ATOMIC_BEGIN "atomic_begin"
+%token T_ATOMIC_END "atomic_end"
+%token T_WAIT "wait"
+%token T_BROADCAST "broadcast"
+
+%token T_NONDET "*"
+%token T_ASSIGN ":="
+%token T_EQ_OP "="
+%token T_NE_OP "!="
+%token T_AND   "&&"
+%token T_OR    "||"
+%token T_TERNARY "?"
+
+
+%token <t_val> T_INT
+%token <t_str> T_IDEN
+
+%type <t_str> prm_expr una_expr equ_expr and_expr xor_expr or_expr expr //value
+%type <t_str> to_line_list //metastmt statement labelstmt declstmt stmt stmtlist
+
+%start prog
 
 %{
-#include <stdio.h>
-#include <stdlib.h>
+
+#include <cstdio>
+#include <cstdlib>
+#include <cassert>
 
 #include <algorithm>
 #include <iostream>
-#include <assert.h>
 #include <string>
 #include <sstream>
 #include <map>
@@ -35,21 +80,17 @@
 #include <vector>
 #include <stack>
 
-  using namespace std;
+  using std::string;
+  using std::cout;
+  using std::endl;
+  using std::cin;
+  using std::cerr;
 
-  namespace std {
-    /**
-     * @brief convert a number to a string
-     * @param _val
-     * @return string
-     */
-    template<typename T>
-      string to_string(T _val) {
-      ostringstream o_str_stream;
-      o_str_stream << _val;
-      return o_str_stream.str();
-    }
-  }
+  using std::set;
+  using std::map;
+  using std::list;
+  using std::vector;
+  using std::stack;
 
   typedef unsigned short ushort;
 
@@ -100,52 +141,6 @@
 
   // file list
   FILE *cfg_file; // controld flow graph file
-%}
-
-%union {
-  int t_val; // token's value
-  char *t_str; // token's name
-}
-
-/* declare tokens */
-%token T_BEGIN "begin"
-%token T_END "end"
-
-%token T_DECL "decl"
-%token T_GOTO "goto"
-%token T_ASSUME "assume"
-%token T_SKIP "skip"
-%token T_ASSERT "assert"
-%token T_IF "if"
-%token T_FI "fi"
-%token T_THEN "then"
-%token T_VOID "void"
-%token T_CSTR "constrain"
-%token T_START_THREAD "start_thread"
-%token T_END_THREAD "end_thread"
-%token T_ATOMIC_BEGIN "atomic_begin"
-%token T_ATOMIC_END "atomic_end"
-%token T_WAIT "wait"
-%token T_BROADCAST "broadcast"
-
-%token T_NONDET "*"
-%token T_ASSIGN ":="
-%token T_EQ_OP "="
-%token T_NE_OP "!="
-%token T_AND   "&&"
-%token T_OR    "||"
-%token T_TERNARY "?"
-
-
-%token <t_val> T_INT
-%token <t_str> T_IDEN
-
-%type <t_str> prm_expr una_expr equ_expr and_expr xor_expr or_expr expr //value
-%type <t_str> to_line_list //metastmt statement labelstmt declstmt stmt stmtlist
-
-%start prog
-
-%{
   extern int yylex(yy::fw::semantic_type *yylval, yy::fw::location_type* yylloc);
 
   // control flow graph function list
@@ -365,7 +360,7 @@ metastmt: T_GOTO {} to_line_list ';' { // "goto" statement
 	  expr_symb_list.clear();
 	}
         | T_START_THREAD T_GOTO T_INT ';' {
-	  create_control_flow_graph(ipc, create_new_thr_stmt_sp(to_string($3)));
+	  create_control_flow_graph(ipc, create_new_thr_stmt_sp(std::to_string($3)));
 	}
         | T_END_THREAD ';' {
 	  create_control_flow_graph(ipc, create_skip_stmt_sp());
@@ -407,10 +402,10 @@ expr_list: expr {
 	;
 
 to_line_list: T_INT  {
-	  goto_targets = goto_targets + "," + to_string($1);
+  goto_targets = goto_targets + "," + std::to_string($1);
     	}
     	| to_line_list ',' T_INT {
-	  goto_targets = goto_targets + "," + to_string($3);
+	  goto_targets = goto_targets + "," + std::to_string($3);
     	}
     	;
 
@@ -608,7 +603,7 @@ bool is_pc_unique(const ushort& pc) {
  */
 void create_control_flow_graph(const ushort& from, const string& sp) {
   string edge;
-  edge.append(to_string(from)).append(" ").append(sp);
+  edge.append(std::to_string(from)).append(" ").append(sp);
   control_flow_graph.push_back(edge);
 }
 
@@ -747,9 +742,9 @@ string create_atom_stmt_sp() {
 string look_up_var_index(const string& var) {
   map<string, ushort>::iterator ifind;
   if ((ifind = s_vars_list.find(var)) != s_vars_list.end()) {
-    return to_string(ifind->second);
+    return std::to_string(ifind->second);
   } else if ((ifind = l_vars_list.find(var)) != l_vars_list.end()) {
-    return to_string(ifind->second + l_vars_list.size());
+    return std::to_string(ifind->second + l_vars_list.size());
   }
   return "-1";
 }
@@ -878,7 +873,7 @@ void exhaustive_sat_solver(const list<string>& symb_list, const ushort& pc) {
 	string ss;
 	if (create_vars_value_as_str(t_shared).size() > 1)
 	  ss.append(create_vars_value_as_str(t_shared).substr(1));
-	ss.append("|").append(to_string(pc)).append(create_vars_value_as_str(t_locals));
+	ss.append("|").append(std::to_string(pc)).append(create_vars_value_as_str(t_locals));
 	s_target_list.push_back(ss);
 	valid_assertion_ts.insert(std::pair<ushort, list<string> >(pc, s_target_list));
 	return;
@@ -957,7 +952,7 @@ void exhaustive_sat_solver(const list<string>& symb_list, const ushort& pc) {
       string ss;
       if (create_vars_value_as_str(t_shared).size() > 1)
 	ss.append(create_vars_value_as_str(t_shared).substr(1));
-      ss.append("|").append(to_string(pc)).append(create_vars_value_as_str(t_locals));
+      ss.append("|").append(std::to_string(pc)).append(create_vars_value_as_str(t_locals));
       s_target_list.push_back(ss);
     }
   }

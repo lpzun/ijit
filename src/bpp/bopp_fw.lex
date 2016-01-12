@@ -52,15 +52,15 @@
 "begin" 		 { return token::T_BEGIN; }
 "end"			 { return token::T_END; }
 
-"decl" 		         { return token::T_DECL; }
+"decl"			 { return token::T_DECL; }
 "goto" 			 { return token::T_GOTO; }
 "skip" 			 { return token::T_SKIP; }
 "assume" 		 { return token::T_ASSUME; }
 "assert" 		 { return token::T_ASSERT; }
 "if" 			 { return token::T_IF; }
-"fi" 		         { return token::T_FI; }
-"then" 		         { return token::T_THEN; }
-"void" 		         { return token::T_VOID; }
+"fi"			 { return token::T_FI; }
+"then"		         { return token::T_THEN; }
+"void"			 { return token::T_VOID; }
 "constrain"              { return token::T_CSTR; }
 "start_thread"           { return token::T_START_THREAD; }
 "end_thread"             { return token::T_END_THREAD; }

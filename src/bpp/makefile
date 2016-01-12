@@ -9,18 +9,18 @@
 # macro definition		#
 #========================================
 
-BASE 		= bopp_bw
+BASE 		= bopp_fw
 #DIR
 #EXPDIR
 
 #flex
-FLEXSUFF	= ll
+FLEXSUFF	= lex
 FLEXCOMP	= flex 
 FLEXOBJ 	= $(BASE).$(FLEXSUFF)
 FEXPORT		= lex.yy.c
 
 #bison
-BISONSUFF	= yy
+BISONSUFF	= y
 BISONCOMP 	= bison
 BISONOBJ 	= $(BASE).$(BISONSUFF)
 BISONFLAG 	= -d
@@ -30,9 +30,11 @@ BEXPORT		= $(BASE).tab.cc $(BASE).tab.hh location.hh position.hh stack.hh
 CBASE 		= $(BASE)
 CCOMP 		= g++ #the name of the compiler
 CCOBJS 		= $(BASE).tab.cc $(BASE).cc
+#ISTD	     = -std=c++0x                                                 # for old cpp standard
+ISTD	    = -std=c++11
 DEBUG 		= -g
-CFLAGS 		= -Wall -c $(DEBUG)
-LFLAGS 		= -Wall $(DEBUG)
+CFLAGS 		= -Wall -c $(DEBUG) $(ISTD)#
+LFLAGS 		= -Wall $(DEBUG) $(ISTD)#
 CEXPORT 	= *.h *.cfg *.loc *.taf
 
 #========================================
@@ -44,7 +46,7 @@ all:
 	$(FLEXCOMP) $(FLEXOBJ) 
 	$(BISONCOMP) $(BISONFLAG) $(BISONOBJ)
 	$(call rename)
-	#$(CCOMP) $(LFLAGS) $(CCOBJS) -o $(CBASE)
+	$(CCOMP) $(LFLAGS) $(CCOBJS) -o $(CBASE)
 
 #========================================
 # Cleaning 		#

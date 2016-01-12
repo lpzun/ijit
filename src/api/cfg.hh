@@ -180,8 +180,8 @@ public:
         return E;
     }
 
-    const unordered_map<size_pc, assignment>& get_assigns() const {
-        return assigns;
+    const unordered_map<size_pc, assignment>& get_assignments() const {
+        return assignments;
     }
 
     void add_edge(const edge& e);
@@ -190,7 +190,7 @@ public:
 private:
     adj_list A;
     vector<edge> E;
-    unordered_map<size_pc, assignment> assigns;
+    unordered_map<size_pc, assignment> assignments;
 };
 
 } /* namespace otf */

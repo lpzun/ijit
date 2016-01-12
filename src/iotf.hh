@@ -171,8 +171,8 @@ public:
 private:
     deque<prog_state> compute_cov_successors(const prog_state& tau);
 
-    void compute_image_assg_stmt(state_v& s, const size_t& start,
-            const vector<expr>& assgs, const state_v& sh, const state_v& lo);
+    void compute_image_assg_stmt(state_v& _s, state_v& _l, const state_v& s,
+            const state_v& l, const size_pc& pc);
 
     local_state compute_image_ifth_stmt(const local_state& l,
             const size_pc& _pc);

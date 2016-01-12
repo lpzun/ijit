@@ -13,7 +13,7 @@ namespace iotf {
  * @brief default constructor
  */
 cfg::cfg() :
-        A(adj_list(refs::PC_NUM)), E(vector<edge>(refs::PC_NUM)), assigns() {
+        A(adj_list(refs::PC_NUM)), E(vector<edge>(refs::PC_NUM)), assignments() {
 }
 
 /**
@@ -21,7 +21,7 @@ cfg::cfg() :
  * @param max_PC
  */
 cfg::cfg(const size_pc& size_A, const size_pc& size_E) :
-        A(adj_list(size_A)), E(vector<edge>(size_E)), assigns() {
+        A(adj_list(size_A)), E(vector<edge>(size_E)), assignments() {
 }
 
 /**
@@ -32,7 +32,7 @@ cfg::cfg(const size_pc& size_A, const size_pc& size_E) :
  */
 cfg::cfg(const adj_list& A, const vector<edge>& E,
         const unordered_map<size_pc, assignment>& assigns) :
-        A(A), E(E), assigns(assigns) {
+        A(A), E(E), assignments(assigns) {
 
 }
 

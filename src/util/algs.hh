@@ -53,7 +53,7 @@ public:
 		}
 	}
 
-	static deque<vector<sbool>> split(const vector<sbool>& vs);
+	static deque<vector<sool>> split(const vector<sool>& vs);
 };
 } /* namespace iotf */
 

@@ -36,16 +36,19 @@ using size_pc = unsigned short;
 /// define the data structure to store the thread count
 using size_tc = unsigned short;
 
-enum class sbool {
+/**
+ * @brief sool = symbolic boolean variables
+ */
+enum class sool {
 	F = 0, T = 1, N = 2
 };
 
-inline sbool operator !(const sbool& v) {
-	if (v == sbool::F)
-		return sbool::T;
-	if (v == sbool::T)
-		return sbool::F;
-	return sbool::N;
+inline sool operator !(const sool& v) {
+	if (v == sool::F)
+		return sool::T;
+	if (v == sool::T)
+		return sool::F;
+	return sool::N;
 }
 
 /**
@@ -57,12 +60,12 @@ inline sbool operator !(const sbool& v) {
  * @param s2
  * @return see above table
  */
-inline sbool operator &(const sbool& v1, const sbool& v2) {
-	if (v1 == sbool::F || v2 == sbool::F)
-		return sbool::F;
-	if (v1 == sbool::T && v2 == sbool::T)
-		return sbool::T;
-	return sbool::N;
+inline sool operator &(const sool& v1, const sool& v2) {
+	if (v1 == sool::F || v2 == sool::F)
+		return sool::F;
+	if (v1 == sool::T && v2 == sool::T)
+		return sool::T;
+	return sool::N;
 }
 
 /**
@@ -74,12 +77,12 @@ inline sbool operator &(const sbool& v1, const sbool& v2) {
  * @param s2
  * @return see above table
  */
-inline sbool operator |(const sbool& s1, const sbool& s2) {
-	if (s1 == sbool::N || s2 == sbool::N)
-		return sbool::N;
-	if (s1 == sbool::F && s2 == sbool::F)
-		return sbool::F;
-	return sbool::T;
+inline sool operator |(const sool& s1, const sool& s2) {
+	if (s1 == sool::N || s2 == sool::N)
+		return sool::N;
+	if (s1 == sool::F && s2 == sool::F)
+		return sool::F;
+	return sool::T;
 }
 
 /**
