@@ -28,8 +28,8 @@ namespace iotf {
  *         ASSU = -6 : assume statement
  *         NTHR = -7 : thread creation statement
  *         ETHR = -8 : thread termination statement
- *         ATOM = -9 : atomic beginning
- *         EATM = -10: invariant in weakest precondition
+ *         ATOM = -9 : atomic section beginning
+ *         EATM = -10: atomic section ending
  *         BCST = -11: broadcast statement
  *         WAIT = -12: wait statement
  *         SIGN = -13: signal statement

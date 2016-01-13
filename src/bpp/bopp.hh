@@ -27,7 +27,7 @@
 #include <sstream>
 #include <map>
 #include <set>
-#include <list>
+#include <deque>
 #include <vector>
 #include <stack>
 
@@ -39,7 +39,7 @@ using std::cerr;
 
 using std::set;
 using std::map;
-using std::list;
+using std::deque;
 using std::vector;
 using std::stack;
 
@@ -51,50 +51,64 @@ namespace iotf {
  * @brief this is the aide for forward based parser
  */
 class fw_aide {
-    fw_aide() {
+public:
+    fw_aide() :
+            line(0), ipc(0), s_vars_num(0), l_vars_num(0) {
     }
+
     ~fw_aide() {
     }
 
-    const static string SUCC_POSTFIX;
+    const string SUCC_POSTFIX = "_";
+    const string KLEENE_STAR = "*";
+    const string ZERO = "0";
+    const string ONE = "1";
+    const string _AND_ = " & ";
+    const string NEGATION = "!";
+    const string R_PAREN = "(";
+    const string L_PAREN = ")";
 
-    const static string KLEENE_STAR;
-    const static string ZERO;
-    const static string ONE;
-    const static string _AND_;
-    const static string NEGATION;
-    const static string RIGHT_PAREN;
-    const static string LEFT_PAREN;
+    const string STMT_SKIP = "-1"; /// all other statement mark
+    const string STMT_GOTO = "-2"; /// goto statement mark
+    const string STMT_ASSG = "-3"; /// assignment statement mark
+    const string STMT_IFEL = "-4"; /// if (<expr>) then <sseq> else <sseq>; fi;
+    const string STMT_ASSE = "-5"; /// assertion statement mark
+    const string STMT_ASSU = "-6"; /// assume statement mark
+    const string STMT_NTHR = "-7"; /// thread creation statement mark
+    const string STMT_ETHR = "-8"; /// thread termination statement mark
+    const string STMT_ATOM = "-9"; /// atomic beginning statement mark
+    const string STMT_EATM = "-10"; /// atomic section ending statement mark
+    const string STMT_BCST = "-11"; /// broadcast statement mark
+    const string STMT_WAIT = "-12"; /// wait statement mark
+    const string STMT_SIGN = "-13"; /// signal statement mark
 
-    const static string NON_CAND_MARK; /// non-candidate-pc statement
-    const static string NEW_THRD_MARK; /// thread creation mark
-    const static string WAIT_STMT_MARK; /// wait statement mark
-    const static string BCST_STMT_MARK; /// broadcast statement mark
-    const static string ATOM_STMT_MARK; /// atomic section mark
-    const static string END_THRD_MARK; /// thread termination statement mark
-    const static string GOTO_STMT_MARK; /// goto statement mark
-    const static string ASSGIN_STMT_MARK; /// assignment statement mark
-    const static string ASSUM_STMT_MARK; /// assume statement mark
+    ushort line; /// initialize the lineno: a stupid way to do this
+    ushort ipc; /// the source of cfg edge
+    ushort s_vars_num; /// the number of shared variables
+    ushort l_vars_num; /// the number of local variables
 
-    static ushort line; // initialize the lineno: a stupid way to do this
-    static ushort ipc; // the source of cfg edge
-    static ushort s_vars_num; // the number of shared variables
-    static ushort l_vars_num; // the number of local variables
+    set<ushort> pc_set;
+    map<string, ushort> s_vars_list; /// store shared variables and indices
+    map<string, ushort> l_vars_list; /// store local  variables and indices
+    deque<string> control_flow_graph; /// control flow graph
+    map<ushort, char> s_var_init; /// to record the initial shared state
+    map<ushort, char> l_var_init; /// to record the initial local state
+    string goto_targets; /// to output the comments
 
-    static set<ushort> pc_set;
-    static map<string, ushort> s_vars_list;
-    static map<string, ushort> l_vars_list;
-    static list<string> control_flow_graph; // control flow graph
-    static map<ushort, char> s_var_init; // to record the initial shared state
-    static map<ushort, char> l_var_init; // to record the initial local state
-    static string goto_targets; // to output the comments
+    deque<string> expr_symb_list; /// the expression symbol list
 
-    static list<string> expr_symb_list;
-    static list<string> assign_stmt_lhs;
-    static list<list<string> > assign_stmt_rhs;
-    static list<string> assign_identifiers;
+    /// to store parallel assignment statements
+    deque<string> assign_stmt_lhs; /// the right-hand side of parallel assignment
+    deque<deque<string>> assign_stmt_rhs; /// the left-hand side of of parallel assignment
 
-    map<ushort, list<string> > valid_assertion_ts;
+    deque<string> assign_identifiers;
+
+    map<ushort, deque<string> > valid_assertion_ts;
+
+    /////////////////////////////// function list /////////////////////////////
+
+    bool add_to_shared_vars_list(const string& var, const ushort& index);
+    bool add_to_local_vars_list(const string& var, const ushort& index);
 
     /// control flow graph function list
     bool is_pc_unique(const ushort& pc);
@@ -102,8 +116,6 @@ class fw_aide {
     void output_control_flow_graph(FILE *file);
 
     string create_init_state(const map<ushort, char>& minit);
-    bool add_to_shared_vars_list(const string& var, const ushort& index);
-    bool add_to_local_vars_list(const string& var, const ushort& index);
     void add_to_expr_symb_list(const string& symbol);
 
     /// create the weakest precondition formula of statements
@@ -123,18 +135,22 @@ class fw_aide {
     string create_succ_vars(const string& var);
 
     /// extract thread state from assertion
-    void exhaustive_sat_solver(const list<string>& symb_list, const ushort& pc);
+    void exhaustive_sat_solver(const deque<string>& symb_list,
+            const ushort& pc);
     vector<bool> decimal2binary(const int& n, const int& size);
     ushort power(const ushort& base, const ushort& exp);
     string create_vars_value_as_str(const vector<ushort>& sv);
     void output_assertion_ts_to_file(const string& filename);
-    string recov_expr_from_symb_list(const list<string>& symb_list,
+    string recov_expr_from_symb_list(const deque<string>& symb_list,
             const bool& is_origi = false);
-    string output_expr_as_str_from_symb_list(const list<string>& symb_list);
+    string output_expr_as_str_from_symb_list(const deque<string>& symb_list);
 
     /// unit test
     void test_print_valid_assertion_ts();
     void test_output_parallel_assign_stmt();
+
+private:
+
 };
 
 } /* namespace iotf */

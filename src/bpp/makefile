@@ -26,11 +26,11 @@ BISONOBJ 	= $(BASE).$(BISONSUFF)
 BISONFLAG 	= -d
 #the export of flex and bison
 BEXPORT		= $(BASE).tab.cc $(BASE).tab.hh location.hh position.hh stack.hh
+SUPPORT     = bopp.cc bopp.hh
 
 CBASE 		= $(BASE)
 CCOMP 		= g++ #the name of the compiler
-CCOBJS 		= $(BASE).tab.cc $(BASE).cc
-#ISTD	     = -std=c++0x                                                 # for old cpp standard
+CCOBJS 		= $(BASE).tab.cc $(FEXPORT) bopp.cc
 ISTD	    = -std=c++11
 DEBUG 		= -g
 CFLAGS 		= -Wall -c $(DEBUG) $(ISTD)#
@@ -45,7 +45,7 @@ CEXPORT 	= *.h *.cfg *.loc *.taf
 all:
 	$(FLEXCOMP) $(FLEXOBJ) 
 	$(BISONCOMP) $(BISONFLAG) $(BISONOBJ)
-	$(call rename)
+	#$(call rename)
 	$(CCOMP) $(LFLAGS) $(CCOBJS) -o $(CBASE)
 
 #========================================
