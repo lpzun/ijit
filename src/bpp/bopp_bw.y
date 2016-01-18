@@ -1,28 +1,29 @@
 /*************************************************************************************
  ** Name:    	BoPP: parser
  ** Authors: 	Peizun Liu
- ** Version: 	0.5
+ ** Version: 	0.4
  ** Copyright: 	It belongs to Thomas Wahl's group in CAR Lab, CCIS, NEU
- ** Create on:  Feb, 2014
- ** Modified :  Jan, 2016
- ** Decription: BoPP is a Boolean Program Parser written with C++. It aims at parsing
- *		Boolean programs to generate a control folow graph and the correspon-
- *		ding weakest preconditions (strongest postconditions) for each state-
- *              ment when computing a preimage (postimage).
+ ** Date:       Feb, 2014
+ ** Decription: BoPP is a C++ version of Boolean Program Parser. It aims to 
+ *		parse Boolean programs and generate its control folow graph 
+ *		and the corresponding weakest precondition function for each
+ *              statement.
  *
  *              parser: 
- *              v0.5: adding the forward-based CFG and so on
+ *              
+ *              This version is to generate the DIMACS CNF format of WP, which
+ *              can be used in (most) SAT solver directly
  ************************************************************************************/
 %language "C++"
 %defines
 %locations
 
-%define parser_class_name "fw" // define the parser's name
+%define parser_class_name "bw" // define the parser's name
 %{
 %}
 
 %union {
-  int   t_val; // token's value
+  int t_val; // token's value
   char *t_str; // token's name
 }
 
@@ -63,12 +64,13 @@
 %type <t_str> to_line_list //metastmt statement labelstmt declstmt stmt stmtlist
 
 %start prog
+
 %{
 #include "bopp.hh"
   using namespace iotf;
-  fw_aide aide;
+  bw_aide aide;
 
-  extern int yylex(yy::fw::semantic_type *yylval, yy::fw::location_type* yylloc);
+  extern int yylex(yy::bw::semantic_type *yylval, yy::bw::location_type* yylloc);
 %}
 
 %initial-action {
@@ -113,7 +115,7 @@ funcbody: funcstmt
 
 funcstmt: l_declstmt
 | initistmt
-| labelstmt
+| labelstmt { aide.lineno++; }
 ;
 
 /* shared decls */
@@ -130,7 +132,7 @@ s_id_list: s_id
 
 s_id: T_IDEN {
   if(aide.add_to_shared_vars_list($1, ++aide.s_vars_num)) {
-    aide.s_var_init[aide.s_vars_num] = '*';
+    aide.s_var_init[aide.s_vars_num]='*';
   }
   free($1); // free it to avoid storage leaks
  }
@@ -181,7 +183,8 @@ initistmt: T_IDEN T_ASSIGN T_NONDET ';' {
   map<string, ushort>::iterator ifind;
   if ((ifind = aide.s_vars_list.find($1)) != aide.s_vars_list.end()) {
     aide.s_var_init[ifind->second] = '*';
-  }else if ((ifind = aide.l_vars_list.find($1)) != aide.l_vars_list.end()) {
+  }
+  if ((ifind = aide.l_vars_list.find($1)) != aide.l_vars_list.end()) {
     aide.l_var_init[ifind->second] = '*';
   }
   free($1);
@@ -190,7 +193,8 @@ initistmt: T_IDEN T_ASSIGN T_NONDET ';' {
   map<string, ushort>::iterator ifind;
   if ((ifind = aide.s_vars_list.find($1)) != aide.s_vars_list.end()) {
     aide.s_var_init[ifind->second] = ($3 == 0 ? '0' : '1');
-  }else if ((ifind = aide.l_vars_list.find($1)) != aide.l_vars_list.end()) {
+  }
+  if ((ifind = aide.l_vars_list.find($1)) != aide.l_vars_list.end()) {
     aide.l_var_init[ifind->second] = ($3 == 0 ? '0' : '1');
   }
   free($1);
@@ -198,11 +202,11 @@ initistmt: T_IDEN T_ASSIGN T_NONDET ';' {
 ;
 
 labelstmt: T_INT { 
-  ++aide.lineno; aide.ipc = (int)($1); 
+  aide.ipc = (int)($1); 
   if(!aide.is_pc_unique($1)) { // pc's uniqueness
     YYABORT; }
  } ':' statement {
-   cout<<"TEST:: I am in statement "<< $1 <<endl;
+   cout<<"TEST:: I am in statement "<<$1<<endl;									      
    }
 ;
 
@@ -212,61 +216,63 @@ statement: metastmt
 ;
 
 metastmt: T_SKIP ';' { // "skip" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_skip_stmt_sp());	
-  }
+  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_skip_stmt_wp());	
+ }
 | T_GOTO {} to_line_list ';' { // "goto" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_goto_stmt_sp());
+  aide.add_edge(aide.ipc, aide.create_goto_stmt_wp());
+  aide.succ_stmt_label.clear();
+  aide.goto_targets = "";
   }
-| iden_list T_ASSIGN expr_list ';' { // "parallel assignment" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_assg_stmt_sp());	
+| iden_list T_ASSIGN expr_list ';' { // "assignment" statement
+  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_assg_stmt_wp());	
   // clear containers
   aide.assign_stmt_lhs.clear();
   aide.assign_stmt_rhs.clear();
   aide.assign_identifiers.clear();
  }
-| iden_list T_ASSIGN expr_list T_CSTR expr ';' {// "parallel assignment constrain"  
+| iden_list T_ASSIGN expr_list T_CSTR expr ';' { // "assignment constrain"  
   string e = aide.recov_expr_from_symb_list(aide.expr_symb_list, true);
   aide.expr_symb_list.clear();
+
   aide.add_edge(aide.ipc, aide.ipc+1, 
-                aide.create_assg_stmt_sp() + aide._AND_ + "(" + e + ")");
-  // reset containers
+       aide.create_assg_stmt_wp() + aide._AND_ + "(" + e + ")");
+  // clear containers
   aide.assign_stmt_lhs.clear();
   aide.assign_stmt_rhs.clear();
   aide.assign_identifiers.clear();
  }
 | T_IF expr T_THEN metastmt T_FI ';' { // "if..then.." statement
   string e = aide.recov_expr_from_symb_list(aide.expr_symb_list, true);
-  aide.create_ifth_stmt_sp(e);
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_else_stmt_sp(e));
+  aide.create_ifth_stmt_wp(e);
+  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_else_stmt_wp(e));
   aide.expr_symb_list.clear();
- } 
+ }
 | T_ASSERT '(' expr ')' ';' { // "assert" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_asse_stmt_sp());		
+  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_asse_stmt_wp());		
   aide.exhaustive_sat_solver(aide.expr_symb_list, aide.ipc);
   aide.expr_symb_list.clear();
   }
 | T_ASSUME '(' expr ')' ';' { // "assume" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_assu_stmt_sp());
+  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_assu_stmt_wp());
   aide.expr_symb_list.clear();
-  }
-| T_START_THREAD T_GOTO T_INT ';' { // "thread creation" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, 
-                      aide.create_nthr_stmt_sp(std::to_string($3)));
+  } 
+| T_START_THREAD T_GOTO T_INT ';' {
+  aide.add_edge(aide.ipc, aide.ipc + 1, aide.create_nthr_stmt_wp(std::to_string($3)));
  }
-| T_END_THREAD ';' { // thread termination statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_skip_stmt_sp());
+| T_END_THREAD ';' {
+  aide.add_edge(aide.ipc, aide.ipc + 1, aide.create_skip_stmt_wp());
   }
-| T_ATOMIC_BEGIN ';' { // atomic section beginning
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_atom_stmt_sp());
+| T_ATOMIC_BEGIN ';' {
+  aide.add_edge(aide.ipc, aide.ipc + 1, aide.create_atom_stmt_wp());
   }
-| T_ATOMIC_END ';' { // atomic section ending
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_eatm_stmt_sp());
+| T_ATOMIC_END ';' {
+  aide.add_edge(aide.ipc, aide.ipc + 1, aide.create_eatm_stmt_wp());
   }
-| T_BROADCAST ';' { // broadcast statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_bcst_stmt_sp());
+| T_WAIT ';' {
+  aide.add_edge(aide.ipc, aide.ipc + 1, aide.create_wait_stmt_wp());
   }
-| T_WAIT ';' { // wait statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_wait_stmt_sp());
+| T_BROADCAST ';' {
+  aide.add_edge(aide.ipc, aide.ipc + 1, aide.create_bcst_stmt_wp());
   }
 ;
 
@@ -293,22 +299,24 @@ expr_list: expr {
 ;
 
 to_line_list: T_INT  {
-  
+  aide.succ_stmt_label.emplace($1);
+  aide.goto_targets = aide.goto_targets + "," + std::to_string($1);
  }
 | to_line_list ',' T_INT {
-  
+  aide.succ_stmt_label.emplace($3);
+  aide.goto_targets = aide.goto_targets + "," + std::to_string($3);
   }
 ;
 
 /* expressions */
 expr: or_expr { }
 | expr T_TERNARY expr ':' or_expr {
-  cout<<"This is a ternary expression"<<endl;
+  cout << "This is a ternary expression" << endl;
  }
 ;
 
 or_expr: xor_expr
-| or_expr T_OR xor_expr { aide.add_to_expr_symb_list("|");}
+| or_expr T_OR xor_expr { aide.add_to_expr_symb_list("||"); }
 ;
 
 xor_expr: and_expr
@@ -316,12 +324,12 @@ xor_expr: and_expr
 ;
 
 and_expr: equ_expr
-| and_expr T_AND equ_expr { aide.add_to_expr_symb_list("&"); }
+| and_expr T_AND equ_expr { aide.add_to_expr_symb_list("&&"); }
 ;
 
 equ_expr: una_expr
-| equ_expr T_EQ_OP una_expr { aide.add_to_expr_symb_list("=" );}
-| equ_expr T_NE_OP una_expr { aide.add_to_expr_symb_list("!=");}
+| equ_expr T_EQ_OP una_expr { aide.add_to_expr_symb_list("=="); }
+| equ_expr T_NE_OP una_expr { aide.add_to_expr_symb_list("!="); }
 ;
 
 una_op: '!' 
@@ -339,19 +347,19 @@ prm_expr: '(' expr ')' { aide.add_to_expr_symb_list("()"); }
   if(id.at(0) == '\'') // a successor variable
     id = aide.SUCC_POSTFIX + id.substr(1);
     aide.add_to_expr_symb_list(id); 
-    free($1);
+    free($1); 
   }
 ;
 %%
 
-/*************************************************************************************
- * ** From here, 
- *         functions used in parser, defined in c++
- *
- *    Mar. 2013
- ************************************************************************************/
+  /*************************************************************************************
+   * ** From here, 
+   *         functions used in parser, defined in c++
+   *
+   *    Mar. 2013
+   ************************************************************************************/
 namespace yy {
-  void fw::error(location const &loc, const std::string& s) {
+  void bw::error(location const &loc, const std::string& s) {
     std::cerr << "error at " << loc << ": " << s << std::endl;
   }
 }
@@ -365,11 +373,11 @@ namespace yy {
  * @return a cmd
  */
 char* getCmdOption(char ** begin, char ** end, const std::string & option) {
-    char ** itr = std::find(begin, end, option);
-    if (itr != end && ++itr != end) {
-        return *itr;
-    }
-    return 0;
+  char ** itr = std::find(begin, end, option);
+  if (itr != end && ++itr != end) {
+    return *itr;
+  }
+  return 0;
 }
 
 /**
@@ -381,50 +389,57 @@ char* getCmdOption(char ** begin, char ** end, const std::string & option) {
  *         false otherwise
  */
 bool cmdOptionExists(char** begin, char** end, const std::string& option) {
-    return std::find(begin, end, option) != end;
+  return std::find(begin, end, option) != end;
 }
 
 int main(int argc, char *argv[]) {
     char DEFAULT_CFG_FILE_NAME[100] = "bp.cfg";
     char DEFAULT_TAF_FILE_NAME[100] = "bp.taf";
-    if (cmdOptionExists(argv, argv + argc, "-h")) {
-        printf("Usage: BoPP [-cfg file] [-taf file]\n");
-    }
+    
+  if (cmdOptionExists(argv, argv + argc, "-h")) {
+    printf("Usage: BoPP [-cfg file] [-taf file]\n");
+  }
 
-    char* cfg_file_name = getCmdOption(argv, argv + argc, "-cfg");
-    if (cfg_file_name == 0) {
-        cfg_file_name = DEFAULT_CFG_FILE_NAME;
-    }
+  /// file list
+  if (cmdOptionExists(argv, argv + argc, "-dimacs")) {
+    aide.is_dimacs = true;
+  }
 
-    char* taf_file_name = getCmdOption(argv, argv + argc, "-taf");
-    if (taf_file_name == 0) {
-        taf_file_name = DEFAULT_TAF_FILE_NAME;
-    }
+  char* cfg_file_name = getCmdOption(argv, argv + argc, "-cfg");
+  if (cfg_file_name == 0) {
+    cfg_file_name = DEFAULT_CFG_FILE_NAME;
+  }
 
-    /// file list
-    FILE *cfg_file = fopen(cfg_file_name, "w");
-    yy::fw parser; // make a parser
-    int result = parser.parse(); // and run it
+  char* taf_file_name = getCmdOption(argv, argv + argc, "-taf");
+  if (taf_file_name == 0) {
+    taf_file_name = DEFAULT_TAF_FILE_NAME;
+  }
 
-    /* fw_aide aide; */
-    //move the file point to the begin and print the total line number
-    fprintf(cfg_file, "# control flow graph and other information\n");
-    fprintf(cfg_file, "shared %d\n", aide.s_vars_num);
-    fprintf(cfg_file, "local %d\n", aide.l_vars_num);
+  FILE *cfg_file = fopen(cfg_file_name, "w");
 
-    //note the initial pc!!!!!!!!
-    fprintf(cfg_file, "init %s|0,%s # initial thread state\n",
-            (aide.create_init_state(aide.s_var_init)).c_str(),
-            (aide.create_init_state(aide.l_var_init)).c_str());
-    fprintf(cfg_file, "%d%s %d\n", aide.lineno,
-            " # the number of lines in BP with cand PC = ", 1);
-    cout << 1 << ":" << aide.lineno << endl;
+  yy::bw parser; // make a parser
+  int result = parser.parse(); // and run it
 
+  //move the file point to the begin and print the total line number
+  fprintf(cfg_file, "# control flow graph and other information\n");
+  fprintf(cfg_file, "shared %d\n", aide.s_vars_num);
+  fprintf(cfg_file, "local %d\n",  aide.l_vars_num);
+
+  //note the initial pc!!!!!!!!
+  fprintf(cfg_file, "init %s|0,%s # initial thread state\n", 
+          (aide.create_init_state(aide.s_var_init)).c_str(),
+	  (aide.create_init_state(aide.l_var_init)).c_str());
+  fprintf(cfg_file, "%d%s %d\n", aide.lineno, 
+          " # the number of lines in BP with cand PC = ", aide.cand_count);
+  cout<< aide.cand_count << ":" << aide.lineno <<endl;
+  if (aide.is_dimacs)
+    aide.output_control_flow_graph_dimacs(cfg_file); // output control flow graph edges
+  else
     aide.output_control_flow_graph(cfg_file);
-    fclose(cfg_file);
+  fclose(cfg_file);
 
-    //test_print_valid_assertion_ts(); // testing
-    aide.output_assertion_ts_to_file(taf_file_name);
+  //test_print_valid_assertion_ts(); // testing
+  aide.output_assertion_ts_to_file(taf_file_name);
 
-    return result;
+  return result;
 }

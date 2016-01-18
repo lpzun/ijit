@@ -19,7 +19,7 @@
 namespace iotf {
 
 /**
- * @breif data structure <type_stmt>: some special statement type
+ * @brief data structure <type_stmt>: some special statement type
  *         SKIP = -1 : all other statement
  *         GOTO = -2 : goto statement
  *         ASSG = -3 : assignment statement

@@ -114,30 +114,23 @@ private:
 };
 
 /**
- * @brief data structure: image: a derived class of image
- *        to compute pre images of a configuration
+ * @brief the type of pre_image: direct preimage or covering preimage
+ *        DRC: direct preimages
+ *        COV: covering preimages
  */
-class image {
-public:
-    image() {
-    }
-
-    virtual ~image() {
-    }
-
-    virtual deque<prog_state> step(const prog_state& tau) = 0;
+enum class prev {
+    DRC, COV
 };
 
 /**
- * @brief data structure: pre_image: a derived class of image via
- *        public inheritance.
- *        to compute pre images of a configuration
+ * @brief interface: the class pre_image is used to compute preimages
+ *        of a global state
  */
-class pre_image: public image {
+class pre_image {
 public:
     pre_image();
-    virtual ~pre_image();
-    virtual deque<prog_state> step(const prog_state& tau) override;
+    ~pre_image();
+    deque<prog_state> step(const prog_state& tau, const prev& p = prev::DRC);
 
 private:
     deque<prog_state> compute_cov_predecessors(const prog_state& _tau);
@@ -157,16 +150,15 @@ private:
 };
 
 /**
- * @brief data structure: post_image: a derived class of image via
- *        public inheritance.
- *        to compute post images of a configuration
+ * @brief interface: the class post_image is used to compute postimages
+ *        of a global state
  */
-class post_image: public image {
+class post_image {
 public:
     post_image();
-    virtual ~post_image();
+    ~post_image();
 
-    virtual deque<prog_state> step(const prog_state& tau) override;
+    deque<prog_state> step(const prog_state& tau);
 
 private:
     deque<prog_state> compute_cov_successors(const prog_state& tau);

@@ -20,12 +20,18 @@ pre_image::~pre_image() {
 
 /**
  * @brief implement the pure virtual function <step> from base case image
- * @param tau
+ * @param tau: the global state
+ * @param p  : the type of preimages
  * @return cover predecessors
  *         a set of cover predecessors
  */
-deque<prog_state> pre_image::step(const prog_state& tau) {
-    return this->compute_cov_predecessors(tau);
+deque<prog_state> pre_image::step(const prog_state& tau, const prev& p) {
+    switch (p) {
+    case prev::COV:
+        return this->compute_cov_predecessors(tau);
+    default:
+        return this->compute_drc_precedessors(tau);
+    }
 }
 
 /**

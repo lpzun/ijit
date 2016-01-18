@@ -9,7 +9,7 @@
 # macro definition		#
 #========================================
 
-BASE 		= bopp_fw
+BASE 		= bopp_bw
 #DIR
 #EXPDIR
 
