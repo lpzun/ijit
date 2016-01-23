@@ -1,37 +1,44 @@
-####################################################################################
-# This is the makefile for boolean program parser: BoPP
-# 	
-# @author: 	Peizun Liu
-# @Copyright: 	It belongs to Thomas Wahl's group in CAR Lab, CCIS, NEU
-####################################################################################
+###########################################################################
+# This is the makefile for boolean program parser: BoPP                   #
+# 																		  #
+# @author: 	Peizun Liu													  #
+# @Copyright: 	It belongs to Thomas Wahl's group in CAR Lab, CCIS, NEU	  #
+###########################################################################
 
 #========================================
 # macro definition		#
 #========================================
-
-BASE 		= bopp_bw
+# Override these variables (or add new ones) locally
+BASE 		= bopp_fw
 #DIR
 #EXPDIR
+ILIBS		=#
+IINCLUDE    =# -I $(SATDIR)/include/#                                      
 
-#flex
+ISTD	    = -std=c++11
+
+#### flex
 FLEXSUFF	= lex
 FLEXCOMP	= flex 
 FLEXOBJ 	= $(BASE).$(FLEXSUFF)
 FEXPORT		= lex.yy.c
 
-#bison
+#### bison
 BISONSUFF	= y
 BISONCOMP 	= bison
 BISONOBJ 	= $(BASE).$(BISONSUFF)
 BISONFLAG 	= -d
-#the export of flex and bison
+# the export of flex and bison
 BEXPORT		= $(BASE).tab.cc $(BASE).tab.hh location.hh position.hh stack.hh
+
+#### C compiler
+SRCDIR       = ../
+SRCDIRS      = $(shell find $(SRCDIR) -name '*.$(CSUFF)' -exec dirname {} \; | uniq)
 SUPPORT     = bopp.cc bopp.hh
 
 CBASE 		= $(BASE)
 CCOMP 		= g++ #the name of the compiler
 CCOBJS 		= $(BASE).tab.cc $(FEXPORT) bopp.cc
-ISTD	    = -std=c++11
 DEBUG 		= -g
 CFLAGS 		= -Wall -c $(DEBUG) $(ISTD)#
 LFLAGS 		= -Wall $(DEBUG) $(ISTD)#
@@ -43,10 +50,9 @@ CEXPORT 	= *.h *.cfg *.loc *.taf
 #========================================
 
 all:
-	$(FLEXCOMP) $(FLEXOBJ) 
+	$(FLEXCOMP) -o $(FEXPORT) $(FLEXOBJ)
 	$(BISONCOMP) $(BISONFLAG) $(BISONOBJ)
-	#$(call rename)
-	$(CCOMP) $(LFLAGS) $(CCOBJS) -o $(CBASE)
+	#$(CCOMP) $(LFLAGS) $(CCOBJS) -o $(CBASE)
 
 #========================================
 # Cleaning 		#
@@ -56,10 +62,4 @@ clean:
 
 distclean: clean
 	rm -f $(CBASE) $(CEXPORT) *~
-
-RENAME:
-	@$(call rename)
-# rename the lex.yy.c file
-define rename
-	mv $(FEXPORT) $(BASE).cc
-endef
+	rm -rf *.dSYM

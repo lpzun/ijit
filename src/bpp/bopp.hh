@@ -27,10 +27,13 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <deque>
 #include <vector>
 #include <stack>
+
+#include "../api/cfg.hh"
 
 using std::string;
 using std::cout;
@@ -40,24 +43,31 @@ using std::cerr;
 
 using std::set;
 using std::map;
+using std::unordered_map;
 using std::deque;
 using std::vector;
 using std::stack;
+using std::pair;
 
 typedef unsigned short ushort;
 
 namespace iotf {
 
+using vexpr = vector<deque<string>>;
+
+using assgn = pair<vexpr, vexpr>;
+
 /**
- * @brief this is auxiliary class for forward based parser
+ * @brief this is auxiliary class for Boolean program parser
+ *        paide: parser aide
  */
-class fw_aide {
+class paide {
 public:
-    fw_aide() :
+    paide() :
             lineno(0), ipc(0), s_vars_num(0), l_vars_num(0) {
     }
 
-    ~fw_aide() {
+    virtual ~paide() {
     }
 
     const string SUCC_POSTFIX = "_";
@@ -89,38 +99,83 @@ public:
     ushort l_vars_num; /// the number of local variables
 
     set<ushort> pc_set;
+
     map<string, ushort> s_vars_list; /// store shared variables and indices
     map<string, ushort> l_vars_list; /// store local  variables and indices
+    map<ushort, char> s_vars_init; /// to record the initial shared state
+    map<ushort, char> l_vars_init; /// to record the initial local state
     deque<string> control_flow_graph; /// control flow graph
-    map<ushort, char> s_var_init; /// to record the initial shared state
-    map<ushort, char> l_var_init; /// to record the initial local state
 
-    deque<string> expr_symb_list; /// the expression symbol list
+    cfg c;
+
+    set<ushort> succ_pc_set; /// store the succeeding pcs
+
+    deque<string> expr_in_list; /// the expression symbol list
 
     /// to store parallel assignment statements
     deque<string> assign_stmt_lhs; /// the right-hand side of parallel assignment
     deque<deque<string>> assign_stmt_rhs; /// the left-hand side of of parallel assignment
 
-    deque<string> assign_identifiers;
+    map<ushort, deque<string>> valid_assertion_ts;
 
-    map<ushort, deque<string> > valid_assertion_ts;
+    unordered_map<ushort, assgn> assignments;
 
     /////////////////////////////// function list /////////////////////////////
-    bool add_to_shared_vars_list(const string& var, const ushort& index);
-    bool add_to_local_vars_list(const string& var, const ushort& index);
 
     /// control flow graph function list
     bool is_pc_unique(const ushort& pc);
+    void add_edge(const ushort& from, const string& sp);
     void add_edge(const ushort& from, const ushort& to, const string& sp);
     void output_control_flow_graph(FILE *file);
 
+    /// initial states
+    void add_vars_init(const string& var, const ushort& val);
     string create_init_state(const map<ushort, char>& minit);
-    void add_to_expr_symb_list(const string& symbol);
+
+    /// extract final state from assertion
+    void output_final_state_to_file(const string& filename);
+    void all_sat_solver(const deque<string>& symb_list, const ushort& pc);
+
+    /// expression
+    void add_to_expr_in_list(const string& symbol);
+    string recov_expr_from_list(const deque<string>& symb_list,
+            const bool& is_origi = false);
+    string output_expr_as_str(const deque<string>& symb_list);
+
+    /// unit test
+    void test_print_valid_assertion_ts();
+    void test_output_parallel_assign_stmt();
+
+protected:
+    pair<bool, ushort> look_up_var_index(const string& var);
+    string create_succ_vars(const string& var);
+    vector<bool> decimal2binary(const int& n, const int& size);
+
+    string create_vars_value_as_str(const vector<ushort>& sv);
+
+private:
+
+}
+;
+
+/**
+ * @brief this is auxiliary class for forward based parser
+ */
+class fw_aide: public paide {
+public:
+    fw_aide() :
+            paide() {
+
+    }
+
+    virtual ~fw_aide() {
+
+    }
 
     /// create the weakest precondition formula of statements
     string create_skip_stmt_sp();
     string create_goto_stmt_sp();
-    string create_assg_stmt_sp();
+    string create_assg_stmt_sp(const ushort& pc);
     void create_ifth_stmt_sp(const string& e);
     string create_else_stmt_sp(const string& e);
     string create_asse_stmt_sp();
@@ -130,26 +185,13 @@ public:
     string create_eatm_stmt_sp();
     string create_bcst_stmt_sp();
     string create_wait_stmt_sp();
-
-    /// extract thread state from assertion
-    void exhaustive_sat_solver(const deque<string>& symb_list,
-            const ushort& pc);
-    string create_vars_value_as_str(const vector<ushort>& sv);
-    void output_assertion_ts_to_file(const string& filename);
-    string recov_expr_from_symb_list(const deque<string>& symb_list,
-            const bool& is_origi = false);
-    string output_expr_as_str_from_symb_list(const deque<string>& symb_list);
-
-    /// unit test
-    void test_print_valid_assertion_ts();
-    void test_output_parallel_assign_stmt();
-
 private:
-    string look_up_var_index(const string& var);
-    string create_succ_vars(const string& var);
-    vector<bool> decimal2binary(const int& n, const int& size);
+
 };
 
+/**
+ * @brief this is auxiliary class for backward based parser
+ */
 class bw_aide {
 public:
     bw_aide() :
@@ -193,10 +235,10 @@ public:
     map<string, ushort> s_vars_list;
     map<string, ushort> l_vars_list;
     deque<string> control_flow_graph; /// control flow graph
-    map<ushort, char> s_var_init; /// to record the initial shared state
-    map<ushort, char> l_var_init; /// to record the initial local state
+    map<ushort, char> s_vars_init; /// to record the initial shared state
+    map<ushort, char> l_vars_init; /// to record the initial local state
     string goto_targets; /// to output the comments
-    set<ushort> succ_stmt_label;
+    set<ushort> succ_pc_set;
 
     deque<string> expr_symb_list;
     deque<string> assign_stmt_lhs;
@@ -214,8 +256,7 @@ public:
     void output_control_flow_graph_dimacs(FILE *file);
 
     string create_init_state(const map<ushort, char>& minit);
-    bool add_to_shared_vars_list(const string& var, const ushort& index);
-    bool add_to_local_vars_list(const string& var, const ushort& index);
+    bool add_to_l_vars_list(const string& var, const ushort& index);
     void add_to_expr_symb_list(const string& symbol);
 
     /// create weakest precondition formula of statements
@@ -252,8 +293,7 @@ private:
     string create_succ_vars(const string& var);
 
     void replace_vars_with_index(string& src, const ushort& index);
-    void replaceAll(std::string& str, const std::string& from,
-            const std::string& to);
+    void replaceAll(string& str, const string& from, const string& to);
     vector<bool> decimal2binary(const int& n, const int& size);
 };
 

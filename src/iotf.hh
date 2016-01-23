@@ -115,7 +115,7 @@ private:
 
 /**
  * @brief the type of pre_image: direct preimage or covering preimage
- *        DRC: direct preimages
+ *        DRC: direct   preimages
  *        COV: covering preimages
  */
 enum class prev {

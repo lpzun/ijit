@@ -72,6 +72,7 @@ public:
 
     const value_v eval(const state_v& sh, const state_v& lo) const;
     value_v eval(const state_v& sh, const state_v& lo);
+
 private:
     deque<string> sexpr;
 };

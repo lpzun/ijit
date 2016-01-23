@@ -228,7 +228,6 @@ metastmt: T_SKIP ';' { // "skip" statement
   // clear containers
   aide.assign_stmt_lhs.clear();
   aide.assign_stmt_rhs.clear();
-  aide.assign_identifiers.clear();
  }
 | iden_list T_ASSIGN expr_list T_CSTR expr ';' { // "assignment constrain"  
   string e = aide.recov_expr_from_symb_list(aide.expr_symb_list, true);
@@ -239,7 +238,6 @@ metastmt: T_SKIP ';' { // "skip" statement
   // clear containers
   aide.assign_stmt_lhs.clear();
   aide.assign_stmt_rhs.clear();
-  aide.assign_identifiers.clear();
  }
 | T_IF expr T_THEN metastmt T_FI ';' { // "if..then.." statement
   string e = aide.recov_expr_from_symb_list(aide.expr_symb_list, true);
@@ -277,12 +275,10 @@ metastmt: T_SKIP ';' { // "skip" statement
 ;
 
 iden_list: T_IDEN {
-  aide.assign_identifiers.push_back($1);
   aide.assign_stmt_lhs.push_back($1);
   free($1);
  }
 | iden_list ',' T_IDEN {
-  aide.assign_identifiers.push_back($3); 
   aide.assign_stmt_lhs.push_back($3);
   free($3); 
   }

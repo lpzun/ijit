@@ -16,7 +16,7 @@
 ###########################################################################
 # Override these variables (or add new ones) locally
 APP	         = iotf # the name of application
-SATDIR       = /usr/local/Z3#                                             # config your z3 include here
+SATDIR       =# /usr/local/Z3#                                             # config your z3 include here
 ILIBS        =-lz#-L $(SATDIR)/lib -lz3#                                  -lm
 IINCLUDE     =# -I $(SATDIR)/include/#                                      
 

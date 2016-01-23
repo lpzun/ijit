@@ -21,13 +21,13 @@
 	/* define YY_DECL to declare the calling sequence for yylex to  
 	 * match what the parser expects
 	 */
-	#define YY_DECL int yylex(yy::fw::semantic_type *yylval, \
-					yy::fw::location_type *yylloc)
+	#define YY_DECL int yylex(yy::bp::semantic_type *yylval, \
+					yy::bp::location_type *yylloc)
 
 	/* make location include the current token */
 	#define YY_USER_ACTION yylloc->columns (yyleng);
 
-	typedef yy::fw::token token;
+	typedef yy::bp::token token;
 %}
 
 %s comment
