@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "iotf.hh"
-#include "bpp/bopp_fw.tab.hh"
+#include "bpp/bopp.tab.hh"
 
 using namespace iotf;
 

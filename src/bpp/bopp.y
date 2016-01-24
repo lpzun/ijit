@@ -70,10 +70,6 @@
 
 %start prog
 %{
-#include "bopp.hh"
-  using namespace iotf;
-  fw_aide aide;
-
   extern int yylex(yy::bp::semantic_type *yylval, yy::bp::location_type* yylloc);
 %}
 

@@ -9,7 +9,7 @@
 # macro definition		#
 #========================================
 # Override these variables (or add new ones) locally
-BASE 		= bopp_fw
+BASE 		= bopp
 #DIR
 #EXPDIR
 ILIBS		=#

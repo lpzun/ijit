@@ -14,8 +14,8 @@
  *              v0.5: adding the forward-based CFG and so on
  ************************************************************************************/
 
-#ifndef BPP_BOPP_HH_
-#define BPP_BOPP_HH_
+#ifndef BPP_AIDE_HH_
+#define BPP_AIDE_HH_
 
 #include <cstdio>
 #include <cstdlib>
@@ -32,6 +32,7 @@
 #include <deque>
 #include <vector>
 #include <stack>
+#include <memory>
 
 #include "../api/cfg.hh"
 
@@ -43,7 +44,6 @@ using std::cerr;
 
 using std::set;
 using std::map;
-using std::unordered_map;
 using std::deque;
 using std::vector;
 using std::stack;
@@ -52,10 +52,6 @@ using std::pair;
 typedef unsigned short ushort;
 
 namespace iotf {
-
-using vexpr = vector<deque<string>>;
-
-using assgn = pair<vexpr, vexpr>;
 
 /**
  * @brief this is auxiliary class for Boolean program parser
@@ -118,8 +114,6 @@ public:
 
     map<ushort, deque<string>> valid_assertion_ts;
 
-    unordered_map<ushort, assgn> assignments;
-
     /////////////////////////////// function list /////////////////////////////
 
     /// control flow graph function list
@@ -150,7 +144,6 @@ protected:
     pair<bool, ushort> look_up_var_index(const string& var);
     string create_succ_vars(const string& var);
     vector<bool> decimal2binary(const int& n, const int& size);
-
     string create_vars_value_as_str(const vector<ushort>& sv);
 
 private:
@@ -299,4 +292,4 @@ private:
 
 } /* namespace iotf */
 
-#endif /* BPP_BOPP_HH_ */
+#endif /* BPP_AIDE_HH_ */
