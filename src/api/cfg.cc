@@ -84,6 +84,12 @@ edge::edge(const size_pc& src, const size_pc& dest, const stmt& s) :
 
 }
 
+edge::edge(const size_pc& src, const size_pc& dest, const type_stmt& type,
+        const expr& condition) :
+        src(src), dest(dest), st(type, condition) {
+
+}
+
 /**
  * @brief copy constructor
  * @param e

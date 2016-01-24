@@ -17,11 +17,16 @@
 %locations     // enable location tracking
 %error-verbose // verbose error messages
 
+%code requires
+{
+# include "aide.hh"
+  using namespace iotf;
+}
 
-%parse-param { fw_aide &aide } // tell Bison that yyparse should take an extra 
-                             // parameter paide
+ // tell Bison that yyparse should take an extra parameter paide
+%parse-param { fw_aide &aide }
 
-%define parser_class_name "bp" // define the parser's name
+%define parser_class_name {bp} // define the parser's name
 %{
 %}
 

@@ -43,8 +43,8 @@
 
 #include "util/algs.hh"
 #include "util/excp.hh"
-
 #include "api/cfg.hh"
+#include "bpp/bopp.tab.hh"
 
 namespace iotf {
 

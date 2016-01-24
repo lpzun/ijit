@@ -460,21 +460,13 @@ string fw_aide::create_goto_stmt_sp() {
  * @return string
  */
 string fw_aide::create_assg_stmt_sp(const ushort& pc) {
-    vexpr sh(this->s_vars_num);
-    vexpr lo(this->l_vars_num);
     auto il = assign_stmt_lhs.begin(), iend = assign_stmt_lhs.end();
     auto ir = assign_stmt_rhs.begin(), eend = assign_stmt_rhs.end();
     while (il != iend && ir != eend) {
         const auto& iden = *il;
         const auto& p = look_up_var_index(iden);
-        if (p.first) {
-            sh[p.second] = *ir;
-        } else {
-            lo[p.second] = *ir;
-        }
         ++il, ++ir;
     }
-    this->assignments.emplace(pc, std::make_pair(sh, lo));
     return this->STMT_ASSG;
 }
 

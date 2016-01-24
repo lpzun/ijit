@@ -121,6 +121,7 @@ class edge {
 public:
     edge();
     edge(const size_pc& src, const size_pc& dest, const stmt& st);
+    edge(const size_pc& src, const size_pc& dest, const type_stmt& type, const expr& condition);
     edge(const edge& e);
     ~edge();
 

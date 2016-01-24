@@ -13,6 +13,10 @@
 
 #include "../iotf.hh"
 
+/// declare yyin to let parser read from file
+/// NOTE: this is not an elegant way to do this
+extern FILE * yyin;
+
 namespace iotf {
 
 cfg parser::prev_G; /// control flow graph in PREV mode
@@ -65,6 +69,45 @@ pair<initl_ps, final_ps> parser::parse_in_prev_mode(const string& filename) {
 pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     initl_ps I;
     final_ps Q;
+
+    FILE *bPfile = fopen(filename.c_str(), "r");
+    if (!bPfile) {
+        throw iotf_runtime_error("I cannot open " + filename);
+    }
+    yyin = bPfile;
+    char DEFAULT_CFG_FILE_NAME[100] = "bp.cfg";
+    char DEFAULT_TAF_FILE_NAME[100] = "bp.taf";
+    char* cfg_file_name = DEFAULT_CFG_FILE_NAME;
+    char* taf_file_name = DEFAULT_TAF_FILE_NAME;
+    /// file list
+    FILE *cfg_file = fopen(cfg_file_name, "w");
+    fw_aide aide;
+    yy::bp parser(aide); // make a parser
+    int result = parser.parse(); // and run it
+    if (result != 0) {
+        throw iotf_runtime_error(
+                "Parser exit with exception: code " + std::to_string(result));
+    }
+
+    /* fw_aide aide; */
+    //move the file point to the begin and print the total line number
+    fprintf(cfg_file, "# control flow graph and other information\n");
+    fprintf(cfg_file, "shared %d\n", aide.s_vars_num);
+    fprintf(cfg_file, "local %d\n", aide.l_vars_num);
+
+    //note the initial pc!!!!!!!!
+    fprintf(cfg_file, "init %s|0,%s # initial thread state\n",
+            (aide.create_init_state(aide.s_vars_init)).c_str(),
+            (aide.create_init_state(aide.l_vars_init)).c_str());
+    fprintf(cfg_file, "%d%s %d\n", aide.lineno,
+            " # the number of lines in BP with cand PC = ", 1);
+    cout << 1 << ":" << aide.lineno << endl;
+
+    aide.output_control_flow_graph(cfg_file);
+    fclose(cfg_file);
+
+    //test_print_valid_assertion_ts(); // testing
+    aide.output_final_state_to_file(taf_file_name);
     // TODO initialize post_G
     return std::make_pair(I, Q);
 }
