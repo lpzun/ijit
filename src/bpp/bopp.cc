@@ -33,7 +33,7 @@ void paide::add_edge(const ushort& from, const string& sp) {
         string edge;
         edge.append(std::to_string(from)).append("->").append(
                 std::to_string(*ie)).append(" ").append(sp);
-        control_flow_graph.push_back(edge);
+        control_flow_graph.emplace_back(edge);
     }
 }
 
@@ -217,8 +217,8 @@ void paide::all_sat_solver(const deque<string>& symb_list, const ushort& pc) {
     for (auto is = symb_list.begin(); is != symb_list.end(); ++is) {
         const auto& symbol = *is;
         /// using regular expression here would be a better choice
-        if (!(symbol.compare("&&") == 0 || symbol.compare("||") == 0
-                || symbol.compare("!=") == 0 || symbol.compare("==") == 0
+        if (!(symbol.compare("&") == 0 || symbol.compare("|") == 0
+                || symbol.compare("!=") == 0 || symbol.compare("=") == 0
                 || symbol.compare("^") == 0 || symbol.compare("()") == 0
                 || symbol.compare("!") == 0 || symbol.compare(ZERO) == 0
                 || symbol.compare(ONE) == 0)) {
@@ -467,7 +467,7 @@ string fw_aide::create_assg_stmt_sp(const ushort& pc) {
     while (il != iend && ir != eend) {
         const auto& iden = *il;
         const auto& p = look_up_var_index(iden);
-        if(p.first) {
+        if (p.first) {
             sh[p.second] = *ir;
         } else {
             lo[p.second] = *ir;

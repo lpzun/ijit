@@ -21,7 +21,7 @@ ISTD	    = -std=c++11
 FLEXSUFF	= lex
 FLEXCOMP	= flex 
 FLEXOBJ 	= $(BASE).$(FLEXSUFF)
-FEXPORT		= lex.yy.c
+FEXPORT		= lex.yy.cc
 
 #### bison
 BISONSUFF	= y
