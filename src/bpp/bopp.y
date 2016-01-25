@@ -136,18 +136,21 @@ s_id_list: s_id
 ;
 
 s_id: T_IDEN {
-  aide.s_vars_list.emplace($1, ++aide.s_vars_num);
-  aide.s_vars_init[aide.s_vars_num] = '*';
+  aide.add_vars($1, sool::N, true);
+  /* aide.s_vars_list.emplace($1, ++aide.s_vars_num); */
+  /* aide.s_vars_init[aide.s_vars_num] = '*'; */
   free($1); // free it to avoid storage leaks
  }
 | T_IDEN T_ASSIGN T_NONDET {
-  aide.s_vars_list.emplace($1, ++aide.s_vars_num);
-  aide.s_vars_init[aide.s_vars_num] = '*';
+  aide.add_vars($1, sool::N, true);
+  /* aide.s_vars_list.emplace($1, ++aide.s_vars_num); */
+  /* aide.s_vars_init[aide.s_vars_num] = '*'; */
   free($1); // free it to avoid storage leaks
  }
 | T_IDEN T_ASSIGN T_INT {
-  aide.s_vars_list.emplace($1, ++aide.s_vars_num);
-  aide.s_vars_init[aide.s_vars_num] = ($3 == 0 ? '0' : '1');
+  aide.add_vars($1, $3 == 0 ? sool::F : sool::N, true);
+  /* aide.s_vars_list.emplace($1, ++aide.s_vars_num); */
+  /* aide.s_vars_init[aide.s_vars_num] = (); */
   free($1); // free it to avoid storage leaks
  }
 ;
@@ -161,18 +164,21 @@ l_id_list: l_id
 ;
 
 l_id: T_IDEN {
-  aide.l_vars_list.emplace($1, ++aide.l_vars_num);
-  aide.l_vars_init[aide.l_vars_num] = '*';
+  aide.add_vars($1, sool::N, false);
+  /* aide.l_vars_list.emplace($1, ++aide.l_vars_num); */
+  /* aide.l_vars_init[aide.l_vars_num] = '*'; */
   free($1);
  }
 | T_IDEN T_ASSIGN T_NONDET {
-  aide.l_vars_list.emplace($1, ++aide.l_vars_num);
-  aide.l_vars_init[aide.l_vars_num] = '*';
+  aide.add_vars($1, sool::N, false);
+  /* aide.l_vars_list.emplace($1, ++aide.l_vars_num); */
+  /* aide.l_vars_init[aide.l_vars_num] = '*'; */
   free($1);
  }
 | T_IDEN T_ASSIGN T_INT {
-  aide.l_vars_list.emplace($1, ++aide.l_vars_num);
-  aide.l_vars_init[aide.l_vars_num] = ($3 == 0 ? '0' : '1');
+  aide.add_vars($1, $3 == 0 ? sool::F : sool::N, false);
+  /* aide.l_vars_list.emplace($1, ++aide.l_vars_num); */
+  /* aide.l_vars_init[aide.l_vars_num] = ($3 == 0 ? '0' : '1'); */
   free($1);
  }
 ;
@@ -180,11 +186,11 @@ l_id: T_IDEN {
 ///////////// stmts /////////////////
 /// initialization
 initistmt: T_IDEN T_ASSIGN T_NONDET ';' {
-  aide.add_vars_init($1, 2);
+  aide.init_vars($1, sool::N);
   free($1);
  }
 |T_IDEN T_ASSIGN T_INT ';' {
-  aide.add_vars_init($1, $3);
+  aide.init_vars($1, $3 == 0 ? sool::F : sool::N);
   free($1);
  }
 ;
@@ -205,59 +211,55 @@ statement: metastmt
 ;
 
 metastmt: T_SKIP ';' { // "skip" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_skip_stmt_sp());	
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::SKIP);	
   }
 | T_GOTO {} to_line_list ';' { // "goto" statement
-  aide.add_edge(aide.ipc, aide.create_goto_stmt_sp());
+  aide.add_edge(aide.ipc, type_stmt::GOTO);
   aide.succ_pc_set.clear();
   }
 | iden_list T_ASSIGN expr_list ';' {// "parallel assignment" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_assg_stmt_sp(aide.ipc));	
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG);	
   // reset containers
   aide.assign_stmt_lhs.clear();
   aide.assign_stmt_rhs.clear();
  }
-| iden_list T_ASSIGN expr_list T_CSTR expr ';' {// "PA with constrain"  
-  string e = aide.recov_expr_from_list(aide.expr_in_list, true);
+| iden_list T_ASSIGN expr_list T_CSTR expr ';' {// "PA with constrain" 
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG, true);
+  // reset containers
   aide.expr_in_list.clear();
-  aide.add_edge(aide.ipc, aide.ipc+1, aide._AND_ + "(" + e + ")");
-  // reset containers
   aide.assign_stmt_lhs.clear();
   aide.assign_stmt_rhs.clear();
  }
-| T_IF expr T_THEN metastmt T_FI ';' { // "if...then..." statement
-  string e = aide.recov_expr_from_list(aide.expr_in_list, true);
-  aide.create_ifth_stmt_sp(e);
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_else_stmt_sp(e));
+| T_IF expr T_THEN T_GOTO T_INT ';' T_FI ';' { // "if...then goto..." statement
+  aide.add_edge(aide.ipc, $5, type_stmt::IFEL, true);
   aide.expr_in_list.clear();
  } 
 | T_ASSERT '(' expr ')' ';' { // "assert" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_asse_stmt_sp());		
-  aide.all_sat_solver(aide.expr_in_list, aide.ipc);
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE);		
+  //aide.all_sat_solver(aide.expr_in_list, aide.ipc);
   aide.expr_in_list.clear();
   }
 | T_ASSUME '(' expr ')' ';' { // "assume" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_assu_stmt_sp());
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSU, true);
   aide.expr_in_list.clear();
   }
 | T_START_THREAD T_GOTO T_INT ';' { // "thread creation" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, 
-                      aide.create_nthr_stmt_sp(std::to_string($3)));
+  aide.add_edge(aide.ipc, $3, type_stmt::NTHR);
  }
 | T_END_THREAD ';' { // thread termination statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_skip_stmt_sp());
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ETHR);
   }
 | T_ATOMIC_BEGIN ';' { // atomic section beginning
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_atom_stmt_sp());
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ATOM);
   }
 | T_ATOMIC_END ';' { // atomic section ending
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_eatm_stmt_sp());
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::EATM);
   }
 | T_BROADCAST ';' { // broadcast statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_bcst_stmt_sp());
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::BCST);
   }
 | T_WAIT ';' { // wait statement
-  aide.add_edge(aide.ipc, aide.ipc+1, aide.create_wait_stmt_sp());
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::WAIT);
   }
 ;
 

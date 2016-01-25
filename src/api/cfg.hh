@@ -50,19 +50,22 @@ enum class type_stmt {
     SIGN = -13
 };
 
+/// define the symbols of Boolean expression
+/// it includes operator and operand
+using symbol = string;
 /**
  * @brief data structure <expr>: build an expression from a list of strings
  */
 class expr {
 public:
     expr();
-    expr(const deque<string>& sexpr);
+    expr(const deque<symbol>& sexpr);
     expr(const expr& e);
 
     ~expr();
 
     /// getter
-    const deque<string>& get_sexpr() const {
+    const deque<symbol>& get_sexpr() const {
         return sexpr;
     }
 
@@ -74,7 +77,7 @@ public:
     value_v eval(const state_v& sh, const state_v& lo);
 
 private:
-    deque<string> sexpr;
+    deque<symbol> sexpr;
 };
 
 /**
@@ -85,6 +88,7 @@ private:
 class stmt {
 public:
     stmt();
+    stmt(const type_stmt& type);
     stmt(const type_stmt& type, const expr& condition);
     stmt(const stmt& s);
     ~stmt();
@@ -121,7 +125,8 @@ class edge {
 public:
     edge();
     edge(const size_pc& src, const size_pc& dest, const stmt& st);
-    edge(const size_pc& src, const size_pc& dest, const type_stmt& type, const expr& condition);
+    edge(const size_pc& src, const size_pc& dest, const type_stmt& type,
+            const expr& condition);
     edge(const edge& e);
     ~edge();
 
@@ -157,6 +162,10 @@ struct assignment {
             sh(refs::SHARED_VARS_NUM), lo(refs::LOCAL_VARS_NUM) {
 
     }
+    assignment(const ushort& s_num, const ushort& l_num) :
+            sh(s_num), lo(l_num) {
+
+    }
     ~assignment() {
     }
 };
@@ -187,7 +196,7 @@ public:
     }
 
     void add_edge(const edge& e);
-    void add_edge(const size_pc& idx, const edge& e);
+    void add_assignment(const size_pc& pc, const assignment& a);
 
 private:
     adj_list A;

@@ -106,7 +106,7 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     aide.output_control_flow_graph(cfg_file);
     fclose(cfg_file);
 
-    //test_print_valid_assertion_ts(); // testing
+    // test_print_valid_assertion_ts(); // testing
     aide.output_final_state_to_file(taf_file_name);
     // TODO initialize post_G
     return std::make_pair(I, Q);

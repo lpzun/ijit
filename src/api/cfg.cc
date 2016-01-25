@@ -47,22 +47,20 @@ cfg::~cfg() {
  * @param e
  */
 void cfg::add_edge(const edge& e) {
+    if (e.get_src() < this->A.size())
+        A[e.get_src()].emplace_back(e.get_dest());
+    else
+        A.emplace_back(deque<size_pc>(1, e.get_dest()));
     E.emplace_back(e);
 }
 
 /**
- * @brief insert edge in location idx if applicable (i.e., idx <= E.size());
- *        throw an exception if idx > E.size();
- * @param idx
- * @param e
+ * @brief add an assignment to location pc
+ * @param pc: location
+ * @param a : assignment
  */
-void cfg::add_edge(const size_pc& idx, const edge& e) {
-    if (idx < E.size())
-        E[idx] = e;
-    else if (idx == E.size())
-        E.emplace_back(e);
-    else
-        throw;
+void cfg::add_assignment(const size_pc& pc, const assignment& a) {
+    this->assignments.emplace(pc, a);
 }
 
 /**
@@ -84,6 +82,13 @@ edge::edge(const size_pc& src, const size_pc& dest, const stmt& s) :
 
 }
 
+/**
+ * @brief constructor with src, dest, type and stmt
+ * @param src
+ * @param dest
+ * @param type
+ * @param condition
+ */
 edge::edge(const size_pc& src, const size_pc& dest, const type_stmt& type,
         const expr& condition) :
         src(src), dest(dest), st(type, condition) {
@@ -110,6 +115,11 @@ edge::~edge() {
  * @brief default constructor
  */
 stmt::stmt() :
+        type(), condition() {
+
+}
+
+stmt::stmt(const type_stmt& type) :
         type(), condition() {
 
 }
@@ -151,7 +161,7 @@ expr::expr() :
  * @brief constructor with string
  * @param se
  */
-expr::expr(const deque<string>& sexpr) :
+expr::expr(const deque<symbol>& sexpr) :
         sexpr(sexpr) {
 
 }
@@ -182,7 +192,7 @@ expr::~expr() {
 const value_v expr::eval(const state_v& sh, const state_v& lo) const {
     stack<value_v> comp_result_stack;
     for (auto ifac = sexpr.cbegin(); ifac != sexpr.cend(); ++ifac) {
-        const string& factor = *ifac;
+        const auto& factor = *ifac;
         value_v operand1, operand2;
         if (factor.compare(refs::AND) == 0) { /// and
             operand1 = comp_result_stack.top();
