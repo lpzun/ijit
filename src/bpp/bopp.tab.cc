@@ -593,157 +593,145 @@ namespace yy {
         {
           switch (yyn)
             {
-  case 19:
-#line 138 "bopp.y" // lalr1.cc:847
+  case 20:
+#line 139 "bopp.y" // lalr1.cc:847
     {
   aide.add_vars((yystack_[0].value.t_str), sool::N, true);
-  /* aide.s_vars_list.emplace($1, ++aide.s_vars_num); */
-  /* aide.s_vars_init[aide.s_vars_num] = '*'; */
   free((yystack_[0].value.t_str)); // free it to avoid storage leaks
  }
-#line 605 "bopp.tab.cc" // lalr1.cc:847
-    break;
-
-  case 20:
-#line 144 "bopp.y" // lalr1.cc:847
-    {
-  aide.add_vars((yystack_[2].value.t_str), sool::N, true);
-  /* aide.s_vars_list.emplace($1, ++aide.s_vars_num); */
-  /* aide.s_vars_init[aide.s_vars_num] = '*'; */
-  free((yystack_[2].value.t_str)); // free it to avoid storage leaks
- }
-#line 616 "bopp.tab.cc" // lalr1.cc:847
+#line 603 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 21:
-#line 150 "bopp.y" // lalr1.cc:847
+#line 143 "bopp.y" // lalr1.cc:847
     {
-  aide.add_vars((yystack_[2].value.t_str), (yystack_[0].value.t_val) == 0 ? sool::F : sool::N, true);
-  /* aide.s_vars_list.emplace($1, ++aide.s_vars_num); */
-  /* aide.s_vars_init[aide.s_vars_num] = (); */
+  aide.add_vars((yystack_[2].value.t_str), sool::N, true);
   free((yystack_[2].value.t_str)); // free it to avoid storage leaks
  }
-#line 627 "bopp.tab.cc" // lalr1.cc:847
+#line 612 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 22:
-#line 159 "bopp.y" // lalr1.cc:847
-    { }
-#line 633 "bopp.tab.cc" // lalr1.cc:847
+#line 147 "bopp.y" // lalr1.cc:847
+    {
+  aide.add_vars((yystack_[2].value.t_str), (yystack_[0].value.t_val) == 0 ? sool::F : sool::N, true);
+  free((yystack_[2].value.t_str)); // free it to avoid storage leaks
+ }
+#line 621 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 24:
-#line 163 "bopp.y" // lalr1.cc:847
-    {}
-#line 639 "bopp.tab.cc" // lalr1.cc:847
+  case 23:
+#line 154 "bopp.y" // lalr1.cc:847
+    { }
+#line 627 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 25:
-#line 166 "bopp.y" // lalr1.cc:847
-    {
-  aide.add_vars((yystack_[0].value.t_str), sool::N, false);
-  /* aide.l_vars_list.emplace($1, ++aide.l_vars_num); */
-  /* aide.l_vars_init[aide.l_vars_num] = '*'; */
-  free((yystack_[0].value.t_str));
- }
-#line 650 "bopp.tab.cc" // lalr1.cc:847
+#line 158 "bopp.y" // lalr1.cc:847
+    {}
+#line 633 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 26:
-#line 172 "bopp.y" // lalr1.cc:847
+#line 161 "bopp.y" // lalr1.cc:847
     {
-  aide.add_vars((yystack_[2].value.t_str), sool::N, false);
-  /* aide.l_vars_list.emplace($1, ++aide.l_vars_num); */
-  /* aide.l_vars_init[aide.l_vars_num] = '*'; */
-  free((yystack_[2].value.t_str));
+  aide.add_vars((yystack_[0].value.t_str), sool::N, false);
+  free((yystack_[0].value.t_str));
  }
-#line 661 "bopp.tab.cc" // lalr1.cc:847
+#line 642 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 27:
-#line 178 "bopp.y" // lalr1.cc:847
+#line 165 "bopp.y" // lalr1.cc:847
     {
-  aide.add_vars((yystack_[2].value.t_str), (yystack_[0].value.t_val) == 0 ? sool::F : sool::N, false);
-  /* aide.l_vars_list.emplace($1, ++aide.l_vars_num); */
-  /* aide.l_vars_init[aide.l_vars_num] = ($3 == 0 ? '0' : '1'); */
+  aide.add_vars((yystack_[2].value.t_str), sool::N, false);
   free((yystack_[2].value.t_str));
  }
-#line 672 "bopp.tab.cc" // lalr1.cc:847
+#line 651 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 28:
-#line 188 "bopp.y" // lalr1.cc:847
+#line 169 "bopp.y" // lalr1.cc:847
+    {
+  aide.add_vars((yystack_[2].value.t_str), (yystack_[0].value.t_val) == 0 ? sool::F : sool::N, false);
+  free((yystack_[2].value.t_str));
+ }
+#line 660 "bopp.tab.cc" // lalr1.cc:847
+    break;
+
+  case 29:
+#line 177 "bopp.y" // lalr1.cc:847
     {
   aide.init_vars((yystack_[3].value.t_str), sool::N);
   free((yystack_[3].value.t_str));
  }
-#line 681 "bopp.tab.cc" // lalr1.cc:847
+#line 669 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 29:
-#line 192 "bopp.y" // lalr1.cc:847
+  case 30:
+#line 181 "bopp.y" // lalr1.cc:847
     {
   aide.init_vars((yystack_[3].value.t_str), (yystack_[1].value.t_val) == 0 ? sool::F : sool::N);
   free((yystack_[3].value.t_str));
  }
-#line 690 "bopp.tab.cc" // lalr1.cc:847
+#line 678 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 30:
-#line 198 "bopp.y" // lalr1.cc:847
+  case 31:
+#line 187 "bopp.y" // lalr1.cc:847
     { 
   ++aide.lineno; // counting the program counters
   aide.ipc = (int)((yystack_[0].value.t_val)); // obtain current pc
   if(!aide.is_pc_unique((yystack_[0].value.t_val))) // pc's uniqueness
     YYABORT; 
  }
-#line 701 "bopp.tab.cc" // lalr1.cc:847
+#line 689 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 31:
-#line 203 "bopp.y" // lalr1.cc:847
+  case 32:
+#line 192 "bopp.y" // lalr1.cc:847
     {
-   //cout << "TEST:: I am in statement " << $1 <<endl;
+   cout << "TEST:: I am in statement " << (yystack_[3].value.t_val) <<endl;
    }
-#line 709 "bopp.tab.cc" // lalr1.cc:847
-    break;
-
-  case 35:
-#line 213 "bopp.y" // lalr1.cc:847
-    { // "skip" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::SKIP);	
-  }
-#line 717 "bopp.tab.cc" // lalr1.cc:847
+#line 697 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 36:
-#line 216 "bopp.y" // lalr1.cc:847
-    {}
-#line 723 "bopp.tab.cc" // lalr1.cc:847
+#line 202 "bopp.y" // lalr1.cc:847
+    { // "skip" statement
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::SKIP);	
+  }
+#line 705 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 37:
-#line 216 "bopp.y" // lalr1.cc:847
+#line 205 "bopp.y" // lalr1.cc:847
+    {}
+#line 711 "bopp.tab.cc" // lalr1.cc:847
+    break;
+
+  case 38:
+#line 205 "bopp.y" // lalr1.cc:847
     { // "goto" statement
   aide.add_edge(aide.ipc, type_stmt::GOTO);
   aide.succ_pc_set.clear();
   }
-#line 732 "bopp.tab.cc" // lalr1.cc:847
+#line 720 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 38:
-#line 220 "bopp.y" // lalr1.cc:847
+  case 39:
+#line 209 "bopp.y" // lalr1.cc:847
     {// "parallel assignment" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG);	
   // reset containers
   aide.assign_stmt_lhs.clear();
   aide.assign_stmt_rhs.clear();
  }
-#line 743 "bopp.tab.cc" // lalr1.cc:847
+#line 731 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 39:
-#line 226 "bopp.y" // lalr1.cc:847
+  case 40:
+#line 215 "bopp.y" // lalr1.cc:847
     {// "PA with constrain" 
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG, true);
   // reset containers
@@ -751,207 +739,207 @@ namespace yy {
   aide.assign_stmt_lhs.clear();
   aide.assign_stmt_rhs.clear();
  }
-#line 755 "bopp.tab.cc" // lalr1.cc:847
+#line 743 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 40:
-#line 233 "bopp.y" // lalr1.cc:847
+  case 41:
+#line 222 "bopp.y" // lalr1.cc:847
     { // "if...then goto..." statement
   aide.add_edge(aide.ipc, (yystack_[3].value.t_val), type_stmt::IFEL, true);
   aide.expr_in_list.clear();
  }
-#line 764 "bopp.tab.cc" // lalr1.cc:847
+#line 752 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 41:
-#line 237 "bopp.y" // lalr1.cc:847
+  case 42:
+#line 226 "bopp.y" // lalr1.cc:847
     { // "assert" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE);		
   //aide.all_sat_solver(aide.expr_in_list, aide.ipc);
   aide.expr_in_list.clear();
   }
-#line 774 "bopp.tab.cc" // lalr1.cc:847
+#line 762 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 42:
-#line 242 "bopp.y" // lalr1.cc:847
+  case 43:
+#line 231 "bopp.y" // lalr1.cc:847
     { // "assume" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSU, true);
   aide.expr_in_list.clear();
   }
-#line 783 "bopp.tab.cc" // lalr1.cc:847
-    break;
-
-  case 43:
-#line 246 "bopp.y" // lalr1.cc:847
-    { // "thread creation" statement
-  aide.add_edge(aide.ipc, (yystack_[1].value.t_val), type_stmt::NTHR);
- }
-#line 791 "bopp.tab.cc" // lalr1.cc:847
+#line 771 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 44:
-#line 249 "bopp.y" // lalr1.cc:847
-    { // thread termination statement
-  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ETHR);
-  }
-#line 799 "bopp.tab.cc" // lalr1.cc:847
+#line 235 "bopp.y" // lalr1.cc:847
+    { // "thread creation" statement
+  aide.add_edge(aide.ipc, (yystack_[1].value.t_val), type_stmt::NTHR);
+ }
+#line 779 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 45:
-#line 252 "bopp.y" // lalr1.cc:847
-    { // atomic section beginning
-  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ATOM);
+#line 238 "bopp.y" // lalr1.cc:847
+    { // thread termination statement
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ETHR);
   }
-#line 807 "bopp.tab.cc" // lalr1.cc:847
+#line 787 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 46:
-#line 255 "bopp.y" // lalr1.cc:847
-    { // atomic section ending
-  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::EATM);
+#line 241 "bopp.y" // lalr1.cc:847
+    { // atomic section beginning
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ATOM);
   }
-#line 815 "bopp.tab.cc" // lalr1.cc:847
+#line 795 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 47:
-#line 258 "bopp.y" // lalr1.cc:847
-    { // broadcast statement
-  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::BCST);
+#line 244 "bopp.y" // lalr1.cc:847
+    { // atomic section ending
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::EATM);
   }
-#line 823 "bopp.tab.cc" // lalr1.cc:847
+#line 803 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 48:
-#line 261 "bopp.y" // lalr1.cc:847
-    { // wait statement
-  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::WAIT);
+#line 247 "bopp.y" // lalr1.cc:847
+    { // broadcast statement
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::BCST);
   }
-#line 831 "bopp.tab.cc" // lalr1.cc:847
+#line 811 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 49:
-#line 266 "bopp.y" // lalr1.cc:847
+#line 250 "bopp.y" // lalr1.cc:847
+    { // wait statement
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::WAIT);
+  }
+#line 819 "bopp.tab.cc" // lalr1.cc:847
+    break;
+
+  case 50:
+#line 255 "bopp.y" // lalr1.cc:847
     {
   aide.assign_stmt_lhs.emplace_back((yystack_[0].value.t_str));
   free((yystack_[0].value.t_str));
  }
-#line 840 "bopp.tab.cc" // lalr1.cc:847
+#line 828 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 50:
-#line 270 "bopp.y" // lalr1.cc:847
+  case 51:
+#line 259 "bopp.y" // lalr1.cc:847
     {
   aide.assign_stmt_lhs.emplace_back((yystack_[0].value.t_str));
   free((yystack_[0].value.t_str)); 
   }
-#line 849 "bopp.tab.cc" // lalr1.cc:847
+#line 837 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 51:
-#line 276 "bopp.y" // lalr1.cc:847
+  case 52:
+#line 265 "bopp.y" // lalr1.cc:847
     { 
   aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear();
  }
-#line 858 "bopp.tab.cc" // lalr1.cc:847
+#line 846 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 52:
-#line 280 "bopp.y" // lalr1.cc:847
+  case 53:
+#line 269 "bopp.y" // lalr1.cc:847
     { 
   aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear(); 
   }
-#line 867 "bopp.tab.cc" // lalr1.cc:847
-    break;
-
-  case 53:
-#line 286 "bopp.y" // lalr1.cc:847
-    {
-  aide.succ_pc_set.emplace((yystack_[0].value.t_val));
- }
-#line 875 "bopp.tab.cc" // lalr1.cc:847
+#line 855 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 54:
-#line 289 "bopp.y" // lalr1.cc:847
+#line 275 "bopp.y" // lalr1.cc:847
     {
   aide.succ_pc_set.emplace((yystack_[0].value.t_val));
-  }
-#line 883 "bopp.tab.cc" // lalr1.cc:847
+ }
+#line 863 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 55:
-#line 295 "bopp.y" // lalr1.cc:847
-    { }
-#line 889 "bopp.tab.cc" // lalr1.cc:847
+#line 278 "bopp.y" // lalr1.cc:847
+    {
+  aide.succ_pc_set.emplace((yystack_[0].value.t_val));
+  }
+#line 871 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 56:
-#line 296 "bopp.y" // lalr1.cc:847
+#line 284 "bopp.y" // lalr1.cc:847
+    { }
+#line 877 "bopp.tab.cc" // lalr1.cc:847
+    break;
+
+  case 57:
+#line 285 "bopp.y" // lalr1.cc:847
     {
   cout<<"This is a ternary expression"<<endl;
  }
+#line 885 "bopp.tab.cc" // lalr1.cc:847
+    break;
+
+  case 59:
+#line 291 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("|"); }
+#line 891 "bopp.tab.cc" // lalr1.cc:847
+    break;
+
+  case 61:
+#line 295 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("^"); }
 #line 897 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 58:
-#line 302 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("|"); }
+  case 63:
+#line 299 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("&"); }
 #line 903 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 60:
-#line 306 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("^"); }
+  case 65:
+#line 303 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list( "="); }
 #line 909 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 62:
-#line 310 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("&"); }
+  case 66:
+#line 304 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("!="); }
 #line 915 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 64:
-#line 314 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list( "="); }
+  case 69:
+#line 311 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("!"); }
 #line 921 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 65:
-#line 315 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("!="); }
+  case 70:
+#line 314 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("()"); }
 #line 927 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 68:
-#line 322 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("!"); }
+  case 71:
+#line 315 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("*"); }
 #line 933 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 69:
-#line 325 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("()"); }
+  case 72:
+#line 316 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list((yystack_[0].value.t_val) ? "1" : "0"); }
 #line 939 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 70:
-#line 326 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("*"); }
-#line 945 "bopp.tab.cc" // lalr1.cc:847
-    break;
-
-  case 71:
-#line 327 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list((yystack_[0].value.t_val) ? "1" : "0"); }
-#line 951 "bopp.tab.cc" // lalr1.cc:847
-    break;
-
-  case 72:
-#line 328 "bopp.y" // lalr1.cc:847
+  case 73:
+#line 317 "bopp.y" // lalr1.cc:847
     { 
   string id = (yystack_[0].value.t_str);
   if(id.at(0) == '\'') // a successor variable
@@ -959,11 +947,11 @@ namespace yy {
     aide.add_to_expr_in_list(id); 
     free((yystack_[0].value.t_str));
   }
-#line 963 "bopp.tab.cc" // lalr1.cc:847
+#line 951 "bopp.tab.cc" // lalr1.cc:847
     break;
 
 
-#line 967 "bopp.tab.cc" // lalr1.cc:847
+#line 955 "bopp.tab.cc" // lalr1.cc:847
             default:
               break;
             }
@@ -1218,150 +1206,148 @@ namespace yy {
   }
 
 
-  const signed char bp::yypact_ninf_ = -70;
+  const signed char bp::yypact_ninf_ = -71;
 
   const signed char bp::yytable_ninf_ = -1;
 
   const signed char
   bp::yypact_[] =
   {
-       4,     9,    48,    78,    66,   -70,     2,     4,   -70,    58,
-     -20,   -70,    51,   -70,   -70,    53,   -70,    61,    -1,   -70,
-     -70,   -70,   -70,    66,   -70,   -10,   -70,     9,    54,    62,
-       7,   -70,    52,    -7,   -70,   -70,   -70,   -70,   -70,   -70,
-      84,    -6,   -70,    53,    27,    56,    57,   -70,   -70,   -70,
-     -70,   -70,    60,    59,    63,    33,    86,    64,    65,    67,
-      68,    69,   -70,     0,   -70,   -17,   -70,   -70,    70,    33,
-     -70,    33,   -70,   -70,   -70,    33,   -70,    -4,    76,    71,
-      79,    43,    20,   -70,   -70,    75,   -70,   -70,   -70,   -70,
-     -70,    27,    27,    33,    80,   -70,    39,    24,    26,    37,
-      88,    33,    33,    33,    33,    33,    33,   -70,    73,   -70,
-     -70,   -13,    81,   -70,   -70,    82,    83,    85,   -70,    90,
-      25,    71,    79,    43,   -70,   -70,   -70,    33,   -70,    33,
-     -70,   -70,   -70,    87,    33,    38,    81,    96,    76,   -70,
-      89,   -70
+      26,     4,    47,    51,    44,   -71,    -1,    26,   -71,    55,
+       2,   -71,    48,   -71,   -71,   -71,    50,   -71,    58,   -71,
+      -1,   -71,   -71,   -71,   -71,    44,   -71,    22,   -71,     4,
+      52,    59,    16,   -71,    53,    24,   -71,   -71,   -71,   -71,
+     -71,    79,    25,   -71,    50,     1,    54,    56,   -71,   -71,
+     -71,   -71,   -71,    60,    57,    61,     8,    78,    62,    63,
+      64,    65,    66,   -71,    39,   -71,    -7,   -71,   -71,    71,
+       8,   -71,     8,   -71,   -71,   -71,     8,   -71,    13,    67,
+      68,    75,    45,   -16,   -71,   -71,    73,   -71,   -71,   -71,
+     -71,   -71,     1,     1,     8,    76,   -71,    38,    28,    35,
+      36,    86,     8,     8,     8,     8,     8,     8,   -71,    70,
+     -71,   -71,     9,    77,   -71,   -71,    80,    74,    81,   -71,
+      82,    20,    68,    75,    45,   -71,   -71,   -71,     8,   -71,
+       8,   -71,   -71,   -71,    83,     8,    29,    77,    96,    67,
+     -71,    84,   -71
   };
 
   const unsigned char
   bp::yydefact_[] =
   {
-       0,     0,     0,     0,     3,     4,     0,     0,    14,    19,
-       0,    17,     0,     1,     5,     0,    30,     0,     0,     9,
-      11,    12,    13,     2,    15,     0,    16,     0,     0,    25,
-       0,    23,     0,     0,     8,     6,    10,    20,    21,    18,
-       0,     0,    22,     0,     0,     0,     0,     7,    26,    27,
-      24,    36,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,    49,    31,    32,     0,    28,    29,     0,     0,
-      35,     0,    70,    71,    72,     0,    66,     0,    55,    57,
-      59,    61,     0,    63,    67,     0,    44,    45,    46,    48,
-      47,     0,     0,     0,     0,    53,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    68,     0,    33,
-      34,     0,    51,    50,    37,     0,     0,     0,    69,     0,
-       0,    58,    60,    62,    64,    65,    43,     0,    38,     0,
-      54,    42,    41,     0,     0,     0,    52,     0,    56,    39,
-       0,    40
+       0,     0,     0,     0,     3,     4,     0,     0,    15,    20,
+       0,    18,     0,     1,     5,     9,     0,    31,     0,     6,
+       0,    10,    12,    13,    14,     2,    16,     0,    17,     0,
+       0,    26,     0,    24,     0,     0,     7,    11,    21,    22,
+      19,     0,     0,    23,     0,     0,     0,     0,     8,    27,
+      28,    25,    37,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    50,    32,    33,     0,    29,    30,     0,
+       0,    36,     0,    71,    72,    73,     0,    67,     0,    56,
+      58,    60,    62,     0,    64,    68,     0,    45,    46,    47,
+      49,    48,     0,     0,     0,     0,    54,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    69,     0,
+      34,    35,     0,    52,    51,    38,     0,     0,     0,    70,
+       0,     0,    59,    61,    63,    65,    66,    44,     0,    39,
+       0,    55,    43,    42,     0,     0,     0,    53,     0,    57,
+      40,     0,    41
   };
 
   const signed char
   bp::yypgoto_[] =
   {
-     -70,   -70,   104,     6,   -70,   -70,   -70,    77,   -70,   105,
-     -70,    93,   -70,   -70,    91,   -70,   -70,   -70,   -70,   -18,
-     -70,   -70,   -70,   -70,   -69,   -21,    12,    13,    18,   -70,
-     -30,    41
+     -71,   -71,   102,    -3,   -71,    91,   -71,    92,   -71,   107,
+     -71,    88,   -71,   -71,    41,   -71,   -71,   -71,   -71,   -20,
+     -71,   -71,   -71,   -71,   -70,   -17,    17,    15,    18,   -71,
+     -32,    42
   };
 
   const signed char
   bp::yydefgoto_[] =
   {
-      -1,     3,     4,     5,     6,    35,    18,    19,     7,     8,
-      10,    11,    20,    30,    31,    21,    22,    32,    63,    64,
-      68,    65,   111,    96,    77,    78,    79,    80,    81,    82,
-      83,    84
+      -1,     3,     4,     5,     6,    19,    20,    21,     7,     8,
+      10,    11,    22,    32,    33,    23,    24,    34,    64,    65,
+      69,    66,   112,    97,    78,    79,    80,    81,    82,    83,
+      84,    85
   };
 
   const unsigned char
   bp::yytable_[] =
   {
-      97,   127,    98,    34,    15,    93,    99,    15,   100,     1,
-      14,    37,    26,    27,    45,    48,    94,     2,    38,   128,
-     129,    46,    49,   101,   112,    91,    92,    16,    17,    14,
-      16,    17,   120,    51,    52,    53,    54,    55,     9,    42,
-      43,    72,    56,    57,    58,    59,    60,    61,    73,    74,
-      75,   101,   101,   101,    72,   116,    62,   117,   135,   134,
-     136,    73,    74,    75,   101,   101,   105,   106,   118,    76,
-     139,   114,   115,   109,   110,   124,   125,    12,    13,     2,
-      25,    28,    29,    33,    41,    40,    44,    47,    66,    67,
-      69,    70,    85,    71,   119,    36,    86,    87,    95,    88,
-      89,    90,   102,   108,   104,   126,   103,   140,   101,   113,
-     130,    23,    24,   138,   121,   131,   122,   132,   133,   137,
-      39,   141,   123,   107,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,    50
+      98,    14,    99,    15,    16,    73,   100,    52,    53,    54,
+      55,    56,    74,    75,    76,    94,    57,    58,    59,    60,
+      61,    62,    14,   128,   113,   101,    95,    17,    18,    73,
+      63,     1,   121,     9,    28,    29,    74,    75,    76,     2,
+     102,   129,   130,    38,    77,    46,    49,   102,    43,    44,
+      39,    13,    47,    50,   135,   102,   102,     2,   136,   117,
+     137,   140,   102,   102,    92,    93,   118,   119,   106,   107,
+     115,   116,   110,   111,   125,   126,    12,    27,    30,    31,
+      35,    42,    48,    41,    86,    51,    67,    45,    68,    71,
+      70,    72,   120,   103,    87,    88,    89,    90,    91,    96,
+     105,   109,   127,   104,   102,   114,   132,   141,   131,    25,
+     134,    36,    37,   133,    26,   138,   142,    40,   139,   123,
+     122,     0,     0,   124,     0,   108
   };
 
   const short int
   bp::yycheck_[] =
   {
-      69,    14,    71,     4,     5,    22,    75,     5,    12,     5,
-       4,    21,    32,    33,    21,    21,    33,    13,    28,    32,
-      33,    28,    28,    27,    93,    25,    26,    28,    29,    23,
-      28,    29,   101,     6,     7,     8,     9,    10,    29,    32,
-      33,    21,    15,    16,    17,    18,    19,    20,    28,    29,
-      30,    27,    27,    27,    21,    31,    29,    31,   127,    34,
-     129,    28,    29,    30,    27,    27,    23,    24,    31,    36,
-      32,    32,    33,    91,    92,   105,   106,    29,     0,    13,
-      22,    30,    29,    22,    22,    31,    34,     3,    32,    32,
-      30,    32,     6,    30,     6,    18,    32,    32,    28,    32,
-      32,    32,    26,    28,    25,    32,    35,    11,    27,    29,
-      28,     7,     7,   134,   102,    32,   103,    32,    28,    32,
-      27,    32,   104,    82,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    43
+      70,     4,    72,     4,     5,    21,    76,     6,     7,     8,
+       9,    10,    28,    29,    30,    22,    15,    16,    17,    18,
+      19,    20,    25,    14,    94,    12,    33,    28,    29,    21,
+      29,     5,   102,    29,    32,    33,    28,    29,    30,    13,
+      27,    32,    33,    21,    36,    21,    21,    27,    32,    33,
+      28,     0,    28,    28,    34,    27,    27,    13,   128,    31,
+     130,    32,    27,    27,    25,    26,    31,    31,    23,    24,
+      32,    33,    92,    93,   106,   107,    29,    22,    30,    29,
+      22,    22,     3,    31,     6,    44,    32,    34,    32,    32,
+      30,    30,     6,    26,    32,    32,    32,    32,    32,    28,
+      25,    28,    32,    35,    27,    29,    32,    11,    28,     7,
+      28,    20,    20,    32,     7,    32,    32,    29,   135,   104,
+     103,    -1,    -1,   105,    -1,    83
   };
 
   const unsigned char
   bp::yystos_[] =
   {
        0,     5,    13,    38,    39,    40,    41,    45,    46,    29,
-      47,    48,    29,     0,    40,     5,    28,    29,    43,    44,
-      49,    52,    53,    39,    46,    22,    32,    33,    30,    29,
-      50,    51,    54,    22,     4,    42,    44,    21,    28,    48,
-      31,    22,    32,    33,    34,    21,    28,     3,    21,    28,
-      51,     6,     7,     8,     9,    10,    15,    16,    17,    18,
-      19,    20,    29,    55,    56,    58,    32,    32,    57,    30,
-      32,    30,    21,    28,    29,    30,    36,    61,    62,    63,
-      64,    65,    66,    67,    68,     6,    32,    32,    32,    32,
-      32,    25,    26,    22,    33,    28,    60,    61,    61,    61,
-      12,    27,    26,    35,    25,    23,    24,    68,    28,    56,
-      56,    59,    61,    29,    32,    33,    31,    31,    31,     6,
-      61,    63,    64,    65,    67,    67,    32,    14,    32,    33,
-      28,    32,    32,    28,    34,    61,    61,    32,    62,    32,
-      11,    32
+      47,    48,    29,     0,    40,     4,     5,    28,    29,    42,
+      43,    44,    49,    52,    53,    39,    46,    22,    32,    33,
+      30,    29,    50,    51,    54,    22,    42,    44,    21,    28,
+      48,    31,    22,    32,    33,    34,    21,    28,     3,    21,
+      28,    51,     6,     7,     8,     9,    10,    15,    16,    17,
+      18,    19,    20,    29,    55,    56,    58,    32,    32,    57,
+      30,    32,    30,    21,    28,    29,    30,    36,    61,    62,
+      63,    64,    65,    66,    67,    68,     6,    32,    32,    32,
+      32,    32,    25,    26,    22,    33,    28,    60,    61,    61,
+      61,    12,    27,    26,    35,    25,    23,    24,    68,    28,
+      56,    56,    59,    61,    29,    32,    33,    31,    31,    31,
+       6,    61,    63,    64,    65,    67,    67,    32,    14,    32,
+      33,    28,    32,    32,    28,    34,    61,    61,    32,    62,
+      32,    11,    32
   };
 
   const unsigned char
   bp::yyr1_[] =
   {
-       0,    37,    38,    38,    39,    39,    40,    41,    42,    43,
-      43,    44,    44,    44,    45,    45,    46,    47,    47,    48,
-      48,    48,    49,    50,    50,    51,    51,    51,    52,    52,
-      54,    53,    55,    55,    55,    56,    57,    56,    56,    56,
-      56,    56,    56,    56,    56,    56,    56,    56,    56,    58,
-      58,    59,    59,    60,    60,    61,    61,    62,    62,    63,
-      63,    64,    64,    65,    65,    65,    66,    67,    67,    68,
-      68,    68,    68
+       0,    37,    38,    38,    39,    39,    40,    40,    41,    42,
+      43,    43,    44,    44,    44,    45,    45,    46,    47,    47,
+      48,    48,    48,    49,    50,    50,    51,    51,    51,    52,
+      52,    54,    53,    55,    55,    55,    56,    57,    56,    56,
+      56,    56,    56,    56,    56,    56,    56,    56,    56,    56,
+      58,    58,    59,    59,    60,    60,    61,    61,    62,    62,
+      63,    63,    64,    64,    65,    65,    65,    66,    67,    67,
+      68,    68,    68,    68
   };
 
   const unsigned char
   bp::yyr2_[] =
   {
-       0,     2,     2,     1,     1,     2,     3,     5,     1,     1,
-       2,     1,     1,     1,     1,     2,     3,     1,     3,     1,
-       3,     3,     3,     1,     3,     1,     3,     3,     4,     4,
-       0,     4,     1,     3,     3,     2,     0,     4,     4,     6,
-       8,     5,     5,     4,     2,     2,     2,     2,     2,     1,
-       3,     1,     3,     1,     3,     1,     5,     1,     3,     1,
-       3,     1,     3,     1,     3,     3,     1,     1,     2,     3,
-       1,     1,     1
+       0,     2,     2,     1,     1,     2,     2,     3,     5,     1,
+       1,     2,     1,     1,     1,     1,     2,     3,     1,     3,
+       1,     3,     3,     3,     1,     3,     1,     3,     3,     4,
+       4,     0,     4,     1,     3,     3,     2,     0,     4,     4,
+       6,     8,     5,     5,     4,     2,     2,     2,     2,     2,
+       1,     3,     1,     3,     1,     3,     1,     5,     1,     3,
+       1,     3,     1,     3,     1,     3,     3,     1,     1,     2,
+       3,     1,     1,     1
   };
 
 
@@ -1389,14 +1375,14 @@ namespace yy {
   const unsigned short int
   bp::yyrline_[] =
   {
-       0,   103,   103,   104,   107,   108,   111,   113,   115,   117,
-     118,   121,   122,   123,   127,   128,   131,   134,   135,   138,
-     144,   150,   159,   162,   163,   166,   172,   178,   188,   192,
-     198,   198,   208,   209,   210,   213,   216,   216,   220,   226,
-     233,   237,   242,   246,   249,   252,   255,   258,   261,   266,
-     270,   276,   280,   286,   289,   295,   296,   301,   302,   305,
-     306,   309,   310,   313,   314,   315,   318,   321,   322,   325,
-     326,   327,   328
+       0,   103,   103,   104,   107,   108,   111,   112,   114,   116,
+     118,   119,   122,   123,   124,   128,   129,   132,   135,   136,
+     139,   143,   147,   154,   157,   158,   161,   165,   169,   177,
+     181,   187,   187,   197,   198,   199,   202,   205,   205,   209,
+     215,   222,   226,   231,   235,   238,   241,   244,   247,   250,
+     255,   259,   265,   269,   275,   278,   284,   285,   290,   291,
+     294,   295,   298,   299,   302,   303,   304,   307,   310,   311,
+     314,   315,   316,   317
   };
 
   // Print the state stack on the debug stream.
@@ -1480,8 +1466,8 @@ namespace yy {
 
 
 } // yy
-#line 1484 "bopp.tab.cc" // lalr1.cc:1155
-#line 336 "bopp.y" // lalr1.cc:1156
+#line 1470 "bopp.tab.cc" // lalr1.cc:1155
+#line 325 "bopp.y" // lalr1.cc:1156
 
 
 /*******************************************************************************

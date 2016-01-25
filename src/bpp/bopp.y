@@ -108,7 +108,8 @@ funclist: function
 | funclist function
 ;
 
-function: funchead funcbody funcend;
+function: funchead funcend;
+|funchead funcbody funcend;
 
 funchead: T_VOID T_IDEN '(' ')' T_BEGIN;
 
@@ -137,20 +138,14 @@ s_id_list: s_id
 
 s_id: T_IDEN {
   aide.add_vars($1, sool::N, true);
-  /* aide.s_vars_list.emplace($1, ++aide.s_vars_num); */
-  /* aide.s_vars_init[aide.s_vars_num] = '*'; */
   free($1); // free it to avoid storage leaks
  }
 | T_IDEN T_ASSIGN T_NONDET {
   aide.add_vars($1, sool::N, true);
-  /* aide.s_vars_list.emplace($1, ++aide.s_vars_num); */
-  /* aide.s_vars_init[aide.s_vars_num] = '*'; */
   free($1); // free it to avoid storage leaks
  }
 | T_IDEN T_ASSIGN T_INT {
   aide.add_vars($1, $3 == 0 ? sool::F : sool::N, true);
-  /* aide.s_vars_list.emplace($1, ++aide.s_vars_num); */
-  /* aide.s_vars_init[aide.s_vars_num] = (); */
   free($1); // free it to avoid storage leaks
  }
 ;
@@ -165,20 +160,14 @@ l_id_list: l_id
 
 l_id: T_IDEN {
   aide.add_vars($1, sool::N, false);
-  /* aide.l_vars_list.emplace($1, ++aide.l_vars_num); */
-  /* aide.l_vars_init[aide.l_vars_num] = '*'; */
   free($1);
  }
 | T_IDEN T_ASSIGN T_NONDET {
   aide.add_vars($1, sool::N, false);
-  /* aide.l_vars_list.emplace($1, ++aide.l_vars_num); */
-  /* aide.l_vars_init[aide.l_vars_num] = '*'; */
   free($1);
  }
 | T_IDEN T_ASSIGN T_INT {
   aide.add_vars($1, $3 == 0 ? sool::F : sool::N, false);
-  /* aide.l_vars_list.emplace($1, ++aide.l_vars_num); */
-  /* aide.l_vars_init[aide.l_vars_num] = ($3 == 0 ? '0' : '1'); */
   free($1);
  }
 ;
@@ -201,7 +190,7 @@ labelstmt: T_INT {
   if(!aide.is_pc_unique($1)) // pc's uniqueness
     YYABORT; 
  } ':' statement {
-   //cout << "TEST:: I am in statement " << $1 <<endl;
+   cout << "TEST:: I am in statement " << $1 <<endl;
    }
 ;
 
