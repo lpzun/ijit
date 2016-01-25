@@ -253,11 +253,17 @@ metastmt: T_SKIP ';' { // "skip" statement
 ;
 
 iden_list: T_IDEN {
-  aide.assign_stmt_lhs.emplace_back($1);
+  string s($1);
+  if(s.back() == '$')
+  	s.pop_back();
+  aide.assign_stmt_lhs.emplace_back(s);
   free($1);
  }
 | iden_list ',' T_IDEN {
-  aide.assign_stmt_lhs.emplace_back($3);
+  string s($3);
+  if(s.back() == '$')
+  	s.pop_back();
+  aide.assign_stmt_lhs.emplace_back(s);
   free($3); 
   }
 ;

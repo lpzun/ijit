@@ -821,125 +821,131 @@ namespace yy {
   case 50:
 #line 255 "bopp.y" // lalr1.cc:847
     {
-  aide.assign_stmt_lhs.emplace_back((yystack_[0].value.t_str));
+  string s((yystack_[0].value.t_str));
+  if(s.back() == '$')
+  	s.pop_back();
+  aide.assign_stmt_lhs.emplace_back(s);
   free((yystack_[0].value.t_str));
  }
-#line 828 "bopp.tab.cc" // lalr1.cc:847
+#line 831 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 51:
-#line 259 "bopp.y" // lalr1.cc:847
+#line 262 "bopp.y" // lalr1.cc:847
     {
-  aide.assign_stmt_lhs.emplace_back((yystack_[0].value.t_str));
+  string s((yystack_[0].value.t_str));
+  if(s.back() == '$')
+  	s.pop_back();
+  aide.assign_stmt_lhs.emplace_back(s);
   free((yystack_[0].value.t_str)); 
   }
-#line 837 "bopp.tab.cc" // lalr1.cc:847
+#line 843 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 52:
-#line 265 "bopp.y" // lalr1.cc:847
+#line 271 "bopp.y" // lalr1.cc:847
     { 
   aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear();
  }
-#line 846 "bopp.tab.cc" // lalr1.cc:847
+#line 852 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 53:
-#line 269 "bopp.y" // lalr1.cc:847
+#line 275 "bopp.y" // lalr1.cc:847
     { 
   aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear(); 
   }
-#line 855 "bopp.tab.cc" // lalr1.cc:847
+#line 861 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 54:
-#line 275 "bopp.y" // lalr1.cc:847
+#line 281 "bopp.y" // lalr1.cc:847
     {
   aide.succ_pc_set.emplace((yystack_[0].value.t_val));
  }
-#line 863 "bopp.tab.cc" // lalr1.cc:847
+#line 869 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 55:
-#line 278 "bopp.y" // lalr1.cc:847
+#line 284 "bopp.y" // lalr1.cc:847
     {
   aide.succ_pc_set.emplace((yystack_[0].value.t_val));
   }
-#line 871 "bopp.tab.cc" // lalr1.cc:847
-    break;
-
-  case 56:
-#line 284 "bopp.y" // lalr1.cc:847
-    { }
 #line 877 "bopp.tab.cc" // lalr1.cc:847
     break;
 
+  case 56:
+#line 290 "bopp.y" // lalr1.cc:847
+    { }
+#line 883 "bopp.tab.cc" // lalr1.cc:847
+    break;
+
   case 57:
-#line 285 "bopp.y" // lalr1.cc:847
+#line 291 "bopp.y" // lalr1.cc:847
     {
   cout<<"This is a ternary expression"<<endl;
  }
-#line 885 "bopp.tab.cc" // lalr1.cc:847
-    break;
-
-  case 59:
-#line 291 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("|"); }
 #line 891 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 61:
-#line 295 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("^"); }
+  case 59:
+#line 297 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("|"); }
 #line 897 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 63:
-#line 299 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("&"); }
+  case 61:
+#line 301 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("^"); }
 #line 903 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 65:
-#line 303 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list( "="); }
+  case 63:
+#line 305 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("&"); }
 #line 909 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 66:
-#line 304 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("!="); }
+  case 65:
+#line 309 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list( "="); }
 #line 915 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 69:
-#line 311 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("!"); }
+  case 66:
+#line 310 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("!="); }
 #line 921 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 70:
-#line 314 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("()"); }
+  case 69:
+#line 317 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("!"); }
 #line 927 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 71:
-#line 315 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("*"); }
+  case 70:
+#line 320 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("()"); }
 #line 933 "bopp.tab.cc" // lalr1.cc:847
     break;
 
-  case 72:
-#line 316 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list((yystack_[0].value.t_val) ? "1" : "0"); }
+  case 71:
+#line 321 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list("*"); }
 #line 939 "bopp.tab.cc" // lalr1.cc:847
     break;
 
+  case 72:
+#line 322 "bopp.y" // lalr1.cc:847
+    { aide.add_to_expr_in_list((yystack_[0].value.t_val) ? "1" : "0"); }
+#line 945 "bopp.tab.cc" // lalr1.cc:847
+    break;
+
   case 73:
-#line 317 "bopp.y" // lalr1.cc:847
+#line 323 "bopp.y" // lalr1.cc:847
     { 
   string id = (yystack_[0].value.t_str);
   if(id.at(0) == '\'') // a successor variable
@@ -947,11 +953,11 @@ namespace yy {
     aide.add_to_expr_in_list(id); 
     free((yystack_[0].value.t_str));
   }
-#line 951 "bopp.tab.cc" // lalr1.cc:847
+#line 957 "bopp.tab.cc" // lalr1.cc:847
     break;
 
 
-#line 955 "bopp.tab.cc" // lalr1.cc:847
+#line 961 "bopp.tab.cc" // lalr1.cc:847
             default:
               break;
             }
@@ -1380,9 +1386,9 @@ namespace yy {
      139,   143,   147,   154,   157,   158,   161,   165,   169,   177,
      181,   187,   187,   197,   198,   199,   202,   205,   205,   209,
      215,   222,   226,   231,   235,   238,   241,   244,   247,   250,
-     255,   259,   265,   269,   275,   278,   284,   285,   290,   291,
-     294,   295,   298,   299,   302,   303,   304,   307,   310,   311,
-     314,   315,   316,   317
+     255,   262,   271,   275,   281,   284,   290,   291,   296,   297,
+     300,   301,   304,   305,   308,   309,   310,   313,   316,   317,
+     320,   321,   322,   323
   };
 
   // Print the state stack on the debug stream.
@@ -1466,8 +1472,8 @@ namespace yy {
 
 
 } // yy
-#line 1470 "bopp.tab.cc" // lalr1.cc:1155
-#line 325 "bopp.y" // lalr1.cc:1156
+#line 1476 "bopp.tab.cc" // lalr1.cc:1155
+#line 331 "bopp.y" // lalr1.cc:1156
 
 
 /*******************************************************************************
