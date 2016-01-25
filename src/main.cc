@@ -48,8 +48,8 @@ int main(int argc, char *argv[]) {
         printf("Usage: itof [-f file]\n");
     }
 
-    char* filename = getCmdOption(argv, argv + argc, "-f");
-    if (filename == 0) {
+    string filename(getCmdOption(argv, argv + argc, "-f"));
+    if (filename.length() == 0) {
         filename = "example/test1.bp";
     }
     auto P = parser::parse(filename, mode::POST);

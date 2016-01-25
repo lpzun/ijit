@@ -57,7 +57,9 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
  * @param file
  */
 void paide::output_control_flow_graph(FILE *file) {
-
+    for (auto i = cfg_G.get_E().begin(); i != cfg_G.get_E().end(); ++i) {
+        cout << i->get_src() << "->" << i->get_dest() << " " << endl;
+    }
 }
 
 /**
@@ -92,16 +94,16 @@ string paide::create_init_state(const map<ushort, sool>& minit) {
  * @return
  */
 assignment paide::create_assignment() {
-    for (auto iid = s_vars_list.begin(); iid != s_vars_list.end(); ++iid)
-        cout << iid->first << " " << iid->second << endl;
-
-    cout << this->s_vars_num << " " << this->l_vars_num << endl;
+//    for (auto iid = s_vars_list.begin(); iid != s_vars_list.end(); ++iid)//todo testing
+//        cout << iid->first << " " << iid->second << endl;
+//
+//    cout << this->s_vars_num << " " << this->l_vars_num << endl; //todo testing
     assignment assg(this->s_vars_num, this->l_vars_num);
     auto il = assign_stmt_lhs.begin(), iend = assign_stmt_lhs.end();
     auto ir = assign_stmt_rhs.begin(), eend = assign_stmt_rhs.end();
     while (il != iend && ir != eend) {
         const auto& p = look_up_var_index(*il);
-        cout << "==========" << p.second << endl;
+//        cout << "==========" << p.second << endl;
         if (p.first)
             assg.sh[p.second] = expr(*ir);
         else
