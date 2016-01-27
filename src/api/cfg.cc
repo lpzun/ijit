@@ -46,14 +46,27 @@ cfg::~cfg() {
  * @brief append an edge to E in CFG
  * @param e
  */
-void cfg::add_edge(const edge& e) {
-    if (e.get_src() < this->A.size())
-        A[e.get_src()].emplace_back(e.get_dest());
+void cfg::add_edge(const size_pc& src, const size_pc& dest,
+        const type_stmt& type) {
+    if (src < this->A.size())
+        A[src].emplace_back(dest);
     else
-        A.emplace_back(deque<size_pc>(1, e.get_dest()));
-    E.emplace_back(e);
+        A.emplace_back(deque<size_pc>(1, dest));
+    E.emplace_back(src, dest, type);
 }
 
+/**
+ * @brief append an edge to E in CFG
+ * @param e
+ */
+void cfg::add_edge(const size_pc& src, const size_pc& dest,
+        const type_stmt& type, const expr& condition) {
+    if (src < this->A.size())
+        A[src].emplace_back(dest);
+    else
+        A.emplace_back(deque<size_pc>(1, dest));
+    E.emplace_back(src, dest, type, condition);
+}
 /**
  * @brief add an assignment to location pc
  * @param pc: location
@@ -61,6 +74,22 @@ void cfg::add_edge(const edge& e) {
  */
 void cfg::add_assignment(const size_pc& pc, const assignment& a) {
     this->assignments.emplace(pc, a);
+}
+
+/**
+ * @brief output a assignment
+ * @param out
+ * @param s
+ * @return
+ */
+ostream& operator <<(ostream& out, const assignment& s) {
+    for (auto i = 0; i < s.sh.size(); ++i)
+        if (s.sh[i].is_valid())
+            out << i << "=" << s.sh[i] << ";";
+    for (auto i = 0; i < s.lo.size(); ++i)
+        if (s.lo[i].is_valid())
+            out << i << "=" << s.lo[i] << ";";
+    return out;
 }
 
 /**
@@ -83,6 +112,17 @@ edge::edge(const size_pc& src, const size_pc& dest, const stmt& s) :
 }
 
 /**
+ *
+ * @param src
+ * @param dest
+ * @param type
+ */
+edge::edge(const size_pc& src, const size_pc& dest, const type_stmt& type) :
+        src(src), dest(dest), st(type) {
+
+}
+
+/**
  * @brief constructor with src, dest, type and stmt
  * @param src
  * @param dest
@@ -101,7 +141,7 @@ edge::edge(const size_pc& src, const size_pc& dest, const type_stmt& type,
  */
 edge::edge(const edge& e) :
         src(e.get_src()), dest(e.get_dest()), st(e.get_stmt()) {
-
+    cout << "I am in constructor " << e.get_stmt().get_type() << endl;
 }
 
 /**
@@ -109,6 +149,18 @@ edge::edge(const edge& e) :
  */
 edge::~edge() {
 
+}
+
+/**
+ * @brief overloading operator <<
+ * @param out
+ * @param s
+ * @return output stream:
+ *         print an edge in cfg
+ */
+ostream& operator <<(ostream& out, const edge& e) {
+    out << e.get_src() << "->" << e.get_dest() << " " << e.get_stmt();
+    return out;
 }
 
 /**
@@ -120,7 +172,7 @@ stmt::stmt() :
 }
 
 stmt::stmt(const type_stmt& type) :
-        type(), condition() {
+        type(type), condition() {
 
 }
 
@@ -147,6 +199,18 @@ stmt::stmt(const stmt& s) :
  * @brief default destructor
  */
 stmt::~stmt() {
+}
+
+/**
+ * @brief overloading operator <<
+ * @param out
+ * @param s
+ * @return output stream:
+ *         print statement
+ */
+ostream& operator <<(ostream& out, const stmt& s) {
+    out << s.get_type() << " " << s.get_condition();
+    return out;
 }
 
 /**
@@ -260,5 +324,17 @@ value_v expr::eval(const state_v& sh, const state_v& lo) {
     return static_cast<value_v>(static_cast<const expr&>(*this).eval(sh, lo));
 }
 
+/**
+ * @brief overloading operator <<
+ * @param out
+ * @param e
+ * @return
+ */
+ostream& operator <<(ostream& out, const expr& e) {
+    for (auto is = e.get_sexpr().begin(); is != e.get_sexpr().end(); ++is) {
+        out << *is << " ";
+    }
+    return out;
+}
 }
 /* namespace otf */

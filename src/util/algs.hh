@@ -55,6 +55,13 @@ public:
 
     static deque<vector<sool>> split(const vector<sool>& vs);
 };
+
+class solver {
+public:
+    solver();
+    ~solver();
+
+};
 } /* namespace iotf */
 
 #endif /* UTIL_ALGS_HH_ */

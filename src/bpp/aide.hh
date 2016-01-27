@@ -102,7 +102,7 @@ public:
     void add_edge(const size_pc& src, const size_pc& dest,
             const type_stmt& type, const bool& is_condition = false);
 
-    void output_control_flow_graph(FILE *file);
+    void output_control_flow_graph();
 
     /// initial states
     ///
@@ -179,9 +179,6 @@ public:
 
     /// create weakest precondition formula of statements
 
-    /// extract thread state from assertion
-    string convert_formula_to_cnf(const deque<string>& symb_list,
-            const bool& is_assign);
     /// unit test
     void test_print_valid_assertion_ts();
     void test_output_parallel_assign_stmt();

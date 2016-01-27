@@ -15,6 +15,7 @@
 #define API_CFG_HH_
 
 #include "../util/state.hh"
+#include "../util/excp.hh"
 
 namespace iotf {
 
@@ -50,7 +51,61 @@ enum class type_stmt {
     SIGN = -13
 };
 
-
+/**
+ * @brief overloading operator <<
+ * @param out
+ * @param s
+ * @return output stream:
+ *         print an edge in cfg
+ */
+inline ostream& operator <<(ostream& out, const type_stmt& t) {
+    switch (t) {
+    case type_stmt::SKIP:
+        out << (-1);
+        break;
+    case type_stmt::GOTO:
+        out << (-2);
+        break;
+    case type_stmt::ASSG:
+        out << (-3);
+        break;
+    case type_stmt::IFEL:
+        out << (-4);
+        break;
+    case type_stmt::ASSE:
+        out << (-5);
+        break;
+    case type_stmt::ASSU:
+        out << (-6);
+        break;
+    case type_stmt::NTHR:
+        out << (-7);
+        break;
+    case type_stmt::ETHR:
+        out << (-8);
+        break;
+    case type_stmt::ATOM:
+        out << (-9);
+        break;
+    case type_stmt::EATM:
+        out << (-10);
+        break;
+    case type_stmt::BCST:
+        out << (-11);
+        break;
+    case type_stmt::WAIT:
+        out << (-12);
+        break;
+    case type_stmt::SIGN:
+        out << (-13);
+        break;
+    default:
+        out << (-14);
+        //throw iotf_runtime_error("unknown statement");
+        break;
+    }
+    return out;
+}
 
 /// define the symbols of Boolean expression
 /// it includes operator and operand
@@ -80,6 +135,8 @@ public:
 
 private:
     deque<symbol> sexpr;
+
+    friend ostream& operator <<(ostream& out, const expr& e);
 };
 
 /**
@@ -115,6 +172,8 @@ public:
 private:
     type_stmt type; /// statement type
     expr condition; /// precondition or postcondition
+
+    friend ostream& operator <<(ostream& out, const stmt& s);
 };
 
 /**
@@ -127,6 +186,7 @@ class edge {
 public:
     edge();
     edge(const size_pc& src, const size_pc& dest, const stmt& st);
+    edge(const size_pc& src, const size_pc& dest, const type_stmt& type);
     edge(const size_pc& src, const size_pc& dest, const type_stmt& type,
             const expr& condition);
     edge(const edge& e);
@@ -148,6 +208,8 @@ private:
     size_pc src;
     size_pc dest;
     stmt st;
+
+    friend ostream& operator <<(ostream& out, const edge& e);
 };
 
 using adj_list = vector<deque<size_pc>>;
@@ -170,6 +232,8 @@ struct assignment {
     }
     ~assignment() {
     }
+
+    friend ostream& operator <<(ostream& out, const assignment& s);
 };
 
 /**
@@ -197,7 +261,10 @@ public:
         return assignments;
     }
 
-    void add_edge(const edge& e);
+    void add_edge(const size_pc& src, const size_pc& dest,
+            const type_stmt& type);
+    void add_edge(const size_pc& src, const size_pc& dest,
+            const type_stmt& type, const expr& condition);
     void add_assignment(const size_pc& pc, const assignment& a);
 
 private:

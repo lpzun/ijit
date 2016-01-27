@@ -138,4 +138,11 @@ deque<vector<sool>> alg::split(const vector<sool>& vs) {
     return result;
 }
 
+solver::solver() {
+
+}
+solver::~solver() {
+
+}
+
 } /* namespace otf */

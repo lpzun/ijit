@@ -88,14 +88,10 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     /* fw_aide aide; */
     //move the file point to the begin and print the total line number
     cout << "shared, local, line\n";
-    cout << aide.s_vars_num << ", " << aide.l_vars_num << ", " << aide.lineno;
-    cout<<endl;
-    /// NOTE: note the initial pc = 0
-//    fprintf(cfg_file, "init %s|0,%s # initial thread state\n",
-//            (aide.create_init_state(aide.s_vars_init)).c_str(),
-//            (aide.create_init_state(aide.l_vars_init)).c_str());
-//    fprintf(cfg_file, "%d%s %d\n", aide.lineno,
-//            " # the number of lines in BP with cand PC = ", 1);
+    cout << aide.s_vars_num << ", " << aide.l_vars_num << ", " << aide.lineno
+            << "\n";
+    aide.output_control_flow_graph();
+    cout << endl;
 
     return std::make_pair(I, Q);
 }

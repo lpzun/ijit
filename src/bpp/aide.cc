@@ -29,7 +29,7 @@ bool paide::is_pc_unique(const size_pc& pc) {
  */
 void paide::add_edge(const size_pc& src, const type_stmt& type) {
     for (auto ie = succ_pc_set.begin(); ie != succ_pc_set.end(); ++ie)
-        cfg_G.add_edge(edge(src, *ie, type));
+        cfg_G.add_edge(src, *ie, type);
 }
 
 /**
@@ -42,9 +42,9 @@ void paide::add_edge(const size_pc& src, const type_stmt& type) {
 void paide::add_edge(const size_pc& src, const size_pc& dest,
         const type_stmt& type, const bool& is_condition) {
     if (!is_condition) {
-        cfg_G.add_edge(edge(src, dest, type));
+        cfg_G.add_edge(src, dest, type);
     } else {
-        cfg_G.add_edge(edge(src, dest, type, expr(expr_in_list)));
+        cfg_G.add_edge(src, dest, type, expr(expr_in_list));
     }
     /// build assignment
     if (type == type_stmt::ASSG) {
@@ -56,9 +56,12 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
  * @brief output the control flow graph to the file
  * @param file
  */
-void paide::output_control_flow_graph(FILE *file) {
-    for (auto i = cfg_G.get_E().begin(); i != cfg_G.get_E().end(); ++i) {
-        cout << i->get_src() << "->" << i->get_dest() << " " << endl;
+void paide::output_control_flow_graph() {
+    for (const auto& e : cfg_G.get_E()) {
+        cout << e << "\n";
+    }
+    for (const auto& s : cfg_G.get_assignments()) {
+        cout << s.first << " " << s.second << "\n";
     }
 }
 
@@ -94,16 +97,11 @@ string paide::create_init_state(const map<ushort, sool>& minit) {
  * @return
  */
 assignment paide::create_assignment() {
-//    for (auto iid = s_vars_list.begin(); iid != s_vars_list.end(); ++iid)//todo testing
-//        cout << iid->first << " " << iid->second << endl;
-//
-//    cout << this->s_vars_num << " " << this->l_vars_num << endl; //todo testing
     assignment assg(this->s_vars_num, this->l_vars_num);
     auto il = assign_stmt_lhs.begin(), iend = assign_stmt_lhs.end();
     auto ir = assign_stmt_rhs.begin(), eend = assign_stmt_rhs.end();
     while (il != iend && ir != eend) {
         const auto& p = look_up_var_index(*il);
-//        cout << "==========" << p.second << endl;
         if (p.first)
             assg.sh[p.second] = expr(*ir);
         else
@@ -224,12 +222,11 @@ string paide::recov_expr_from_list(const deque<symbol>& symb_list,
  *        exhaustive algorithm. I've no idea if we should use a more efficient
  *        SAT solver. It seems unnecessary due to that each assertion contains
  *        only very few boolean variables.
- * @note Here, we assume the assertion doesn't contain any constant, i.e., *, 0, 1.
  * @param symb_list: an expression
  * @param pc
  * @return a set of satisfiable assignments
  */
-void paide::all_sat_solver(const deque<string>& symb_list, const ushort& pc) {
+void paide::all_sat_solver(const deque<symbol>& symb_list, const ushort& pc) {
     deque<string> s_target_list;
     map<string, ushort> assert_vars; /// boolean variables in the assertion
     ushort assert_vars_num = 0; /// the # of boolean variables in the assertion
@@ -577,115 +574,6 @@ string bw_aide::create_succ_vars(const string& var) {
     return SUCC_POSTFIX + var;
 }
 
-string bw_aide::convert_formula_to_cnf(const deque<string>& symb_list,
-        const bool& is_assign) {
-    string wp_in_cnf;
-
-    map<string, ushort> expr_vars; // boolean variables in the formula
-    ushort expr_vars_num = 0; // the number of boolean variables in the formula
-    for (auto is = symb_list.begin(); is != symb_list.end(); is++) {
-        const auto& s = *is;
-        // using regular expression here would be a better choice
-        if (!(s.compare(refs::AND) == 0 || s.compare(refs::OR) == 0
-                || s.compare(refs::NEQ) == 0 || s.compare(refs::EQ) == 0
-                || s.compare(refs::XOR) == 0
-                || s.compare(refs::PAREN_L + refs::PAREN_R) == 0
-                || s.compare(refs::NEG) == 0 || s.compare(refs::CONST_F) == 0
-                || s.compare(refs::CONST_T) == 0
-                || s.compare(refs::CONST_N) == 0)) {
-            expr_vars.emplace(s, expr_vars_num);
-            ++expr_vars_num;
-        }
-    }
-
-    if (expr_vars_num == 0)
-        return recov_expr_from_list(symb_list, true);
-
-    vector<ushort> var_indices(expr_vars.size());
-    for (ushort i = 0; i < std::pow(2, expr_vars_num); i++) {
-        auto assert_vars_assignments = decimal2binary(i, expr_vars_num);
-        stack<bool> comp_result_stack;
-        for (auto is = symb_list.begin(); is != symb_list.end(); ++is) {
-            const auto& s = *is;
-            bool operand1, operand2;
-            if (s.compare(refs::AND) == 0) { // and
-                operand1 = comp_result_stack.top();
-                comp_result_stack.pop();
-                operand2 = comp_result_stack.top();
-                comp_result_stack.pop();
-                comp_result_stack.push(operand2 && operand1);
-            } else if (s.compare(refs::OR) == 0) { // or
-                operand1 = comp_result_stack.top();
-                comp_result_stack.pop();
-                operand2 = comp_result_stack.top();
-                comp_result_stack.pop();
-                comp_result_stack.push(operand2 || operand1);
-            } else if (s.compare(refs::EQ) == 0) { // equal
-                operand1 = comp_result_stack.top();
-                comp_result_stack.pop();
-                operand2 = comp_result_stack.top();
-                comp_result_stack.pop();
-                comp_result_stack.push(operand2 == operand1);
-            } else if (s.compare(refs::NEQ) == 0) { // not equal
-                operand1 = comp_result_stack.top();
-                comp_result_stack.pop();
-                operand2 = comp_result_stack.top();
-                comp_result_stack.pop();
-                comp_result_stack.push(operand2 != operand1);
-            } else if (s.compare(refs::OR) == 0) { // exclusive or
-                operand1 = comp_result_stack.top();
-                comp_result_stack.pop();
-                operand2 = comp_result_stack.top();
-                comp_result_stack.pop();
-                comp_result_stack.push(operand2 ^ operand1);
-            } else if (s.compare(refs::PAREN_L + refs::PAREN_R) == 0) { // bracket
-                operand1 = comp_result_stack.top();
-                comp_result_stack.pop();
-                comp_result_stack.push(operand1);
-            } else if (s.compare(refs::NEG) == 0) { // negation
-                operand1 = comp_result_stack.top();
-                comp_result_stack.pop();
-                comp_result_stack.push(!operand1);
-            } else { // variables
-                map<string, ushort>::iterator ifind;
-                if ((ifind = expr_vars.find(s)) != expr_vars.end()) {
-                    ushort i = ifind->second;
-                    bool b_value = assert_vars_assignments[i];
-                    if (is_assign) {
-                        if ((ifind = s_vars_list.find(s)) != s_vars_list.end())
-                            var_indices[i] = ifind->second;
-                        else if ((ifind = l_vars_list.find(s))
-                                != l_vars_list.end())
-                            var_indices[i] = ifind->second + s_vars_list.size();
-                    } else {
-                        if ((ifind = s_vars_list.find(s)) != s_vars_list.end())
-                            var_indices[i] = ifind->second + s_vars_list.size()
-                                    + 2 * l_vars_list.size();
-                        else if ((ifind = l_vars_list.find(s))
-                                != l_vars_list.end())
-                            var_indices[i] = ifind->second + s_vars_list.size()
-                                    + l_vars_list.size();
-                    }
-                    comp_result_stack.push(b_value);
-                }
-            }
-        }
-
-        if (!comp_result_stack.top()) {
-            ushort i = 0;
-            wp_in_cnf.append("& ");
-            for (auto ib = assert_vars_assignments.begin(), end =
-                    assert_vars_assignments.end(); ib != end; ib++, i++) {
-                wp_in_cnf.append(
-                        std::to_string(
-                                (*ib ? -var_indices[i] : var_indices[i]))).append(
-                        " ");
-            }
-        }
-    }
-
-    return wp_in_cnf.substr(2);
-}
 
 ///////////////////// Some Testing Methods /////////////////////
 void bw_aide::test_output_parallel_assign_stmt() {

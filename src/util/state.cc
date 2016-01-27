@@ -14,7 +14,7 @@ namespace iotf {
  * @brief default constructor
  */
 shared_state::shared_state() :
-		vars(state_v(refs::SHARED_VARS_NUM, false)) {
+        vars(state_v(refs::SHARED_VARS_NUM, false)) {
 }
 
 /**
@@ -22,7 +22,7 @@ shared_state::shared_state() :
  * @param vars
  */
 shared_state::shared_state(const state_v& vars) :
-		vars(vars) {
+        vars(vars) {
 }
 
 /**
@@ -40,19 +40,19 @@ shared_state::~shared_state() {
  *         print shared state
  */
 ostream& operator <<(ostream& out, const shared_state& s) {
-	if (s.get_vars().size() > 0) {
-		for (auto i = 0; i < s.get_vars().size() - 1; ++i)
-			cout << s.get_vars()[i] << ",";
-		cout << s.get_vars()[s.get_vars().size() - 1];
-	}
-	return out;
+    if (s.get_vars().size() > 0) {
+        for (auto i = 0; i < s.get_vars().size() - 1; ++i)
+            out << s.get_vars()[i] << ",";
+        out << s.get_vars()[s.get_vars().size() - 1];
+    }
+    return out;
 }
 
 /**
  * @brief constructor
  */
 local_state::local_state() :
-		pc(0), vars(state_v(refs::LOCAL_VARS_NUM, false)) {
+        pc(0), vars(state_v(refs::LOCAL_VARS_NUM, false)) {
 
 }
 
@@ -62,7 +62,7 @@ local_state::local_state() :
  * @param vars
  */
 local_state::local_state(const size_pc& pc, const state_v& vars) :
-		pc(pc), vars(vars) {
+        pc(pc), vars(vars) {
 
 }
 
@@ -81,17 +81,17 @@ local_state::~local_state() {
  *         print local state
  */
 ostream& operator <<(ostream& out, const local_state& l) {
-	out << l.get_pc();
-	for (auto i = 0; i < l.get_vars().size(); ++i)
-		out << "," << l.get_vars()[i];
-	return out;
+    out << l.get_pc();
+    for (auto i = 0; i < l.get_vars().size(); ++i)
+        out << "," << l.get_vars()[i];
+    return out;
 }
 
 /**
  * @brief default constructor
  */
 thread_state::thread_state() :
-		s(shared_state()), l(local_state()) {
+        s(shared_state()), l(local_state()) {
 
 }
 
@@ -101,7 +101,7 @@ thread_state::thread_state() :
  * @param l
  */
 thread_state::thread_state(const shared_state& s, const local_state& l) :
-		s(s), l(l) {
+        s(s), l(l) {
 
 }
 
@@ -110,7 +110,7 @@ thread_state::thread_state(const shared_state& s, const local_state& l) :
  * @param t
  */
 thread_state::thread_state(const thread_state& t) :
-		s(t.get_s()), l(t.get_l()) {
+        s(t.get_s()), l(t.get_l()) {
 
 }
 
@@ -129,15 +129,15 @@ thread_state::~thread_state() {
  *         print thread state
  */
 ostream& operator <<(ostream& out, const thread_state& t) {
-	out << "(" << t.get_s() << "|" << t.get_l() << ")";
-	return out;
+    out << "(" << t.get_s() << "|" << t.get_l() << ")";
+    return out;
 }
 
 /**
  * @brief default constructor
  */
 global_state::global_state() :
-		s(shared_state()), locals() {
+        s(shared_state()), locals() {
 
 }
 
@@ -147,7 +147,7 @@ global_state::global_state() :
  * @param locals
  */
 global_state::global_state(const shared_state& s, const cab_locals& locals) :
-		s(s), locals(locals) {
+        s(s), locals(locals) {
 
 }
 
@@ -156,7 +156,7 @@ global_state::global_state(const shared_state& s, const cab_locals& locals) :
  * @param g
  */
 global_state::global_state(const global_state& g) :
-		s(g.get_s()), locals(g.get_locals()) {
+        s(g.get_s()), locals(g.get_locals()) {
 
 }
 
@@ -175,11 +175,11 @@ global_state::~global_state() {
  *         print global state
  */
 ostream& operator <<(ostream& out, const global_state& g) {
-	out << "<" << g.get_s() << "|";
-	for (auto il = g.get_locals().begin(); il != g.get_locals().end(); ++il)
-		out << "(" << il->first << "," << il->second << ")";
-	out << ">";
-	return out;
+    out << "<" << g.get_s() << "|";
+    for (auto il = g.get_locals().begin(); il != g.get_locals().end(); ++il)
+        out << "(" << il->first << "," << il->second << ")";
+    out << ">";
+    return out;
 }
 
 } /* namespace ucob */
