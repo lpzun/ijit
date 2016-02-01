@@ -146,8 +146,6 @@ private:
             const state_v& _lv);
     deque<pair<state_v, state_v>> weakest_precondition(const state_v& _sv,
             const state_v& _lv);
-
-    deque<state_v> all_sat_solver();
 };
 
 /**
@@ -163,9 +161,8 @@ public:
     deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
-    deque<prog_state> compute_cov_successors(const prog_state& tau);
-    deque<prog_state> compute_successors(const cab_locals& Z,
-            const local_state& local);
+    void compute_post_images(const prog_state& tau, const local_state& local,
+            deque<prog_state>& successors);
 
     void compute_image_assg_stmt(state_v& _s, state_v& _l, const state_v& s,
             const state_v& l, const size_pc& pc);
