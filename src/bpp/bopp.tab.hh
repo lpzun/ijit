@@ -274,7 +274,7 @@ namespace yy {
 
 
     /// Build a parser object.
-    bp (fw_aide &aide_yyarg);
+    bp (paide &aide_yyarg);
     virtual ~bp ();
 
     /// Parse.
@@ -483,7 +483,7 @@ namespace yy {
 
 
     // User arguments.
-    fw_aide &aide;
+    paide &aide;
   };
 
 

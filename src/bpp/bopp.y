@@ -24,7 +24,7 @@
 }
 
  // tell Bison that yyparse should take an extra parameter paide
-%parse-param { fw_aide &aide }
+%parse-param { paide &aide }
 
 %define parser_class_name {bp} // define the parser's name
 %{
@@ -224,8 +224,9 @@ metastmt: T_SKIP ';' { // "skip" statement
   aide.expr_in_list.clear();
  } 
 | T_ASSERT '(' expr ')' ';' { // "assert" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE);		
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE, true);		
   //aide.all_sat_solver(aide.expr_in_list, aide.ipc);
+  aide.is_failed_assertion();
   aide.expr_in_list.clear();
   }
 | T_ASSUME '(' expr ')' ';' { // "assume" statement
@@ -288,9 +289,7 @@ to_line_list: T_INT  {
 
 /* expressions */
 expr: or_expr { }
-| expr T_TERNARY expr ':' or_expr {
-  cout<<"This is a ternary expression"<<endl;
- }
+| expr T_TERNARY expr ':' or_expr { }
 ;
 
 or_expr: xor_expr

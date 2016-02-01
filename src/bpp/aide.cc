@@ -28,8 +28,8 @@ bool paide::is_pc_unique(const size_pc& pc) {
  * @param sp
  */
 void paide::add_edge(const size_pc& src, const type_stmt& type) {
-    for (auto ie = succ_pc_set.begin(); ie != succ_pc_set.end(); ++ie)
-        cfg_G.add_edge(src, *ie, type);
+    for (const auto& dest : succ_pc_set)
+        cfg_G.add_edge(src, dest, type);
 }
 
 /**
@@ -150,6 +150,20 @@ void paide::init_vars(const string& var, const sool& val) {
  */
 void paide::add_to_expr_in_list(const symbol& s) {
     expr_in_list.emplace_back(s);
+}
+
+void paide::is_failed_assertion() {
+    cout << "----------------" << expr_in_list.size();
+    for (const auto& s : expr_in_list) {
+        cout <<"||||||" <<s;
+        if (s == refs::CONST_N || s == refs::CONST_F) {
+            if (!this->is_failed) {
+                cout << "-----------I am here-----";
+                this->is_failed = true;
+                break;
+            }
+        }
+    }
 }
 
 /**
@@ -459,148 +473,5 @@ string paide::create_vars_value_as_str(const vector<ushort>& sv) {
 /// from here: the auxiliary functions for backward based parser
 ///
 ///////////////////////////////////////////////////////////////////////////////
-
-/**
- * @brief to add the shared variables to a map
- * @param var
- * @param index
- * @return
- */
-bool bw_aide::add_to_l_vars_list(const string& var, const ushort& index) {
-    auto p = l_vars_list.emplace(var, index);
-    return p.second;
-}
-
-/**
- * @brief output the wp in the Dimacs format
- * @param file
- */
-void bw_aide::output_control_flow_graph_dimacs(FILE *file) {
-    size_pc index = s_vars_list.size() + l_vars_list.size();
-    string inv = create_invariant_clause_in_wp();
-    replace_vars_with_index(inv, index);
-    fprintf(file, "%s = %s\n", INVARIANT.c_str(), inv.c_str());
-
-//    for (auto ie = control_flow_graph.begin(); ie != control_flow_graph.end();
-//            ++ie) {
-//        auto edge = *ie;
-//        replace_vars_with_index(edge, index);
-//        fprintf(file, "%s\n", edge.c_str());
-//    }
-}
-
-/**
- * @brief replace variables with Dimacs index
- * @param src
- * @param index
- */
-void bw_aide::replace_vars_with_index(string& src, const ushort& index) {
-    replaceAll(src, "--", "");
-    for (auto is = s_vars_list.begin(); is != s_vars_list.end(); ++is) {
-        replaceAll(src, create_succ_vars(is->first),
-                std::to_string(is->second + l_vars_list.size() + index));
-        replaceAll(src, is->first, std::to_string(is->second));
-    }
-    for (auto il = l_vars_list.begin(); il != l_vars_list.end(); il++) {
-        replaceAll(src, create_succ_vars(il->first),
-                std::to_string(il->second + index));
-        replaceAll(src, il->first,
-                std::to_string(il->second + s_vars_list.size()));
-    }
-}
-
-/**
- *@brief replace all appearances of src in str with subst
- * @param str
- * @param src
- * @param subst
- */
-void bw_aide::replaceAll(string& str, const string& src, const string& subst) {
-    if (src.empty())
-        return;
-    size_t start_pos = 0;
-    while ((start_pos = str.find(src, start_pos)) != string::npos) {
-        str.replace(start_pos, src.length(), subst);
-        start_pos += subst.length(); /// in case 'to' contains 'from', like replacing 'x' with 'yx'
-    }
-}
-
-///////////// build Weakest Precondition Formula of Statements ////////////
-///
-/**
- * @brief to create the part of wp formula, which contains the non-assignment variables
- *           call by create_assign_stmt_wp()
- * @return string the wp formula
- */
-string bw_aide::create_unassign_clause_in_wp() {
-    string formula;
-    for (auto il = l_vars_list.begin(); il != l_vars_list.end(); il++) {
-        auto ifind = std::find(assign_stmt_lhs.begin(), assign_stmt_lhs.end(),
-                il->first);
-        if (ifind == assign_stmt_lhs.end()) {
-            formula.append(il->first).append(" ").append("-").append(
-                    create_succ_vars(il->first)).append(_AND_);
-            formula.append("-").append(il->first).append(" ").append(
-                    create_succ_vars(il->first)).append(_AND_);
-        }
-    }
-    formula = formula.substr(0, formula.length() - _AND_.size());
-    return formula;
-}
-
-/**
- * @brief to create invariant wp formula:
- *          call by goto, skip, assert, and assume statements
- * @return string: the wp formula
- */
-string bw_aide::create_invariant_clause_in_wp() {
-    string formula;
-    for (auto il = l_vars_list.begin(); il != l_vars_list.end(); il++) {
-        formula.append(il->first).append(" ").append("-").append(
-                create_succ_vars(il->first)).append(_AND_);
-        formula.append("-").append(il->first).append(" ").append(
-                create_succ_vars(il->first)).append(_AND_);
-    }
-    formula = formula.substr(0, formula.length() - _AND_.size());
-    return formula;
-}
-
-/**
- * @brief to output the name of successor's variable
- * @param var
- * @return string var + SUCC_POSTFIX
- */
-string bw_aide::create_succ_vars(const string& var) {
-    return SUCC_POSTFIX + var;
-}
-
-
-///////////////////// Some Testing Methods /////////////////////
-void bw_aide::test_output_parallel_assign_stmt() {
-    auto i_iter = assign_stmt_lhs.begin(), i_end = assign_stmt_lhs.end();
-    auto e_iter = assign_stmt_rhs.begin(), e_end = assign_stmt_rhs.end();
-    while (i_iter != i_end && e_iter != e_end) {
-        const auto& iden = *i_iter;
-        const auto& expr = *e_iter;
-        cout << iden << ":=" << recov_expr_from_list(expr, true) << endl;
-        i_iter++, e_iter++;
-    }
-}
-
-/**
- * @brief to print thread state extracted from assertion
- */
-void bw_aide::test_print_valid_assertion_ts() {
-    for (auto iter = valid_assertion_ts.begin(), end = valid_assertion_ts.end();
-            iter != end; iter++) {
-        const auto& pc = iter->first;
-        const auto& tss = iter->second;
-        for (auto l_iter = tss.begin(), l_end = tss.end(); l_iter != l_end;
-                l_iter++) {
-            const auto& assign = *l_iter;
-            cout << pc << ":" << assign << endl;
-        }
-    }
-}
 
 } /* namespace iotf */

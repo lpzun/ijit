@@ -59,22 +59,22 @@ namespace iotf {
 class paide {
 public:
     paide() :
-            lineno(0), ipc(0), s_vars_num(0), l_vars_num(0) {
+            is_failed(false), lineno(0), ipc(0), s_vars_num(0), l_vars_num(0) {
     }
 
-    virtual ~paide() {
+    ~paide() {
     }
 
     const string SUCC_POSTFIX = "_";
     const string _AND_ = " & ";
 
+    bool is_failed;
     size_pc lineno; /// initialize the lineno
     size_pc ipc; /// the source of cfg edge
     ushort s_vars_num; /// the number of shared variables
     ushort l_vars_num; /// the number of local variables
 
     set<size_pc> pc_set;
-
     map<string, ushort> s_vars_list; /// store shared variables and indices
     map<string, ushort> l_vars_list; /// store local  variables and indices
     map<ushort, sool> s_vars_init; /// to record the initial shared state
@@ -83,14 +83,11 @@ public:
     cfg cfg_G;
 
     set<size_pc> succ_pc_set; /// store the succeeding pcs
-
     deque<symbol> expr_in_list; /// the expression symbol list
 
     /// to store parallel assignment statements
     deque<string> assign_stmt_lhs; /// the right-hand side of parallel assignment
     deque<deque<string>> assign_stmt_rhs; /// the left-hand side of of parallel assignment
-
-    map<size_pc, deque<string>> valid_assertion_ts;
 
     /////////////////////////////// function list /////////////////////////////
 
@@ -112,17 +109,17 @@ public:
 
     /// extract final state from assertion
     void output_final_state_to_file(const string& filename);
-    void all_sat_solver(const deque<string>& symb_list, const ushort& pc);
 
     /// expression
     void add_to_expr_in_list(const string& symbol);
     string recov_expr_from_list(const deque<string>& symb_list,
             const bool& is_origi = false);
-    string output_expr_as_str(const deque<string>& symb_list);
+    void all_sat_solver(const deque<string>& symb_list, const ushort& pc);
 
     /// unit test
     void test_print_valid_assertion_ts();
     void test_output_parallel_assign_stmt();
+    void is_failed_assertion();
 
 protected:
     pair<bool, ushort> look_up_var_index(const string& var);
@@ -131,67 +128,10 @@ protected:
     string create_vars_value_as_str(const vector<ushort>& sv);
 
     assignment create_assignment();
-
 private:
-
+    map<size_pc, deque<string>> valid_assertion_ts;
 }
 ;
 
-/**
- * @brief this is auxiliary class for forward based parser
- */
-class fw_aide: public paide {
-public:
-    fw_aide() :
-            paide() {
-
-    }
-
-    virtual ~fw_aide() {
-
-    }
-
-private:
-
-};
-
-/**
- * @brief this is auxiliary class for backward based parser
- */
-class bw_aide: public paide {
-public:
-    bw_aide() :
-            paide(), is_dimacs(false) {
-    }
-    ~bw_aide() {
-    }
-
-    const string INVARIANT = "inv";
-
-    bool is_dimacs;
-
-    ushort cand_count = 0;
-
-    void output_control_flow_graph_dimacs(FILE *file);
-
-    bool add_to_l_vars_list(const string& var, const ushort& index);
-    void add_to_expr_symb_list(const string& symbol);
-
-    /// create weakest precondition formula of statements
-
-    /// unit test
-    void test_print_valid_assertion_ts();
-    void test_output_parallel_assign_stmt();
-
-private:
-    string create_unassign_clause_in_wp();
-    string create_invariant_clause_in_wp();
-    string create_succ_vars(const string& var);
-
-    void replace_vars_with_index(string& src, const ushort& index);
-    void replaceAll(string& str, const string& from, const string& to);
-};
-
-} /* namespace iotf */
-
+} /* namespace otf */
 #endif /* BPP_AIDE_HH_ */

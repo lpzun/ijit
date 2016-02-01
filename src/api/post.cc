@@ -25,13 +25,26 @@ post_image::~post_image() {
 }
 
 /**
- * @brief implement the pure virtual function <step> from base case image
+ * @brief to compute post images of global state tau: this implementation
+ *        iterates over all threads: each thread is used as active thread
  * @param tau
  * @return cover successors
  *         a set of cover successors
  */
 deque<prog_state> post_image::step(const prog_state& tau) {
     return this->compute_cov_successors(tau);
+}
+
+/**
+ * @brief to compute post images of global state tau: all post images are
+ *        computed with respect to a particular thread.
+ * @param tau
+ * @param l
+ * @return
+ */
+deque<prog_state> post_image::step(const prog_state& tau,
+        const local_state& l) {
+
 }
 
 /**

@@ -20,8 +20,8 @@ ushort refs::PC_NUM = 0;
 
 /// constant expression
 const string refs::CONST_N = "*"; /// constant nondeterministic choice
-const string refs::CONST_T = "0"; /// constant true
-const string refs::CONST_F = "1"; /// constant false
+const string refs::CONST_T = "1"; /// constant true
+const string refs::CONST_F = "0"; /// constant false
 
 /// unary operator
 const string refs::NEG = "!";

@@ -72,17 +72,17 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
 
     FILE *bPfile = fopen(filename.c_str(), "r");
     if (!bPfile) {
-        throw iotf_runtime_error("I cannot open " + filename);
+        throw iotf_runtime_error(filename + " open failed!");
     }
     yyin = bPfile;
 
     /// file list
-    fw_aide aide;
+    paide aide;
     yy::bp parser(aide); // make a parser
     int result = parser.parse(); // and run it
     if (result != 0) {
         throw iotf_runtime_error(
-                "Parser exit with exception: code " + std::to_string(result));
+                "Parser exit with exception: " + std::to_string(result));
     }
 
     /* fw_aide aide; */
@@ -92,6 +92,8 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
             << "\n";
     aide.output_control_flow_graph();
     cout << endl;
+    if (aide.is_failed)
+        cout << "ooooooooooooooo\n";
 
     return std::make_pair(I, Q);
 }

@@ -179,7 +179,7 @@ namespace yy {
 
 
   /// Build a parser object.
-  bp::bp (fw_aide &aide_yyarg)
+  bp::bp (paide &aide_yyarg)
     :
 #if YYDEBUG
       yydebug_ (false),
@@ -754,72 +754,73 @@ namespace yy {
   case 42:
 #line 226 "bopp.y" // lalr1.cc:847
     { // "assert" statement
-  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE);		
+  aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE, true);		
   //aide.all_sat_solver(aide.expr_in_list, aide.ipc);
+  aide.is_failed_assertion();
   aide.expr_in_list.clear();
   }
-#line 762 "bopp.tab.cc" // lalr1.cc:847
+#line 763 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 43:
-#line 231 "bopp.y" // lalr1.cc:847
+#line 232 "bopp.y" // lalr1.cc:847
     { // "assume" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSU, true);
   aide.expr_in_list.clear();
   }
-#line 771 "bopp.tab.cc" // lalr1.cc:847
+#line 772 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 44:
-#line 235 "bopp.y" // lalr1.cc:847
+#line 236 "bopp.y" // lalr1.cc:847
     { // "thread creation" statement
   aide.add_edge(aide.ipc, (yystack_[1].value.t_val), type_stmt::NTHR);
  }
-#line 779 "bopp.tab.cc" // lalr1.cc:847
+#line 780 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 45:
-#line 238 "bopp.y" // lalr1.cc:847
+#line 239 "bopp.y" // lalr1.cc:847
     { // thread termination statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ETHR);
   }
-#line 787 "bopp.tab.cc" // lalr1.cc:847
+#line 788 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 46:
-#line 241 "bopp.y" // lalr1.cc:847
+#line 242 "bopp.y" // lalr1.cc:847
     { // atomic section beginning
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ATOM);
   }
-#line 795 "bopp.tab.cc" // lalr1.cc:847
+#line 796 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 47:
-#line 244 "bopp.y" // lalr1.cc:847
+#line 245 "bopp.y" // lalr1.cc:847
     { // atomic section ending
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::EATM);
   }
-#line 803 "bopp.tab.cc" // lalr1.cc:847
+#line 804 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 48:
-#line 247 "bopp.y" // lalr1.cc:847
+#line 248 "bopp.y" // lalr1.cc:847
     { // broadcast statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::BCST);
   }
-#line 811 "bopp.tab.cc" // lalr1.cc:847
+#line 812 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 49:
-#line 250 "bopp.y" // lalr1.cc:847
+#line 251 "bopp.y" // lalr1.cc:847
     { // wait statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::WAIT);
   }
-#line 819 "bopp.tab.cc" // lalr1.cc:847
+#line 820 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 50:
-#line 255 "bopp.y" // lalr1.cc:847
+#line 256 "bopp.y" // lalr1.cc:847
     {
   string s((yystack_[0].value.t_str));
   if(s.back() == '$')
@@ -827,11 +828,11 @@ namespace yy {
   aide.assign_stmt_lhs.emplace_back(s);
   free((yystack_[0].value.t_str));
  }
-#line 831 "bopp.tab.cc" // lalr1.cc:847
+#line 832 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 51:
-#line 262 "bopp.y" // lalr1.cc:847
+#line 263 "bopp.y" // lalr1.cc:847
     {
   string s((yystack_[0].value.t_str));
   if(s.back() == '$')
@@ -839,113 +840,111 @@ namespace yy {
   aide.assign_stmt_lhs.emplace_back(s);
   free((yystack_[0].value.t_str)); 
   }
-#line 843 "bopp.tab.cc" // lalr1.cc:847
+#line 844 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 52:
-#line 271 "bopp.y" // lalr1.cc:847
+#line 272 "bopp.y" // lalr1.cc:847
     { 
   aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear();
  }
-#line 852 "bopp.tab.cc" // lalr1.cc:847
+#line 853 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 53:
-#line 275 "bopp.y" // lalr1.cc:847
+#line 276 "bopp.y" // lalr1.cc:847
     { 
   aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear(); 
   }
-#line 861 "bopp.tab.cc" // lalr1.cc:847
+#line 862 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 54:
-#line 281 "bopp.y" // lalr1.cc:847
+#line 282 "bopp.y" // lalr1.cc:847
     {
   aide.succ_pc_set.emplace((yystack_[0].value.t_val));
  }
-#line 869 "bopp.tab.cc" // lalr1.cc:847
+#line 870 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 55:
-#line 284 "bopp.y" // lalr1.cc:847
+#line 285 "bopp.y" // lalr1.cc:847
     {
   aide.succ_pc_set.emplace((yystack_[0].value.t_val));
   }
-#line 877 "bopp.tab.cc" // lalr1.cc:847
+#line 878 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 56:
-#line 290 "bopp.y" // lalr1.cc:847
+#line 291 "bopp.y" // lalr1.cc:847
     { }
-#line 883 "bopp.tab.cc" // lalr1.cc:847
+#line 884 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 57:
-#line 291 "bopp.y" // lalr1.cc:847
-    {
-  cout<<"This is a ternary expression"<<endl;
- }
-#line 891 "bopp.tab.cc" // lalr1.cc:847
+#line 292 "bopp.y" // lalr1.cc:847
+    { }
+#line 890 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 59:
-#line 297 "bopp.y" // lalr1.cc:847
+#line 296 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list("|"); }
-#line 897 "bopp.tab.cc" // lalr1.cc:847
+#line 896 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 61:
-#line 301 "bopp.y" // lalr1.cc:847
+#line 300 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list("^"); }
-#line 903 "bopp.tab.cc" // lalr1.cc:847
+#line 902 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 63:
-#line 305 "bopp.y" // lalr1.cc:847
+#line 304 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list("&"); }
-#line 909 "bopp.tab.cc" // lalr1.cc:847
+#line 908 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 65:
-#line 309 "bopp.y" // lalr1.cc:847
+#line 308 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list( "="); }
-#line 915 "bopp.tab.cc" // lalr1.cc:847
+#line 914 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 66:
-#line 310 "bopp.y" // lalr1.cc:847
+#line 309 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list("!="); }
-#line 921 "bopp.tab.cc" // lalr1.cc:847
+#line 920 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 69:
-#line 317 "bopp.y" // lalr1.cc:847
+#line 316 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list("!"); }
-#line 927 "bopp.tab.cc" // lalr1.cc:847
+#line 926 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 70:
-#line 320 "bopp.y" // lalr1.cc:847
+#line 319 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list("()"); }
-#line 933 "bopp.tab.cc" // lalr1.cc:847
+#line 932 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 71:
-#line 321 "bopp.y" // lalr1.cc:847
+#line 320 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list("*"); }
-#line 939 "bopp.tab.cc" // lalr1.cc:847
+#line 938 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 72:
-#line 322 "bopp.y" // lalr1.cc:847
+#line 321 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list((yystack_[0].value.t_val) ? "1" : "0"); }
-#line 945 "bopp.tab.cc" // lalr1.cc:847
+#line 944 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 73:
-#line 323 "bopp.y" // lalr1.cc:847
+#line 322 "bopp.y" // lalr1.cc:847
     { 
   string id = (yystack_[0].value.t_str);
   if(id.at(0) == '\'') // a successor variable
@@ -953,11 +952,11 @@ namespace yy {
     aide.add_to_expr_in_list(id); 
     free((yystack_[0].value.t_str));
   }
-#line 957 "bopp.tab.cc" // lalr1.cc:847
+#line 956 "bopp.tab.cc" // lalr1.cc:847
     break;
 
 
-#line 961 "bopp.tab.cc" // lalr1.cc:847
+#line 960 "bopp.tab.cc" // lalr1.cc:847
             default:
               break;
             }
@@ -1385,10 +1384,10 @@ namespace yy {
      118,   119,   122,   123,   124,   128,   129,   132,   135,   136,
      139,   143,   147,   154,   157,   158,   161,   165,   169,   177,
      181,   187,   187,   197,   198,   199,   202,   205,   205,   209,
-     215,   222,   226,   231,   235,   238,   241,   244,   247,   250,
-     255,   262,   271,   275,   281,   284,   290,   291,   296,   297,
-     300,   301,   304,   305,   308,   309,   310,   313,   316,   317,
-     320,   321,   322,   323
+     215,   222,   226,   232,   236,   239,   242,   245,   248,   251,
+     256,   263,   272,   276,   282,   285,   291,   292,   295,   296,
+     299,   300,   303,   304,   307,   308,   309,   312,   315,   316,
+     319,   320,   321,   322
   };
 
   // Print the state stack on the debug stream.
@@ -1472,8 +1471,8 @@ namespace yy {
 
 
 } // yy
-#line 1476 "bopp.tab.cc" // lalr1.cc:1155
-#line 331 "bopp.y" // lalr1.cc:1156
+#line 1475 "bopp.tab.cc" // lalr1.cc:1155
+#line 330 "bopp.y" // lalr1.cc:1156
 
 
 /*******************************************************************************
