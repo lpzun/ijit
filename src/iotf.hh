@@ -134,9 +134,15 @@ public:
     deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
-    deque<prog_state> compute_cov_predecessors(const prog_state& _tau);
-    deque<prog_state> compute_drc_precedessors(const prog_state& _tau);
-    deque<prog_state> compute_exp_predecessors(const prog_state& _tau);
+    /// compute covering preimages
+    deque<prog_state> compute_cov_pre_images(const prog_state& _tau);
+    deque<prog_state> compute_exp_pre_images(const prog_state& _tau);
+
+    /// compute direct preimages
+    deque<prog_state> compute_drc_pre_images(const prog_state& _tau);
+
+    void compute_pre_images(const prog_state& _tau, const local_state& _l,
+            deque<prog_state>& images);
 
     deque<local_state> compute_image_atom_sect(shared_state& s,
             const local_state& l);
@@ -161,8 +167,8 @@ public:
     deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
-    void compute_post_images(const prog_state& tau, const local_state& local,
-            deque<prog_state>& successors);
+    void compute_post_images(const prog_state& tau, const local_state& l,
+            deque<prog_state>& images);
 
     void compute_image_assg_stmt(state_v& _s, state_v& _l, const state_v& s,
             const state_v& l, const size_pc& pc);

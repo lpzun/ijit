@@ -25,26 +25,24 @@ post_image::~post_image() {
 }
 
 /**
- * @brief to compute post images of global state tau: this implementation
- *        iterates over all threads: each thread is used as active thread
+ * @brief to compute all post images of global state tau: this implementation
+ *        iterates over all threads: each thread is used as an active thread
  * @param tau
- * @return cover successors
- *         a set of cover successors
+ * @return images: the list of post images of tau w.r.t. all threads
  */
 deque<prog_state> post_image::step(const prog_state& tau) {
     deque<prog_state> images;
-    for (auto il = tau.get_locals().cbegin(); il != tau.get_locals().cend();
-            ++il)
-        this->compute_post_images(tau, il->first, images);
+    for (const auto& l : tau.get_locals())
+        this->compute_post_images(tau, l.first, images);
     return images;
 }
 
 /**
- * @brief to compute post images of global state tau: all post images are
+ * @brief to compute all post images of global state tau: the post images are
  *        computed with respect to a particular thread.
  * @param tau
  * @param l
- * @return
+ * @return images: the list of post images of tau w.r.t. local state <l>
  */
 deque<prog_state> post_image::step(const prog_state& tau,
         const local_state& l) {
@@ -54,10 +52,11 @@ deque<prog_state> post_image::step(const prog_state& tau,
 }
 
 /**
- * @brief compute post images of a program state tau
+ * @brief compute all post images of a program state tau w.r.t. local state l
  * @param tau   : a program state
- * @param local : a specific local state
- * @param images: the list of post images of tau w.r.t. local state <local>
+ * @param l     : a specific local state
+ * @param images: the list of post images of tau w.r.t. one thread whose local
+ *        state is l
  */
 void post_image::compute_post_images(const prog_state& tau,
         const local_state& l, deque<prog_state>& images) {
@@ -84,7 +83,7 @@ void post_image::compute_post_images(const prog_state& tau,
             ///
             /// SEMANTIC: nondeterministic goto
             local_state _l(_pc, lv); /// post local state
-            auto _Z = alg::update_counters(_l, l, Z);
+            const auto& _Z = alg::update_counters(_l, l, Z);
             images.emplace_back(s, _Z);
         }
             break;
@@ -109,7 +108,7 @@ void post_image::compute_post_images(const prog_state& tau,
             if (e.get_stmt().get_condition().eval(_sv, _lv)) {
                 shared_state _s(_sv);
                 local_state _l(_pc, _lv);
-                auto _Z = alg::update_counters(_l, l, Z);
+                const auto& _Z = alg::update_counters(_l, l, Z);
                 images.emplace_back(_s, _Z);
             }
         }
@@ -121,12 +120,12 @@ void post_image::compute_post_images(const prog_state& tau,
             ///
             /// SEMANTIC:
             if (e.get_stmt().get_condition().eval(sv, lv)) {
-                auto _l = this->compute_image_ifth_stmt(l, _pc);
-                auto _Z = alg::update_counters(_l, l, Z);
+                const auto& _l = this->compute_image_ifth_stmt(l, _pc);
+                const auto& _Z = alg::update_counters(_l, l, Z);
                 images.emplace_back(s, _Z);
             } else {
-                auto _l = this->compute_image_else_stmt(l);
-                auto _Z = alg::update_counters(_l, l, Z);
+                const auto& _l = this->compute_image_else_stmt(l);
+                const auto& _Z = alg::update_counters(_l, l, Z);
                 images.emplace_back(s, _Z);
             }
         }
@@ -150,7 +149,7 @@ void post_image::compute_post_images(const prog_state& tau,
             if (e.get_stmt().get_condition().eval(sv, lv)) {
                 /// successor local state: l'.pc = l.pc + 1
                 local_state _l(_pc, lv);
-                auto _Z = alg::update_counters(_l, l, Z);
+                const auto& _Z = alg::update_counters(_l, l, Z);
                 images.emplace_back(s, _Z);
             }
         }
@@ -170,7 +169,7 @@ void post_image::compute_post_images(const prog_state& tau,
             T_in.emplace_back(_pc, lv);
             /// update current thread that l'.pc = l.pc + 1 and append it T_in
             T_in.emplace_back(_pc + 1, lv);
-            auto _Z = alg::update_counters(T_in, l, Z);
+            const auto& _Z = alg::update_counters(T_in, l, Z);
             images.emplace_back(s, _Z);
         }
             break;
@@ -205,7 +204,7 @@ void post_image::compute_post_images(const prog_state& tau,
 
             this->compute_image_atom_sect(s, l, nss, nls);
             for (const auto& _l : nls) { /// first iterate over local states
-                auto _Z = alg::update_counters(_l, l, Z);
+                const auto& _Z = alg::update_counters(_l, l, Z);
                 for (const auto& _s : nss) ///then iterate over shared states
                     images.emplace_back(_s, _Z);
             }
@@ -272,7 +271,7 @@ void post_image::compute_post_images(const prog_state& tau,
 
             /// successor local state: l'.pc = l.pc + 1
             local_state _l(_pc, lv);
-            auto _Z = alg::update_counters(_l, l, Z);
+            const auto& _Z = alg::update_counters(_l, l, Z);
             images.emplace_back(s, _Z);
         }
             break;
