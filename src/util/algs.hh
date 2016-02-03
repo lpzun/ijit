@@ -56,12 +56,34 @@ public:
     static deque<vector<sool>> split(const vector<sool>& vs);
 };
 
+using symb = short;
+
 class solver {
 public:
+    const static short CONST_F = 0; /// constant false
+    const static short CONST_T = 1; /// constant true
+    const static short CONST_N = 2; /// constant nondeterminism
+    const static short NEG = -1; /// !, negation
+    const static short AND = -2; /// &, and
+    const static short OR = -3;  /// |, or
+    const static short XOR = -4; /// ^, exclusive or
+    const static short EQ = -5;  /// =, equal
+    const static short NEQ = -6; /// !=, not equal
+    const static short IMP = -7; /// =>, implies
+    const static short PAR = -8; /// parenthesis
+
     solver();
     ~solver();
 
+    static bool solve(const deque<symb>& expr, const state_v& s,
+            const state_v& l);
+    static short encode(const ushort& idx, const bool& is_shared,
+            const bool& is_primed);
+
+    static short decode(const ushort& idx, bool& is_shared);
+    static short decode(const ushort& idx, bool& is_shared, bool& is_primed);
 };
+
 } /* namespace iotf */
 
 #endif /* UTIL_ALGS_HH_ */

@@ -304,10 +304,10 @@ const value_v expr::eval(const state_v& sh, const state_v& lo) const {
             return true;
         } else { /// variables
             short index = std::stoi(factor);
-            if (index < refs::SHARED_VARS_NUM)
+            if (index < refs::S_VARS_NUM)
                 comp_result_stack.push(sh[index]);
             else
-                comp_result_stack.push(lo[index - refs::SHARED_VARS_NUM]);
+                comp_result_stack.push(lo[index - refs::S_VARS_NUM]);
         }
     }
     return comp_result_stack.top();

@@ -307,9 +307,6 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             break;
         }
     }
-    //}
-
-    //return images;
 }
 
 /**
@@ -365,5 +362,4 @@ deque<pair<state_v, state_v>> pre_image::weakest_precondition(
     return result;
 }
 
-}
-
+} /* namespace iotf */

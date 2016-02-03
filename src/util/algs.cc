@@ -145,4 +145,134 @@ solver::~solver() {
 
 }
 
+/**
+ * @brief solve the expression
+ * @param expr
+ * @param s
+ * @param l
+ * @return bool
+ */
+bool solver::solve(const deque<symb>& expr, const state_v& s,
+        const state_v& l) {
+    stack<bool> worklist;
+    bool op1, op2;
+    for (const auto& ss : expr) {
+        switch (ss) {
+        case solver::AND:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 & op2);
+            break;
+        case solver::OR:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 | op2);
+            break;
+        case solver::XOR:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 ^ op2);
+            break;
+        case solver::EQ:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 == op2);
+            break;
+        case solver::NEQ:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 != op2);
+            break;
+        case solver::NEG:
+            op1 = worklist.top(), worklist.pop();
+            worklist.push(!op1);
+            break;
+        case solver::PAR:
+            break;
+        case solver::CONST_F:
+            worklist.push(false);
+            break;
+        case solver::CONST_T:
+            worklist.push(true);
+            break;
+        case solver::CONST_N:
+            break;
+        default: {
+            bool is_shared = false;
+            const auto& i = solver::decode(ss - 2, is_shared);
+            if (is_shared)
+                worklist.push(s[i]);
+            else
+                worklist.push(l[i]);
+        }
+            break;
+        }
+    }
+    return worklist.top();
+}
+
+/**
+ * @brief encode
+ * @param idx
+ * @param is_shared
+ * @param is_primed
+ */
+short solver::encode(const ushort& idx, const bool& is_shared,
+        const bool& is_primed) {
+    if (!is_primed) {
+        if (is_shared)
+            return idx;
+        else
+            return idx + refs::S_VARS_NUM;
+    } else {
+        if (is_shared)
+            return idx + refs::S_VARS_NUM + refs::L_VARS_NUM;
+        else
+            return idx + 2 * refs::S_VARS_NUM + refs::L_VARS_NUM;
+    }
+}
+
+/**
+ * @brief decode
+ * @param idx
+ * @param is_shared
+ */
+short solver::decode(const ushort& idx, bool& is_shared) {
+    if (idx < refs::S_VARS_NUM) {
+        is_shared = true;
+        return idx;
+    } else {
+        is_shared = false;
+        return idx - refs::S_VARS_NUM;
+    }
+}
+
+/**
+ * @brief decode
+ * @param idx
+ * @param is_shared
+ * @param is_primed
+ */
+short solver::decode(const ushort& idx, bool& is_shared, bool& is_primed) {
+    if (idx < refs::S_VARS_NUM + refs::L_VARS_NUM) {
+        is_primed = true;
+        if (idx < refs::S_VARS_NUM) {
+            is_shared = true;
+            return idx;
+        } else {
+            is_shared = false;
+            return idx - refs::S_VARS_NUM;
+        }
+    } else {
+        is_primed = true;
+        if (idx < 2 * refs::S_VARS_NUM + refs::L_VARS_NUM) {
+            is_shared = true;
+            return idx - refs::S_VARS_NUM - refs::L_VARS_NUM;
+        } else {
+            is_shared = false;
+            return idx - 2 * refs::S_VARS_NUM - refs::L_VARS_NUM;
+        }
+    }
+}
+
 } /* namespace otf */

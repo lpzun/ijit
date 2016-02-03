@@ -10,10 +10,10 @@
 namespace iotf {
 
 /// the number of shared variables
-ushort refs::SHARED_VARS_NUM = 0;
+ushort refs::S_VARS_NUM = 0;
 
 /// the number of local  variables
-ushort refs::LOCAL_VARS_NUM = 0;
+ushort refs::L_VARS_NUM = 0;
 
 /// the number of program counters
 ushort refs::PC_NUM = 0;

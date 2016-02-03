@@ -9,6 +9,11 @@
 #ifndef UTIL_REFS_HH_
 #define UTIL_REFS_HH_
 
+#ifndef SIZE_B
+#define SIZE_B 32
+#else
+#endif
+
 #include "head.hh"
 
 namespace iotf {
@@ -20,12 +25,12 @@ public:
     ~refs() {
     }
 
-    static ushort SHARED_VARS_NUM;
-    static ushort LOCAL_VARS_NUM;
+    static ushort S_VARS_NUM;
+    static ushort L_VARS_NUM;
     static ushort PC_NUM;
 
     /// constant expression
-    static const string CONST_N; /// constant nondeterministic choice
+    static const string CONST_N; /// constant nondeterminism
     static const string CONST_T; /// constant true
     static const string CONST_F; /// constant false
 

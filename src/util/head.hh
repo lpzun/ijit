@@ -18,6 +18,7 @@
 #include <queue>
 #include <stack>
 #include <set>
+#include <bitset>
 #include <unordered_set>
 #include <map>
 #include <unordered_map>
@@ -42,6 +43,7 @@ using std::map;
 using std::unordered_map;
 using std::set;
 using std::pair;
+using std::bitset;
 
 using ushort = unsigned short;
 using uint = unsigned int;

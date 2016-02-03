@@ -223,7 +223,7 @@ struct assignment {
     expr_vec sh;
     expr_vec lo;
     assignment() :
-            sh(refs::SHARED_VARS_NUM), lo(refs::LOCAL_VARS_NUM) {
+            sh(refs::S_VARS_NUM), lo(refs::L_VARS_NUM) {
 
     }
     assignment(const ushort& s_num, const ushort& l_num) :

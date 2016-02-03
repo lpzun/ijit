@@ -156,14 +156,8 @@ syst_state converter::convert(const prog_state& ps) {
  * @param ss
  * @return a shared program state
  */
-vector<bool> converter::convert_ss_to_ps(const uint& ss) {
-    vector<bool> sv(refs::SHARED_VARS_NUM, false);
-    int pos = 0;
-    while (pos < refs::SHARED_VARS_NUM) {
-        if ((ss >> pos) & 1)
-            sv[pos] = true;
-    }
-    return sv;
+state_v converter::convert_sss_to_sps(const uint& ss) {
+    return state_v(ss);
 }
 
 /**
@@ -171,13 +165,28 @@ vector<bool> converter::convert_ss_to_ps(const uint& ss) {
  * @param ps
  * @return a shared system state
  */
-uint converter::convert_ps_to_ss(const vector<bool>& ps) {
-    uint ss = 0;
-    for (int i = 0; i < ps.size(); ++i) {
-        if (ps[i])
-            ss += 1 >> i;
-    }
-    return ss;
+uint converter::convert_sps_to_sss(const state_v& ps) {
+    return ps.to_ulong();
+}
+
+/**
+ * @brief:
+ *       low pc               local          high
+ *           ________________ _______________
+ *          |________________|_______________|
+ *
+ * @param ss
+ * @return
+ */
+pair<size_pc, state_v> converter::convert_lss_to_lps(const uint& ss) {
+    size_pc pc = ss & mask;
+    state_v lv(ss >> SIZE_B / 2);
+    return std::make_pair(pc, lv);
+}
+
+uint converter::convert_lps_to_lss(const size_pc& pc, const state_v& ps) {
+    auto lv = (ps << (SIZE_B / 2)).to_ullong();
+    return lv ^ pc;
 }
 
 } /* namespace otf */

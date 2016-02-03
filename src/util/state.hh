@@ -28,7 +28,7 @@ using value_v = bool;
 
 /// define the data structure to store the valuation for
 /// shared/local variables in Boolean programs
-using state_v = vector<bool>;
+using state_v = bitset<SIZE_B>;
 
 /// define the data structure to store program counter (pc);
 using size_pc = unsigned short;

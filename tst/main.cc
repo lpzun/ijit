@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#include "iotf.hh"
+#include "../src/iotf.hh"
 
 using namespace iotf;
 
@@ -44,13 +44,25 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option) {
  * @return return the type of parser
  */
 int main(int argc, char *argv[]) {
-    if (cmdOptionExists(argv, argv + argc, "-h")) {
-        printf("Usage: itof [-f file]\n");
-    }
+    /*if (cmdOptionExists(argv, argv + argc, "-h")) {
+     printf("Usage: itof [-f file]\n");
+     }
 
-    string filename(getCmdOption(argv, argv + argc, "-f"));
-    if (filename.length() == 0) {
-        filename = "example/test1.bp";
-    }
-    auto P = parser::parse(filename, mode::POST);
+     string filename(getCmdOption(argv, argv + argc, "-f"));
+     if (filename.length() == 0) {
+     filename = "example/test1.bp";
+     }
+     auto P = parser::parse(filename, mode::POST);
+     */
+    const uint N = 32;
+
+    bitset<N> mask;
+    mask.set();
+    cout << mask << endl;
+    bitset<N> foo(4);
+    cout << foo << endl;
+    cout << ((foo << 8) & mask) << endl;
+
+    foo.set(1);
+    cout << foo << endl;
 }

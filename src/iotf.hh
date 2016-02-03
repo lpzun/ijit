@@ -97,7 +97,7 @@ private:
  */
 class converter {
 public:
-    converter() {
+    converter():mask() {
     }
 
     virtual ~converter() {
@@ -109,8 +109,12 @@ public:
     virtual syst_state convert(const prog_state& ps);
 
 private:
-    vector<bool> convert_ss_to_ps(const uint& ss);
-    uint convert_ps_to_ss(const vector<bool>& ps);
+    uint mask;
+    state_v convert_sss_to_sps(const uint& ss);
+    uint convert_sps_to_sss(const state_v& ps);
+
+    pair<size_pc, state_v> convert_lss_to_lps(const uint& ss);
+    uint convert_lps_to_lss(const size_pc& pc, const state_v& ps);
 };
 
 /**
@@ -138,7 +142,7 @@ private:
     deque<prog_state> compute_cov_pre_images(const prog_state& _tau);
     deque<prog_state> compute_exp_pre_images(const prog_state& _tau);
 
-    /// compute direct preimages
+    /// compute direct   preimages
     deque<prog_state> compute_drc_pre_images(const prog_state& _tau);
 
     void compute_pre_images(const prog_state& _tau, const local_state& _l,

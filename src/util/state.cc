@@ -14,7 +14,7 @@ namespace iotf {
  * @brief default constructor
  */
 shared_state::shared_state() :
-        vars(state_v(refs::SHARED_VARS_NUM, false)) {
+        vars() {
 }
 
 /**
@@ -52,7 +52,7 @@ ostream& operator <<(ostream& out, const shared_state& s) {
  * @brief constructor
  */
 local_state::local_state() :
-        pc(0), vars(state_v(refs::LOCAL_VARS_NUM, false)) {
+        pc(0), vars() {
 
 }
 
