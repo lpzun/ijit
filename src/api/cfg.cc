@@ -85,10 +85,10 @@ void cfg::add_assignment(const size_pc& pc, const assignment& a) {
 ostream& operator <<(ostream& out, const assignment& s) {
     for (auto i = 0; i < s.sh.size(); ++i)
         if (s.sh[i].is_valid())
-            out << i << "=" << s.sh[i] << ";";
+            out << "s" << i << "=" << s.sh[i] << ";";
     for (auto i = 0; i < s.lo.size(); ++i)
         if (s.lo[i].is_valid())
-            out << i << "=" << s.lo[i] << ";";
+            out << "l" << i << "=" << s.lo[i] << ";";
     return out;
 }
 
@@ -141,7 +141,6 @@ edge::edge(const size_pc& src, const size_pc& dest, const type_stmt& type,
  */
 edge::edge(const edge& e) :
         src(e.get_src()), dest(e.get_dest()), st(e.get_stmt()) {
-    cout << "I am in constructor " << e.get_stmt().get_type() << endl;
 }
 
 /**
@@ -249,68 +248,12 @@ expr::~expr() {
 /**
  * @brief evaluation function:
  *
- * @param sh
- * @param lo
+ * @param sv
+ * @param lv
  * @return value_v
  */
-const value_v expr::eval(const state_v& sh, const state_v& lo) const {
-    stack<value_v> comp_result_stack;
-    for (auto ifac = sexpr.cbegin(); ifac != sexpr.cend(); ++ifac) {
-        const auto& factor = *ifac;
-        value_v operand1, operand2;
-        if (factor.compare(refs::AND) == 0) { /// and
-            operand1 = comp_result_stack.top();
-            comp_result_stack.pop();
-            operand2 = comp_result_stack.top();
-            comp_result_stack.pop();
-            comp_result_stack.push(operand2 && operand1);
-        } else if (factor.compare(refs::OR) == 0) { /// or
-            operand1 = comp_result_stack.top();
-            comp_result_stack.pop();
-            operand2 = comp_result_stack.top();
-            comp_result_stack.pop();
-            comp_result_stack.push(operand2 || operand1);
-        } else if (factor.compare(refs::EQ) == 0) { /// equal
-            operand1 = comp_result_stack.top();
-            comp_result_stack.pop();
-            operand2 = comp_result_stack.top();
-            comp_result_stack.pop();
-            comp_result_stack.push(operand2 == operand1);
-        } else if (factor.compare(refs::NEQ) == 0) { /// not equal
-            operand1 = comp_result_stack.top();
-            comp_result_stack.pop();
-            operand2 = comp_result_stack.top();
-            comp_result_stack.pop();
-            comp_result_stack.push(operand2 != operand1);
-        } else if (factor.compare(refs::XOR) == 0) { /// exclusive OR
-            operand1 = comp_result_stack.top();
-            comp_result_stack.pop();
-            operand2 = comp_result_stack.top();
-            comp_result_stack.pop();
-            comp_result_stack.push(operand2 ^ operand1);
-        } else if (factor.compare(refs::PAREN_L + refs::PAREN_R) == 0) { /// parenthesis
-            operand1 = comp_result_stack.top();
-            comp_result_stack.pop();
-            comp_result_stack.push(operand1);
-        } else if (factor.compare(refs::NEG) == 0) { /// negation
-            operand1 = comp_result_stack.top();
-            comp_result_stack.pop();
-            comp_result_stack.push(!operand1);
-        } else if (factor.compare(refs::CONST_F) == 0) { /// constant 0
-            comp_result_stack.push(false);
-        } else if (factor.compare(refs::CONST_T) == 0) { /// constant 1
-            comp_result_stack.push(true);
-        } else if (factor.compare(refs::CONST_N) == 0) {
-            return true;
-        } else { /// variables
-            short index = std::stoi(factor);
-            if (index < refs::S_VARS_NUM)
-                comp_result_stack.push(sh[index]);
-            else
-                comp_result_stack.push(lo[index - refs::S_VARS_NUM]);
-        }
-    }
-    return comp_result_stack.top();
+const value_v expr::eval(const state_v& sv, const state_v& lv) const {
+    return solver::solve(sexpr, sv, lv);
 }
 
 /**

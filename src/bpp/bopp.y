@@ -62,8 +62,8 @@
 %token T_ASSIGN ":="
 %token T_EQ_OP "="
 %token T_NE_OP "!="
-%token T_AND   "&&"
-%token T_OR    "||"
+%token T_AND   "&"
+%token T_OR    "|"
 %token T_TERNARY "?"
 
 
@@ -201,23 +201,23 @@ statement: metastmt
 
 metastmt: T_SKIP ';' { // "skip" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::SKIP);	
-  }
+ }
 | T_GOTO {} to_line_list ';' { // "goto" statement
   aide.add_edge(aide.ipc, type_stmt::GOTO);
   aide.succ_pc_set.clear();
-  }
+ }
 | iden_list T_ASSIGN expr_list ';' {// "parallel assignment" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG);	
   // reset containers
-  aide.assign_stmt_lhs.clear();
-  aide.assign_stmt_rhs.clear();
+  aide.assg_stmt_lhs.clear();
+  aide.assg_stmt_rhs.clear();
  }
 | iden_list T_ASSIGN expr_list T_CSTR expr ';' {// "PA with constrain" 
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG, true);
   // reset containers
   aide.expr_in_list.clear();
-  aide.assign_stmt_lhs.clear();
-  aide.assign_stmt_rhs.clear();
+  aide.assg_stmt_lhs.clear();
+  aide.assg_stmt_rhs.clear();
  }
 | T_IF expr T_THEN T_GOTO T_INT ';' T_FI ';' { // "if...then goto..." statement
   aide.add_edge(aide.ipc, $5, type_stmt::IFEL, true);
@@ -225,56 +225,56 @@ metastmt: T_SKIP ';' { // "skip" statement
  } 
 | T_ASSERT '(' expr ')' ';' { // "assert" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE, true);		
-  //aide.all_sat_solver(aide.expr_in_list, aide.ipc);
-  aide.is_failed_assertion();
+  // aide.all_sat_solver(aide.expr_in_list, aide.ipc);
+  // aide.is_failed_assertion();
   aide.expr_in_list.clear();
-  }
+ }
 | T_ASSUME '(' expr ')' ';' { // "assume" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSU, true);
   aide.expr_in_list.clear();
-  }
+ }
 | T_START_THREAD T_GOTO T_INT ';' { // "thread creation" statement
   aide.add_edge(aide.ipc, $3, type_stmt::NTHR);
  }
 | T_END_THREAD ';' { // thread termination statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ETHR);
-  }
+ }
 | T_ATOMIC_BEGIN ';' { // atomic section beginning
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ATOM);
-  }
+ }
 | T_ATOMIC_END ';' { // atomic section ending
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::EATM);
-  }
+ }
 | T_BROADCAST ';' { // broadcast statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::BCST);
-  }
+ }
 | T_WAIT ';' { // wait statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::WAIT);
-  }
+ }
 ;
 
 iden_list: T_IDEN {
   string s($1);
   if(s.back() == '$')
   	s.pop_back();
-  aide.assign_stmt_lhs.emplace_back(s);
+  aide.assg_stmt_lhs.emplace_back(aide.encode(s));
   free($1);
  }
 | iden_list ',' T_IDEN {
   string s($3);
   if(s.back() == '$')
   	s.pop_back();
-  aide.assign_stmt_lhs.emplace_back(s);
+  aide.assg_stmt_lhs.emplace_back(aide.encode(s));
   free($3); 
   }
 ;
 
 expr_list: expr { 
-  aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
+  aide.assg_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear();
  }
 | expr_list ',' expr { 
-  aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
+  aide.assg_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear(); 
   }
 ;
@@ -293,38 +293,35 @@ expr: or_expr { }
 ;
 
 or_expr: xor_expr
-| or_expr T_OR xor_expr { aide.add_to_expr_in_list("|"); }
+| or_expr T_OR xor_expr { aide.add_to_expr_in_list(solver::OR); }
 ;
 
 xor_expr: and_expr
-| xor_expr '^' and_expr { aide.add_to_expr_in_list("^"); }
+| xor_expr '^' and_expr { aide.add_to_expr_in_list(solver::XOR); }
 ;
 
 and_expr: equ_expr
-| and_expr T_AND equ_expr { aide.add_to_expr_in_list("&"); }
+| and_expr T_AND equ_expr { aide.add_to_expr_in_list(solver::AND); }
 ;
 
 equ_expr: una_expr
-| equ_expr T_EQ_OP una_expr { aide.add_to_expr_in_list( "="); }
-| equ_expr T_NE_OP una_expr { aide.add_to_expr_in_list("!="); }
+| equ_expr T_EQ_OP una_expr { aide.add_to_expr_in_list( solver::EQ); }
+| equ_expr T_NE_OP una_expr { aide.add_to_expr_in_list(solver::NEQ); }
 ;
 
 una_op: '!' 
 ;
 
 una_expr: prm_expr
-| una_op prm_expr { aide.add_to_expr_in_list("!"); }
+| una_op prm_expr { aide.add_to_expr_in_list(solver::NEG); }
 ;
 
-prm_expr: '(' expr ')' { aide.add_to_expr_in_list("()"); }
-| T_NONDET { aide.add_to_expr_in_list("*"); }
-| T_INT    { aide.add_to_expr_in_list($1 ? "1" : "0"); }
+prm_expr: '(' expr ')' { aide.add_to_expr_in_list(solver::PAR); }
+| T_NONDET { aide.add_to_expr_in_list(solver::CONST_N); }
+| T_INT    { aide.add_to_expr_in_list($1); }
 | T_IDEN { 
-  string id = $1;
-  if(id.at(0) == '\'') // a successor variable
-    id = aide.SUCC_POSTFIX + id.substr(1);
-    aide.add_to_expr_in_list(id); 
-    free($1);
+  aide.add_to_expr_in_list(aide.encode($1));
+  free($1);
   }
 ;
 %%

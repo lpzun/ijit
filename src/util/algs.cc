@@ -138,6 +138,23 @@ deque<vector<sool>> alg::split(const vector<sool>& vs) {
     return result;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+/// from here: class solver
+///
+///////////////////////////////////////////////////////////////////////////////
+
+const short solver::CONST_F; /// constant false
+const short solver::CONST_T; /// constant true
+const short solver::CONST_N; /// constant nondeterminism
+const short solver::NEG; /// !, negation
+const short solver::AND; /// &, and
+const short solver::OR;  /// |, or
+const short solver::XOR; /// ^, exclusive or
+const short solver::EQ;  /// =, equal
+const short solver::NEQ; /// !=, not equal
+const short solver::IMP; /// =>, implies
+const short solver::PAR; /// parenthesis
+
 solver::solver() {
 
 }
@@ -146,13 +163,17 @@ solver::~solver() {
 }
 
 /**
- * @brief solve the expression
+ * @brief This is a customized "exhaustive" SAT solver, which can be used to
+ *        extract targets from assertions in Boolean program. It's an
+ *        exhaustive algorithm. I've no idea if we should use a more efficient
+ *        SAT solver. It seems unnecessary due to that each assertion contains
+ *        only very few boolean variables.
  * @param expr
  * @param s
  * @param l
- * @return bool
+ * @return a sat solver
  */
-bool solver::solve(const deque<symb>& expr, const state_v& s,
+bool solver::solve(const deque<symbol>& expr, const state_v& s,
         const state_v& l) {
     stack<bool> worklist;
     bool op1, op2;
@@ -212,39 +233,16 @@ bool solver::solve(const deque<symb>& expr, const state_v& s,
 }
 
 /**
- * @brief encode
- * @param idx
- * @param is_shared
- * @param is_primed
- */
-short solver::encode(const ushort& idx, const bool& is_shared,
-        const bool& is_primed) {
-    if (!is_primed) {
-        if (is_shared)
-            return idx;
-        else
-            return idx + refs::S_VARS_NUM;
-    } else {
-        if (is_shared)
-            return idx + refs::S_VARS_NUM + refs::L_VARS_NUM;
-        else
-            return idx + 2 * refs::S_VARS_NUM + refs::L_VARS_NUM;
-    }
-}
-
-/**
  * @brief decode
  * @param idx
  * @param is_shared
  */
-short solver::decode(const ushort& idx, bool& is_shared) {
-    if (idx < refs::S_VARS_NUM) {
-        is_shared = true;
-        return idx;
-    } else {
-        is_shared = false;
-        return idx - refs::S_VARS_NUM;
-    }
+symbol solver::decode(const symbol& idx, bool& is_shared) {
+    auto id = idx - 3;
+    is_shared = true;
+    if (id >= refs::S_VARS_NUM)
+        id -= refs::S_VARS_NUM, is_shared = false;
+    return id;
 }
 
 /**
@@ -253,26 +251,19 @@ short solver::decode(const ushort& idx, bool& is_shared) {
  * @param is_shared
  * @param is_primed
  */
-short solver::decode(const ushort& idx, bool& is_shared, bool& is_primed) {
-    if (idx < refs::S_VARS_NUM + refs::L_VARS_NUM) {
-        is_primed = true;
-        if (idx < refs::S_VARS_NUM) {
-            is_shared = true;
-            return idx;
-        } else {
-            is_shared = false;
-            return idx - refs::S_VARS_NUM;
-        }
+symbol solver::decode(const symbol& idx, bool& is_shared, bool& is_primed) {
+    auto id = idx - 3;
+    if (id < refs::S_VARS_NUM + refs::L_VARS_NUM) {
+        is_primed = false, is_shared = true;
+        if (id >= refs::S_VARS_NUM)
+            is_shared = false, id -= refs::S_VARS_NUM;
     } else {
-        is_primed = true;
-        if (idx < 2 * refs::S_VARS_NUM + refs::L_VARS_NUM) {
-            is_shared = true;
-            return idx - refs::S_VARS_NUM - refs::L_VARS_NUM;
-        } else {
-            is_shared = false;
-            return idx - 2 * refs::S_VARS_NUM - refs::L_VARS_NUM;
-        }
+        is_primed = true, is_shared = true;
+        if (id >= 2 * refs::S_VARS_NUM + refs::L_VARS_NUM)
+            is_shared = false, id -= refs::S_VARS_NUM;
+        id -= refs::S_VARS_NUM + refs::L_VARS_NUM;
     }
+    return id;
 }
 
 } /* namespace otf */

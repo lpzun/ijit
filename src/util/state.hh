@@ -36,6 +36,10 @@ using size_pc = unsigned short;
 /// define the data structure to store the thread count
 using size_tc = unsigned short;
 
+/// define the symbols of Boolean expression
+/// it includes operator and operand
+using symbol = short;
+
 /**
  * @brief sool = symbolic boolean variables
  */

@@ -58,78 +58,57 @@ namespace iotf {
  */
 class paide {
 public:
-    paide() :
-            is_failed(false), lineno(0), ipc(0), s_vars_num(0), l_vars_num(0) {
-    }
+    paide();
 
-    ~paide() {
-    }
-
-    const string SUCC_POSTFIX = "_";
-    const string _AND_ = " & ";
+    ~paide();
 
     bool is_failed;
+
     size_pc lineno; /// initialize the lineno
     size_pc ipc; /// the source of cfg edge
     ushort s_vars_num; /// the number of shared variables
     ushort l_vars_num; /// the number of local variables
-
-    set<size_pc> pc_set;
     map<string, ushort> s_vars_list; /// store shared variables and indices
     map<string, ushort> l_vars_list; /// store local  variables and indices
-    map<ushort, sool> s_vars_init; /// to record the initial shared state
-    map<ushort, sool> l_vars_init; /// to record the initial local state
+    map<ushort, sool> s_vars_init; /// record values of initial shared states
+    map<ushort, sool> l_vars_init; /// record values of initial local  states
 
-    cfg cfg_G;
-
-    set<size_pc> succ_pc_set; /// store the succeeding pcs
+    set<size_pc> suc_pc_set; /// store the succeeding pcs
     deque<symbol> expr_in_list; /// the expression symbol list
 
     /// to store parallel assignment statements
-    deque<string> assign_stmt_lhs; /// the right-hand side of parallel assignment
-    deque<deque<string>> assign_stmt_rhs; /// the left-hand side of of parallel assignment
+    deque<symbol> assg_stmt_lhs; /// the right-hand side of parallel assignment
+    deque<deque<symbol>> assg_stmt_rhs; /// the left-hand side of of parallel assignment
 
-    /////////////////////////////// function list /////////////////////////////
+    cfg cfg_G;
+
+    ////////////////// function list //////////////////
+
+    /// initial states
+    void add_vars(const string& var, const sool& val, const bool& is_shared);
+    void init_vars(const string& var, const sool& val);
 
     /// control flow graph function list
     bool is_pc_unique(const size_pc& pc);
 
     void add_edge(const size_pc& src, const type_stmt& type);
-
     void add_edge(const size_pc& src, const size_pc& dest,
             const type_stmt& type, const bool& is_condition = false);
 
-    void output_control_flow_graph();
-
-    /// initial states
-    ///
-    void add_vars(const string& var, const sool& val, const bool& is_shared);
-    void init_vars(const string& var, const sool& val);
-    string create_init_state(const map<ushort, sool>& minit);
-
-    /// extract final state from assertion
-    void output_final_state_to_file(const string& filename);
-
     /// expression
-    void add_to_expr_in_list(const string& symbol);
-    string recov_expr_from_list(const deque<string>& symb_list,
-            const bool& is_origi = false);
-    void all_sat_solver(const deque<string>& symb_list, const ushort& pc);
+    void add_to_expr_in_list(const symbol& s);
+    string recov_expr_from_list(const deque<symbol>& sexpr);
+    symbol encode(const string& var);
 
-    /// unit test
-    void test_print_valid_assertion_ts();
-    void test_output_parallel_assign_stmt();
+    ////////////////// unit test //////////////////
+    void test_output_control_flow_graph();
+    void test_output_parallel_assg_stmt();
     void is_failed_assertion();
 
-protected:
-    pair<bool, ushort> look_up_var_index(const string& var);
-    string create_succ_vars(const string& var);
-    vector<bool> decimal2binary(const int& n, const int& size);
-    string create_vars_value_as_str(const vector<ushort>& sv);
+private:
+    set<size_pc> all_pc_set;
 
     assignment create_assignment();
-private:
-    map<size_pc, deque<string>> valid_assertion_ts;
 }
 ;
 

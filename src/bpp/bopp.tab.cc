@@ -700,7 +700,7 @@ namespace yy {
 #line 202 "bopp.y" // lalr1.cc:847
     { // "skip" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::SKIP);	
-  }
+ }
 #line 705 "bopp.tab.cc" // lalr1.cc:847
     break;
 
@@ -714,8 +714,8 @@ namespace yy {
 #line 205 "bopp.y" // lalr1.cc:847
     { // "goto" statement
   aide.add_edge(aide.ipc, type_stmt::GOTO);
-  aide.succ_pc_set.clear();
-  }
+  aide.suc_pc_set.clear();
+ }
 #line 720 "bopp.tab.cc" // lalr1.cc:847
     break;
 
@@ -724,8 +724,8 @@ namespace yy {
     {// "parallel assignment" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG);	
   // reset containers
-  aide.assign_stmt_lhs.clear();
-  aide.assign_stmt_rhs.clear();
+  aide.assg_stmt_lhs.clear();
+  aide.assg_stmt_rhs.clear();
  }
 #line 731 "bopp.tab.cc" // lalr1.cc:847
     break;
@@ -736,8 +736,8 @@ namespace yy {
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG, true);
   // reset containers
   aide.expr_in_list.clear();
-  aide.assign_stmt_lhs.clear();
-  aide.assign_stmt_rhs.clear();
+  aide.assg_stmt_lhs.clear();
+  aide.assg_stmt_rhs.clear();
  }
 #line 743 "bopp.tab.cc" // lalr1.cc:847
     break;
@@ -755,10 +755,10 @@ namespace yy {
 #line 226 "bopp.y" // lalr1.cc:847
     { // "assert" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE, true);		
-  //aide.all_sat_solver(aide.expr_in_list, aide.ipc);
-  aide.is_failed_assertion();
+  // aide.all_sat_solver(aide.expr_in_list, aide.ipc);
+  // aide.is_failed_assertion();
   aide.expr_in_list.clear();
-  }
+ }
 #line 763 "bopp.tab.cc" // lalr1.cc:847
     break;
 
@@ -767,7 +767,7 @@ namespace yy {
     { // "assume" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSU, true);
   aide.expr_in_list.clear();
-  }
+ }
 #line 772 "bopp.tab.cc" // lalr1.cc:847
     break;
 
@@ -783,7 +783,7 @@ namespace yy {
 #line 239 "bopp.y" // lalr1.cc:847
     { // thread termination statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ETHR);
-  }
+ }
 #line 788 "bopp.tab.cc" // lalr1.cc:847
     break;
 
@@ -791,7 +791,7 @@ namespace yy {
 #line 242 "bopp.y" // lalr1.cc:847
     { // atomic section beginning
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ATOM);
-  }
+ }
 #line 796 "bopp.tab.cc" // lalr1.cc:847
     break;
 
@@ -799,7 +799,7 @@ namespace yy {
 #line 245 "bopp.y" // lalr1.cc:847
     { // atomic section ending
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::EATM);
-  }
+ }
 #line 804 "bopp.tab.cc" // lalr1.cc:847
     break;
 
@@ -807,7 +807,7 @@ namespace yy {
 #line 248 "bopp.y" // lalr1.cc:847
     { // broadcast statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::BCST);
-  }
+ }
 #line 812 "bopp.tab.cc" // lalr1.cc:847
     break;
 
@@ -815,7 +815,7 @@ namespace yy {
 #line 251 "bopp.y" // lalr1.cc:847
     { // wait statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::WAIT);
-  }
+ }
 #line 820 "bopp.tab.cc" // lalr1.cc:847
     break;
 
@@ -825,7 +825,7 @@ namespace yy {
   string s((yystack_[0].value.t_str));
   if(s.back() == '$')
   	s.pop_back();
-  aide.assign_stmt_lhs.emplace_back(s);
+  aide.assg_stmt_lhs.emplace_back(aide.encode(s));
   free((yystack_[0].value.t_str));
  }
 #line 832 "bopp.tab.cc" // lalr1.cc:847
@@ -837,7 +837,7 @@ namespace yy {
   string s((yystack_[0].value.t_str));
   if(s.back() == '$')
   	s.pop_back();
-  aide.assign_stmt_lhs.emplace_back(s);
+  aide.assg_stmt_lhs.emplace_back(aide.encode(s));
   free((yystack_[0].value.t_str)); 
   }
 #line 844 "bopp.tab.cc" // lalr1.cc:847
@@ -846,7 +846,7 @@ namespace yy {
   case 52:
 #line 272 "bopp.y" // lalr1.cc:847
     { 
-  aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
+  aide.assg_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear();
  }
 #line 853 "bopp.tab.cc" // lalr1.cc:847
@@ -855,7 +855,7 @@ namespace yy {
   case 53:
 #line 276 "bopp.y" // lalr1.cc:847
     { 
-  aide.assign_stmt_rhs.emplace_back(aide.expr_in_list); 
+  aide.assg_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear(); 
   }
 #line 862 "bopp.tab.cc" // lalr1.cc:847
@@ -864,7 +864,7 @@ namespace yy {
   case 54:
 #line 282 "bopp.y" // lalr1.cc:847
     {
-  aide.succ_pc_set.emplace((yystack_[0].value.t_val));
+  aide.suc_pc_set.emplace((yystack_[0].value.t_val));
  }
 #line 870 "bopp.tab.cc" // lalr1.cc:847
     break;
@@ -872,7 +872,7 @@ namespace yy {
   case 55:
 #line 285 "bopp.y" // lalr1.cc:847
     {
-  aide.succ_pc_set.emplace((yystack_[0].value.t_val));
+  aide.suc_pc_set.emplace((yystack_[0].value.t_val));
   }
 #line 878 "bopp.tab.cc" // lalr1.cc:847
     break;
@@ -891,72 +891,69 @@ namespace yy {
 
   case 59:
 #line 296 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("|"); }
+    { aide.add_to_expr_in_list(solver::OR); }
 #line 896 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 61:
 #line 300 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("^"); }
+    { aide.add_to_expr_in_list(solver::XOR); }
 #line 902 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 63:
 #line 304 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("&"); }
+    { aide.add_to_expr_in_list(solver::AND); }
 #line 908 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 65:
 #line 308 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list( "="); }
+    { aide.add_to_expr_in_list( solver::EQ); }
 #line 914 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 66:
 #line 309 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("!="); }
+    { aide.add_to_expr_in_list(solver::NEQ); }
 #line 920 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 69:
 #line 316 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("!"); }
+    { aide.add_to_expr_in_list(solver::NEG); }
 #line 926 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 70:
 #line 319 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("()"); }
+    { aide.add_to_expr_in_list(solver::PAR); }
 #line 932 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 71:
 #line 320 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list("*"); }
+    { aide.add_to_expr_in_list(solver::CONST_N); }
 #line 938 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 72:
 #line 321 "bopp.y" // lalr1.cc:847
-    { aide.add_to_expr_in_list((yystack_[0].value.t_val) ? "1" : "0"); }
+    { aide.add_to_expr_in_list((yystack_[0].value.t_val)); }
 #line 944 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 73:
 #line 322 "bopp.y" // lalr1.cc:847
     { 
-  string id = (yystack_[0].value.t_str);
-  if(id.at(0) == '\'') // a successor variable
-    id = aide.SUCC_POSTFIX + id.substr(1);
-    aide.add_to_expr_in_list(id); 
-    free((yystack_[0].value.t_str));
+  aide.add_to_expr_in_list(aide.encode((yystack_[0].value.t_str)));
+  free((yystack_[0].value.t_str));
   }
-#line 956 "bopp.tab.cc" // lalr1.cc:847
+#line 953 "bopp.tab.cc" // lalr1.cc:847
     break;
 
 
-#line 960 "bopp.tab.cc" // lalr1.cc:847
+#line 957 "bopp.tab.cc" // lalr1.cc:847
             default:
               break;
             }
@@ -1366,14 +1363,14 @@ namespace yy {
   "\"goto\"", "\"assume\"", "\"skip\"", "\"assert\"", "\"if\"", "\"fi\"",
   "\"then\"", "\"void\"", "\"constrain\"", "\"start_thread\"",
   "\"end_thread\"", "\"atomic_begin\"", "\"atomic_end\"", "\"wait\"",
-  "\"broadcast\"", "\"*\"", "\":=\"", "\"=\"", "\"!=\"", "\"&&\"",
-  "\"||\"", "\"?\"", "T_INT", "T_IDEN", "'('", "')'", "';'", "','", "':'",
-  "'^'", "'!'", "$accept", "prog", "funclist", "function", "funchead",
-  "funcend", "funcbody", "funcstmt", "s_decllist", "s_declstmt",
-  "s_id_list", "s_id", "l_declstmt", "l_id_list", "l_id", "initistmt",
-  "labelstmt", "$@1", "statement", "metastmt", "$@2", "iden_list",
-  "expr_list", "to_line_list", "expr", "or_expr", "xor_expr", "and_expr",
-  "equ_expr", "una_op", "una_expr", "prm_expr", YY_NULLPTR
+  "\"broadcast\"", "\"*\"", "\":=\"", "\"=\"", "\"!=\"", "\"&\"", "\"|\"",
+  "\"?\"", "T_INT", "T_IDEN", "'('", "')'", "';'", "','", "':'", "'^'",
+  "'!'", "$accept", "prog", "funclist", "function", "funchead", "funcend",
+  "funcbody", "funcstmt", "s_decllist", "s_declstmt", "s_id_list", "s_id",
+  "l_declstmt", "l_id_list", "l_id", "initistmt", "labelstmt", "$@1",
+  "statement", "metastmt", "$@2", "iden_list", "expr_list", "to_line_list",
+  "expr", "or_expr", "xor_expr", "and_expr", "equ_expr", "una_op",
+  "una_expr", "prm_expr", YY_NULLPTR
   };
 
 #if YYDEBUG
@@ -1471,8 +1468,8 @@ namespace yy {
 
 
 } // yy
-#line 1475 "bopp.tab.cc" // lalr1.cc:1155
-#line 330 "bopp.y" // lalr1.cc:1156
+#line 1472 "bopp.tab.cc" // lalr1.cc:1155
+#line 327 "bopp.y" // lalr1.cc:1156
 
 
 /*******************************************************************************

@@ -97,7 +97,8 @@ private:
  */
 class converter {
 public:
-    converter():mask() {
+    converter() :
+            mask(std::numeric_limits<size_pc>::max()) {
     }
 
     virtual ~converter() {
@@ -108,7 +109,7 @@ public:
     virtual prog_state convert(const syst_state& ss);
     virtual syst_state convert(const prog_state& ps);
 
-private:
+public:
     uint mask;
     state_v convert_sss_to_sps(const uint& ss);
     uint convert_sps_to_sss(const state_v& ps);
@@ -135,6 +136,7 @@ public:
     pre_image();
     ~pre_image();
     deque<prog_state> step(const prog_state& tau, const prev& p = prev::DRC);
+    deque<prog_state> step(const prog_state& tau, const size_tc& thread_id);
     deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
@@ -168,6 +170,7 @@ public:
     ~post_image();
 
     deque<prog_state> step(const prog_state& tau);
+    deque<prog_state> step(const prog_state& tau, const size_tc& thread_id);
     deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:

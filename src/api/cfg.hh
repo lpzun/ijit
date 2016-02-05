@@ -16,6 +16,7 @@
 
 #include "../util/state.hh"
 #include "../util/excp.hh"
+#include "../util/algs.hh"
 
 namespace iotf {
 
@@ -107,9 +108,6 @@ inline ostream& operator <<(ostream& out, const type_stmt& t) {
     return out;
 }
 
-/// define the symbols of Boolean expression
-/// it includes operator and operand
-using symbol = string;
 /**
  * @brief data structure <expr>: build an expression from a list of strings
  */
@@ -130,7 +128,7 @@ public:
         return !sexpr.empty();
     }
 
-    const value_v eval(const state_v& sh, const state_v& lo) const;
+    const value_v eval(const state_v& sv, const state_v& lv) const;
     value_v eval(const state_v& sh, const state_v& lo);
 
 private:
@@ -215,10 +213,10 @@ private:
 using adj_list = vector<deque<size_pc>>;
 using expr_vec = vector<expr>;
 
-/**
- * @brief this data structure defines the expressions in a parallel
- *        assignment statement
- */
+///////////////////////////////////////////////////////////////////////////////
+/// from here: this data structure defines the expressions in a parallel
+///            assignment statement
+///////////////////////////////////////////////////////////////////////////////
 struct assignment {
     expr_vec sh;
     expr_vec lo;
@@ -236,11 +234,11 @@ struct assignment {
     friend ostream& operator <<(ostream& out, const assignment& s);
 };
 
-/**
- * @brief this data structure defines the Control Flow Graph used in
- *        pre-/post-images. This is the most important data structure.
- *        A CFG is built during parse a Boolean program via our Parser.
- */
+///////////////////////////////////////////////////////////////////////////////
+/// from here: this data structure defines the Control Flow Graph used in
+///            pre-/post-images. This is the most important data structure.
+///            A CFG is built during parse a Boolean program via our Parser.
+///////////////////////////////////////////////////////////////////////////////
 class cfg {
 public:
     cfg();

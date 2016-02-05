@@ -88,13 +88,20 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     /* fw_aide aide; */
     //move the file point to the begin and print the total line number
     cout << "shared, local, line\n";
-    cout << aide.s_vars_num << ", " << aide.l_vars_num << ", " << aide.lineno
+    refs::S_VARS_NUM = aide.s_vars_num;
+    refs::L_VARS_NUM = aide.l_vars_num;
+    cout << refs::S_VARS_NUM << ", " << refs::L_VARS_NUM << ", " << aide.lineno
             << "\n";
-    aide.output_control_flow_graph();
+    aide.test_output_control_flow_graph();
     cout << endl;
+    for (const auto& p : aide.s_vars_list)
+        cout << p.first << " " << p.second << " "
+                << aide.encode(p.first) << "\n";
+    for (const auto& p : aide.l_vars_list)
+        cout << p.first << " " << p.second << " "
+                << aide.encode(p.first) << "\n";
     if (aide.is_failed)
         cout << "ooooooooooooooo\n";
-
     return std::make_pair(I, Q);
 }
 
@@ -184,6 +191,12 @@ pair<size_pc, state_v> converter::convert_lss_to_lps(const uint& ss) {
     return std::make_pair(pc, lv);
 }
 
+/**
+ *
+ * @param pc
+ * @param ps
+ * @return
+ */
 uint converter::convert_lps_to_lss(const size_pc& pc, const state_v& ps) {
     auto lv = (ps << (SIZE_B / 2)).to_ullong();
     return lv ^ pc;
