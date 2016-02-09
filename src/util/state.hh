@@ -23,9 +23,6 @@
 
 namespace iotf {
 
-/// define the value of variables in Boolean programs
-using value_v = bool;
-
 /// define the data structure to store the valuation for
 /// shared/local variables in Boolean programs
 using state_v = bitset<SIZE_B>;
@@ -88,6 +85,10 @@ inline sool operator |(const sool& s1, const sool& s2) {
 		return sool::F;
 	return sool::T;
 }
+
+
+/// define the value of variables in Boolean programs
+using value_v = sool;
 
 /**
  * @brief define data structure shared state

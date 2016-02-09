@@ -126,7 +126,8 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             ///
             /// SEMANTIC: assignment statement, postcondition of
             /// vars might have to satisfy the constraint
-            if (e.get_stmt().get_condition().eval(_sv, _lv)) {
+            const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
+            if (cond != sool::F) {
                 /// compute all direct predecessors via weakest
                 /// precondition and SAT solvers
                 const auto& P = this->compute_image_assg_stmt(_sv, _lv);
@@ -146,7 +147,8 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             /// pc+1: ...
             ///
             /// SEMANTIC:
-            if (e.get_stmt().get_condition().eval(_sv, _lv)) {
+            const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
+            if (cond != sool::F) {
                 //TODO
             } else {
                 //TODO
@@ -162,7 +164,9 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             /// The idea is that: if there is an assertion but we do NOT
             /// care about it in one specific verification, then we adv-
             /// ance the PC when the assertion is satisfiable.
-            if (e.get_stmt().get_condition().eval(_s.get_vars(), _lv)) {
+            const auto& cond = e.get_stmt().get_condition().eval(_s.get_vars(),
+                    _lv);
+            if (cond != sool::F) {
                 local_state l(pc, _lv);
                 const auto& Z = alg::update_counters(l, _l, _Z);
                 images.emplace_back(_s, Z);
@@ -176,7 +180,8 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             ///
             /// SEMANTIC: advance if expr is evaluated to be true;
             /// block otherwise.
-            if (e.get_stmt().get_condition().eval(_sv, _lv)) {
+            const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
+            if (cond != sool::F) {
                 local_state l(pc, _lv);
                 const auto& Z = alg::update_counters(l, _l, _Z);
                 images.emplace_back(_s, Z);

@@ -105,7 +105,8 @@ void post_image::compute_post_images(const prog_state& tau,
             /// NOTE: the "constrain <expr>" could involve the valuations
             /// for shared and local variables before and after executing
             /// assignment statement ...
-            if (e.get_stmt().get_condition().eval(_sv, _lv)) {
+            const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
+            if (cond != sool::F) {
                 shared_state _s(_sv);
                 local_state _l(_pc, _lv);
                 const auto& _Z = alg::update_counters(_l, l, Z);
@@ -119,7 +120,8 @@ void post_image::compute_post_images(const prog_state& tau,
             /// pc+1: ...
             ///
             /// SEMANTIC:
-            if (e.get_stmt().get_condition().eval(sv, lv)) {
+            const auto& cond = e.get_stmt().get_condition().eval(sv, lv);
+            if (cond != sool::F) {
                 const auto& _l = this->compute_image_ifth_stmt(l, _pc);
                 const auto& _Z = alg::update_counters(_l, l, Z);
                 images.emplace_back(s, _Z);
@@ -146,7 +148,8 @@ void post_image::compute_post_images(const prog_state& tau,
             ///
             /// SEMANTIC: advance if expr is evaluated to be true;
             /// block otherwise.
-            if (e.get_stmt().get_condition().eval(sv, lv)) {
+            const auto& cond = e.get_stmt().get_condition().eval(sv, lv);
+            if (cond != sool::F) {
                 /// successor local state: l'.pc = l.pc + 1
                 local_state _l(_pc, lv);
                 const auto& _Z = alg::update_counters(_l, l, Z);
@@ -294,12 +297,12 @@ void post_image::compute_image_assg_stmt(state_v& _s, state_v& _l,
         const auto& sh = ifind->second.sh;
         for (auto i = 0; i < sh.size(); ++i) {
             if (sh[i].is_valid())
-                _s[i] = sh[i].eval(s, l);
+                _s[i] = sh[i].eval(s, l) == sool::N;
         }
         const auto& lo = ifind->second.lo;
         for (auto i = 0; i < lo.size(); ++i) {
             if (lo[i].is_valid())
-                _l[i] = lo[i].eval(s, l);
+                _l[i] = lo[i].eval(s, l) == sool::N;
         }
     }
 }

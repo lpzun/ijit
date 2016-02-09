@@ -108,7 +108,7 @@ assignment paide::create_assignment() {
     auto il = assg_stmt_lhs.cbegin(), iend = assg_stmt_lhs.cend();
     auto ir = assg_stmt_rhs.cbegin(), eend = assg_stmt_rhs.cend();
     while (il != iend && ir != eend) {
-        cout << *il << "::::::::::::::\n";
+        cout << *il << "::::::::::::::paide::create_assignment\n";
         const auto& p = this->decode(*il);
         if (p.second)
             assg.sh[p.first] = expr(*ir);

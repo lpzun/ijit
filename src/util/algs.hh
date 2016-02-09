@@ -75,6 +75,12 @@ public:
 
     static bool solve(const deque<symbol>& sexpr, const state_v& s,
             const state_v& l);
+    static bool solve(const deque<symbol>& sexpr, const state_v& s,
+            const state_v& l, const state_v& _s, const state_v& _l);
+
+    static bool all_sat_solve(const deque<symbol>& sexpr, const state_v& s,
+            const state_v& l);
+
     static deque<deque<symbol>> split(const deque<symbol>& sexpr);
 
 private:

@@ -234,6 +234,86 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
 }
 
 /**
+ * @brief This is a customized "exhaustive" SAT solver, which can be used to
+ *        extract targets from assertions in Boolean program. It's an
+ *        exhaustive algorithm. I've no idea if we should use a more efficient
+ *        SAT solver. It seems unnecessary due to that each assertion contains
+ *        only very few boolean variables.
+ * @param sexpr
+ * @param s
+ * @param l
+ * @param _s
+ * @param _l
+ * @return
+ */
+bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
+        const state_v& l, const state_v& _s, const state_v& _l) {
+    stack<bool> worklist;
+    bool op1, op2;
+    for (const auto& ss : sexpr) {
+        switch (ss) {
+        case solver::AND:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 & op2);
+            break;
+        case solver::OR:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 | op2);
+            break;
+        case solver::XOR:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 ^ op2);
+            break;
+        case solver::EQ:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 == op2);
+            break;
+        case solver::NEQ:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.push(op1 != op2);
+            break;
+        case solver::NEG:
+            op1 = worklist.top(), worklist.pop();
+            worklist.push(!op1);
+            break;
+        case solver::PAR:
+            break;
+        case solver::CONST_F:
+            worklist.push(false);
+            break;
+        case solver::CONST_T:
+            worklist.push(true);
+            break;
+        case solver::CONST_N:
+            throw iotf_runtime_error("* is not splitted");
+            break;
+        default: {
+            bool is_shared = false, is_primed = false;
+            const auto& i = solver::decode(ss, is_shared, is_primed);
+            if (!is_primed) { /// normal variables
+                if (is_shared)
+                    worklist.push(s[i]);
+                else
+                    worklist.push(l[i]);
+            } else { /// primed variables
+                if (is_shared)
+                    worklist.push(_s[i]);
+                else
+                    worklist.push(_l[i]);
+            }
+        }
+            break;
+        }
+    }
+    return worklist.top();
+}
+
+/**
  * @brief split * into 0 and 1 during expression evaluation
  * @param sexpr:
  * @return a list of expression after splitting

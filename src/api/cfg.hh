@@ -101,8 +101,8 @@ inline ostream& operator <<(ostream& out, const type_stmt& t) {
         out << (-13);
         break;
     default:
-        out << (-14);
-        //throw iotf_runtime_error("unknown statement");
+        //out << (-14);
+        throw iotf_runtime_error("unknown statement");
         break;
     }
     return out;
@@ -115,7 +115,6 @@ class expr {
 public:
     expr();
     expr(const deque<symbol>& sexpr);
-    expr(const expr& e);
 
     ~expr();
 
@@ -133,6 +132,7 @@ public:
 
 private:
     deque<symbol> sexpr;
+    deque<deque<symbol>> expr_deq;
 
     friend ostream& operator <<(ostream& out, const expr& e);
 };
