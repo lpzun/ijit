@@ -59,7 +59,6 @@ namespace iotf {
 class paide {
 public:
     paide();
-
     ~paide();
 
     bool is_failed;
@@ -99,6 +98,7 @@ public:
     void add_to_expr_in_list(const symbol& s);
     string recov_expr_from_list(const deque<symbol>& sexpr);
     symbol encode(const string& var);
+    pair<symbol, bool> decode(const symbol& idx);
 
     ////////////////// unit test //////////////////
     void test_output_control_flow_graph();
@@ -109,8 +109,7 @@ private:
     set<size_pc> all_pc_set;
 
     assignment create_assignment();
-}
-;
+};
 
 } /* namespace otf */
 #endif /* BPP_AIDE_HH_ */

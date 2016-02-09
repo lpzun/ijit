@@ -24,6 +24,8 @@
 #include <unordered_map>
 #include <type_traits>
 
+#include "excp.hh"
+
 /// IO
 using std::cin;
 using std::cout;

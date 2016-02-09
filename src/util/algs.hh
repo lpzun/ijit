@@ -73,8 +73,11 @@ public:
     solver();
     ~solver();
 
-    static bool solve(const deque<symbol>& expr, const state_v& s,
+    static bool solve(const deque<symbol>& sexpr, const state_v& s,
             const state_v& l);
+    static deque<deque<symbol>> split(const deque<symbol>& sexpr);
+
+private:
     static symbol decode(const symbol& idx, bool& is_shared);
     static symbol decode(const symbol& idx, bool& is_shared, bool& is_primed);
 };

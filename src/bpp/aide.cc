@@ -105,14 +105,15 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
  */
 assignment paide::create_assignment() {
     assignment assg(this->s_vars_num, this->l_vars_num);
-    auto il = assg_stmt_lhs.begin(), iend = assg_stmt_lhs.end();
-    auto ir = assg_stmt_rhs.begin(), eend = assg_stmt_rhs.end();
+    auto il = assg_stmt_lhs.cbegin(), iend = assg_stmt_lhs.cend();
+    auto ir = assg_stmt_rhs.cbegin(), eend = assg_stmt_rhs.cend();
     while (il != iend && ir != eend) {
-        cout << *il << endl;
-        if (*il < s_vars_num + 3)
-            assg.sh[*il - 3] = expr(*ir);
+        cout << *il << "::::::::::::::\n";
+        const auto& p = this->decode(*il);
+        if (p.second)
+            assg.sh[p.first] = expr(*ir);
         else
-            assg.lo[*il - s_vars_num - 3] = expr(*ir);
+            assg.lo[p.first] = expr(*ir);
         ++il, ++ir;
     }
     return assg;
@@ -219,6 +220,21 @@ symbol paide::encode(const string& var) {
     return idx;
 }
 
+/**
+ * @brief decode the symbol
+ * @param idx
+ * @return pair<symbol, bool>
+ *         symbol: the symbol of Boolean variables
+ *         bool  : true if shared Boolean variable
+ *                 false if local Boolean variable
+ */
+pair<symbol, bool> paide::decode(const symbol& idx) {
+    auto id = idx - 3;
+    if (id < s_vars_num)
+        return std::make_pair(id, true);
+    else
+        return std::make_pair(id - s_vars_num, false);
+}
 
 /**
  * @brief output the control flow graph to the file
@@ -246,7 +262,6 @@ void paide::is_failed_assertion() {
         }
     }
 }
-
 
 /**
  * @brief testing methods

@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "tst_convert.hh"
+#include "tst_parser.hh"
 
 using namespace iotf;
 
@@ -52,5 +53,6 @@ int main(int argc, char *argv[]) {
     if (filename.length() == 0) {
         filename = "example/test1.bp";
     }
-    auto P = parser::parse(filename, mode::POST);
+
+    tst_solver::tst_split();
 }

@@ -173,11 +173,11 @@ solver::~solver() {
  * @param l
  * @return a sat solver
  */
-bool solver::solve(const deque<symbol>& expr, const state_v& s,
+bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
         const state_v& l) {
     stack<bool> worklist;
     bool op1, op2;
-    for (const auto& ss : expr) {
+    for (const auto& ss : sexpr) {
         switch (ss) {
         case solver::AND:
             op1 = worklist.top(), worklist.pop();
@@ -217,10 +217,11 @@ bool solver::solve(const deque<symbol>& expr, const state_v& s,
             worklist.push(true);
             break;
         case solver::CONST_N:
+            throw iotf_runtime_error("* is not splitted");
             break;
         default: {
             bool is_shared = false;
-            const auto& i = solver::decode(ss - 2, is_shared);
+            const auto& i = solver::decode(ss, is_shared);
             if (is_shared)
                 worklist.push(s[i]);
             else
@@ -230,6 +231,34 @@ bool solver::solve(const deque<symbol>& expr, const state_v& s,
         }
     }
     return worklist.top();
+}
+
+/**
+ * @brief split * into 0 and 1 during expression evaluation
+ * @param sexpr:
+ * @return a list of expression after splitting
+ */
+deque<deque<symbol>> solver::split(const deque<symbol>& sexpr) {
+    deque<deque<symbol>> worklist;
+    worklist.emplace_back(sexpr);
+    deque<deque<symbol>> splitted;
+    for (auto i = 0; i < sexpr.size(); ++i) {
+        if (sexpr[i] == solver::CONST_N) {
+            while (!worklist.empty()) {
+                auto e1 = worklist.front();
+                worklist.pop_front();
+                auto e2 = e1;
+
+                e1[i] = solver::CONST_F;
+                e2[i] = solver::CONST_T;
+
+                splitted.emplace_back(e1);
+                splitted.emplace_back(e2);
+            }
+            splitted.swap(worklist);
+        }
+    }
+    return worklist;
 }
 
 /**
