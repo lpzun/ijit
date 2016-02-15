@@ -63,7 +63,8 @@ using initl_ps = deque<prog_state>;
 using final_ps = deque<prog_state>;
 
 /**
- * @brief the mode of parser: probably compute prev-/post-images of a global state
+ * @brief the mode of parser: probably compute prev-/post-images of a global
+ *         state.
  */
 enum class mode {
     PREV, POST
@@ -102,6 +103,7 @@ private:
     static cfg post_G; /// control flow graph in POST mode
 };
 
+/// system state in counter abstraction
 using syst_state = pair<uint, map<uint, uint>>;
 
 /**
@@ -109,15 +111,20 @@ using syst_state = pair<uint, map<uint, uint>>;
  *        versa.
  *
  *        System states are probably represented in counter abstraction form
- *        or non-counter abstraction:
+ *        or non-counter abstraction.
+ *
+ * @note  Remark that the diversity of local state storage (either in counter
+ *        abstraction form or non-counter abstraction, or storing  in various
+ *        STL containers, like vector, list, ect.) is materialized here using
+ *        the template meta-programming.
  *
  *        With template meta-programming, class converter provides better
  *        flexibility for API users: they could use any STL container to
  *        store their local states, e.g., vector, list, map etc., and finally
  *        convert to our internal representation in this class.
  */
-template<typename T,
-        template<typename ..., typename = std::allocator<T>> class container_t>
+//template<typename T,
+//        template<typename ..., typename = std::allocator<T>> class container_t>
 class converter {
 public:
     converter() :
@@ -126,28 +133,54 @@ public:
 
     virtual ~converter() {
     }
+//    /// aliasing system state
+//    using syst_state = pair<T, container_t<T, T>>;
 
-    using syst_state = pair<T, container_t<T>>;
+    /**
+     * @brief This function is to convert a system state to a program state
+     *
+     * @param ss: system state
+     *
+     * @return program state
+     */
+    virtual prog_state convert(const syst_state& ss);
+
+    /**
+     * @brief This function is to convert program state to a system state
+     *
+     * @param ss: program state
+     *
+     * @return system state
+     */
+    virtual syst_state convert(const prog_state& ps);
 
     /**
      * @brief This function is to convert a list of system states to a list
      *        of program states
      *
      * @param ss: a list of system states
+     *
      * @return a list of program states
      */
     virtual deque<prog_state> convert(const deque<syst_state>& ss);
+
+    /**
+     * @brief This function is to convert a list of program states to a list
+     *        of system states
+     *
+     * @param ss: a list of program states
+     *
+     * @return a list of system states
+     */
     virtual deque<syst_state> convert(const deque<prog_state>& ps);
 
-    virtual prog_state convert(const syst_state& ss);
-    virtual syst_state convert(const prog_state& ps);
 private:
-    T mask;
-    state_v convert_sss_to_sps(const T& ss);
-    T convert_sps_to_sss(const state_v& ps);
+    uint mask;
+    state_v convert_sss_to_sps(const uint& ss);
+    uint convert_sps_to_sss(const state_v& ps);
 
-    pair<size_pc, state_v> convert_lss_to_lps(const T& ss);
-    T convert_lps_to_lss(const size_pc& pc, const state_v& ps);
+    pair<size_pc, state_v> convert_lss_to_lps(const uint& ss);
+    uint convert_lps_to_lss(const size_pc& pc, const state_v& ps);
 };
 
 /**
@@ -161,27 +194,29 @@ enum class prev {
 
 /**
  * @brief interface: the class <pre_image> is used to compute preimages
- *        of a global state state.
+ *        of a global program state.
  *
  * @note 1: we have two different kinds of preimages:
- *        (1) the direct preimages, and
- *        (2) the covering preimages.
- *        We use enum {DRC, COV} to distinguish them.
+ *         (1) the direct preimages, and
+ *         (2) the covering preimages.
+ *         We use enum {DRC, COV} to distinguish them.
  *
  * @note 2: step functions return a list instead of a set of direct (covering)
  *         preimages due to the following four reasons:
- *         (1) it's not so clear the how to *define* the duplication relation
- *         after we implement different internal representations: the counters,
- *         the orderings or some relation?
  *
- *         (2) the requirement of users are various; maybe they want delay the
- *         duplication removes;
+ *         (1) it's not so clear that how to *define* the duplication relation
+ *         after we implement different internal representations: the counters,
+ *         the orderings or some relation;
+ *
+ *         (2) the requirement of users are various; maybe they want to delay
+ *         the operation of removing duplication;
  *
  *         (3) the duplication elimination is usually implemented in the main
- *         algorithms which use our API;
+ *         algorithms to which use our API applies. It would lead to duplicate
+ *         operations;
  *
- *         (4) I didn't see any potentialities which could cause duplications
- *         in this single preimage step.
+ *         (4) I didn't see any potential places which could cause duplication
+ *         in one single preimage step.
  */
 class pre_image {
 public:
@@ -255,20 +290,22 @@ private:
  *        of a global state state.
  *
  *
- * @note 1: step functions return a list instead of a set of postimages due to
+ * @note 2: step functions return a list instead of a set of postimages due to
  *         the following four reasons:
- *         (1) it's not so clear the how to *define* the duplication relation
- *         after we implement different internal representations: the counters,
- *         the orderings or some relation?
  *
- *         (2) the requirement of users are various; maybe they want delay the
- *         duplication removes;
+ *         (1) it's not so clear that how to *define* the duplication relation
+ *         after we implement different internal representations: the counters,
+ *         the orderings or some relation;
+ *
+ *         (2) the requirement of users are various; maybe they want to delay
+ *         the operation of removing duplication;
  *
  *         (3) the duplication elimination is usually implemented in the main
- *         algorithms which use our API;
+ *         algorithms to which use our API applies. It would lead to duplicate
+ *         operations;
  *
- *         (4) I didn't see any potentialities which could cause duplications
- *         in this single postimage step.
+ *         (4) I didn't see any potential places which could cause duplication
+ *         in one single postimage step.
  */
 class post_image {
 public:
