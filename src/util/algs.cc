@@ -106,38 +106,6 @@ void alg::merge(const local_state& local, const ushort& n, cab_locals& Z) {
     }
 }
 
-/**
- * @brief split all nondeterministic * values
- * @param vs: probably contains some *
- * @return the result after split
- */
-deque<vector<sool>> alg::split(const vector<sool>& vs) {
-    deque<vector<sool>> result;
-    if (vs.size() == 0)
-        return result;
-
-    queue<vector<sool>> worklist;
-    worklist.push(vs);
-    while (!worklist.empty()) {
-        auto curr = worklist.front();
-        worklist.pop();
-        bool is_nondet = false;
-        for (auto i = 0; i < curr.size(); ++i) {
-            if (curr[i] == sool::N) {
-                curr[i] = sool::T;
-                worklist.push(curr);
-                curr[i] = sool::F;
-                worklist.push(curr);
-                /// mark there exist a *
-                is_nondet = true;
-            }
-        }
-        if (!is_nondet)
-            result.emplace_back(curr);
-    }
-    return result;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /// from here: class solver
 ///
@@ -182,39 +150,39 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
         case solver::AND:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 & op2);
+            worklist.emplace(op1 & op2);
             break;
         case solver::OR:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 | op2);
+            worklist.emplace(op1 | op2);
             break;
         case solver::XOR:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 ^ op2);
+            worklist.emplace(op1 ^ op2);
             break;
         case solver::EQ:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 == op2);
+            worklist.emplace(op1 == op2);
             break;
         case solver::NEQ:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 != op2);
+            worklist.emplace(op1 != op2);
             break;
         case solver::NEG:
             op1 = worklist.top(), worklist.pop();
-            worklist.push(!op1);
+            worklist.emplace(!op1);
             break;
         case solver::PAR:
             break;
         case solver::CONST_F:
-            worklist.push(false);
+            worklist.emplace(false);
             break;
         case solver::CONST_T:
-            worklist.push(true);
+            worklist.emplace(true);
             break;
         case solver::CONST_N:
             throw iotf_runtime_error("* is not splitted");
@@ -255,39 +223,39 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
         case solver::AND:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 & op2);
+            worklist.emplace(op1 & op2);
             break;
         case solver::OR:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 | op2);
+            worklist.emplace(op1 | op2);
             break;
         case solver::XOR:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 ^ op2);
+            worklist.emplace(op1 ^ op2);
             break;
         case solver::EQ:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 == op2);
+            worklist.emplace(op1 == op2);
             break;
         case solver::NEQ:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.push(op1 != op2);
+            worklist.emplace(op1 != op2);
             break;
         case solver::NEG:
             op1 = worklist.top(), worklist.pop();
-            worklist.push(!op1);
+            worklist.emplace(!op1);
             break;
         case solver::PAR:
             break;
         case solver::CONST_F:
-            worklist.push(false);
+            worklist.emplace(false);
             break;
         case solver::CONST_T:
-            worklist.push(true);
+            worklist.emplace(true);
             break;
         case solver::CONST_N:
             throw iotf_runtime_error("* is not splitted");
@@ -314,6 +282,15 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
 }
 
 /**
+ * @brief an all sat solver
+ * @param sexpr
+ * @return
+ */
+bool solver::all_sat_solve(const deque<symbol>& sexpr) {
+    return true;
+}
+
+/**
  * @brief split * into 0 and 1 during expression evaluation
  * @param sexpr:
  * @return a list of expression after splitting
@@ -334,6 +311,34 @@ deque<deque<symbol>> solver::split(const deque<symbol>& sexpr) {
 
                 splitted.emplace_back(e1);
                 splitted.emplace_back(e2);
+            }
+            splitted.swap(worklist);
+        }
+    }
+    return worklist;
+}
+
+/**
+ * @brief split all nondeterministic * values
+ * @param vs: probably contains some *
+ * @return the result after split
+ */
+deque<deque<sool>> solver::split(const deque<sool>& vsool) {
+    deque<deque<sool>> worklist;
+    worklist.emplace_back(vsool);
+    deque<deque<sool>> splitted;
+    for (auto i = 0; i < vsool.size(); ++i) {
+        if (vsool[i] == sool::N) {
+            while (!worklist.empty()) {
+                auto v1 = worklist.front();
+                worklist.pop_front();
+                auto v2 = v1;
+
+                v1[i] = sool::F;
+                v2[i] = sool::T;
+
+                splitted.emplace_back(v1);
+                splitted.emplace_back(v2);
             }
             splitted.swap(worklist);
         }

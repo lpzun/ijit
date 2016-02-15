@@ -17,6 +17,7 @@
 #include <deque>
 #include <queue>
 #include <stack>
+#include <list>
 #include <set>
 #include <bitset>
 #include <unordered_set>
@@ -41,6 +42,7 @@ using std::vector;
 using std::deque;
 using std::queue;
 using std::stack;
+using std::list;
 using std::map;
 using std::unordered_map;
 using std::set;

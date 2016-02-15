@@ -95,14 +95,35 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     aide.test_output_control_flow_graph();
     cout << endl;
     for (const auto& p : aide.s_vars_list)
-        cout << p.first << " " << p.second << " "
-                << aide.encode(p.first) << "\n";
+        cout << p.first << " " << p.second << " " << aide.encode(p.first)
+                << "\n";
     for (const auto& p : aide.l_vars_list)
-        cout << p.first << " " << p.second << " "
-                << aide.encode(p.first) << "\n";
+        cout << p.first << " " << p.second << " " << aide.encode(p.first)
+                << "\n";
     if (aide.is_failed)
         cout << "ooooooooooooooo\n";
     return std::make_pair(I, Q);
+}
+
+/**
+ * @brief compute initial states
+ * @param s_vars_init
+ * @param l_vars_init
+ * @return initial states
+ */
+initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
+        const map<ushort, sool>& l_vars_init) {
+    initl_ps ps;
+    return ps;
+}
+
+/**
+ * @brief compute final states
+ * @return final states
+ */
+final_ps parser::create_final_state() {
+    final_ps fs;
+    return fs;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

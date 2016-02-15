@@ -32,15 +32,15 @@ void tst_convert::test_converter() {
     cout << foo << endl;
 
     converter c;
-    cout << c.mask << "\n";
-
-    cout << c.convert_sss_to_sps(8) << "\n";
-
-    state_v ps(8);
-    cout << c.convert_sps_to_sss(ps) << "\n";
-
-    const auto& p = c.convert_lss_to_lps(8);
-    cout << "pc: " << p.first << "; lv: " << p.second << "\n";
+//    cout << c.mask << "\n";
+//
+//    cout << c.convert_sss_to_sps(8) << "\n";
+//
+//    state_v ps(8);
+//    cout << c.convert_sps_to_sss(ps) << "\n";
+//
+//    const auto& p = c.convert_lss_to_lps(8);
+//    cout << "pc: " << p.first << "; lv: " << p.second << "\n";
 }
 
 } /* namespace iotf */

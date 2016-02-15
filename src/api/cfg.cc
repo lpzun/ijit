@@ -226,7 +226,8 @@ expr::expr() :
  */
 expr::expr(const deque<symbol>& sexpr) :
         sexpr(sexpr), expr_deq() {
-    expr_deq = solver::split(sexpr);
+    if (!sexpr.empty())
+        expr_deq = solver::split(sexpr);
 }
 
 /**

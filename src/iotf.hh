@@ -48,15 +48,22 @@
 
 namespace iotf {
 
-/// system state
-using syst_state = pair<uint, map<uint, uint>>;
+/**
+ * @brief a program state has two different representation in our API:
+ *        (1) Counter Abstraction Representation:
+ *              tau = <s | (l0, n0), ..., (lk, nk)>
+ *            where l0 ... lk are different local states.
+ *        (2) Non-Counter Abstraction Representation:
+ *              tau = <s | l0, l1, l2, ..., ln>
+ *            where l0, ..., ln are probably different or same local states.
+ */
 using prog_state = global_state;
 
 using initl_ps = deque<prog_state>;
 using final_ps = deque<prog_state>;
 
 /**
- * @brief the mode of parser: probably compute prev-/post- images of a global state
+ * @brief the mode of parser: probably compute prev-/post-images of a global state
  */
 enum class mode {
     PREV, POST
@@ -87,14 +94,30 @@ private:
     static pair<initl_ps, final_ps> parse_in_prev_mode(const string& filename);
     static pair<initl_ps, final_ps> parse_in_post_mode(const string& filename);
 
+    static initl_ps create_initl_state(const map<ushort, sool>& s_vars_init,
+            const map<ushort, sool>& l_vars_init);
+    static final_ps create_final_state();
+
     static cfg prev_G; /// control flow graph in PREV mode
     static cfg post_G; /// control flow graph in POST mode
 };
 
+using syst_state = pair<uint, map<uint, uint>>;
+
 /**
  * @brief a converter: convert a program state to a system state, and vice
  *        versa.
+ *
+ *        System states are probably represented in counter abstraction form
+ *        or non-counter abstraction:
+ *
+ *        With template meta-programming, class converter provides better
+ *        flexibility for API users: they could use any STL container to
+ *        store their local states, e.g., vector, list, map etc., and finally
+ *        convert to our internal representation in this class.
  */
+template<typename T,
+        template<typename ..., typename = std::allocator<T>> class container_t>
 class converter {
 public:
     converter() :
@@ -104,18 +127,27 @@ public:
     virtual ~converter() {
     }
 
+    using syst_state = pair<T, container_t<T>>;
+
+    /**
+     * @brief This function is to convert a list of system states to a list
+     *        of program states
+     *
+     * @param ss: a list of system states
+     * @return a list of program states
+     */
     virtual deque<prog_state> convert(const deque<syst_state>& ss);
     virtual deque<syst_state> convert(const deque<prog_state>& ps);
+
     virtual prog_state convert(const syst_state& ss);
     virtual syst_state convert(const prog_state& ps);
+private:
+    T mask;
+    state_v convert_sss_to_sps(const T& ss);
+    T convert_sps_to_sss(const state_v& ps);
 
-public:
-    uint mask;
-    state_v convert_sss_to_sps(const uint& ss);
-    uint convert_sps_to_sss(const state_v& ps);
-
-    pair<size_pc, state_v> convert_lss_to_lps(const uint& ss);
-    uint convert_lps_to_lss(const size_pc& pc, const state_v& ps);
+    pair<size_pc, state_v> convert_lss_to_lps(const T& ss);
+    T convert_lps_to_lss(const size_pc& pc, const state_v& ps);
 };
 
 /**
@@ -128,15 +160,73 @@ enum class prev {
 };
 
 /**
- * @brief interface: the class pre_image is used to compute preimages
- *        of a global state
+ * @brief interface: the class <pre_image> is used to compute preimages
+ *        of a global state state.
+ *
+ * @note 1: we have two different kinds of preimages:
+ *        (1) the direct preimages, and
+ *        (2) the covering preimages.
+ *        We use enum {DRC, COV} to distinguish them.
+ *
+ * @note 2: step functions return a list instead of a set of direct (covering)
+ *         preimages due to the following four reasons:
+ *         (1) it's not so clear the how to *define* the duplication relation
+ *         after we implement different internal representations: the counters,
+ *         the orderings or some relation?
+ *
+ *         (2) the requirement of users are various; maybe they want delay the
+ *         duplication removes;
+ *
+ *         (3) the duplication elimination is usually implemented in the main
+ *         algorithms which use our API;
+ *
+ *         (4) I didn't see any potentialities which could cause duplications
+ *         in this single preimage step.
  */
 class pre_image {
 public:
     pre_image();
     ~pre_image();
+
+    /**
+     * @brief This function is to compute all preimages of global state tau.
+     *        It iterates over all threads, i.e., each thread is used as the
+     *        active thread.
+     *
+     * @param tau: the global program state
+     * @param p  : the type of preimages: the default is to compute direct
+     *             preimages.
+     *
+     * @return a list of direct (covering) preimages.
+     */
     deque<prog_state> step(const prog_state& tau, const prev& p = prev::DRC);
+
+    /**
+     * @brief This function is to compute all DIRECT preimages of global state
+     *         tau w.r.t. a active thread that is identified by thread_id.
+     *
+     * @note  This implementation is always associated with non-counter abstr-
+     *        action representation.
+     *
+     * @param tau      : the global program state
+     * @param thread_id: the identifier of active thread
+     *
+     * @return a list of direct preimages.
+     */
     deque<prog_state> step(const prog_state& tau, const size_tc& thread_id);
+
+    /**
+     * @brief This function is to compute all DIRECT preimages of global state
+     *         tau w.r.t. a active thread that is identified by local state l.
+     *
+     * @note  We still have not found a potential meaningful application of this
+     *        function.
+     *
+     * @param tau: the global program state
+     * @param l  : the identifier of active thread
+     *
+     * @return a list of direct preimages.
+     */
     deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
@@ -161,16 +251,67 @@ private:
 };
 
 /**
- * @brief interface: the class post_image is used to compute postimages
- *        of a global state
+ * @brief interface: the class <post_image> is used to compute postimages
+ *        of a global state state.
+ *
+ *
+ * @note 1: step functions return a list instead of a set of postimages due to
+ *         the following four reasons:
+ *         (1) it's not so clear the how to *define* the duplication relation
+ *         after we implement different internal representations: the counters,
+ *         the orderings or some relation?
+ *
+ *         (2) the requirement of users are various; maybe they want delay the
+ *         duplication removes;
+ *
+ *         (3) the duplication elimination is usually implemented in the main
+ *         algorithms which use our API;
+ *
+ *         (4) I didn't see any potentialities which could cause duplications
+ *         in this single postimage step.
  */
 class post_image {
 public:
     post_image();
     ~post_image();
 
+    /**
+     * @brief This function is to compute all postimages of global state tau.
+     *        It iterates over all threads, i.e., each thread is used as the
+     *        active thread.
+     *
+     * @param tau: the global program state
+     *
+     * @return a list of postimages.
+     */
     deque<prog_state> step(const prog_state& tau);
+
+    /**
+     * @brief This function is to compute all postimages of global state tau
+     *        w.r.t. a active thread that is identified by thread_id.
+     *
+     * @note  This implementation is always associated with non-counter abstr-
+     *        action representation.
+     *
+     * @param tau      : the global program state
+     * @param thread_id: the identifier of active thread
+     *
+     * @return a list of postimages.
+     */
     deque<prog_state> step(const prog_state& tau, const size_tc& thread_id);
+
+    /**
+     * @brief This function is to compute all postimages of global state tau
+     *        w.r.t. a active thread that is identified by local state l.
+     *
+     * @note  We still have not found a potential meaningful application of this
+     *        function.
+     *
+     * @param tau: the global program state
+     * @param l  : the identifier of active thread
+     *
+     * @return a list of postimages.
+     */
     deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
