@@ -42,18 +42,18 @@ enum class log_mode {
 };
 class logger {
 public:
-	logger();
-	~logger();
+	inline logger();
+	inline ~logger();
 	inline void logging(const std::string& msg);
 private:
 	log_mode level;
 };
 
-logger::logger() :
+inline logger::logger() :
 		level(log_mode::LOG_INFO) {
 
 }
-logger::~logger() {
+inline logger::~logger() {
 
 }
 

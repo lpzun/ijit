@@ -25,6 +25,8 @@
 #include <unordered_map>
 #include <type_traits>
 
+#include <cmath>
+
 #include "excp.hh"
 #include "log.hh"
 
