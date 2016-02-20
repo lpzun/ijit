@@ -30,7 +30,7 @@ parser::parser() {
 }
 
 /**
- * @brief default destructor
+ * @brief default  destructor
  */
 parser::~parser() {
 
@@ -70,11 +70,11 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     initl_ps I;
     final_ps Q;
 
-    FILE *bPfile = fopen(filename.c_str(), "r");
-    if (!bPfile) {
+    FILE *bfile = fopen(filename.c_str(), "r");
+    if (!bfile) {
         throw iotf_runtime_error(filename + " open failed!");
     }
-    yyin = bPfile;
+    yyin = bfile;
 
     /// file list
     paide aide;
@@ -199,7 +199,7 @@ uint converter::convert_sps_to_sss(const state_v& ps) {
 
 /**
  * @brief:
- *       low pc               local          high
+ *      low pc               local            high
  *           ________________ _______________
  *          |________________|_______________|
  *

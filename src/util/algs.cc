@@ -287,13 +287,36 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
  * @return
  */
 bool solver::all_sat_solve(const deque<symbol>& sexpr) {
+    /// step 1: collect the ids of Boolean variables:
+    ///         this is a subset of all variables
+    map<symbol, ushort> active_id;
+    ushort num = 0; /// number of active variables
+    for (const auto& s : sexpr) {
+        if (s > solver::CONST_N) {
+            const auto& p = active_id.emplace(s, num);
+            if (p.second)
+                num++;
+        }
+    }
+    /// step 2: enumerate over all possible valuations
+    ///         of active Boolean variables
+    for (auto assg = 0; assg < std::pow(2, num); ++assg) {
+        const auto& bv = solver::to_binary(assg, num);
+        auto se = sexpr;
+        for (auto i = 0; i < se.size(); ++i) {
+            if (se[i] > solver::CONST_N) {
+                auto ifind = active_id.find(se[i]);
+                se[i] = bv[ifind->second] ? solver::CONST_T : solver::CONST_F;
+            }
+        }
+    }
     return true;
 }
 
 /**
  * @brief split * into 0 and 1 during expression evaluation
- * @param sexpr:
- * @return a list of expression after splitting
+ * @param sexpr: a expression with *
+ * @return a list of expressions after splitting * into 0 and 1
  */
 deque<deque<symbol>> solver::split(const deque<symbol>& sexpr) {
     deque<deque<symbol>> worklist;
@@ -319,9 +342,9 @@ deque<deque<symbol>> solver::split(const deque<symbol>& sexpr) {
 }
 
 /**
- * @brief split all nondeterministic * values
- * @param vs: probably contains some *
- * @return the result after split
+ * @brief split * into 0 and 1 during expression evaluation
+ * @param sexpr: a expression with *
+ * @return a list of expressions after splitting * into 0 and 1
  */
 deque<deque<sool>> solver::split(const deque<sool>& vsool) {
     deque<deque<sool>> worklist;
@@ -378,6 +401,22 @@ symbol solver::decode(const symbol& idx, bool& is_shared, bool& is_primed) {
         id -= refs::S_VARS_NUM + refs::L_VARS_NUM;
     }
     return id;
+}
+
+/**
+ * @brief convert a unsigned to a binary representation
+ * @param n
+ * @param bits
+ * @return a binary stored in vector<bool>
+ */
+vector<bool> solver::to_binary(const int& n, const short& shift) {
+    auto num = n;
+    vector<bool> bv(shift);
+    for (auto i = 0; i < shift; ++i) {
+        int b = (num >> i) & 1;
+        bv[i] = b == 1 ? 1 : 0;
+    }
+    return bv;
 }
 
 } /* namespace otf */

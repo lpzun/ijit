@@ -26,6 +26,7 @@
 #include <type_traits>
 
 #include "excp.hh"
+#include "log.hh"
 
 /// IO
 using std::cin;

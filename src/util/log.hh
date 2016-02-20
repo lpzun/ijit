@@ -18,6 +18,9 @@ namespace iotf {
 #  define DBG_LOC() std::cerr \
         <<__func__<<" I am here ..."<<"\n";
 #else
+#  define DBG_LOG(x)
+#  define DBG_STD(x)
+#  define DBG_LOC();
 #endif
 
 /**

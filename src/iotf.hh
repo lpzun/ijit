@@ -47,7 +47,6 @@
 #include "bpp/bopp.tab.hh"
 
 namespace iotf {
-
 /**
  * @brief a program state has two different representation in our API:
  *        (1) Counter Abstraction Representation:
@@ -123,8 +122,8 @@ using syst_state = pair<uint, map<uint, uint>>;
  *        store their local states, e.g., vector, list, map etc., and finally
  *        convert to our internal representation in this class.
  */
-//template<typename T,
-//        template<typename ..., typename = std::allocator<T>> class container_t>
+//template<typename S, typename L,
+//        template<typename ..., typename = std::allocator<L>> class container_t>
 class converter {
 public:
     converter() :
@@ -133,8 +132,8 @@ public:
 
     virtual ~converter() {
     }
-//    /// aliasing system state
-//    using syst_state = pair<T, container_t<T, T>>;
+    /// aliasing system state
+//    using syst_state = pair<S, container_t<L ...>>;
 
     /**
      * @brief This function is to convert a system state to a program state

@@ -51,8 +51,10 @@ int main(int argc, char *argv[]) {
 
     string filename(getCmdOption(argv, argv + argc, "-f"));
     if (filename.length() == 0) {
-        filename = "example/test1.bp";
+        throw iotf_runtime_error("Please specify filename!");
     }
+
+    cout << true << " " << false << "\n";
 
     tst_solver::tst_split();
 }
