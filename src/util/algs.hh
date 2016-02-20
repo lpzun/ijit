@@ -84,6 +84,7 @@ public:
 private:
     static symbol decode(const symbol& idx, bool& is_shared);
     static symbol decode(const symbol& idx, bool& is_shared, bool& is_primed);
+    static int power(const int& base, const int& bits);
     static vector<bool> to_binary(const int& n, const short& bits);
 };
 

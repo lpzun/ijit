@@ -300,7 +300,7 @@ bool solver::all_sat_solve(const deque<symbol>& sexpr) {
     }
     /// step 2: enumerate over all possible valuations
     ///         of active Boolean variables
-    for (auto assg = 0; assg < std::pow(2, num); ++assg) {
+    for (auto assg = 0; assg < pow(2, num); ++assg) {
         const auto& bv = solver::to_binary(assg, num);
         auto se = sexpr;
         for (auto i = 0; i < se.size(); ++i) {
@@ -417,6 +417,15 @@ vector<bool> solver::to_binary(const int& n, const short& shift) {
         bv[i] = b == 1 ? 1 : 0;
     }
     return bv;
+}
+
+int solver::power(const int& base, const int& bits) {
+    auto shift = bits;
+    int result = 1;
+    while (shift-- > 0) {
+        result *= base;
+    }
+    return result;
 }
 
 } /* namespace otf */
