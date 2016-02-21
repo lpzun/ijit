@@ -6,8 +6,8 @@
 
 #include <iostream>
 
-#include "tst_convert.hh"
-#include "tst_parser.hh"
+#include "../test/tst_convert.hh"
+#include "../test/tst_parser.hh"
 
 using namespace iotf;
 

@@ -286,7 +286,12 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
  * @param sexpr
  * @return
  */
-bool solver::all_sat_solve(const deque<symbol>& sexpr) {
+deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
+        const deque<symbol>& sexpr) {
+    deque<pair<ss_vars, sl_vars>> result;
+    ss_vars sassg(refs::S_VARS_NUM, solver::CONST_N);
+    sl_vars lassg(refs::L_VARS_NUM, solver::CONST_N);
+
     /// step 1: collect the ids of Boolean variables:
     ///         this is a subset of all variables
     map<symbol, ushort> active_id;
@@ -298,19 +303,45 @@ bool solver::all_sat_solve(const deque<symbol>& sexpr) {
                 num++;
         }
     }
+
+    /// if the expression does not involve any variable
+    if (num == 0) {
+        if (solver::eval(sexpr))
+            result.emplace_back(sassg, lassg);
+        return result;
+    }
+
     /// step 2: enumerate over all possible valuations
     ///         of active Boolean variables
     for (auto assg = 0; assg < pow(2, num); ++assg) {
+        /// step 3: build an assignment to active variables
         const auto& bv = solver::to_binary(assg, num);
+
+        ss_vars s_tmp(refs::S_VARS_NUM, solver::CONST_N);
+        sl_vars l_tmp(refs::L_VARS_NUM, solver::CONST_N);
+
+        /// step 4: replace Boolean variables by its values
         auto se = sexpr;
         for (auto i = 0; i < se.size(); ++i) {
             if (se[i] > solver::CONST_N) {
                 auto ifind = active_id.find(se[i]);
-                se[i] = bv[ifind->second] ? solver::CONST_T : solver::CONST_F;
+                se[i] = bv[ifind->second];
+
+                bool is_shared = false;
+                const auto& idx = solver::decode(se[i], is_shared);
+                if (is_shared)
+                    s_tmp[idx] = bv[ifind->second];
+                else
+                    l_tmp[idx] = bv[ifind->second];
             }
         }
+
+        /// step 5: evaluate the expr after replacement
+        if (solver::eval(se)) {
+            result.emplace_back(s_tmp, l_tmp);
+        }
     }
-    return true;
+    return result;
 }
 
 /**
@@ -426,6 +457,60 @@ int solver::power(const int& base, const int& bits) {
         result *= base;
     }
     return result;
+}
+
+bool solver::eval(const deque<symbol>& sexpr) {
+    stack<bool> worklist;
+    bool op1, op2;
+    for (const auto& ss : sexpr) {
+        switch (ss) {
+        case solver::AND:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 & op2);
+            break;
+        case solver::OR:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 | op2);
+            break;
+        case solver::XOR:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 ^ op2);
+            break;
+        case solver::EQ:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 == op2);
+            break;
+        case solver::NEQ:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 != op2);
+            break;
+        case solver::NEG:
+            op1 = worklist.top(), worklist.pop();
+            worklist.emplace(!op1);
+            break;
+        case solver::PAR:
+            break;
+        case solver::CONST_F:
+            worklist.emplace(false);
+            break;
+        case solver::CONST_T:
+            worklist.emplace(true);
+            break;
+        case solver::CONST_N:
+            throw iotf_runtime_error("* is not splitted");
+            break;
+        default:
+            throw("A variable appears in solver::eval()");
+            break;
+        }
+    }
+    return worklist.top();
+
 }
 
 } /* namespace otf */

@@ -5,7 +5,7 @@
  * @author: lpzun
  */
 
-#include "tst_parser.hh"
+#include "../test/tst_parser.hh"
 
 namespace iotf {
 
@@ -22,7 +22,7 @@ void tst_parser::test_parser(const string& filename) {
 }
 
 void tst_solver::tst_split() {
-    cout<<__func__<<"I am here\n";
+    cout << __func__ << "I am here\n";
     DBG_LOC();
     deque<symbol> se1;
     se1.emplace_back(solver::CONST_N);
@@ -38,6 +38,14 @@ void tst_solver::tst_split() {
         for (const auto& s : l)
             cout << s << endl;
     }
+}
+
+/**
+ * @brief testing
+ */
+void tst_solver::tst_all_sat_solve() {
+    deque<symbol> se1;
+
 }
 
 } /* namespace iotf */

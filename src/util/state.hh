@@ -37,6 +37,12 @@ using size_tc = unsigned short;
 /// it includes operator and operand
 using symbol = short;
 
+/// symbolic valuation for shared variables
+using ss_vars = vector<symbol>;
+
+/// symbolic valuation for local  variables
+using sl_vars = vector<symbol>;
+
 /**
  * @brief sool = symbolic boolean variables
  */

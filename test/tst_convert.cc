@@ -5,7 +5,7 @@
  * @author: lpzun
  */
 
-#include "tst_convert.hh"
+#include "../test/tst_convert.hh"
 
 namespace iotf {
 

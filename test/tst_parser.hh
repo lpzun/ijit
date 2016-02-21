@@ -24,6 +24,7 @@ class tst_solver {
 public:
 
     static void tst_split();
+    static void tst_all_sat_solve();
 };
 
 } /* namespace iotf */
