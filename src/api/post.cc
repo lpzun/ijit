@@ -31,11 +31,11 @@ post_image::~post_image() {
  * @return images: the list of post images of tau w.r.t. all threads
  */
 deque<prog_state> post_image::step(const prog_state& tau) {
-    DBG_LOC()
-    deque<prog_state> images;
-    for (const auto& p : tau.get_locals()) /// iterate over all local states
-        this->compute_post_images(tau, p.first, images);
-    return images;
+	DBG_LOC()
+	deque<prog_state> images;
+	for (const auto& p : tau.get_locals()) /// iterate over all local states
+		this->compute_post_images(tau, p.first, images);
+	return images;
 }
 
 /**
@@ -45,11 +45,10 @@ deque<prog_state> post_image::step(const prog_state& tau) {
  * @param l
  * @return images: the list of post images of tau w.r.t. local state <l>
  */
-deque<prog_state> post_image::step(const prog_state& tau,
-        const local_state& l) {
-    deque<prog_state> images;
-    this->compute_post_images(tau, l, images);
-    return images;
+deque<prog_state> post_image::step(const prog_state& tau, const local_state& l) {
+	deque<prog_state> images;
+	this->compute_post_images(tau, l, images);
+	return images;
 }
 
 /**
@@ -59,234 +58,232 @@ deque<prog_state> post_image::step(const prog_state& tau,
  * @param images: the list of post images of tau w.r.t. one thread whose local
  *        state is l
  */
-void post_image::compute_post_images(const prog_state& tau,
-        const local_state& l, deque<prog_state>& images) {
-    /// extract all necessary information from program state tau and
-    /// local state l
-    const auto& s = tau.get_s();       /// current shared state
-    cout << s << ": ssssssssss\n";
-    const auto& sv = s.get_vars();     /// shared vars: the valuation
-    cout << sv << ": ssssssssss\n";
-    const auto& Z = tau.get_locals();  /// the local part of tau
-    const auto& pc = l.get_pc();       /// current pc
-    const auto& lv = l.get_vars();     /// local vars : the valuation
+void post_image::compute_post_images(const prog_state& tau, const local_state& l, deque<prog_state>& images) {
+	/// extract all necessary information from program state tau and
+	/// local state l
+	const auto& s = tau.get_s();       /// current shared state
+	cout << s << ": ssssssssss\n";
+	const auto& sv = s.get_vars();     /// shared vars: the valuation
+	cout << sv << ": ssssssssss\n";
+	const auto& Z = tau.get_locals();  /// the local part of tau
+	const auto& pc = l.get_pc();       /// current pc
+	const auto& lv = l.get_vars();     /// local vars : the valuation
 
-    /// iterate over all succeeding statements via <parser::post_G>
-    const auto& successors = parser::get_post_G().get_A()[pc];
-    for (auto ie = successors.cbegin(); ie != successors.cend(); ++ie) {
-        /// extract the edge pointed by pc: e = (pc, _pc)
-        const auto& e = *ie;
-        const auto& _pc = e.get_dest();
-        switch (e.get_stmt().get_type()) {
-        case type_stmt::GOTO: {
-            /// goto statement
-            ///   pc: goto <_pc>;
-            ///    ...
-            ///  _pc: ...
-            ///
-            /// SEMANTIC: nondeterministic goto
-            local_state _l(_pc, lv); /// post local state
-            const auto& _Z = alg::update_counters(_l, l, Z);
-            images.emplace_back(s, _Z);
-        }
-            break;
-        case type_stmt::ASSG: {
-            /// parallel assignment statement
-            ///   pc: <id>+ := <expr>+ constrain <expr>;
-            /// pc+1: ...
-            ///
-            /// SEMANTIC: assignment statement, postcondition of
-            /// vars might have to satisfy the constraint
-            vector<expr> assgs;                //  TODO: need to do sth...
+	/// iterate over all succeeding statements via <parser::post_G>
+	const auto& successors = parser::get_post_G().get_A()[pc];
+	for (auto ie = successors.cbegin(); ie != successors.cend(); ++ie) {
+		/// extract the edge pointed by pc: e = (pc, _pc)
+		const auto& e = *ie;
+		const auto& _pc = e.get_dest();
+		switch (e.get_stmt().get_type()) {
+		case type_stmt::GOTO: {
+			/// goto statement
+			///   pc: goto <_pc>;
+			///    ...
+			///  _pc: ...
+			///
+			/// SEMANTIC: nondeterministic goto
+			local_state _l(_pc, lv); /// post local state
+			const auto& _Z = alg::update_counters(_l, l, Z);
+			images.emplace_back(s, _Z);
+		}
+			break;
+		case type_stmt::ASSG: {
+			/// parallel assignment statement
+			///   pc: <id>+ := <expr>+ constrain <expr>;
+			/// pc+1: ...
+			///
+			/// SEMANTIC: assignment statement, postcondition of
+			/// vars might have to satisfy the constraint
+			vector<expr> assgs;                //  TODO: need to do sth...
 
-            /// compute shared state
-            state_v _sv(sv);
-            /// compute local  state
-            state_v _lv(lv);
-            this->compute_image_assg_stmt(_sv, _lv, sv, lv, pc);
+			/// compute shared state
+			state_v _sv(sv);
+			/// compute local  state
+			state_v _lv(lv);
+			this->compute_image_assg_stmt(_sv, _lv, sv, lv, pc);
 
-            /// NOTE: the "constrain <expr>" could involve the valuations
-            /// for shared and local variables before and after executing
-            /// assignment statement ...
-            const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
-            if (cond != sool::F) {
-                shared_state _s(_sv);
-                local_state _l(_pc, _lv);
-                const auto& _Z = alg::update_counters(_l, l, Z);
-                images.emplace_back(_s, _Z);
-            }
-        }
-            break;
-        case type_stmt::IFEL: {
-            /// if ... else ... statement: conditional statement
-            ///   pc: if (<expr>) then <sseq> else <sseq>; fi;
-            /// pc+1: ...
-            ///
-            /// SEMANTIC:
-            const auto& cond = e.get_stmt().get_condition().eval(sv, lv);
-            if (cond != sool::F) {
-                const auto& _l = this->compute_image_ifth_stmt(l, _pc);
-                const auto& _Z = alg::update_counters(_l, l, Z);
-                images.emplace_back(s, _Z);
-            } else {
-                const auto& _l = this->compute_image_else_stmt(l);
-                const auto& _Z = alg::update_counters(_l, l, Z);
-                images.emplace_back(s, _Z);
-            }
-        }
-            break;
-        case type_stmt::ASSE: {
-            /// assert statement
-            ///   pc: assert ( <expr> );
-            /// pc+1: ...
-            ///
-            /// SEMANTIC: assertion statement: encoding bad states
-            /// This is a deadend statement
-        }
-            break;
-        case type_stmt::ASSU: {
-            /// assume statement: conditional statement
-            ///   pc: assume ( <expr> );
-            /// pc+1: ...
-            ///
-            /// SEMANTIC: advance if expr is evaluated to be true;
-            /// block otherwise.
-            const auto& cond = e.get_stmt().get_condition().eval(sv, lv);
-            if (cond != sool::F) {
-                /// successor local state: l'.pc = l.pc + 1
-                local_state _l(_pc, lv);
-                const auto& _Z = alg::update_counters(_l, l, Z);
-                images.emplace_back(s, _Z);
-            }
-        }
-            break;
-        case type_stmt::NTHR: {
-            /// thread creation statement like:
-            ///   pc: start_thread <label>;
-            /// pc+1: ...
-            ///
-            /// SEMANTIC: the start_thread <label> instruction creates a new
-            /// thread that starts execution at the program location label.
-            /// It gets a copy of the local variables of the current thread,
-            /// which continues execution at the proceeding statement.
+			/// NOTE: the "constrain <expr>" could involve the valuations
+			/// for shared and local variables before and after executing
+			/// assignment statement ...
+			const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
+			if (cond != sool::F) {
+				shared_state _s(_sv);
+				local_state _l(_pc, _lv);
+				const auto& _Z = alg::update_counters(_l, l, Z);
+				images.emplace_back(_s, _Z);
+			}
+		}
+			break;
+		case type_stmt::IFEL: {
+			/// if ... else ... statement: conditional statement
+			///   pc: if (<expr>) then <sseq> else <sseq>; fi;
+			/// pc+1: ...
+			///
+			/// SEMANTIC:
+			const auto& cond = e.get_stmt().get_condition().eval(sv, lv);
+			if (cond != sool::F) {
+				const auto& _l = this->compute_image_ifth_stmt(l, _pc);
+				const auto& _Z = alg::update_counters(_l, l, Z);
+				images.emplace_back(s, _Z);
+			} else {
+				const auto& _l = this->compute_image_else_stmt(l);
+				const auto& _Z = alg::update_counters(_l, l, Z);
+				images.emplace_back(s, _Z);
+			}
+		}
+			break;
+		case type_stmt::ASSE: {
+			/// assert statement
+			///   pc: assert ( <expr> );
+			/// pc+1: ...
+			///
+			/// SEMANTIC: assertion statement: encoding bad states
+			/// This is a deadend statement
+		}
+			break;
+		case type_stmt::ASSU: {
+			/// assume statement: conditional statement
+			///   pc: assume ( <expr> );
+			/// pc+1: ...
+			///
+			/// SEMANTIC: advance if expr is evaluated to be true;
+			/// block otherwise.
+			const auto& cond = e.get_stmt().get_condition().eval(sv, lv);
+			if (cond != sool::F) {
+				/// successor local state: l'.pc = l.pc + 1
+				local_state _l(_pc, lv);
+				const auto& _Z = alg::update_counters(_l, l, Z);
+				images.emplace_back(s, _Z);
+			}
+		}
+			break;
+		case type_stmt::NTHR: {
+			/// thread creation statement like:
+			///   pc: start_thread <label>;
+			/// pc+1: ...
+			///
+			/// SEMANTIC: the start_thread <label> instruction creates a new
+			/// thread that starts execution at the program location label.
+			/// It gets a copy of the local variables of the current thread,
+			/// which continues execution at the proceeding statement.
 
-            deque<local_state> T_in;
-            /// create a new thread whose l''.pc = label and append it to T_in
-            T_in.emplace_back(_pc, lv);
-            /// update current thread that l'.pc = l.pc + 1 and append it T_in
-            T_in.emplace_back(_pc + 1, lv);
-            const auto& _Z = alg::update_counters(T_in, l, Z);
-            images.emplace_back(s, _Z);
-        }
-            break;
-        case type_stmt::ETHR: {
-            /// thread termination statement
-            ///   pc: end_thread;
-            /// pc+1: ...
-            ///
-            /// SEMANTIC: the end_thread statement terminates the actual thread,
-            /// i.e., has no successor state.
-            auto _Z(Z);
-            alg::decrement(l, _Z);
-            images.emplace_back(s, _Z);
-        }
-            break;
-        case type_stmt::ATOM: {
-            /// the beginning statement of atomic section
-            ///   pc: atomic_begin;
-            ///   ...
-            ///  pc': atomic_end;
-            /// SEMANTIC: the atomic_begin statement prevents the scheduler from
-            /// a context switch to an other thread
-            /// NOTE    : the atomic_end statement is not processed here, but in
-            /// the subroutine.
+			deque<local_state> T_in;
+			/// create a new thread whose l''.pc = label and append it to T_in
+			T_in.emplace_back(_pc, lv);
+			/// update current thread that l'.pc = l.pc + 1 and append it T_in
+			T_in.emplace_back(_pc + 1, lv);
+			const auto& _Z = alg::update_counters(T_in, l, Z);
+			images.emplace_back(s, _Z);
+		}
+			break;
+		case type_stmt::ETHR: {
+			/// thread termination statement
+			///   pc: end_thread;
+			/// pc+1: ...
+			///
+			/// SEMANTIC: the end_thread statement terminates the actual thread,
+			/// i.e., has no successor state.
+			auto _Z(Z);
+			alg::decrement(l, _Z);
+			images.emplace_back(s, _Z);
+		}
+			break;
+		case type_stmt::ATOM: {
+			/// the beginning statement of atomic section
+			///   pc: atomic_begin;
+			///   ...
+			///  pc': atomic_end;
+			/// SEMANTIC: the atomic_begin statement prevents the scheduler from
+			/// a context switch to an other thread
+			/// NOTE    : the atomic_end statement is not processed here, but in
+			/// the subroutine.
 
-            /// nss, i.e., new shared states, is to store the final shared states
-            /// after across atomic section
-            deque<shared_state> nss;
-            /// lss, i.e., new local  states, is to store the final local  states
-            /// after across atomic section
-            deque<local_state> nls;
+			/// nss, i.e., new shared states, is to store the final shared states
+			/// after across atomic section
+			deque<shared_state> nss;
+			/// lss, i.e., new local  states, is to store the final local  states
+			/// after across atomic section
+			deque<local_state> nls;
 
-            this->compute_image_atom_sect(s, l, nss, nls);
-            for (const auto& _l : nls) { /// first iterate over local states
-                const auto& _Z = alg::update_counters(_l, l, Z);
-                for (const auto& _s : nss) ///then iterate over shared states
-                    images.emplace_back(_s, _Z);
-            }
-        }
-            break;
-        case type_stmt::BCST: {
-            /// the broadcast statement
-            ///   pc: broadcast;
-            /// pc+1: ...
-            /// SEMANTIC: advance the pc of active thread, and wake up all
-            /// waiting thread via advancing their pcs.
-            ///
-            /// An example of broadcast:
-            ///      10: wait;
-            ///      11: ...
-            ///          ...
-            ///      20: wait;
-            ///      21: ...
-            ///          ...
-            ///      30: broadcast;
-            /// 	 31: ...
-            ///          ...
-            ///
-            ///    (11, 21, 31, ...) <-
-            ///                         (10, 20, 30, ...)
-            ///                         (11, 20, 30, ...)
-            ///                         (10, 21, 30, ...)
-            ///                         (11, 21, 30, ...)
-            auto _Z(Z);
-            /// advance all blocking threads at the wait statements
-            for (auto ilo = _Z.begin(); ilo != _Z.end(); ++ilo) {
-                const auto& waiting =
-                        parser::get_post_G().get_A()[ilo->first.get_pc()];
-                if (waiting.front().get_stmt().get_type() == type_stmt::WAIT) {
-                    auto l_wait(ilo->first);
-                    l_wait.set_pc(ilo->first.get_pc() + 1);
-                    auto n_wait(ilo->second);
-                    _Z.erase(ilo); /// remove old pair
-                    _Z.emplace(l_wait, n_wait);
-                }
-            }
+			this->compute_image_atom_sect(s, l, nss, nls);
+			for (const auto& _l : nls) { /// first iterate over local states
+				const auto& _Z = alg::update_counters(_l, l, Z);
+				for (const auto& _s : nss) ///then iterate over shared states
+					images.emplace_back(_s, _Z);
+			}
+		}
+			break;
+		case type_stmt::BCST: {
+			/// the broadcast statement
+			///   pc: broadcast;
+			/// pc+1: ...
+			/// SEMANTIC: advance the pc of active thread, and wake up all
+			/// waiting thread via advancing their pcs.
+			///
+			/// An example of broadcast:
+			///      10: wait;
+			///      11: ...
+			///          ...
+			///      20: wait;
+			///      21: ...
+			///          ...
+			///      30: broadcast;
+			/// 	 31: ...
+			///          ...
+			///
+			///    (11, 21, 31, ...) <-
+			///                         (10, 20, 30, ...)
+			///                         (11, 20, 30, ...)
+			///                         (10, 21, 30, ...)
+			///                         (11, 21, 30, ...)
+			auto _Z(Z);
+			/// advance all blocking threads at the wait statements
+			for (auto ilo = _Z.begin(); ilo != _Z.end(); ++ilo) {
+				const auto& waiting = parser::get_post_G().get_A()[ilo->first.get_pc()];
+				if (waiting.front().get_stmt().get_type() == type_stmt::WAIT) {
+					auto l_wait(ilo->first);
+					l_wait.set_pc(ilo->first.get_pc() + 1);
+					auto n_wait(ilo->second);
+					_Z.erase(ilo); /// remove old pair
+					_Z.emplace(l_wait, n_wait);
+				}
+			}
 
-            /// advance the broadcast thread
-            auto l_bcst(l);
-            l_bcst.set_pc(l.get_pc() + 1);
-            _Z = alg::update_counters(l_bcst, l, _Z);
-            images.emplace_back(s, _Z);
-        }
-            break;
-        case type_stmt::WAIT: {
-            /// the wait statement
-            ///   pc: wait;
-            /// pc+1: ...
-            /// SEMANTIC: blocks the execution of a thread.
-            /// There is NO pre-image just by itself. It has to be paired
-            /// with broadcast. Thus, it would be handled in broadcast
-            /// statement.
-        }
-            break;
-        default: {
-            /// it mostly says the skip statement
-            ///   pc: skip;
-            /// pc+1: ...
-            /// SEMANTIC: advance the pc to pc + 1
+			/// advance the broadcast thread
+			auto l_bcst(l);
+			l_bcst.set_pc(l.get_pc() + 1);
+			_Z = alg::update_counters(l_bcst, l, _Z);
+			images.emplace_back(s, _Z);
+		}
+			break;
+		case type_stmt::WAIT: {
+			/// the wait statement
+			///   pc: wait;
+			/// pc+1: ...
+			/// SEMANTIC: blocks the execution of a thread.
+			/// There is NO pre-image just by itself. It has to be paired
+			/// with broadcast. Thus, it would be handled in broadcast
+			/// statement.
+		}
+			break;
+		default: {
+			/// it mostly says the skip statement
+			///   pc: skip;
+			/// pc+1: ...
+			/// SEMANTIC: advance the pc to pc + 1
 
-            /// successor local state: l'.pc = l.pc + 1
-            DBG_LOC()
-            local_state _l(_pc, lv);
-            cout << _l << "\n";
-            const auto& _Z = alg::update_counters(_l, l, Z);
-            cout << _l << "\n";
-            images.emplace_back(s, _Z);
-        }
-            break;
-        }
-    }
+			/// successor local state: l'.pc = l.pc + 1
+			DBG_LOC()
+			local_state _l(_pc, lv);
+			cout << s << "***************************************\n";
+			cout << _l << "*************************************\n";
+			const auto& _Z = alg::update_counters(_l, l, Z);
+			images.emplace_back(s, _Z);
+		}
+			break;
+		}
+	}
 }
 
 /**
@@ -297,21 +294,21 @@ void post_image::compute_post_images(const prog_state& tau,
  * @param sh
  * @param lo
  */
-void post_image::compute_image_assg_stmt(state_v& _s, state_v& _l,
-        const state_v& s, const state_v& l, const size_pc& pc) {
-    auto ifind = parser::get_post_G().get_assignments().find(pc);
-    if (ifind != parser::get_post_G().get_assignments().end()) {
-        const auto& sh = ifind->second.sh;
-        for (auto i = 0; i < sh.size(); ++i) {
-            if (sh[i].is_valid())
-                _s[i] = sh[i].eval(s, l) == sool::N;
-        }
-        const auto& lo = ifind->second.lo;
-        for (auto i = 0; i < lo.size(); ++i) {
-            if (lo[i].is_valid())
-                _l[i] = lo[i].eval(s, l) == sool::N;
-        }
-    }
+void post_image::compute_image_assg_stmt(state_v& _s, state_v& _l, const state_v& s, const state_v& l,
+		const size_pc& pc) {
+	auto ifind = parser::get_post_G().get_assignments().find(pc);
+	if (ifind != parser::get_post_G().get_assignments().end()) {
+		const auto& sh = ifind->second.sh;
+		for (auto i = 0; i < sh.size(); ++i) {
+			if (sh[i].is_valid())
+				_s[i] = sh[i].eval(s, l) == sool::N;
+		}
+		const auto& lo = ifind->second.lo;
+		for (auto i = 0; i < lo.size(); ++i) {
+			if (lo[i].is_valid())
+				_l[i] = lo[i].eval(s, l) == sool::N;
+		}
+	}
 }
 
 /**
@@ -331,9 +328,8 @@ void post_image::compute_image_assg_stmt(state_v& _s, state_v& _l,
  * @return the succeeding local state, whose pc = ... appearing in the goto
  *         statement in then section
  */
-local_state post_image::compute_image_ifth_stmt(const local_state& l,
-        const size_pc& _pc) {
-    return local_state(_pc, l.get_vars());
+local_state post_image::compute_image_ifth_stmt(const local_state& l, const size_pc& _pc) {
+	return local_state(_pc, l.get_vars());
 }
 
 /**
@@ -342,7 +338,7 @@ local_state post_image::compute_image_ifth_stmt(const local_state& l,
  * @return the succeeding local state, whose pc = pc + 1
  */
 local_state post_image::compute_image_else_stmt(const local_state& l) {
-    return local_state(l.get_pc() + 1, l.get_vars());
+	return local_state(l.get_pc() + 1, l.get_vars());
 }
 
 /**
@@ -364,8 +360,8 @@ local_state post_image::compute_image_else_stmt(const local_state& l) {
  * @param _s: the shared states after executing atomic section
  * @param _l: the local  states after executing atomic section
  */
-void post_image::compute_image_atom_sect(const shared_state& s,
-        const local_state& l, deque<shared_state>& _s, deque<local_state>& _l) {
+void post_image::compute_image_atom_sect(const shared_state& s, const local_state& l, deque<shared_state>& _s,
+		deque<local_state>& _l) {
 
 }
 

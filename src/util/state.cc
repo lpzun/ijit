@@ -23,7 +23,7 @@ shared_state::shared_state() :
  */
 shared_state::shared_state(const state_v& vars) :
         vars(vars) {
-    //cout << "IIIIIIIIII" << vars << "\n";
+    cout << "IIIIIIIIII" << vars << "\n";
 }
 
 /**
@@ -63,6 +63,7 @@ local_state::local_state() :
  */
 local_state::local_state(const size_pc& pc, const state_v& vars) :
         pc(pc), vars(vars) {
+    cout << "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" << vars << "\n";
 
 }
 
