@@ -19,8 +19,26 @@ tst_parser::~tst_parser() {
 
 void tst_parser::test_parser(const string& filename) {
     auto P = parser::parse(filename, mode::POST);
-    //post_image image;
-    //image.step();
+    uint sss = 3;
+    converter c;
+    auto sv = c.convert_sss_to_sps(sss);
+    cout << sv << "\n";
+    shared_state s(sv);
+
+    state_v lv(1);
+    cout << lv << "\n";
+    auto sls = c.convert_lps_to_lss(0, lv);
+    cout << sls << "\n";
+    local_state l(2, lv);
+
+    cab_locals locals;
+    locals.emplace(l, 2);
+
+    prog_state tau(s, locals);
+    cout << tau << "\n";
+    post_image image;
+    auto _tau = image.step(tau);
+//    cout << _tau.size() << endl;
 }
 
 void tst_solver::test_split() {
@@ -52,7 +70,7 @@ void tst_solver::test_split() {
 void tst_solver::test_all_sat_solve() {
     refs::S_VARS_NUM = 2;
     refs::L_VARS_NUM = 2;
-    /// se1: 0
+/// se1: 0
     cout << "expression se1...\n";
     deque<symbol> se1;
     se1.emplace_back(0);
@@ -60,7 +78,7 @@ void tst_solver::test_all_sat_solve() {
     tst_solver::print(ret1);
     cout << "\n";
 
-    /// se2: 1
+/// se2: 1
     cout << "expression se2...\n";
     deque<symbol> se2;
     se2.emplace_back(1);
@@ -68,7 +86,7 @@ void tst_solver::test_all_sat_solve() {
     print(ret2);
     cout << "\n";
 
-    /// se3: !0
+/// se3: !0
     deque<symbol> se3;
     cout << "expression se3...\n";
     se3.emplace_back(0);
@@ -78,7 +96,7 @@ void tst_solver::test_all_sat_solve() {
     print(ret3);
     cout << "\n";
 
-    /// se2: 1
+/// se2: 1
     cout << "expression se4...\n";
     deque<symbol> se4;
     se4.emplace_back(1);
@@ -88,7 +106,7 @@ void tst_solver::test_all_sat_solve() {
     print(ret4);
     cout << "\n";
 
-    /// se5: *
+/// se5: *
     cout << "expression se5...\n";
     deque<symbol> se5;
     se5.emplace_back(solver::CONST_N);

@@ -173,7 +173,7 @@ public:
      */
     virtual deque<syst_state> convert(const deque<prog_state>& ps);
 
-private:
+public:
     uint mask;
     state_v convert_sss_to_sps(const uint& ss);
     uint convert_sps_to_sss(const state_v& ps);

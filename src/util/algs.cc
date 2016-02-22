@@ -20,13 +20,18 @@ cab_locals alg::update_counters(const local_state& t_in,
         const local_state& t_de, const cab_locals& Z) {
     if (t_in == t_de)
         return Z;
-
+    DBG_LOC()
     auto _Z = Z;
+    DBG_LOC()
     auto ifind = _Z.find(t_de);
+    DBG_LOC()
     if (ifind != _Z.end()) {
-        if (--ifind->second == 0)
+        DBG_LOC()
+        ifind->second -= 1;
+        if (ifind->second == 0)
             _Z.erase(ifind);
     }
+    DBG_LOC()
 
     ifind = _Z.find(t_in);
     if (ifind != _Z.end()) {
@@ -54,7 +59,8 @@ cab_locals alg::update_counters(const deque<local_state>& T_in,
 
     auto ifind = _Z.find(t_de);
     if (ifind != _Z.end()) {
-        if (--ifind->second == 0)
+        ifind->second -= 1;
+        if (ifind->second == 0)
             _Z.erase(ifind);
     }
 
@@ -80,7 +86,7 @@ cab_locals alg::update_counters(const deque<local_state>& T_in,
     for (const auto& t_de : T_de) {
         auto ifind = _Z.find(t_de);
         if (ifind != _Z.end()) {
-            ifind->second--;
+            ifind->second -= 1;
             if (ifind->second == 0)
                 _Z.erase(ifind);
         }

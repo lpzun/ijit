@@ -25,15 +25,16 @@ post_image::~post_image() {
 }
 
 /**
- * @brief to compute all post images of global state tau: this implementation
+ * @brief to compute all post images of global state tau: the implementation
  *        iterates over all threads: each thread is used as an active thread
  * @param tau
  * @return images: the list of post images of tau w.r.t. all threads
  */
 deque<prog_state> post_image::step(const prog_state& tau) {
+    DBG_LOC()
     deque<prog_state> images;
-    for (const auto& l : tau.get_locals())
-        this->compute_post_images(tau, l.first, images);
+    for (const auto& p : tau.get_locals()) /// iterate over all local states
+        this->compute_post_images(tau, p.first, images);
     return images;
 }
 
@@ -63,7 +64,9 @@ void post_image::compute_post_images(const prog_state& tau,
     /// extract all necessary information from program state tau and
     /// local state l
     const auto& s = tau.get_s();       /// current shared state
+    cout << s << ": ssssssssss\n";
     const auto& sv = s.get_vars();     /// shared vars: the valuation
+    cout << sv << ": ssssssssss\n";
     const auto& Z = tau.get_locals();  /// the local part of tau
     const auto& pc = l.get_pc();       /// current pc
     const auto& lv = l.get_vars();     /// local vars : the valuation
@@ -274,8 +277,11 @@ void post_image::compute_post_images(const prog_state& tau,
             /// SEMANTIC: advance the pc to pc + 1
 
             /// successor local state: l'.pc = l.pc + 1
+            DBG_LOC()
             local_state _l(_pc, lv);
+            cout << _l << "\n";
             const auto& _Z = alg::update_counters(_l, l, Z);
+            cout << _l << "\n";
             images.emplace_back(s, _Z);
         }
             break;

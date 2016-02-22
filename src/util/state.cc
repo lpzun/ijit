@@ -23,6 +23,7 @@ shared_state::shared_state() :
  */
 shared_state::shared_state(const state_v& vars) :
         vars(vars) {
+    //cout << "IIIIIIIIII" << vars << "\n";
 }
 
 /**
@@ -41,9 +42,8 @@ shared_state::~shared_state() {
  */
 ostream& operator <<(ostream& out, const shared_state& s) {
     if (s.get_vars().size() > 0) {
-        for (auto i = 0; i < s.get_vars().size() - 1; ++i)
-            out << s.get_vars()[i] << ",";
-        out << s.get_vars()[s.get_vars().size() - 1];
+        for (auto i = 0; i < refs::S_VARS_NUM; ++i)
+            out << s.get_vars()[i];
     }
     return out;
 }
@@ -81,9 +81,9 @@ local_state::~local_state() {
  *         print local state
  */
 ostream& operator <<(ostream& out, const local_state& l) {
-    out << l.get_pc();
-    for (auto i = 0; i < l.get_vars().size(); ++i)
-        out << "," << l.get_vars()[i];
+    out << l.get_pc() << ",";
+    for (auto i = 0; i < refs::L_VARS_NUM; ++i)
+        out << l.get_vars()[i];
     return out;
 }
 

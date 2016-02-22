@@ -10,7 +10,7 @@
 #define UTIL_REFS_HH_
 
 #ifndef SIZE_B
-#define SIZE_B 32
+#define SIZE_B 16
 #else
 #endif
 
