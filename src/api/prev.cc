@@ -103,9 +103,9 @@ void pre_image::compute_pre_images(const prog_state& _tau,
     const auto& _lv = _l.get_vars();    /// local vars : the valuation
 
     /// iterate over all preceding statements via <parser::prev_G>
-    for (auto ipc = parser::get_prev_G().get_A()[_pc].cbegin();
-            ipc != parser::get_prev_G().get_A()[_pc].cend(); ++ipc) {
-        const auto& e = parser::get_prev_G().get_E()[*ipc]; /// get the edge by pc
+    const auto& predecessors = parser::get_prev_G().get_A()[_pc];
+    for (auto ie = predecessors.cbegin(); ie != predecessors.cend(); ++ie) {
+        const auto& e = *ie; /// get the edge by pc
         const auto& pc = e.get_dest();
         switch (e.get_stmt().get_type()) {
         case type_stmt::GOTO: {

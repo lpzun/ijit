@@ -13,7 +13,7 @@ namespace iotf {
  * @brief default constructor
  */
 paide::paide() :
-        is_failed(false), lineno(0), ipc(0), s_vars_num(0), l_vars_num(0), ///
+        lineno(0), ipc(0), s_vars_num(0), l_vars_num(0), ///
         s_vars_list(), l_vars_list(), s_vars_init(), l_vars_init(), ///
         suc_pc_set(), expr_in_list(), assg_stmt_lhs(), assg_stmt_rhs(), all_pc_set() {
 }
@@ -54,7 +54,7 @@ void paide::init_vars(const string& var, const sool& val) {
     else if ((ifind = l_vars_list.find(var)) != l_vars_list.end())
         l_vars_init[ifind->second] = val;
     else
-        throw iotf_runtime_error("no such a variable " + var);
+        throw iotf_runtime_error("No such a variable named " + var);
 }
 
 /**
@@ -93,7 +93,7 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
     } else {
         cfg_G.add_edge(src, dest, type, expr(expr_in_list));
     }
-    /// build assignment
+    /// build assignments
     if (type == type_stmt::ASSG) {
         cfg_G.add_assignment(src, this->create_assignment());
     }
@@ -108,7 +108,6 @@ assignment paide::create_assignment() {
     auto il = assg_stmt_lhs.cbegin(), iend = assg_stmt_lhs.cend();
     auto ir = assg_stmt_rhs.cbegin(), eend = assg_stmt_rhs.cend();
     while (il != iend && ir != eend) {
-        cout << *il << "::::::::::::::paide::create_assignment\n";
         const auto& p = this->decode(*il);
         if (p.second)
             assg.sh[p.first] = expr(*ir);
@@ -203,7 +202,7 @@ symbol paide::encode(const string& var) {
             if (ifind != l_vars_list.end())
                 idx += s_vars_num;
             else
-                throw iotf_runtime_error(var + "cannot find!");
+                throw iotf_runtime_error(var + "is missed!");
         }
         idx += ifind->second;
     } else {
@@ -213,7 +212,7 @@ symbol paide::encode(const string& var) {
             if (ifind != l_vars_list.end())
                 idx += s_vars_num;
             else
-                throw iotf_runtime_error(var + "cannot find!");
+                throw iotf_runtime_error(var + "is missed!");
         }
         idx += ifind->second + s_vars_num + l_vars_num;
     }
@@ -236,37 +235,21 @@ pair<symbol, bool> paide::decode(const symbol& idx) {
         return std::make_pair(id - s_vars_num, false);
 }
 
+/////////////////////////////////////////////////
+///  unit test
+/////////////////////////////////////////////////
 /**
  * @brief output the control flow graph to the file
  * @param file
  */
-void paide::test_output_control_flow_graph() {
-    for (const auto& e : cfg_G.get_E()) {
-        cout << e << "\n";
-    }
-    for (const auto& s : cfg_G.get_assignments()) {
-        cout << s.first << " " << s.second << "\n";
-    }
-}
-
-/**
- * @brief a temporary function
- */
-void paide::is_failed_assertion() {
-    for (const auto& s : expr_in_list) {
-        if (s == solver::CONST_N || s == solver::CONST_F) {
-            if (!this->is_failed) {
-                this->is_failed = true;
-                break;
-            }
-        }
-    }
+void paide::print_control_flow_graph() {
+    cout << cfg_G << endl;
 }
 
 /**
  * @brief testing methods
  */
-void paide::test_output_parallel_assg_stmt() {
+void paide::print_parallel_assg_stmt() {
     auto i_iter = assg_stmt_lhs.begin(), i_end = assg_stmt_lhs.end();
     auto e_iter = assg_stmt_rhs.begin(), e_end = assg_stmt_rhs.end();
     while (i_iter != i_end && e_iter != e_end) {
@@ -275,6 +258,16 @@ void paide::test_output_parallel_assg_stmt() {
         cout << iden << ":=" << recov_expr_from_list(expr) << endl;
         i_iter++, e_iter++;
     }
+}
+
+/**
+ * @brief print vars list
+ */
+void paide::print_vars_list() {
+    for (const auto& p : s_vars_list)
+        cout << p.first << " " << p.second << " " << encode(p.first) << "\n";
+    for (const auto& p : l_vars_list)
+        cout << p.first << " " << p.second << " " << encode(p.first) << "\n";
 }
 
 } /* namespace iotf */

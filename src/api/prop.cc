@@ -73,6 +73,7 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     }
     yyin = bfile;
 
+    cout << "starting to parse Boolean program...\n";
     /// file list
     paide aide;
     yy::bp parser(aide); // make a parser
@@ -91,16 +92,13 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     refs::L_VARS_NUM = aide.l_vars_num;
     cout << refs::S_VARS_NUM << ", " << refs::L_VARS_NUM << ", " << aide.lineno
             << "\n";
-    aide.test_output_control_flow_graph();
-    cout << endl;
-    for (const auto& p : aide.s_vars_list)
-        cout << p.first << " " << p.second << " " << aide.encode(p.first)
-                << "\n";
-    for (const auto& p : aide.l_vars_list)
-        cout << p.first << " " << p.second << " " << aide.encode(p.first)
-                << "\n";
-    if (aide.is_failed)
-        cout << "ooooooooooooooo\n";
+    cout << "for testing: before...\n";
+    aide.print_control_flow_graph();
+
+    post_G = aide.cfg_G;
+    cout << "for testing: after...\n";
+    cout << post_G << endl;
+
     return std::make_pair(I, Q);
 }
 

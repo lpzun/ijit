@@ -17,13 +17,13 @@ public:
     tst_parser();
     ~tst_parser();
 
-    void test_parser(const string& filename);
+    static void test_parser(const string& filename);
 };
 
 class tst_solver {
 public:
-    static void tst_split();
-    static void tst_all_sat_solve();
+    static void test_split();
+    static void test_all_sat_solve();
 
 private:
     static void print(const deque<pair<ss_vars, sl_vars>>& assgs);

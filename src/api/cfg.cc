@@ -13,15 +13,15 @@ namespace iotf {
  * @brief default constructor
  */
 cfg::cfg() :
-        A(adj_list(refs::PC_NUM)), E(vector<edge>(refs::PC_NUM)), assignments() {
+        A(adj_list(refs::PC_NUM)), assignments() {
 }
 
 /**
  * @brief constructor with max PC
  * @param max_PC
  */
-cfg::cfg(const size_pc& size_A, const size_pc& size_E) :
-        A(adj_list(size_A)), E(vector<edge>(size_E)), assignments() {
+cfg::cfg(const size_pc& size_A) :
+        A(adj_list(size_A)), assignments() {
 }
 
 /**
@@ -30,9 +30,8 @@ cfg::cfg(const size_pc& size_A, const size_pc& size_E) :
  * @param E
  * @param assigns
  */
-cfg::cfg(const adj_list& A, const vector<edge>& E,
-        const unordered_map<size_pc, assignment>& assigns) :
-        A(A), E(E), assignments(assigns) {
+cfg::cfg(const adj_list& A, const unordered_map<size_pc, assignment>& assigns) :
+        A(A), assignments(assigns) {
 
 }
 
@@ -49,10 +48,9 @@ cfg::~cfg() {
 void cfg::add_edge(const size_pc& src, const size_pc& dest,
         const type_stmt& type) {
     if (src < this->A.size())
-        A[src].emplace_back(dest);
+        A[src].emplace_back(src, dest, type);
     else
-        A.emplace_back(deque<size_pc>(1, dest));
-    E.emplace_back(src, dest, type);
+        A.emplace_back(deque<edge>(1, edge(src, dest, type)));
 }
 
 /**
@@ -62,11 +60,11 @@ void cfg::add_edge(const size_pc& src, const size_pc& dest,
 void cfg::add_edge(const size_pc& src, const size_pc& dest,
         const type_stmt& type, const expr& condition) {
     if (src < this->A.size())
-        A[src].emplace_back(dest);
+        A[src].emplace_back(src, dest, type, condition);
     else
-        A.emplace_back(deque<size_pc>(1, dest));
-    E.emplace_back(src, dest, type, condition);
+        A.emplace_back(deque<edge>(1, edge(src, dest, type, condition)));
 }
+
 /**
  * @brief add an assignment to location pc
  * @param pc: location
@@ -77,10 +75,27 @@ void cfg::add_assignment(const size_pc& pc, const assignment& a) {
 }
 
 /**
+ * @brief print out a control flow graph
+ * @param out
+ * @param g
+ * @return ostream
+ */
+ostream& operator <<(ostream& out, const cfg& g) {
+    for (const auto& successors : g.get_A()) {
+        for (const auto& e : successors)
+            out << e << "\n";
+    }
+    for (const auto& a : g.get_assignments()) {
+        cout << a.first << " " << a.second << "\n";
+    }
+    return out;
+}
+
+/**
  * @brief output a assignment
  * @param out
  * @param s
- * @return
+ * @return ostream
  */
 ostream& operator <<(ostream& out, const assignment& s) {
     for (auto i = 0; i < s.sh.size(); ++i)

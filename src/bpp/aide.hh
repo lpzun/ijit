@@ -61,8 +61,6 @@ public:
     paide();
     ~paide();
 
-    bool is_failed;
-
     size_pc lineno; /// initialize the lineno
     size_pc ipc; /// the source of cfg edge
     ushort s_vars_num; /// the number of shared variables
@@ -101,13 +99,12 @@ public:
     pair<symbol, bool> decode(const symbol& idx);
 
     ////////////////// unit test //////////////////
-    void test_output_control_flow_graph();
-    void test_output_parallel_assg_stmt();
-    void is_failed_assertion();
+    void print_control_flow_graph();
+    void print_parallel_assg_stmt();
+    void print_vars_list();
 
 private:
     set<size_pc> all_pc_set;
-
     assignment create_assignment();
 };
 

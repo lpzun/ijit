@@ -57,8 +57,10 @@ int main(int argc, char *argv[]) {
 
         cout << true << " " << false << "\n";
 
-        tst_solver::tst_split();
-        tst_solver::tst_all_sat_solve();
+        tst_solver::test_split();
+        tst_solver::test_all_sat_solve();
+
+        tst_parser::test_parser(filename);
 
         return 0;
     } catch (const iotf_runtime_error& e) {

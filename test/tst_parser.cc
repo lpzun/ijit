@@ -19,9 +19,11 @@ tst_parser::~tst_parser() {
 
 void tst_parser::test_parser(const string& filename) {
     auto P = parser::parse(filename, mode::POST);
+    //post_image image;
+    //image.step();
 }
 
-void tst_solver::tst_split() {
+void tst_solver::test_split() {
     DBG_LOC()
     ;
     deque<symbol> se1;
@@ -47,7 +49,7 @@ void tst_solver::tst_split() {
 /**
  * @brief testing
  */
-void tst_solver::tst_all_sat_solve() {
+void tst_solver::test_all_sat_solve() {
     refs::S_VARS_NUM = 2;
     refs::L_VARS_NUM = 2;
     /// se1: 0
@@ -55,7 +57,7 @@ void tst_solver::tst_all_sat_solve() {
     deque<symbol> se1;
     se1.emplace_back(0);
     auto ret1 = solver::all_sat_solve(se1);
-    print(ret1);
+    tst_solver::print(ret1);
     cout << "\n";
 
     /// se2: 1
@@ -98,9 +100,12 @@ void tst_solver::tst_all_sat_solve() {
     }
     print(ret5);
     cout << "\n";
-
 }
 
+/**
+ * @brief print
+ * @param assgs
+ */
 void tst_solver::print(const deque<pair<ss_vars, sl_vars>>& assgs) {
     for (const auto& p : assgs) {
         for (const auto & s : p.first)

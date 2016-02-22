@@ -210,7 +210,7 @@ private:
     friend ostream& operator <<(ostream& out, const edge& e);
 };
 
-using adj_list = vector<deque<size_pc>>;
+using adj_list = vector<deque<edge>>;
 using expr_vec = vector<expr>;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -237,22 +237,18 @@ struct assignment {
 ///////////////////////////////////////////////////////////////////////////////
 /// from here: this data structure defines the Control Flow Graph used in
 ///            pre-/post-images. This is the most important data structure.
-///            A CFG is built during parse a Boolean program via our Parser.
+///            A CFG is built in parsing a Boolean program via a Parser.
 ///////////////////////////////////////////////////////////////////////////////
 class cfg {
 public:
     cfg();
-    cfg(const size_pc& size_A, const size_pc& size_E);
-    cfg(const adj_list& A, const vector<edge>& E,
+    cfg(const size_pc& size_A);
+    cfg(const adj_list& A,
             const unordered_map<size_pc, assignment>& assigns);
     ~cfg();
 
     const adj_list& get_A() const {
         return A;
-    }
-
-    const vector<edge>& get_E() const {
-        return E;
     }
 
     const unordered_map<size_pc, assignment>& get_assignments() const {
@@ -267,8 +263,9 @@ public:
 
 private:
     adj_list A;
-    vector<edge> E;
     unordered_map<size_pc, assignment> assignments;
+
+    friend ostream& operator <<(ostream& out, const cfg& g);
 };
 
 } /* namespace otf */

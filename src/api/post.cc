@@ -69,10 +69,10 @@ void post_image::compute_post_images(const prog_state& tau,
     const auto& lv = l.get_vars();     /// local vars : the valuation
 
     /// iterate over all succeeding statements via <parser::post_G>
-    for (auto ipc = parser::get_post_G().get_A()[pc].cbegin();
-            ipc != parser::get_post_G().get_A()[pc].cend(); ++ipc) {
+    const auto& successors = parser::get_post_G().get_A()[pc];
+    for (auto ie = successors.cbegin(); ie != successors.cend(); ++ie) {
         /// extract the edge pointed by pc: e = (pc, _pc)
-        const auto& e = parser::get_post_G().get_E()[*ipc];
+        const auto& e = *ie;
         const auto& _pc = e.get_dest();
         switch (e.get_stmt().get_type()) {
         case type_stmt::GOTO: {
@@ -239,8 +239,9 @@ void post_image::compute_post_images(const prog_state& tau,
             auto _Z(Z);
             /// advance all blocking threads at the wait statements
             for (auto ilo = _Z.begin(); ilo != _Z.end(); ++ilo) {
-                if (parser::get_post_G().get_E()[ilo->first.get_pc()].get_stmt().get_type()
-                        == type_stmt::WAIT) {
+                const auto& waiting =
+                        parser::get_post_G().get_A()[ilo->first.get_pc()];
+                if (waiting.front().get_stmt().get_type() == type_stmt::WAIT) {
                     auto l_wait(ilo->first);
                     l_wait.set_pc(ilo->first.get_pc() + 1);
                     auto n_wait(ilo->second);
