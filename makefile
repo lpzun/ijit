@@ -25,7 +25,7 @@ ISTD	     = -std=c++11
 
 BINDIR       = bin
 OBJDIR       = obj
-SRCDIR       = src
+SRCDIR       = src test
 SRCDIRS      = $(shell find $(SRCDIR) -name '*.$(CSUFF)' -exec dirname {} \; | uniq)
 
 CSUFF        = cc
@@ -113,7 +113,7 @@ robjects:
 
 clean: 	CLEANOBJS
 	#rm -f $(BASES)
-	rm -f *.o test a.out
+	rm -f *.o a.out
 
 distclean: clean CLEANOBJS
 	rm -rf $(BINDIR)

@@ -45,16 +45,31 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option) {
  * @return return the type of parser
  */
 int main(int argc, char *argv[]) {
-    if (cmdOptionExists(argv, argv + argc, "-h")) {
-        printf("Usage: itof [-f file]\n");
+    try {
+        if (cmdOptionExists(argv, argv + argc, "-h")) {
+            printf("Usage: itof [-f file]\n");
+        }
+
+        string filename(getCmdOption(argv, argv + argc, "-f"));
+        if (filename.length() == 0) {
+            throw iotf_runtime_error("Please specify filename!");
+        }
+
+        cout << true << " " << false << "\n";
+
+        tst_solver::tst_split();
+        tst_solver::tst_all_sat_solve();
+
+        return 0;
+    } catch (const iotf_runtime_error& e) {
+        cerr << e.what() << endl;
+    } catch (const iotf_exception& e) {
+        cerr << e.what() << endl;
+    } catch (const std::runtime_error& e) {
+        cerr << e.what() << endl;
+    } catch (const std::exception& e) {
+        cerr << e.what() << endl;
+    } catch (...) {
+        cerr << "unknown error!" << endl;
     }
-
-    string filename(getCmdOption(argv, argv + argc, "-f"));
-    if (filename.length() == 0) {
-        throw iotf_runtime_error("Please specify filename!");
-    }
-
-    cout << true << " " << false << "\n";
-
-    tst_solver::tst_split();
 }

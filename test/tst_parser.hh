@@ -22,9 +22,11 @@ public:
 
 class tst_solver {
 public:
-
     static void tst_split();
     static void tst_all_sat_solve();
+
+private:
+    static void print(const deque<pair<ss_vars, sl_vars>>& assgs);
 };
 
 } /* namespace iotf */

@@ -21,20 +21,20 @@
 namespace iotf {
 
 /**
- * @brief data structure <type_stmt>: some special statement type
- *         SKIP = -1 : all other statement
- *         GOTO = -2 : goto statement
- *         ASSG = -3 : assignment statement
- *         IFEL = -4 : if (<expr>) then <sseq> else <sseq>; fi;
- *         ASSE = -5 : assertion statement
- *         ASSU = -6 : assume statement
- *         NTHR = -7 : thread creation statement
- *         ETHR = -8 : thread termination statement
- *         ATOM = -9 : atomic section beginning
- *         EATM = -10: atomic section ending
- *         BCST = -11: broadcast statement
- *         WAIT = -12: wait statement
- *         SIGN = -13: signal statement
+ * @brief data structure <type_stmt>: all of statement types
+ *        SKIP = -1 : all other statement
+ *        GOTO = -2 : goto statement
+ *        ASSG = -3 : assignment statement
+ *        IFEL = -4 : if (<expr>) then <sseq> else <sseq>; fi;
+ *        ASSE = -5 : assertion statement
+ *        ASSU = -6 : assume statement
+ *        NTHR = -7 : thread creation statement
+ *        ETHR = -8 : thread termination statement
+ *        ATOM = -9 : atomic section beginning
+ *        EATM = -10: atomic section ending
+ *        BCST = -11: broadcast statement
+ *        WAIT = -12: wait statement
+ *        SIGN = -13: signal statement
  */
 enum class type_stmt {
     SKIP = -1,
@@ -132,7 +132,7 @@ public:
 
 private:
     deque<symbol> sexpr;
-    deque<deque<symbol>> expr_deq;
+    deque<deque<symbol>> splited;
 
     friend ostream& operator <<(ostream& out, const expr& e);
 };

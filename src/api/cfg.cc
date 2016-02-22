@@ -216,7 +216,7 @@ ostream& operator <<(ostream& out, const stmt& s) {
  * @brief default consructor
  */
 expr::expr() :
-        sexpr(), expr_deq() {
+        sexpr(), splited() {
 
 }
 
@@ -225,9 +225,9 @@ expr::expr() :
  * @param se
  */
 expr::expr(const deque<symbol>& sexpr) :
-        sexpr(sexpr), expr_deq() {
+        sexpr(sexpr), splited() {
     if (!sexpr.empty())
-        expr_deq = solver::split(sexpr);
+        splited = solver::split(sexpr);
 }
 
 /**
@@ -246,8 +246,8 @@ expr::~expr() {
  */
 const value_v expr::eval(const state_v& sv, const state_v& lv) const {
     bool is_exist_T = false, is_exist_F = false;
-    for (const auto& se : expr_deq) {
-        const auto val = solver::solve(se, sv, lv);
+    for (const auto& se : splited) {
+        const auto& val = solver::solve(se, sv, lv);
         if (val)
             is_exist_T = true;
         else
@@ -259,6 +259,7 @@ const value_v expr::eval(const state_v& sv, const state_v& lv) const {
         return sool::F;
     if (is_exist_T)
         return sool::T;
+    return sool::N;
 }
 
 /**

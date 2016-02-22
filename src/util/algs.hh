@@ -86,11 +86,12 @@ public:
     static deque<deque<sool>> split(const deque<sool>& vs);
 
 private:
+    static bool eval(const deque<symbol>& sexpr);
+
     static symbol decode(const symbol& idx, bool& is_shared);
     static symbol decode(const symbol& idx, bool& is_shared, bool& is_primed);
-    static int power(const int& base, const int& bits);
-    static vector<bool> to_binary(const int& n, const short& bits);
-    static bool eval(const deque<symbol>& sexpr);
+    static vector<bool> to_binary(const int& n, const short& shift);
+    static int power(const int& base, const int& exponent);
 };
 
 } /* namespace iotf */

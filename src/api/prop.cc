@@ -67,9 +67,6 @@ pair<initl_ps, final_ps> parser::parse_in_prev_mode(const string& filename) {
  * @param filename
  */
 pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
-    initl_ps I;
-    final_ps Q;
-
     FILE *bfile = fopen(filename.c_str(), "r");
     if (!bfile) {
         throw iotf_runtime_error(filename + " open failed!");
@@ -85,8 +82,10 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
                 "Parser exit with exception: " + std::to_string(result));
     }
 
-    /* fw_aide aide; */
-    //move the file point to the begin and print the total line number
+    initl_ps I = create_initl_state(aide.s_vars_init, aide.l_vars_init);
+    final_ps Q = create_final_state();
+
+    /// move the file point to the begin and print the total line number
     cout << "shared, local, line\n";
     refs::S_VARS_NUM = aide.s_vars_num;
     refs::L_VARS_NUM = aide.l_vars_num;
@@ -164,8 +163,13 @@ deque<syst_state> converter::convert(const deque<prog_state>& ps) {
  * @return a program state
  */
 prog_state converter::convert(const syst_state& ss) {
-    // TODO
-    return global_state();
+    const auto& sps = this->convert_sss_to_sps(ss.first);
+    cab_locals Z; /// build local parts
+    for (const auto& p : ss.second) {
+        const auto& l = this->convert_lss_to_lps(p.first);
+        Z.emplace(local_state(l.first, l.second), p.second);
+    }
+    return global_state(shared_state(sps), Z);
 }
 
 /**
@@ -175,8 +179,14 @@ prog_state converter::convert(const syst_state& ss) {
  * @return a pair
  */
 syst_state converter::convert(const prog_state& ps) {
-    // TODO
-    return std::make_pair<uint, map<uint, uint>>(0, map<uint, uint>());
+    const auto& sss = this->convert_sps_to_sss(ps.get_s().get_vars());
+    map<uint, uint> Z;
+    for (const auto p : ps.get_locals()) {
+        const auto& l = p.first;
+        const auto& sls = this->convert_lps_to_lss(l.get_pc(), l.get_vars());
+        Z.emplace(sls, p.second);
+    }
+    return std::make_pair(sss, Z);
 }
 
 /**
@@ -189,7 +199,7 @@ state_v converter::convert_sss_to_sps(const uint& ss) {
 }
 
 /**
- * @brief convert a shared program state to a shared system state
+ * @brief to convert a shared program state to a shared system state
  * @param ps
  * @return a shared system state
  */
@@ -198,13 +208,13 @@ uint converter::convert_sps_to_sss(const state_v& ps) {
 }
 
 /**
- * @brief:
- *      low pc               local            high
+ * @brief to convert a local system state to local program state
+ *      low pc              local             high
  *           ________________ _______________
  *          |________________|_______________|
  *
  * @param ss
- * @return
+ * @return a pair (pc, state_v)
  */
 pair<size_pc, state_v> converter::convert_lss_to_lps(const uint& ss) {
     size_pc pc = ss & mask;
@@ -213,10 +223,10 @@ pair<size_pc, state_v> converter::convert_lss_to_lps(const uint& ss) {
 }
 
 /**
- *
+ * @brief to convert a pair (pc, state_v) to a local program state
  * @param pc
  * @param ps
- * @return
+ * @return a local system state
  */
 uint converter::convert_lps_to_lss(const size_pc& pc, const state_v& ps) {
     auto lv = (ps << (SIZE_B / 2)).to_ullong();

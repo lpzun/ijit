@@ -289,8 +289,6 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
 deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
         const deque<symbol>& sexpr) {
     deque<pair<ss_vars, sl_vars>> result;
-    ss_vars sassg(refs::S_VARS_NUM, solver::CONST_N);
-    sl_vars lassg(refs::L_VARS_NUM, solver::CONST_N);
 
     /// step 1: collect the ids of Boolean variables:
     ///         this is a subset of all variables
@@ -300,14 +298,20 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
         if (s > solver::CONST_N) {
             const auto& p = active_id.emplace(s, num);
             if (p.second)
-                num++;
+                ++num;
         }
     }
 
-    /// if the expression does not involve any variable
+    /// if the expression does not involve any variable, then
+    /// evaluate the expression, and based on the result:
+    /// (1) true : all assignments satisfy the expression,
+    /// (2) false: no assignment satisfies the expression.
     if (num == 0) {
-        if (solver::eval(sexpr))
+        if (solver::eval(sexpr)) {
+            ss_vars sassg(refs::S_VARS_NUM, sool::N);
+            sl_vars lassg(refs::L_VARS_NUM, sool::N);
             result.emplace_back(sassg, lassg);
+        }
         return result;
     }
 
@@ -317,8 +321,8 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
         /// step 3: build an assignment to active variables
         const auto& bv = solver::to_binary(assg, num);
 
-        ss_vars s_tmp(refs::S_VARS_NUM, solver::CONST_N);
-        sl_vars l_tmp(refs::L_VARS_NUM, solver::CONST_N);
+        ss_vars s_tmp(refs::S_VARS_NUM, sool::N);
+        sl_vars l_tmp(refs::L_VARS_NUM, sool::N);
 
         /// step 4: replace Boolean variables by its values
         auto se = sexpr;
@@ -330,17 +334,18 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
                 bool is_shared = false;
                 const auto& idx = solver::decode(se[i], is_shared);
                 if (is_shared)
-                    s_tmp[idx] = bv[ifind->second];
+                    s_tmp[idx] = bv[ifind->second] ? sool::T : sool::F;
                 else
-                    l_tmp[idx] = bv[ifind->second];
+                    l_tmp[idx] = bv[ifind->second] ? sool::T : sool::F;
             }
         }
 
-        /// step 5: evaluate the expr after replacement
+        /// step 5: evaluate the expression
         if (solver::eval(se)) {
             result.emplace_back(s_tmp, l_tmp);
         }
     }
+
     return result;
 }
 
@@ -450,8 +455,14 @@ vector<bool> solver::to_binary(const int& n, const short& shift) {
     return bv;
 }
 
-int solver::power(const int& base, const int& bits) {
-    auto shift = bits;
+/**
+ * @brief to computer power(base, exponent)
+ * @param base
+ * @param bits
+ * @return
+ */
+int solver::power(const int& base, const int& exponent) {
+    auto shift = exponent;
     int result = 1;
     while (shift-- > 0) {
         result *= base;
@@ -459,6 +470,12 @@ int solver::power(const int& base, const int& bits) {
     return result;
 }
 
+/**
+ * @brief to evaluate a Boolean expression whose variables have
+ *        already been replaced by their valuations.
+ * @param sexpr: a Boolean expression
+ * @return evaluation result: true or false
+ */
 bool solver::eval(const deque<symbol>& sexpr) {
     stack<bool> worklist;
     bool op1, op2;
@@ -509,6 +526,7 @@ bool solver::eval(const deque<symbol>& sexpr) {
             break;
         }
     }
+    cout << "worklist.top(): " << worklist.top() << "\n";
     return worklist.top();
 
 }
