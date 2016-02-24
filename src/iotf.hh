@@ -354,15 +354,17 @@ private:
     void compute_post_images(const prog_state& tau, const local_state& l,
             deque<prog_state>& images);
 
-    void compute_image_assg_stmt(state_v& _s, state_v& _l, const state_v& s,
-            const state_v& l, const size_pc& pc);
+    pair<deque<state_v>, deque<state_v>> compute_image_assg_stmt(
+            const state_v& s, const state_v& l, const size_pc& pc);
+
+    void split(const sool& v, const size_t& i, deque<state_v>& svs);
 
     local_state compute_image_ifth_stmt(const local_state& l,
             const size_pc& _pc);
     local_state compute_image_else_stmt(const local_state& l);
 
-    void compute_image_atom_sect(const shared_state& s, const local_state& l,
-            deque<shared_state>& _s, deque<local_state>& _l);
+    void compute_image_atom_sect(const state_v& sv, const state_v& lv,
+            size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs);
 };
 
 } /* namespace otf */

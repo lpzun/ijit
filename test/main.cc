@@ -19,11 +19,11 @@ using namespace iotf;
  * @return a cmd
  */
 char* getCmdOption(char ** begin, char ** end, const std::string & option) {
-	char ** itr = std::find(begin, end, option);
-	if (itr != end && ++itr != end) {
-		return *itr;
-	}
-	return 0;
+    char ** itr = std::find(begin, end, option);
+    if (itr != end && ++itr != end) {
+        return *itr;
+    }
+    return 0;
 }
 
 /**
@@ -35,7 +35,7 @@ char* getCmdOption(char ** begin, char ** end, const std::string & option) {
  *         false otherwise
  */
 bool cmdOptionExists(char** begin, char** end, const std::string& option) {
-	return std::find(begin, end, option) != end;
+    return std::find(begin, end, option) != end;
 }
 
 /**
@@ -45,42 +45,46 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option) {
  * @return return the type of parser
  */
 int main(int argc, char *argv[]) {
-	try {
-		if (cmdOptionExists(argv, argv + argc, "-h")) {
-			printf("Usage: itof [-f file]\n");
-		}
+    try {
+        if (cmdOptionExists(argv, argv + argc, "-h")) {
+            printf("Usage: itof [-f file]\n");
+        }
 
-		string filename(getCmdOption(argv, argv + argc, "-f"));
-		if (filename.length() == 0) {
-			throw iotf_runtime_error("Please specify filename!");
-		}
+        string filename(getCmdOption(argv, argv + argc, "-f"));
+        if (filename.length() == 0) {
+            throw iotf_runtime_error("Please specify filename!");
+        }
 
-		cout << true << " " << false << "\n";
+        cout << true << " " << false << "\n";
 
-		tst_solver::test_split();
-		tst_solver::test_all_sat_solve();
+        cout << "testing split...\n";
+        tst_solver::test_split();
 
-		tst_parser::test_parser(filename);
+        cout << "testing all sat solve...\n";
+        tst_solver::test_all_sat_solve();
 
-		cout<<"from here...................\n";
-		bitset<16> bs1(1);
-		cout << bs1 << "\n";
-		bitset<16> bs3(3);
-		cout << bs3 << "\n";
+        cout << "testing parser...\n";
+        tst_parser::test_parser(filename);
 
-		if (bs1 < bs3)
-			cout << "< works on bitset" << endl;
+//        cout << "from here...................\n";
+//        bitset<16> bs1(1);
+//        cout << bs1 << "\n";
+//        bitset<16> bs3(3);
+//        cout << bs3 << "\n";
+//
+//        if (bs1 < bs3)
+//            cout << "< works on bitset" << endl;
 
-		return 0;
-	} catch (const iotf_runtime_error& e) {
-		cerr << e.what() << endl;
-	} catch (const iotf_exception& e) {
-		cerr << e.what() << endl;
-	} catch (const std::runtime_error& e) {
-		cerr << e.what() << endl;
-	} catch (const std::exception& e) {
-		cerr << e.what() << endl;
-	} catch (...) {
-		cerr << "unknown error!" << endl;
-	}
+        return 0;
+    } catch (const iotf_runtime_error& e) {
+        cerr << e.what() << endl;
+    } catch (const iotf_exception& e) {
+        cerr << e.what() << endl;
+    } catch (const std::runtime_error& e) {
+        cerr << e.what() << endl;
+    } catch (const std::exception& e) {
+        cerr << e.what() << endl;
+    } catch (...) {
+        cerr << "unknown error!" << endl;
+    }
 }

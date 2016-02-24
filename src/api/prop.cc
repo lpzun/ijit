@@ -162,7 +162,7 @@ deque<syst_state> converter::convert(const deque<prog_state>& ps) {
  */
 prog_state converter::convert(const syst_state& ss) {
     const auto& sps = this->convert_sss_to_sps(ss.first);
-    cab_locals Z; /// build local parts
+    ca_locals Z; /// build local parts
     for (const auto& p : ss.second) {
         const auto& l = this->convert_lss_to_lps(p.first);
         Z.emplace(local_state(l.first, l.second), p.second);

@@ -289,6 +289,48 @@ value_v expr::eval(const state_v& sh, const state_v& lo) {
 }
 
 /**
+ * @brief evaluation function:
+ *
+ * @param sv
+ * @param lv
+ * @param _sv
+ * @param _lv
+ * @return values after evaluation
+ */
+const value_v expr::eval(const state_v& sv, const state_v& lv,
+        const state_v& _sv, const state_v& _lv) const {
+    bool is_exist_T = false, is_exist_F = false;
+    for (const auto& se : splited) {
+        const auto& val = solver::solve(se, sv, lv, _sv, _lv);
+        if (val)
+            is_exist_T = true;
+        else
+            is_exist_F = true;
+        if (is_exist_T && is_exist_F)
+            return sool::N;
+    }
+    if (is_exist_F)
+        return sool::F;
+    if (is_exist_T)
+        return sool::T;
+    return sool::N;
+}
+
+/**
+ * @brief evaluation function: const version
+ *
+ * @param sv
+ * @param lv
+ * @param _sv
+ * @param _lv
+ * @return values after evaluation
+ */
+value_v expr::eval(const state_v& sh, const state_v& lo, const state_v& _sv,
+        const state_v& _lv) {
+    return static_cast<value_v>(static_cast<const expr&>(*this).eval(sh, lo));
+}
+
+/**
  * @brief overloading operator <<
  * @param out
  * @param e

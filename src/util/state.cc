@@ -23,7 +23,7 @@ shared_state::shared_state() :
  */
 shared_state::shared_state(const state_v& vars) :
         vars(vars) {
-    cout << "IIIIIIIIII" << vars << "\n";
+    cout << __func__ << " constructor: " << vars << "\n";
 }
 
 /**
@@ -63,7 +63,7 @@ local_state::local_state() :
  */
 local_state::local_state(const size_pc& pc, const state_v& vars) :
         pc(pc), vars(vars) {
-    cout << "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii" << vars << "\n";
+    cout << __func__ << " constructor : " << vars << "\n";
 
 }
 
@@ -82,7 +82,7 @@ local_state::~local_state() {
  *         print local state
  */
 ostream& operator <<(ostream& out, const local_state& l) {
-    out << l.get_pc() << ",";
+    out << l.get_pc();
     for (auto i = 0; i < refs::L_VARS_NUM; ++i)
         out << l.get_vars()[i];
     return out;
@@ -147,7 +147,7 @@ global_state::global_state() :
  * @param s
  * @param locals
  */
-global_state::global_state(const shared_state& s, const cab_locals& locals) :
+global_state::global_state(const shared_state& s, const ca_locals& locals) :
         s(s), locals(locals) {
 
 }

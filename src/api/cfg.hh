@@ -37,19 +37,19 @@ namespace iotf {
  *        SIGN = -13: signal statement
  */
 enum class type_stmt {
-    SKIP = -1,
-    GOTO = -2,
-    ASSG = -3,
-    IFEL = -4,
-    ASSE = -5,
-    ASSU = -6,
-    NTHR = -7,
-    ETHR = -8,
-    ATOM = -9,
-    EATM = -10,
-    BCST = -11,
-    WAIT = -12,
-    SIGN = -13
+    SKIP = 1,
+    GOTO = 2,
+    ASSG = 3,
+    IFEL = 4,
+    ASSE = 5,
+    ASSU = 6,
+    NTHR = 7,
+    ETHR = 8,
+    ATOM = 9,
+    EATM = 10,
+    BCST = 11,
+    WAIT = 12,
+    SIGN = 13
 };
 
 /**
@@ -62,43 +62,43 @@ enum class type_stmt {
 inline ostream& operator <<(ostream& out, const type_stmt& t) {
     switch (t) {
     case type_stmt::SKIP:
-        out << (-1);
+        out << (1);
         break;
     case type_stmt::GOTO:
-        out << (-2);
+        out << (2);
         break;
     case type_stmt::ASSG:
-        out << (-3);
+        out << (3);
         break;
     case type_stmt::IFEL:
-        out << (-4);
+        out << (4);
         break;
     case type_stmt::ASSE:
-        out << (-5);
+        out << (5);
         break;
     case type_stmt::ASSU:
-        out << (-6);
+        out << (6);
         break;
     case type_stmt::NTHR:
-        out << (-7);
+        out << (7);
         break;
     case type_stmt::ETHR:
-        out << (-8);
+        out << (8);
         break;
     case type_stmt::ATOM:
-        out << (-9);
+        out << (9);
         break;
     case type_stmt::EATM:
-        out << (-10);
+        out << (10);
         break;
     case type_stmt::BCST:
-        out << (-11);
+        out << (11);
         break;
     case type_stmt::WAIT:
-        out << (-12);
+        out << (12);
         break;
     case type_stmt::SIGN:
-        out << (-13);
+        out << (13);
         break;
     default:
         //out << (-14);
@@ -129,6 +129,10 @@ public:
 
     const value_v eval(const state_v& sv, const state_v& lv) const;
     value_v eval(const state_v& sh, const state_v& lo);
+    const value_v eval(const state_v& sv, const state_v& lv, const state_v& _sv,
+            const state_v& _lv) const;
+    value_v eval(const state_v& sh, const state_v& lo, const state_v& _sv,
+            const state_v& _lv);
 
 private:
     deque<symbol> sexpr;
@@ -243,8 +247,7 @@ class cfg {
 public:
     cfg();
     cfg(const size_pc& size_A);
-    cfg(const adj_list& A,
-            const unordered_map<size_pc, assignment>& assigns);
+    cfg(const adj_list& A, const unordered_map<size_pc, assignment>& assigns);
     ~cfg();
 
     const adj_list& get_A() const {
