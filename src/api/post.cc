@@ -95,22 +95,28 @@ void post_image::compute_post_images(const prog_state& tau,
             ///
             /// SEMANTIC: assignment statement, postcondition of
             /// vars might have to satisfy the constraint
+
+            /// svs, i.e., new shared valuation,is to store the final shared
+            /// states after across atomic section
+            deque<state_v> svs;
+            /// sls, i.e., new local  valuation, is to store the final local
+            /// states after across atomic section
+            deque<state_v> lvs;
+
             cout << __func__ << " assign...\n" << sv << "\n" << lv << "\n";
-            const auto& p = this->compute_image_assg_stmt(sv, lv, pc);
+            this->compute_image_assg_stmt(sv, lv, pc, svs, lvs);
 
             /// NOTE: the "constrain <expr>" could involve the valuations
             /// for shared and local variables before and after executing
             /// assignment statement ...
             const auto& cond = e.get_stmt().get_condition();
-            for (const auto& _lv : p.second) {
-                local_state _l(_pc, _lv);            /// local state
-                const auto& _Z = alg::update_counters(_l, l, Z);
-                for (const auto& _sv : p.first)
+            for (const auto& _lv : lvs) {
+                const auto& _Z = alg::update_counters(local_state(_pc, _lv), l,
+                        Z);
+                for (const auto& _sv : svs)
                     if (!cond.is_valid()
-                            || (cond.eval(sv, lv, _sv, _lv) != sool::F)) {
-                        shared_state _s(_sv);    /// shared state
-                        images.emplace_back(_s, _Z);
-                    }
+                            || (cond.eval(sv, lv, _sv, _lv) != sool::F))
+                        images.emplace_back(shared_state(_sv), _Z);
             }
         }
             break;
@@ -211,13 +217,16 @@ void post_image::compute_post_images(const prog_state& tau,
             deque<state_v> nlv;
 
             auto ppc(_pc);
-            this->compute_image_atom_sect(sv, lv, ppc, nsv, nlv);
+            const auto& cond = this->compute_image_atom_sect(sv, lv, ppc, nsv,
+                    nlv);
             cout << nsv.size() << " ======///===== " << nlv.size() << "\n";
             for (const auto& _lv : nlv) { /// first iterate over local states
                 const auto& _Z = alg::update_counters(local_state(ppc, _lv), l,
                         Z);
                 for (const auto& _sv : nsv) ///then iterate over shared states
-                    images.emplace_back(shared_state(_sv), _Z);
+                    if (!cond.is_valid()
+                            || cond.eval(sv, lv, _sv, _lv) != sool::F)
+                        images.emplace_back(shared_state(_sv), _Z);
             }
         }
             break;
@@ -293,32 +302,34 @@ void post_image::compute_post_images(const prog_state& tau,
 
 /**
  * @brief compute post image after an parallel assignment statement
- * @param s
- * @param start
- * @param assgs
- * @param sh
- * @param lo
+ * @param sv
+ * @param lv
+ * @param pc
+ * @param svs
+ * @param lvs
  */
-pair<deque<state_v>, deque<state_v>> post_image::compute_image_assg_stmt(
-        const state_v& s, const state_v& l, const size_pc& pc) {
-    deque<state_v> svs;
-    svs.emplace_back(s);
-    deque<state_v> lvs;
-    lvs.emplace_back(l);
+void post_image::compute_image_assg_stmt(const state_v& sv, const state_v& lv,
+        const size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs) {
+    /// push current shares valuation into post shared valuations
+    svs.emplace_back(sv);
+    /// push current local  valuation into post shared valuations
+    lvs.emplace_back(lv);
+
     auto ifind = parser::get_post_G().get_assignments().find(pc);
     if (ifind != parser::get_post_G().get_assignments().end()) {
         const auto& sh = ifind->second.sh;
         for (auto i = 0; i < sh.size(); ++i) {
             if (sh[i].is_valid())
-                split(sh[i].eval(s, l), i, svs);
+                split(sh[i].eval(sv, lv), i, svs);
         }
+
         const auto& lo = ifind->second.lo;
         for (auto i = 0; i < lo.size(); ++i) {
             if (lo[i].is_valid())
-                split(lo[i].eval(s, l), i, lvs);
+                split(lo[i].eval(sv, lv), i, lvs);
         }
     }
-
+#ifndef NDEBUG
     cout << __func__ << "\n";
     cout << "shared...\n";
     for (const auto& s : svs)
@@ -326,7 +337,7 @@ pair<deque<state_v>, deque<state_v>> post_image::compute_image_assg_stmt(
     cout << "local ...\n";
     for (const auto& l : lvs)
         cout << l << endl;
-    return std::make_pair(svs, lvs);
+#endif
 }
 
 /**
@@ -398,25 +409,26 @@ local_state post_image::compute_image_else_stmt(const local_state& l) {
  *         2: assume(<expr>);
  *         3: <id>+ := <expr>+ constrain <expr>; || skip;
  *         4: atomic_end;
- *         Except atomic_begin and atomic_end, the atomic section only involves
- *         three kinds of statements: assume, skip and parallel assignments.
+ *         between <atomic_begin> and <atomic_end>, atomic section contains
+ *         only three types of statement: <assume>, <skip> and parallel as-
+ *         signments.
  *
- * @param  sv: shared state at the beginning of atomic section
- *           It's also used to return the final shared state after the
- *           atomic section.
- * @param  lv: local state at the beginning of atomic section
- * @param pc: current pc
- * @param svs: the shared valuations after executing atomic section
- * @param lvs: the local  valuations after executing atomic section
+ * @param  sv: shared valuation at the beginning of atomic section
+ * @param  lv: local  valuation at the beginning of atomic section
+ * @param  pc: current pc
+ * @param svs: shared valuations after executing atomic section
+ * @param lvs: local  valuations after executing atomic section
+ * @return the constraint following parallel assignment statement
  */
-void post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
+expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
         size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs) {
+    expr cond; /// constraint
+
     auto e = parser::get_post_G().get_A()[pc].front();
     auto stmt = e.get_stmt().get_type();
 
     while (stmt != type_stmt::EATM) {
         auto _pc = e.get_dest();
-        cout << _pc << " " << stmt << "===================\n";
         switch (stmt) {
         case type_stmt::ASSU: {
             /// <assume> statement in atomic section:
@@ -424,7 +436,7 @@ void post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
             /// i.e., it is locked in atomic section and waits for unlock
             const auto& cond = e.get_stmt().get_condition();
             if (cond.eval(sv, lv) == sool::F) /// unsatisfiable in assume
-                return;
+                return cond;
             pc = _pc;
         }
             break;
@@ -438,18 +450,9 @@ void post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
             /// <parallel assignment> statement:
             /// SEMANTIC: assignment statement, postcondition of
             /// vars might have to satisfy the constraint
-            const auto& p = this->compute_image_assg_stmt(sv, lv, pc);
-            const auto& cond = e.get_stmt().get_condition();
-
-            cout << svs.size() << " ======/===//===== " << lvs.size() << "\n";
-            if (cond.is_valid())
-                svs = p.first, lvs = p.second;
-            else
-                for (const auto& _sv : p.first) { // TODO a bug here: duplicate
-                    for (const auto& _lv : p.second)
-                        if (cond.eval(sv, lv, _sv, _lv) != sool::F)
-                            svs.emplace_back(_sv), lvs.emplace_back(_lv);
-                }
+            this->compute_image_assg_stmt(sv, lv, pc, svs, lvs);
+            cout << svs.size() << " ======///===== " << lvs.size() << "\n";
+            cond = e.get_stmt().get_condition();
             pc = _pc;
         }
             break;
@@ -466,13 +469,17 @@ void post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
         stmt = e.get_stmt().get_type();
     }
 
-    pc += 1; /// advance one more step on <atomic_end>
+    /// advance one more step on <atomic_end>
+    pc = e.get_dest();
+
     /// add sv back if no successor
     if (svs.empty())
         svs.emplace_back(sv);
     /// add lv back if no successor
     if (lvs.empty())
         lvs.emplace_back(lv);
+
+    return cond;
 }
 
 } /* namespace otf */

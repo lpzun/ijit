@@ -354,8 +354,8 @@ private:
     void compute_post_images(const prog_state& tau, const local_state& l,
             deque<prog_state>& images);
 
-    pair<deque<state_v>, deque<state_v>> compute_image_assg_stmt(
-            const state_v& s, const state_v& l, const size_pc& pc);
+    void compute_image_assg_stmt(const state_v& sv, const state_v& lv,
+            const size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs);
 
     void split(const sool& v, const size_t& i, deque<state_v>& svs);
 
@@ -363,7 +363,7 @@ private:
             const size_pc& _pc);
     local_state compute_image_else_stmt(const local_state& l);
 
-    void compute_image_atom_sect(const state_v& sv, const state_v& lv,
+    expr compute_image_atom_sect(const state_v& sv, const state_v& lv,
             size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs);
 };
 
