@@ -178,7 +178,7 @@ private:
  *         false: otherwise
  */
 inline bool operator <(const shared_state& s1, const shared_state& s2) {
-    for (int i = refs::S_VARS_NUM - 1; i >= 0; i--)
+    for (int i = refs::SV_NUM - 1; i >= 0; i--)
         if (s1.get_vars()[i] ^ s2.get_vars()[i])
             return s2.get_vars()[i];
     return false;
@@ -205,7 +205,7 @@ inline bool operator >(const shared_state& s1, const shared_state& s2) {
  *         false: otherwise
  */
 inline bool operator ==(const shared_state& s1, const shared_state& s2) {
-    for (int i = refs::S_VARS_NUM - 1; i >= 0; i--)
+    for (int i = refs::SV_NUM - 1; i >= 0; i--)
         if (s1.get_vars()[i] ^ s2.get_vars()[i])
             return false;
     return true;
@@ -272,7 +272,7 @@ private:
  */
 inline bool operator <(const local_state& l1, const local_state& l2) {
     if (l1.get_pc() == l2.get_pc()) {
-        for (int i = refs::L_VARS_NUM - 1; i >= 0; i--)
+        for (int i = refs::LV_NUM - 1; i >= 0; i--)
             if (l1.get_vars()[i] ^ l2.get_vars()[i])
                 return l2.get_vars()[i];
         return false;
@@ -302,7 +302,7 @@ inline bool operator >(const local_state& l1, const local_state& l2) {
  */
 inline bool operator ==(const local_state& l1, const local_state& l2) {
     if (l1.get_pc() == l2.get_pc()) {
-        for (int i = refs::L_VARS_NUM - 1; i >= 0; i--)
+        for (int i = refs::LV_NUM - 1; i >= 0; i--)
             if (l1.get_vars()[i] ^ l2.get_vars()[i])
                 return false;
         return true;
@@ -426,6 +426,7 @@ using ca_locals = map<local_state, size_tc>;
 class global_state {
 public:
     global_state();
+    global_state(const shared_state& s, const local_state& l);
     global_state(const shared_state& s, const ca_locals& locals);
     global_state(const global_state& g);
     ~global_state();

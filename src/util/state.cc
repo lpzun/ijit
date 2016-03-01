@@ -42,7 +42,7 @@ shared_state::~shared_state() {
  */
 ostream& operator <<(ostream& out, const shared_state& s) {
     if (s.get_vars().size() > 0) {
-        for (auto i = 0; i < refs::S_VARS_NUM; ++i)
+        for (auto i = 0; i < refs::SV_NUM; ++i)
             out << s.get_vars()[i];
     }
     return out;
@@ -83,7 +83,7 @@ local_state::~local_state() {
  */
 ostream& operator <<(ostream& out, const local_state& l) {
     out << l.get_pc();
-    for (auto i = 0; i < refs::L_VARS_NUM; ++i)
+    for (auto i = 0; i < refs::LV_NUM; ++i)
         out << l.get_vars()[i];
     return out;
 }
@@ -144,6 +144,16 @@ global_state::global_state() :
 
 /**
  * @brief constructor with shared state and local state
+ * @param s
+ * @param l
+ */
+global_state::global_state(const shared_state& s, const local_state& l) :
+        s(s), locals() {
+    locals.emplace(l, 1);
+}
+
+/**
+ * @brief constructor with shared state and locals
  * @param s
  * @param locals
  */

@@ -95,7 +95,7 @@ private:
     static pair<initl_ps, final_ps> parse_in_post_mode(const string& filename);
 
     static initl_ps create_initl_state(const map<ushort, sool>& s_vars_init,
-            const map<ushort, sool>& l_vars_init);
+            const map<ushort, sool>& l_vars_init, const size_pc& pc = 0);
     static final_ps create_final_state();
 
     static cfg prev_G; /// control flow graph in PREV mode
@@ -356,8 +356,6 @@ private:
 
     void compute_image_assg_stmt(const state_v& sv, const state_v& lv,
             const size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs);
-
-    void split(const sool& v, const size_t& i, deque<state_v>& svs);
 
     local_state compute_image_ifth_stmt(const local_state& l,
             const size_pc& _pc);

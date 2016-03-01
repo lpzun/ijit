@@ -77,8 +77,8 @@ void tst_solver::test_split() {
  * @brief testing
  */
 void tst_solver::test_all_sat_solve() {
-    refs::S_VARS_NUM = 2;
-    refs::L_VARS_NUM = 2;
+    refs::SV_NUM = 2;
+    refs::LV_NUM = 2;
 /// se1: 0
     cout << "expression se1...\n";
     deque<symbol> se1;

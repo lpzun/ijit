@@ -31,7 +31,6 @@ post_image::~post_image() {
  * @return images: the list of post images of tau w.r.t. all threads
  */
 deque<prog_state> post_image::step(const prog_state& tau) {
-    DBG_LOC()
     deque<prog_state> images;
     for (const auto& p : tau.get_locals()) /// iterate over all local states
         this->compute_post_images(tau, p.first, images);
@@ -320,13 +319,13 @@ void post_image::compute_image_assg_stmt(const state_v& sv, const state_v& lv,
         const auto& sh = ifind->second.sh;
         for (auto i = 0; i < sh.size(); ++i) {
             if (sh[i].is_valid())
-                split(sh[i].eval(sv, lv), i, svs);
+                alg::split(sh[i].eval(sv, lv), i, svs); /// split * immediately
         }
 
         const auto& lo = ifind->second.lo;
         for (auto i = 0; i < lo.size(); ++i) {
             if (lo[i].is_valid())
-                split(lo[i].eval(sv, lv), i, lvs);
+                alg::split(lo[i].eval(sv, lv), i, lvs); /// split * immediately
         }
     }
 #ifndef NDEBUG
@@ -337,36 +336,7 @@ void post_image::compute_image_assg_stmt(const state_v& sv, const state_v& lv,
     cout << "local ...\n";
     for (const auto& l : lvs)
         cout << l << endl;
-#endif
-}
-
-/**
- * @brief split nondeterministic value into false and true
- * @param v
- * @param i
- * @param svs
- */
-void post_image::split(const sool& v, const size_t& i, deque<state_v>& svs) {
-    switch (v) {
-    case sool::F:
-        for (auto& sv : svs) {
-            sv[i] = 0;
-        }
-        break;
-    case sool::T:
-        for (auto& sv : svs) {
-            sv[i] = 1;
-        }
-        break;
-    default:
-        for (auto& sv : svs) {
-            sv[i] = 0;
-            auto cp(sv); /// build a copy of sv
-            cp[i] = 1;
-            svs.emplace_back(cp);
-        }
-        break;
-    }
+#endif /* end debug */
 }
 
 /**

@@ -71,33 +71,39 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     if (!bfile) {
         throw iotf_runtime_error(filename + " open failed!");
     }
+
     yyin = bfile;
 
     cout << "starting to parse Boolean program...\n";
-    /// file list
     paide aide;
-    yy::bp parser(aide); // make a parser
-    int result = parser.parse(); // and run it
+    yy::bp parser(aide); /// build a parser
+    int result = parser.parse(); /// and run it
     if (result != 0) {
         throw iotf_runtime_error(
                 "Parser exit with exception: " + std::to_string(result));
     }
 
-    initl_ps I = create_initl_state(aide.s_vars_init, aide.l_vars_init);
-    final_ps Q = create_final_state();
-
     /// move the file point to the begin and print the total line number
     cout << "shared, local, line\n";
-    refs::S_VARS_NUM = aide.s_vars_num;
-    refs::L_VARS_NUM = aide.l_vars_num;
-    cout << refs::S_VARS_NUM << ", " << refs::L_VARS_NUM << ", " << aide.lineno
+    refs::SV_NUM = aide.s_vars_num;
+    refs::LV_NUM = aide.l_vars_num;
+    refs::PC_NUM = aide.lineno;
+    cout << refs::SV_NUM << ", " << refs::LV_NUM << ", " << aide.lineno
             << "\n";
-    cout << "for testing: before...\n";
+
+    // delete----------------
+    DBG_LOG("for testing: before...\n")
     aide.print_control_flow_graph();
+    // delete----------------
 
     post_G = aide.cfg_G;
-    cout << "for testing: after...\n";
+    // delete----------------
+    DBG_LOG("for testing: after...\n")
     cout << post_G << endl;
+    // delete----------------
+
+    initl_ps I = create_initl_state(aide.s_vars_init, aide.l_vars_init);
+    final_ps Q = create_final_state();
 
     return std::make_pair(I, Q);
 }
@@ -106,12 +112,53 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
  * @brief compute initial states
  * @param s_vars_init
  * @param l_vars_init
+ * @param pc
  * @return initial states
  */
 initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
-        const map<ushort, sool>& l_vars_init) {
-    initl_ps ps;
-    return ps;
+        const map<ushort, sool>& l_vars_init, const size_pc& pc) {
+#ifndef NDEBUG
+    cout << "(";
+    for (const auto& p : s_vars_init)
+        cout << p.first << "->" << p.second;
+    cout << "|0";
+    for (const auto& p : l_vars_init)
+        cout << p.first << "->" << p.second;
+    cout << ")\n";
+#endif
+
+    initl_ps ips; /// initial program states
+
+    /// step 1: build shared BV via splitting *
+    deque<state_v> svs; /// store shared BV
+    svs.emplace_back(state_v(0));
+    for (const auto& p : s_vars_init) {
+        alg::split(p.second, p.first - 1, svs);
+    }
+
+    /// step 2: build local  BV via splitting *
+    deque<state_v> lvs; /// store local  BV
+    lvs.emplace_back(state_v(0));
+    for (const auto& p : l_vars_init) {
+        alg::split(p.second, p.first - 1, lvs);
+    }
+
+    /// step 3: build global states via shared
+    ///         BVs and local BVs
+    for (const auto& sv : svs) {
+        shared_state s(sv);
+        for (const auto& lv : lvs) {
+            local_state l(pc, lv);
+            ips.emplace_back(s, l);
+        }
+    }
+
+#ifndef NDEBUG
+    for (const auto& g : ips)
+        cout << g << endl;
+#endif
+
+    return ips;
 }
 
 /**

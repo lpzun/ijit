@@ -108,6 +108,35 @@ void alg::merge(const local_state& local, const ushort& n, ca_locals& Z) {
     }
 }
 
+/**
+ * @brief split nondeterministic value into false and true
+ * @param v
+ * @param i
+ * @param svs
+ */
+void alg::split(const sool& v, const size_t& i, deque<state_v>& svs) {
+    switch (v) {
+    case sool::F:
+        for (auto& sv : svs) {
+            sv[i] = 0;
+        }
+        break;
+    case sool::T:
+        for (auto& sv : svs) {
+            sv[i] = 1;
+        }
+        break;
+    default:
+        for (auto& sv : svs) {
+            sv[i] = 0;
+            auto cp(sv); /// build a copy of sv
+            cp[i] = 1;
+            svs.emplace_back(cp);
+        }
+        break;
+    }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /// from here: class solver
 ///
@@ -310,8 +339,8 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
     /// (2) false: no assignment satisfies the expression.
     if (num == 0) {
         if (solver::eval(sexpr)) {
-            ss_vars sassg(refs::S_VARS_NUM, sool::N);
-            sl_vars lassg(refs::L_VARS_NUM, sool::N);
+            ss_vars sassg(refs::SV_NUM, sool::N);
+            sl_vars lassg(refs::LV_NUM, sool::N);
             result.emplace_back(sassg, lassg);
         }
         return result;
@@ -323,8 +352,8 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
         /// step 3: build an assignment to active variables
         const auto& bv = solver::to_binary(assg, num);
 
-        ss_vars s_tmp(refs::S_VARS_NUM, sool::N);
-        sl_vars l_tmp(refs::L_VARS_NUM, sool::N);
+        ss_vars s_tmp(refs::SV_NUM, sool::N);
+        sl_vars l_tmp(refs::LV_NUM, sool::N);
 
         /// step 4: replace Boolean variables by its values
         auto se = sexpr;
@@ -415,8 +444,8 @@ deque<deque<sool>> solver::split(const deque<sool>& vsool) {
 symbol solver::decode(const symbol& idx, bool& is_shared) {
     auto id = idx - 3;
     is_shared = true;
-    if (id >= refs::S_VARS_NUM)
-        id -= refs::S_VARS_NUM, is_shared = false;
+    if (id >= refs::SV_NUM)
+        id -= refs::SV_NUM, is_shared = false;
     return id;
 }
 
@@ -428,15 +457,15 @@ symbol solver::decode(const symbol& idx, bool& is_shared) {
  */
 symbol solver::decode(const symbol& idx, bool& is_shared, bool& is_primed) {
     auto id = idx - 3;
-    if (id < refs::S_VARS_NUM + refs::L_VARS_NUM) {
+    if (id < refs::SV_NUM + refs::LV_NUM) {
         is_primed = false, is_shared = true;
-        if (id >= refs::S_VARS_NUM)
-            is_shared = false, id -= refs::S_VARS_NUM;
+        if (id >= refs::SV_NUM)
+            is_shared = false, id -= refs::SV_NUM;
     } else {
         is_primed = true, is_shared = true;
-        if (id >= 2 * refs::S_VARS_NUM + refs::L_VARS_NUM)
-            is_shared = false, id -= refs::S_VARS_NUM;
-        id -= refs::S_VARS_NUM + refs::L_VARS_NUM;
+        if (id >= 2 * refs::SV_NUM + refs::LV_NUM)
+            is_shared = false, id -= refs::SV_NUM;
+        id -= refs::SV_NUM + refs::LV_NUM;
     }
     return id;
 }

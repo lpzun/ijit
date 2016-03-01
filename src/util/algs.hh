@@ -52,6 +52,8 @@ public:
             throw;
         }
     }
+
+    static void split(const sool& v, const size_t& i, deque<state_v>& svs);
 };
 
 /**

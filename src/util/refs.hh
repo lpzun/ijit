@@ -25,8 +25,8 @@ public:
     ~refs() {
     }
 
-    static ushort S_VARS_NUM;
-    static ushort L_VARS_NUM;
+    static ushort SV_NUM;
+    static ushort LV_NUM;
     static ushort PC_NUM;
 
     /// constant expression
