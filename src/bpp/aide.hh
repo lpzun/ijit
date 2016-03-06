@@ -76,6 +76,7 @@ public:
     /// to store parallel assignment statements
     deque<symbol> assg_stmt_lhs; /// the right-hand side of parallel assignment
     deque<deque<symbol>> assg_stmt_rhs; /// the left-hand side of of parallel assignment
+    set<size_pc> asse_pc_set; /// to record all of PCs associative with assertions
 
     cfg cfg_G;
 
@@ -104,7 +105,7 @@ public:
     void print_vars_list();
 
 private:
-    set<size_pc> all_pc_set;
+    set<size_pc> all_pc_set; /// to determine if pc is unique or not
     assignment create_assignment();
 };
 

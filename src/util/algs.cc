@@ -50,8 +50,9 @@ ca_locals alg::update_counters(const deque<local_state>& T_in,
         const local_state& t_de, const ca_locals& Z) {
     auto _Z = Z;
 
-    for (const auto& t_in : T_in)
+    for (const auto& t_in : T_in) {
         merge(t_in, 1, _Z);
+    }
 
     auto ifind = _Z.find(t_de);
     if (ifind != _Z.end()) {
@@ -313,14 +314,16 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
 }
 
 /**
- * @brief an all sat solver
+ * @brief This is an all sat solver: it's an exhaustive one, so it's not
+ *        very efficient.
+ *        TODO: consider to call an off-the-shelf incremental SAT solver
+ *
  * @param sexpr
- * @return
+ * @return all of the valuations that satisfy sexpr
  */
 deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
         const deque<symbol>& sexpr) {
     deque<pair<ss_vars, sl_vars>> result;
-
     /// step 1: collect the ids of Boolean variables:
     ///         this is a subset of all variables
     map<symbol, ushort> active_id;
@@ -328,8 +331,7 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
     for (const auto& s : sexpr) {
         if (s > solver::CONST_N) {
             const auto& p = active_id.emplace(s, num);
-            if (p.second)
-                ++num;
+            if (p.second) ++num;
         }
     }
 
@@ -339,9 +341,10 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
     /// (2) false: no assignment satisfies the expression.
     if (num == 0) {
         if (solver::eval(sexpr)) {
-            ss_vars sassg(refs::SV_NUM, sool::N);
-            sl_vars lassg(refs::LV_NUM, sool::N);
-            result.emplace_back(sassg, lassg);
+            result.emplace_back(
+                    /// the <expr> is true everywhere
+                    ss_vars(refs::SV_NUM, sool::N),
+                    sl_vars(refs::LV_NUM, sool::N));
         }
         return result;
     }
@@ -351,7 +354,6 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
     for (auto assg = 0; assg < pow(2, num); ++assg) {
         /// step 3: build an assignment to active variables
         const auto& bv = solver::to_binary(assg, num);
-
         ss_vars s_tmp(refs::SV_NUM, sool::N);
         sl_vars l_tmp(refs::LV_NUM, sool::N);
 
@@ -360,14 +362,16 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
         for (auto i = 0; i < se.size(); ++i) {
             if (se[i] > solver::CONST_N) {
                 auto ifind = active_id.find(se[i]);
-                se[i] = bv[ifind->second];
-
+                /// step 4.1: determine whether se[i] is shared or not
                 bool is_shared = false;
                 const auto& idx = solver::decode(se[i], is_shared);
-                if (is_shared)
-                    s_tmp[idx] = bv[ifind->second] ? sool::T : sool::F;
-                else
-                    l_tmp[idx] = bv[ifind->second] ? sool::T : sool::F;
+                if (is_shared) {
+                    s_tmp[idx] = (bv[ifind->second] ? sool::T : sool::F);
+                } else {
+                    l_tmp[idx] = (bv[ifind->second] ? sool::T : sool::F);
+                }
+                /// step 4.2: assign a Boolean value to variable se[i]
+                se[i] = bv[ifind->second];
             }
         }
 
@@ -376,7 +380,13 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
             result.emplace_back(s_tmp, l_tmp);
         }
     }
-
+    for (const auto& p : result) {
+        for (const auto& s : p.first)
+            cout << s;
+        for (const auto& l : p.second)
+            cout << l;
+        cout << endl;
+    }
     return result;
 }
 
@@ -442,6 +452,7 @@ deque<deque<sool>> solver::split(const deque<sool>& vsool) {
  * @param is_shared
  */
 symbol solver::decode(const symbol& idx, bool& is_shared) {
+    cout << idx << endl;
     auto id = idx - 3;
     is_shared = true;
     if (id >= refs::SV_NUM)

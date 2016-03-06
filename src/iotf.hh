@@ -96,7 +96,9 @@ private:
 
     static initl_ps create_initl_state(const map<ushort, sool>& s_vars_init,
             const map<ushort, sool>& l_vars_init, const size_pc& pc = 0);
-    static final_ps create_final_state();
+
+    static final_ps create_final_state(const set<size_pc>& pcs);
+    static void create_final_state(const size_pc& pc, final_ps& fps);
 
     static cfg prev_G; /// control flow graph in PREV mode
     static cfg post_G; /// control flow graph in POST mode
@@ -122,8 +124,6 @@ using syst_state = pair<uint, map<uint, uint>>;
  *        store their local states, e.g., vector, list, map etc., and finally
  *        convert to our internal representation in this class.
  */
-//template<typename S, typename L,
-//        template<typename ..., typename = std::allocator<L>> class container_t>
 class converter {
 public:
     converter() :

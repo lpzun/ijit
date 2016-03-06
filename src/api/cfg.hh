@@ -127,13 +127,16 @@ public:
         return !sexpr.empty();
     }
 
+    const deque<deque<symbol> >& get_splited() const {
+        return splited;
+    }
+
     const value_v eval(const state_v& sv, const state_v& lv) const;
     value_v eval(const state_v& sh, const state_v& lo);
     const value_v eval(const state_v& sv, const state_v& lv, const state_v& _sv,
             const state_v& _lv) const;
     value_v eval(const state_v& sh, const state_v& lo, const state_v& _sv,
             const state_v& _lv);
-
 private:
     deque<symbol> sexpr;
     deque<deque<symbol>> splited;

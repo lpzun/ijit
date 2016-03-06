@@ -15,7 +15,8 @@ namespace iotf {
 paide::paide() :
         lineno(0), ipc(0), s_vars_num(0), l_vars_num(0), ///
         s_vars_list(), l_vars_list(), s_vars_init(), l_vars_init(), ///
-        suc_pc_set(), expr_in_list(), assg_stmt_lhs(), assg_stmt_rhs(), all_pc_set() {
+        suc_pc_set(), expr_in_list(), assg_stmt_lhs(), assg_stmt_rhs(), ///
+        asse_pc_set(), all_pc_set() {
 }
 
 /**
@@ -96,6 +97,8 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
     /// build assignments
     if (type == type_stmt::ASSG) {
         cfg_G.add_assignment(src, this->create_assignment());
+    } else if (type == type_stmt::ASSE) {
+        this->asse_pc_set.insert(src);
     }
 }
 

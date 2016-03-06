@@ -221,7 +221,6 @@ void pre_image::compute_pre_images(const prog_state& _tau,
                 /// decrement the new and succeeding local states
                 alg::decrement(_l, Z);
                 alg::decrement(sl, Z);
-
                 images.emplace_back(_s, Z);
             }
         }

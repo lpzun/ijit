@@ -88,8 +88,7 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     refs::SV_NUM = aide.s_vars_num;
     refs::LV_NUM = aide.l_vars_num;
     refs::PC_NUM = aide.lineno;
-    cout << refs::SV_NUM << ", " << refs::LV_NUM << ", " << aide.lineno
-            << "\n";
+    cout << refs::SV_NUM << "," << refs::LV_NUM << "," << aide.lineno << "\n";
 
     // delete----------------
     DBG_LOG("for testing: before...\n")
@@ -103,7 +102,7 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     // delete----------------
 
     initl_ps I = create_initl_state(aide.s_vars_init, aide.l_vars_init);
-    final_ps Q = create_final_state();
+    final_ps Q = create_final_state(aide.asse_pc_set);
 
     return std::make_pair(I, Q);
 }
@@ -118,12 +117,13 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
 initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
         const map<ushort, sool>& l_vars_init, const size_pc& pc) {
 #ifndef NDEBUG
+    cout << "output initial values stored in maps...\n";
     cout << "(";
     for (const auto& p : s_vars_init)
-        cout << p.first << "->" << p.second;
+        cout << p.second;
     cout << "|0";
     for (const auto& p : l_vars_init)
-        cout << p.first << "->" << p.second;
+        cout << p.second;
     cout << ")\n";
 #endif
 
@@ -154,6 +154,7 @@ initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
     }
 
 #ifndef NDEBUG
+    cout << __func__ << "\n";
     for (const auto& g : ips)
         cout << g << endl;
 #endif
@@ -162,12 +163,67 @@ initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
 }
 
 /**
- * @brief compute final states
- * @return final states
+ * @brief generate all final states for all assertions collected
+ *        by their PCs
+ * @param pcs
+ * @return the list of final states
  */
-final_ps parser::create_final_state() {
-    final_ps fs;
-    return fs;
+final_ps parser::create_final_state(const set<size_pc>& pcs) {
+    final_ps fps;
+    for (const auto& pc : pcs) {
+        create_final_state(pc, fps);
+    }
+#ifndef NDEBUG
+    cout << __func__ << "\n";
+    for (const auto& g : fps)
+        cout << g << endl;
+    cout << __func__ << "-----------------\n";
+#endif
+    return fps;
+}
+
+/**
+ * @brief generate all final states for all assertions collected
+ *        by a particular PC <pc>
+ * @param pc  : the particular pc
+ * @param fps : the deque to store final program state
+ */
+void parser::create_final_state(const size_pc& pc, final_ps& fps) {
+    const auto& predecessors = parser::get_post_G().get_A()[pc];
+    const auto& e = predecessors.front();
+    if (e.get_stmt().get_type() == type_stmt::ASSE) {
+        const auto& expressions = e.get_stmt().get_condition().get_splited();
+        cout << "!!!!!!!!!!!!!!!!!!!!!!!" << expressions.size() << "\n";
+        for (const auto& exp : expressions) {
+            const auto& assgs = solver::all_sat_solve(exp);
+            for (const auto& assg : assgs) {
+                /// step 1: build shared BV via splitting *
+                deque<state_v> svs; /// store shared BV
+                svs.emplace_back(state_v(0));
+                for (auto i = 0; i < assg.first.size(); ++i) {
+                    alg::split(assg.first[i], i, svs);
+                }
+
+                /// step 2: build local  BV via splitting *
+                deque<state_v> lvs; /// store local  BV
+                lvs.emplace_back(state_v(0));
+                for (auto i = 0; i < assg.second.size(); ++i) {
+                    alg::split(assg.second[i], i, lvs);
+                }
+
+                /// step 3: build global states via shared
+                ///         BVs and local BVs
+                for (const auto& sv : svs) {
+                    shared_state s(sv);
+                    for (const auto& lv : lvs) {
+                        local_state l(pc, lv);
+                        fps.emplace_back(s, l);
+                    }
+                }
+                /// complete the final state for a satisfiable assignment
+            }
+        }
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

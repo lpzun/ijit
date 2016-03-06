@@ -218,7 +218,6 @@ void post_image::compute_post_images(const prog_state& tau,
             auto ppc(_pc);
             const auto& cond = this->compute_image_atom_sect(sv, lv, ppc, nsv,
                     nlv);
-            cout << nsv.size() << " ======///===== " << nlv.size() << "\n";
             for (const auto& _lv : nlv) { /// first iterate over local states
                 const auto& _Z = alg::update_counters(local_state(ppc, _lv), l,
                         Z);

@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
             printf("Usage: itof [-f file]\n");
         }
 
-        string filename(getCmdOption(argv, argv + argc, "-f"));
+        const string filename(getCmdOption(argv, argv + argc, "-f"));
         if (filename.length() == 0) {
             throw iotf_runtime_error("Please specify filename!");
         }
