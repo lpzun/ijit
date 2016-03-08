@@ -17,7 +17,7 @@
 # Override these variables (or add new ones) locally
 APP	         = iotf # the name of application
 SATDIR       =# /usr/local/Z3#                                             # config your z3 include here
-ILIBS        =-lz#-L $(SATDIR)/lib -lz3#                                  -lm
+ILIBS        =# -L $(SATDIR)/lib -lz3#                                  -lm
 IINCLUDE     =# -I $(SATDIR)/include/#                                      
 
 #ISTD	      = -std=c++0x                                                 # for old cpp standard
@@ -87,10 +87,12 @@ new: clean default
 distnew: distclean default
 
 
-# Add new targets locally. This is included after 'default' above, so that the default remains the default.
+# Add new targets locally. This is included after 'default' above, so that 
+# the default remains the default.
 -include makefile-local-targets
 
-unexport MAKEFLAGS # do not export variables by default (only those mentioned in EXPORT)
+# do not export variables by default (only those mentioned in EXPORT)
+unexport MAKEFLAGS 
 
 
 ##################################
@@ -100,16 +102,26 @@ unexport MAKEFLAGS # do not export variables by default (only those mentioned in
 $(DEFAULT): $(OBJECTS) #robjects
 	@mkdir -p `dirname $@`
 	$(CCOMP) $(LFLAGS) $(OBJECTS) $(LIBS) -o $@
+	
+static: $(OBJECTS)
+	ar rcs libiotf.a $^
 
 $(OBJECTS): %.o: %.$(CSUFF) $(HEADERS)
 	$(CCOMP) $(CFLAGS) $< -c -o $@
 
 robjects:
-	$(foreach VAR,$(ROBJVARS),$(MAKE) -C $(dir $(firstword $($(VAR)))) $(EXPORT) $(notdir $($(VAR))) || $(RERROR);)
+	$(foreach VAR,$(ROBJVARS),$(MAKE) -C $(dir $(firstword#
+		$($(VAR)))) $(EXPORT) $(notdir $($(VAR))) || $(RERROR);)
 
-############################
-# Cleaning (do not change) #
-############################
+##################################
+# Targets Region (do not change) #
+##################################
+
+
+
+##################################
+# Cleaning (do not change)       #
+##################################
 
 clean: 	CLEANOBJS
 	#rm -f $(BASES)
