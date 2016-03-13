@@ -10,6 +10,7 @@
 #include "../test/tst_parser.hh"
 
 using namespace iotf;
+using namespace std;
 
 /**
  * @brief get a command
@@ -65,15 +66,6 @@ int main(int argc, char *argv[]) {
 
         cout << "testing parser...\n";
         tst_parser::test_parser(filename);
-
-//        cout << "from here...................\n";
-//        bitset<16> bs1(1);
-//        cout << bs1 << "\n";
-//        bitset<16> bs3(3);
-//        cout << bs3 << "\n";
-//
-//        if (bs1 < bs3)
-//            cout << "< works on bitset" << endl;
 
         return 0;
     } catch (const iotf_runtime_error& e) {
