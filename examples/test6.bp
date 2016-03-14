@@ -2,7 +2,7 @@ decl s1 := *;
 decl s2 := *;
 void main() begin
     decl l := 0;
- 0: s1,s2:= *,0 constrain !'s2;
+ 0: s1,s2:= 0,0; // constrain !'s2;
  1: start_thread goto 3;
  2: skip;
  3: goto 4, 7;

@@ -23,7 +23,7 @@ shared_state::shared_state() :
  */
 shared_state::shared_state(const state_v& vars) :
         vars(vars) {
-    cout << __func__ << " constructor: " << vars << "\n";
+    // cout << __func__ << " constructor: " << vars << "\n";
 }
 
 /**
@@ -63,7 +63,7 @@ local_state::local_state() :
  */
 local_state::local_state(const size_pc& pc, const state_v& vars) :
         pc(pc), vars(vars) {
-    cout << __func__ << " constructor : " << vars << "\n";
+    //cout << __func__ << " constructor : " << vars << "\n";
 
 }
 
@@ -150,6 +150,18 @@ global_state::global_state() :
 global_state::global_state(const shared_state& s, const local_state& l) :
         s(s), locals() {
     locals.emplace(l, 1);
+}
+
+/**
+ * @brief constructor with shared state and local state
+ * @param s
+ * @param l
+ * @param n
+ */
+global_state::global_state(const shared_state& s, const local_state& l,
+        const size_tc& n) :
+        s(s), locals() {
+    locals.emplace(l, n);
 }
 
 /**

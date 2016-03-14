@@ -380,13 +380,14 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
             result.emplace_back(s_tmp, l_tmp);
         }
     }
-    for (const auto& p : result) {
-        for (const auto& s : p.first)
-            cout << s;
-        for (const auto& l : p.second)
-            cout << l;
-        cout << endl;
-    }
+//    cout<<__func__<<"====================\n";
+//    for (const auto& p : result) {
+//        for (const auto& s : p.first)
+//            cout << s;
+//        for (const auto& l : p.second)
+//            cout << l;
+//        cout << endl;
+//    }
     return result;
 }
 
@@ -452,7 +453,7 @@ deque<deque<sool>> solver::split(const deque<sool>& vsool) {
  * @param is_shared
  */
 symbol solver::decode(const symbol& idx, bool& is_shared) {
-    cout << idx << endl;
+    // cout <<__func__ << idx << endl;
     auto id = idx - 3;
     is_shared = true;
     if (id >= refs::SV_NUM)
@@ -568,7 +569,6 @@ bool solver::eval(const deque<symbol>& sexpr) {
             break;
         }
     }
-    cout << "worklist.top(): " << worklist.top() << "\n";
     return worklist.top();
 
 }

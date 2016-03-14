@@ -18,25 +18,57 @@ tst_parser::~tst_parser() {
 }
 
 /**
- * @brief test parser and image computation
+ * @brief test parser
  * @param filename
  */
 void tst_parser::test_parser(const string& filename) {
     auto P = parser::parse(filename, mode::POST);
-    uint sss = 3;
     converter c;
+    cout << __func__ << " initial states: " << "\n";
+    for (const auto& its : P.first) {
+        cout << its << "\n";
+        cout << c.convert(its) << "\n";
+    }
+
+    cout << __func__ << " final states: " << "\n";
+    for (const auto& ifs : P.second) {
+        cout << ifs << "\n";
+        cout << c.convert(ifs) << "\n";
+    }
+}
+
+/**
+ * @brief test image computation
+ * @param filename
+ */
+void tst_parser::test_images(const string& filename) {
+    auto P = parser::parse(filename, mode::POST);
+    converter c;
+    cout << __func__ << " initial states: " << "\n";
+    for (const auto& its : P.first) {
+        cout << its << "\n";
+        cout << c.convert(its) << "\n";
+    }
+
+    cout << __func__ << " final states: " << "\n";
+    for (const auto& ifs : P.second) {
+        cout << ifs << "\n";
+        cout << c.convert(ifs) << "\n";
+    }
+
+    uint sss = 1;
     auto sv = c.convert_sss_to_sps(sss);
     shared_state s(sv);
     cout << "shared bitset: " << sv << "\n";
     cout << "shared state: " << s << "\n";
 
-    state_v lv(1);
+    state_v lv(0);
     cout << "local bitset: " << lv << "\n";
     uint pc;
     cin >> pc;
-//	auto sls = c.convert_lps_to_lss(pc, lv);
-//	cout << sls << "\n";
-//    cout  <<"local state: "<< sls << "\n";
+//    auto sls = c.convert_lps_to_lss(pc, lv);
+//    cout << sls << "\n";
+//    cout << "local state: " << sls << "\n";
     local_state l(pc, lv);
     cout << "local state: " << l << "\n";
 
@@ -51,6 +83,9 @@ void tst_parser::test_parser(const string& filename) {
         cout << g << endl;
 }
 
+/**
+ * @brief test split function
+ */
 void tst_solver::test_split() {
     DBG_LOC()
     deque<symbol> se1;

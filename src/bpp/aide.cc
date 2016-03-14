@@ -92,17 +92,21 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
     if (!is_condition) {
         cfg_G.add_edge(src, dest, type);
     } else {
-        if (type == type_stmt::ASSG) {
-            /// build assignments
-            cfg_G.add_assignment(src, create_assignment());
-        } else if (type == type_stmt::ASSE) {
+        if (type == type_stmt::ASSE) {
             /// negate the expression in assertions
             expr_in_list.emplace_back(solver::PAR);
             expr_in_list.emplace_back(solver::NEG);
+            // cout<<"==========="<<this->recov_expr_from_list(expr_in_list);
             /// store all of the PCs in  assertions
             asse_pc_set.insert(src);
         }
         cfg_G.add_edge(src, dest, type, expr(expr_in_list));
+    }
+
+    if (type == type_stmt::ASSG) {
+        /// build assignments
+        cout << "I am add_assignment\n";
+        cfg_G.add_assignment(src, create_assignment());
     }
 }
 
@@ -152,7 +156,7 @@ string paide::recov_expr_from_list(const deque<symbol>& sexpr) {
         case solver::OR:
             op1 = worklist.top(), worklist.pop();
             op2 = worklist.top(), worklist.pop();
-            worklist.emplace(op1 + " 1 " + op2);
+            worklist.emplace(op1 + " | " + op2);
             break;
         case solver::XOR:
             op1 = worklist.top(), worklist.pop();

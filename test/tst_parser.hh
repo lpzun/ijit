@@ -18,6 +18,7 @@ public:
     ~tst_parser();
 
     static void test_parser(const string& filename);
+    static void test_images(const string& filename);
 };
 
 class tst_solver {

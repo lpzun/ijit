@@ -107,6 +107,15 @@ private:
 /// system state in counter abstraction
 using syst_state = pair<uint, map<uint, uint>>;
 
+inline ostream& operator <<(ostream& out, const syst_state& s) {
+    cout << "<" << s.first << "|";
+    for (const auto& p : s.second) {
+        cout << "(" << p.first << "," << p.second << ")";
+    }
+    cout << "\n";
+    return out;
+}
+
 /**
  * @brief a converter: convert a program state to a system state, and vice
  *        versa.

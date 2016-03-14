@@ -102,7 +102,7 @@ void post_image::compute_post_images(const prog_state& tau,
             /// states after across atomic section
             deque<state_v> lvs;
 
-            cout << __func__ << " assign...\n" << sv << "\n" << lv << "\n";
+            //cout << __func__ << " assign...\n" << sv << "\n" << lv << "\n";
             this->compute_image_assg_stmt(sv, lv, pc, svs, lvs);
 
             /// NOTE: the "constrain <expr>" could involve the valuations
@@ -157,7 +157,7 @@ void post_image::compute_post_images(const prog_state& tau,
             ///
             /// SEMANTIC: advance if expr is evaluated to be true;
             /// block otherwise.
-            cout << __func__ << " assume...\n" << sv << "\n" << lv << "\n";
+            //cout << __func__ << " assume...\n" << sv << "\n" << lv << "\n";
             const auto& cond = e.get_stmt().get_condition().eval(sv, lv);
             if (cond != sool::F) {
                 /// successor local state: l'.pc = l.pc + 1
@@ -327,14 +327,14 @@ void post_image::compute_image_assg_stmt(const state_v& sv, const state_v& lv,
                 alg::split(lo[i].eval(sv, lv), i, lvs); /// split * immediately
         }
     }
-#ifndef NDEBUG
+#ifdef NDEBUG
     cout << __func__ << "\n";
     cout << "shared...\n";
     for (const auto& s : svs)
-        cout << s << endl;
+    cout << s << endl;
     cout << "local ...\n";
     for (const auto& l : lvs)
-        cout << l << endl;
+    cout << l << endl;
 #endif /* end debug */
 }
 

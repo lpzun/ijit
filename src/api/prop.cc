@@ -116,7 +116,7 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
  */
 initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
         const map<ushort, sool>& l_vars_init, const size_pc& pc) {
-#ifndef NDEBUG
+#ifdef NDEBUG
     cout << "output initial values stored in maps...\n";
     cout << "(";
     for (const auto& p : s_vars_init)
@@ -153,7 +153,7 @@ initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
         }
     }
 
-#ifndef NDEBUG
+#ifdef NDEBUG
     cout << __func__ << "\n";
     for (const auto& g : ips)
         cout << g << endl;
@@ -173,7 +173,7 @@ final_ps parser::create_final_state(const set<size_pc>& pcs) {
     for (const auto& pc : pcs) {
         create_final_state(pc, fps);
     }
-#ifndef NDEBUG
+#ifdef NDEBUG
     cout << __func__ << "\n";
     for (const auto& g : fps)
         cout << g << endl;
@@ -193,7 +193,6 @@ void parser::create_final_state(const size_pc& pc, final_ps& fps) {
     const auto& e = predecessors.front();
     if (e.get_stmt().get_type() == type_stmt::ASSE) {
         const auto& expressions = e.get_stmt().get_condition().get_splited();
-        cout << "!!!!!!!!!!!!!!!!!!!!!!!" << expressions.size() << "\n";
         for (const auto& exp : expressions) {
             const auto& assgs = solver::all_sat_solve(exp);
             for (const auto& assg : assgs) {

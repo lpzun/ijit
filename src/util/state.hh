@@ -427,6 +427,7 @@ class global_state {
 public:
     global_state();
     global_state(const shared_state& s, const local_state& l);
+    global_state(const shared_state& s, const local_state& l, const size_tc& n);
     global_state(const shared_state& s, const ca_locals& locals);
     global_state(const global_state& g);
     ~global_state();

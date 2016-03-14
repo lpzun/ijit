@@ -8,6 +8,7 @@
 
 #include "../test/tst_convert.hh"
 #include "../test/tst_parser.hh"
+#include "../test/tst_fws.hh"
 
 using namespace iotf;
 using namespace std;
@@ -56,7 +57,12 @@ int main(int argc, char *argv[]) {
             throw iotf_runtime_error("Please specify filename!");
         }
 
-        cout << true << " " << false << "\n";
+        const string sthread(getCmdOption(argv, argv + argc, "-n"));
+        if (sthread.length() == 0) {
+            throw iotf_runtime_error("Please specify # of threads!");
+        }
+
+        cout << filename << " " << sthread << "\n";
 
         cout << "testing split...\n";
         tst_solver::test_split();
@@ -64,8 +70,23 @@ int main(int argc, char *argv[]) {
         cout << "testing all sat solve...\n";
         tst_solver::test_all_sat_solve();
 
-        cout << "testing parser...\n";
-        tst_parser::test_parser(filename);
+//        cout << "testing parser...\n";
+//        tst_parser::test_parser(filename);
+
+//        cout << "testing images...\n";
+//        tst_parser::test_images(filename);
+
+        FWS fws;
+        const auto& is_reachable = fws.standard_FWS(std::stoi(sthread),
+                filename);
+        cout << "======================================================\n";
+        cout << " final state ";
+        if (is_reachable)
+            cout << " is reachable: verification failed!\n";
+        else
+            cout << " is unreachable: verification successful!\n";
+        cout << "======================================================"
+                << endl;
 
         return 0;
     } catch (const iotf_runtime_error& e) {
