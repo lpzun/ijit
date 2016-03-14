@@ -96,7 +96,6 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
             /// negate the expression in assertions
             expr_in_list.emplace_back(solver::PAR);
             expr_in_list.emplace_back(solver::NEG);
-            // cout<<"==========="<<this->recov_expr_from_list(expr_in_list);
             /// store all of the PCs in  assertions
             asse_pc_set.insert(src);
         }
@@ -105,7 +104,6 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
 
     if (type == type_stmt::ASSG) {
         /// build assignments
-        cout << "I am add_assignment\n";
         cfg_G.add_assignment(src, create_assignment());
     }
 }

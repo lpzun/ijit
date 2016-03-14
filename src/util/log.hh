@@ -10,7 +10,7 @@
 
 namespace iotf {
 
-// #define NDEBUG
+#define NDEBUG
 
 #ifndef NDEBUG
 #  define DBG_LOG(x) std::cerr << x <<"\n";

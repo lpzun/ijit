@@ -331,6 +331,7 @@ class thread_state {
 public:
     thread_state();
     thread_state(const shared_state& s, const local_state& l);
+    thread_state(const state_v& sv, const size_pc& pc, const state_v& lv);
     thread_state(const thread_state& t);
     ~thread_state();
 

@@ -10,8 +10,8 @@
 #include "../test/tst_parser.hh"
 #include "../test/tst_fws.hh"
 
-using namespace iotf;
 using namespace std;
+using namespace fws;
 
 /**
  * @brief get a command
@@ -49,7 +49,7 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option) {
 int main(int argc, char *argv[]) {
     try {
         if (cmdOptionExists(argv, argv + argc, "-h")) {
-            printf("Usage: itof [-f file]\n");
+            printf("Usage: itof [-f file] [-n threads]\n");
         }
 
         const string filename(getCmdOption(argv, argv + argc, "-f"));

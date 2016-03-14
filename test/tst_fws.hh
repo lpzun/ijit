@@ -8,9 +8,11 @@
 #ifndef TST_FWS_HH_
 #define TST_FWS_HH_
 
+/// Place 0: include the header and namespace
 #include "../src/iotf.hh"
+using namespace iotf;
 
-namespace iotf {
+namespace fws {
 
 using state = prog_state;
 using antichain = deque<state>;
@@ -23,8 +25,8 @@ public:
     bool standard_FWS(const size_tc& n, const string& filename);
 
 private:
-    deque<state> initl_TS;
-    deque<state> final_TS;
+    deque<prog_thread> initl_TS;
+    deque<prog_thread> final_TS;
     bool is_maximal(const global_state& s, const antichain& explored);
     void maximize(const global_state& s, antichain& worklist);
 
@@ -33,6 +35,6 @@ private:
 
 };
 
-} /* namespace iotf */
+} /* namespace fws */
 
 #endif /* TST_FWS_HH_ */

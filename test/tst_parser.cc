@@ -27,13 +27,13 @@ void tst_parser::test_parser(const string& filename) {
     cout << __func__ << " initial states: " << "\n";
     for (const auto& its : P.first) {
         cout << its << "\n";
-        cout << c.convert(its) << "\n";
+        // cout << c.convert(its) << "\n";
     }
 
     cout << __func__ << " final states: " << "\n";
     for (const auto& ifs : P.second) {
         cout << ifs << "\n";
-        cout << c.convert(ifs) << "\n";
+        // cout << c.convert(ifs) << "\n";
     }
 }
 
@@ -47,13 +47,13 @@ void tst_parser::test_images(const string& filename) {
     cout << __func__ << " initial states: " << "\n";
     for (const auto& its : P.first) {
         cout << its << "\n";
-        cout << c.convert(its) << "\n";
+        //cout << c.convert(its) << "\n";
     }
 
     cout << __func__ << " final states: " << "\n";
     for (const auto& ifs : P.second) {
         cout << ifs << "\n";
-        cout << c.convert(ifs) << "\n";
+        //cout << c.convert(ifs) << "\n";
     }
 
     uint sss = 1;

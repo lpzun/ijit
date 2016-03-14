@@ -327,7 +327,7 @@ void post_image::compute_image_assg_stmt(const state_v& sv, const state_v& lv,
                 alg::split(lo[i].eval(sv, lv), i, lvs); /// split * immediately
         }
     }
-#ifdef NDEBUG
+#ifndef NDEBUG
     cout << __func__ << "\n";
     cout << "shared...\n";
     for (const auto& s : svs)
@@ -420,7 +420,6 @@ expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
             /// SEMANTIC: assignment statement, postcondition of
             /// vars might have to satisfy the constraint
             this->compute_image_assg_stmt(sv, lv, pc, svs, lvs);
-            cout << svs.size() << " ======///===== " << lvs.size() << "\n";
             cond = e.get_stmt().get_condition();
             pc = _pc;
         }
@@ -432,8 +431,6 @@ expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
         }
             break;
         }
-
-        cout << pc << "\n";
         e = parser::get_post_G().get_A()[pc].front();
         stmt = e.get_stmt().get_type();
     }

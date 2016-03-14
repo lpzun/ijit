@@ -19,6 +19,32 @@ extern FILE * yyin;
 
 namespace iotf {
 
+/**
+ * @brief override operator << for system state
+ * @param out
+ * @param s
+ * @return ostream
+ */
+ostream& operator <<(ostream& out, const syst_state& s) {
+    out << "<" << s.first << "|";
+    for (const auto& p : s.second) {
+        out << "(" << p.first << "," << p.second << ")";
+    }
+    return out;
+}
+
+/**
+ * @brief override operator << for system thread state
+ * @param out
+ * @param s
+ * @return ostream
+ */
+ostream& operator <<(ostream& out, const syst_thread& s) {
+    out << "(" << s.first << "," << s.second << ")";
+    return out;
+
+}
+
 cfg parser::prev_G; /// control flow graph in PREV mode
 cfg parser::post_G; /// control flow graph in POST mode
 
@@ -41,7 +67,8 @@ parser::~parser() {
  * @param filename: Boolean program
  * @param m       : mode
  */
-pair<initl_ps, final_ps> parser::parse(const string& filename, const mode& m) {
+pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
+        const string& filename, const mode& m) {
     if (m == mode::PREV) {
         return parse_in_prev_mode(filename);
     } else if (m == mode::POST) {
@@ -55,10 +82,11 @@ pair<initl_ps, final_ps> parser::parse(const string& filename, const mode& m) {
  * @brief parse Boolean programs in  preimage mode
  * @param filename
  */
-pair<initl_ps, final_ps> parser::parse_in_prev_mode(const string& filename) {
-    initl_ps I;
-    final_ps Q;
-    // TODO initialize prev_G
+pair<deque<prog_thread>, deque<prog_thread>> parser::parse_in_prev_mode(
+        const string& filename) {
+    paide aide;
+    const auto& I = create_initl_state(aide.l_vars_init, aide.s_vars_init);
+    const auto& Q = create_final_state(aide.asse_pc_set);
     return std::make_pair(I, Q);
 }
 
@@ -66,7 +94,8 @@ pair<initl_ps, final_ps> parser::parse_in_prev_mode(const string& filename) {
  * @brief parse Boolean programs in postimage mode
  * @param filename
  */
-pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
+pair<deque<prog_thread>, deque<prog_thread>> parser::parse_in_post_mode(
+        const string& filename) {
     FILE *bfile = fopen(filename.c_str(), "r");
     if (!bfile) {
         throw iotf_runtime_error(filename + " open failed!");
@@ -89,21 +118,19 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
     refs::LV_NUM = aide.l_vars_num;
     refs::PC_NUM = aide.lineno;
     cout << refs::SV_NUM << "," << refs::LV_NUM << "," << aide.lineno << "\n";
-
-    // delete----------------
+#ifndef NDEBUG
     DBG_LOG("for testing: before...\n")
     aide.print_control_flow_graph();
-    // delete----------------
-
+#endif
     post_G = aide.cfg_G;
-    // delete----------------
+#ifndef NDEBUG
     DBG_LOG("for testing: after...\n")
     cout << post_G << endl;
-    // delete----------------
-
-    initl_ps I = create_initl_state(aide.s_vars_init, aide.l_vars_init);
-    final_ps Q = create_final_state(aide.asse_pc_set);
-
+#endif
+    /// build the initial states
+    const auto& I = create_initl_state(aide.s_vars_init, aide.l_vars_init);
+    /// build the final   states
+    const auto& Q = create_final_state(aide.asse_pc_set);
     return std::make_pair(I, Q);
 }
 
@@ -114,20 +141,21 @@ pair<initl_ps, final_ps> parser::parse_in_post_mode(const string& filename) {
  * @param pc
  * @return initial states
  */
-initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
+deque<prog_thread> parser::create_initl_state(
+        const map<ushort, sool>& s_vars_init,
         const map<ushort, sool>& l_vars_init, const size_pc& pc) {
-#ifdef NDEBUG
+#ifndef NDEBUG
     cout << "output initial values stored in maps...\n";
     cout << "(";
     for (const auto& p : s_vars_init)
-        cout << p.second;
+    cout << p.second;
     cout << "|0";
     for (const auto& p : l_vars_init)
-        cout << p.second;
+    cout << p.second;
     cout << ")\n";
 #endif
-
-    initl_ps ips; /// initial program states
+    /// to store the initial program states
+    deque<prog_thread> ips;
 
     /// step 1: build shared BV via splitting *
     deque<state_v> svs; /// store shared BV
@@ -146,17 +174,15 @@ initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
     /// step 3: build global states via shared
     ///         BVs and local BVs
     for (const auto& sv : svs) {
-        shared_state s(sv);
         for (const auto& lv : lvs) {
-            local_state l(pc, lv);
-            ips.emplace_back(s, l);
+            ips.emplace_back(sv, pc, lv);
         }
     }
 
-#ifdef NDEBUG
+#ifndef NDEBUG
     cout << __func__ << "\n";
     for (const auto& g : ips)
-        cout << g << endl;
+    cout << g << endl;
 #endif
 
     return ips;
@@ -168,15 +194,15 @@ initl_ps parser::create_initl_state(const map<ushort, sool>& s_vars_init,
  * @param pcs
  * @return the list of final states
  */
-final_ps parser::create_final_state(const set<size_pc>& pcs) {
-    final_ps fps;
+deque<prog_thread> parser::create_final_state(const set<size_pc>& pcs) {
+    deque<prog_thread> fps;
     for (const auto& pc : pcs) {
-        create_final_state(pc, fps);
+        parser::create_final_state(pc, fps);
     }
-#ifdef NDEBUG
+#ifndef NDEBUG
     cout << __func__ << "\n";
     for (const auto& g : fps)
-        cout << g << endl;
+    cout << g << endl;
     cout << __func__ << "-----------------\n";
 #endif
     return fps;
@@ -188,7 +214,7 @@ final_ps parser::create_final_state(const set<size_pc>& pcs) {
  * @param pc  : the particular pc
  * @param fps : the deque to store final program state
  */
-void parser::create_final_state(const size_pc& pc, final_ps& fps) {
+void parser::create_final_state(const size_pc& pc, deque<prog_thread>& fps) {
     const auto& predecessors = parser::get_post_G().get_A()[pc];
     const auto& e = predecessors.front();
     if (e.get_stmt().get_type() == type_stmt::ASSE) {
@@ -213,10 +239,8 @@ void parser::create_final_state(const size_pc& pc, final_ps& fps) {
                 /// step 3: build global states via shared
                 ///         BVs and local BVs
                 for (const auto& sv : svs) {
-                    shared_state s(sv);
                     for (const auto& lv : lvs) {
-                        local_state l(pc, lv);
-                        fps.emplace_back(s, l);
+                        fps.emplace_back(sv, pc, lv);
                     }
                 }
                 /// complete the final state for a satisfiable assignment
@@ -287,6 +311,33 @@ syst_state converter::convert(const prog_state& ps) {
         Z.emplace(sls, p.second);
     }
     return std::make_pair(sss, Z);
+}
+
+/**
+ * @brief This function is to convert program thread state to a system state
+ *
+ * @param ss: program thread state
+ *
+ * @return system thread state
+ */
+syst_thread converter::convert(const prog_thread& pts) {
+    const auto& sts = this->convert_sps_to_sss(pts.get_s().get_vars());
+    const auto& stl = this->convert_lps_to_lss(pts.get_l().get_pc(),
+            pts.get_l().get_vars());
+    return std::make_pair(sts, stl);
+}
+
+/**
+ * @brief This function is to convert a system thread state to a program thread state
+ *
+ * @param ss: system thread state
+ *
+ * @return program thread state
+ */
+prog_thread converter::convert(const syst_thread& sts) {
+    const auto& sv = this->convert_sss_to_sps(sts.first);
+    const auto& p = this->convert_lss_to_lps(sts.second);
+    return thread_state(sv, p.first, p.second);
 }
 
 /**

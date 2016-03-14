@@ -107,6 +107,18 @@ thread_state::thread_state(const shared_state& s, const local_state& l) :
 }
 
 /**
+ * @brief constructor with shared state s and local state l
+ * @param sv
+ * @param pc
+ * @param lv
+ */
+thread_state::thread_state(const state_v& sv, const size_pc& pc,
+        const state_v& lv) :
+        s(sv), l(pc, lv) {
+
+}
+
+/**
  * @brief copy constructor
  * @param t
  */

@@ -57,9 +57,7 @@ namespace iotf {
  *            where l0, ..., ln are probably different or same local states.
  */
 using prog_state = global_state;
-
-using initl_ps = deque<prog_state>;
-using final_ps = deque<prog_state>;
+using prog_thread = thread_state;
 
 /**
  * @brief the mode of parser: probably compute prev-/post-images of a global
@@ -79,7 +77,7 @@ public:
 
     ~parser();
 
-    static pair<initl_ps, final_ps> parse(const string& filename,
+    static pair<deque<prog_thread>, deque<prog_thread>> parse(const string& filename,
             const mode& m = mode::PREV);
 
     static const cfg& get_post_G() {
@@ -91,14 +89,14 @@ public:
     }
 
 private:
-    static pair<initl_ps, final_ps> parse_in_prev_mode(const string& filename);
-    static pair<initl_ps, final_ps> parse_in_post_mode(const string& filename);
+    static pair<deque<prog_thread>, deque<prog_thread>> parse_in_prev_mode(const string& filename);
+    static pair<deque<prog_thread>, deque<prog_thread>> parse_in_post_mode(const string& filename);
 
-    static initl_ps create_initl_state(const map<ushort, sool>& s_vars_init,
+    static deque<prog_thread> create_initl_state(const map<ushort, sool>& s_vars_init,
             const map<ushort, sool>& l_vars_init, const size_pc& pc = 0);
 
-    static final_ps create_final_state(const set<size_pc>& pcs);
-    static void create_final_state(const size_pc& pc, final_ps& fps);
+    static deque<prog_thread> create_final_state(const set<size_pc>& pcs);
+    static void create_final_state(const size_pc& pc, deque<prog_thread>& fps);
 
     static cfg prev_G; /// control flow graph in PREV mode
     static cfg post_G; /// control flow graph in POST mode
@@ -106,15 +104,10 @@ private:
 
 /// system state in counter abstraction
 using syst_state = pair<uint, map<uint, uint>>;
+using syst_thread = pair<uint, uint>;
 
-inline ostream& operator <<(ostream& out, const syst_state& s) {
-    cout << "<" << s.first << "|";
-    for (const auto& p : s.second) {
-        cout << "(" << p.first << "," << p.second << ")";
-    }
-    cout << "\n";
-    return out;
-}
+ostream& operator <<(ostream& out, const syst_state& s);
+ostream& operator <<(ostream& out, const syst_thread& s);
 
 /**
  * @brief a converter: convert a program state to a system state, and vice
@@ -152,6 +145,24 @@ public:
      * @return program state
      */
     virtual prog_state convert(const syst_state& ss);
+
+    /**
+     * @brief This function is to convert program thread state to a system state
+     *
+     * @param ss: program thread state
+     *
+     * @return system thread state
+     */
+    virtual syst_thread convert(const prog_thread& pts);
+
+    /**
+     * @brief This function is to convert a system thread state to a program thread state
+     *
+     * @param ss: system thread state
+     *
+     * @return program thread state
+     */
+    virtual prog_thread convert(const syst_thread& sts);
 
     /**
      * @brief This function is to convert program state to a system state

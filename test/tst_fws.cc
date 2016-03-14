@@ -7,7 +7,7 @@
 
 #include "tst_fws.hh"
 
-namespace iotf {
+namespace fws {
 
 FWS::FWS() :
         initl_TS(), final_TS() {
@@ -16,12 +16,26 @@ FWS::FWS() :
 FWS::~FWS() {
 }
 
+/**
+ * @brief the standard finite-state search that operates on transition systems.
+ *        Here, we adjust it to an function that directly operates on Boolean
+ *        programs using our API.
+ * @param n
+ * @param filename
+ * @return bool
+ *        true : if some assertion is violated;
+ *        false: otherwise.
+ */
 bool FWS::standard_FWS(const size_tc& n, const string& filename) {
+#ifndef NDEBUG
     cout << __func__ << " " << n << " " << filename << "\n";
+#endif
+    /// Place 1: call the parser in API to parse Boolean programs.
+    ///          It returns a pair of lists that store thread states
     const auto& P = parser::parse(filename, mode::POST);
-    this->initl_TS = P.first;
-    this->final_TS = P.second;
-
+    this->initl_TS = P.first;  /// the list of initial thread states
+    this->final_TS = P.second; /// the list of final   thread states
+#ifndef NDEBUG
     cout << __func__ << " initial states: " << "\n";
     for (const auto& its : this->initl_TS) {
         cout << its << "\n";
@@ -31,14 +45,16 @@ bool FWS::standard_FWS(const size_tc& n, const string& filename) {
     for (const auto& ifs : this->final_TS) {
         cout << ifs << "\n";
     }
-
+#endif
     antichain worklist;
     antichain explored;
 
+    /// initialize worklist ...
     for (const auto& ips : initl_TS)
-        worklist.emplace_back(ips.get_s(), ips.get_locals().begin()->first, n);
-    post_image image;
+        worklist.emplace_back(ips.get_s(), ips.get_l(), n);
 
+    /// Place 2: instantiate <post_image> to compute postimages
+    post_image image;
     while (!worklist.empty()) {
         const auto tau = worklist.front();
         worklist.pop_front();
@@ -46,8 +62,9 @@ bool FWS::standard_FWS(const size_tc& n, const string& filename) {
         ///         discard it
         if (!this->is_maximal(tau, explored))
             continue;
-        /// step 2: compute all post images; check if final
-        ///         state is coverable; maximize <worklist>
+        /// step  2: compute all post images; check if final
+        ///          state is coverable; maximize <worklist>
+        /// Place 3: call the <step> in the instance <image>
         const auto& images = image.step(tau);
         for (const auto& _tau : images) {
             /// return true if _tau covers final state
@@ -105,10 +122,9 @@ void FWS::maximize(const state& s, antichain& worklist) {
 bool FWS::is_reached(const state& s) {
     for (const auto f : this->final_TS) {
         if (s.get_s() == f.get_s()) {
-            const auto& l = f.get_locals().begin()->first;
-            auto ifind = s.get_locals().find(l);
+            auto ifind = s.get_locals().find(f.get_l());
             if (ifind != s.get_locals().cend() && ifind->second > 0) {
-                cout<<"covers: "<<s<<"\n";
+                cout << "covers: " << s << "\n";
                 return true;
             }
         }
@@ -151,4 +167,4 @@ bool FWS::is_covered(const state& s1, const state& s2) {
     return false;
 }
 
-} /* namespace iotf */
+} /* namespace fws */
