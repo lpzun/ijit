@@ -81,19 +81,20 @@ public:
     set<size_pc> suc_pc_set; /// store the succeeding pcs
     deque<symbol> expr_in_list; /// the expression symbol list
 
-    /// to store parallel assignment statements
-    deque<symbol> assg_stmt_lhs; /// the right-hand side of parallel assignment
-    deque<deque<symbol>> assg_stmt_rhs; /// the left-hand side of of parallel assignment
-    set<size_pc> asse_pc_set; /// to record all of PCs associative with assertions
+    /// the following two containers are used to store the expression included
+    /// in the parallel assignment statements
+    deque<symbol> assg_stmt_lhs; /// the RHS of parallel assignment
+    deque<deque<symbol>> assg_stmt_rhs; /// the LHS of parallel assignment
 
-    cfg cfg_G;
+    set<size_pc> asse_pc_set; /// record all of PCs associated with assertions
+
+    cfg cfg_G; /// store the control flow graph
 
     ////////////////// function list //////////////////
 
     /// initial states
     void add_vars(const string& var, const sool& val, const bool& is_shared);
     void init_vars(const string& var, const sool& val);
-
     /// control flow graph function list
     bool is_pc_unique(const size_pc& pc);
 

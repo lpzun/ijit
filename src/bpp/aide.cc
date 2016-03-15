@@ -43,6 +43,7 @@ void paide::add_vars(const string& var, const sool& val,
             l_vars_init.emplace(++l_vars_num, val);
     }
 }
+
 /**
  * @brief recorde the initialization of boolean variables
  * @param var
@@ -67,7 +68,7 @@ bool paide::is_pc_unique(const size_pc& pc) {
     const auto& result = all_pc_set.emplace(pc);
     if (!result.second)
         throw iotf_runtime_error(
-                "syntax error: pc " + std::to_string(pc) + " is duplicated.");
+                "Parser: pc " + std::to_string(pc) + " duplicates.");
     return true;
 }
 
@@ -116,7 +117,7 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
 
 /**
  * @brief build an assignment
- * @return the current assignment that
+ * @return the assignment that corresponds to the current statement
  */
 assignment paide::create_assignment() {
     assignment assg(this->s_vars_num, this->l_vars_num);

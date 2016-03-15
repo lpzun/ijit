@@ -714,7 +714,7 @@ namespace yy {
 #line 205 "bopp.y" // lalr1.cc:847
     { // "goto" statement
   aide.add_edge(aide.ipc, type_stmt::GOTO);
-  aide.succ_pc_set.clear();
+  aide.suc_pc_set.clear();
  }
 #line 720 "bopp.tab.cc" // lalr1.cc:847
     break;
@@ -755,75 +755,76 @@ namespace yy {
 #line 226 "bopp.y" // lalr1.cc:847
     { // "assert" statement
   /// negate the expression in assertions
-  expr_in_list.emplace_back(solver::PAR);
-  expr_in_list.emplace_back(solver::NEG);
-  /// store all of the PCs in  assertions
-  asse_pc_set.insert(src);
+  aide.expr_in_list.emplace_back(solver::PAR);
+  aide.expr_in_list.emplace_back(solver::NEG);
+  /// collect all of PCs w.r.t. assertions
+  aide.asse_pc_set.insert(aide.ipc);
+  
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE, true);		
   aide.expr_in_list.clear();
  }
-#line 766 "bopp.tab.cc" // lalr1.cc:847
+#line 767 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 43:
-#line 235 "bopp.y" // lalr1.cc:847
+#line 236 "bopp.y" // lalr1.cc:847
     { // "assume" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSU, true);
   aide.expr_in_list.clear();
  }
-#line 775 "bopp.tab.cc" // lalr1.cc:847
+#line 776 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 44:
-#line 239 "bopp.y" // lalr1.cc:847
+#line 240 "bopp.y" // lalr1.cc:847
     { // "thread creation" statement
   aide.add_edge(aide.ipc, (yystack_[1].value.t_val), type_stmt::NTHR);
  }
-#line 783 "bopp.tab.cc" // lalr1.cc:847
+#line 784 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 45:
-#line 242 "bopp.y" // lalr1.cc:847
+#line 243 "bopp.y" // lalr1.cc:847
     { // thread termination statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ETHR);
  }
-#line 791 "bopp.tab.cc" // lalr1.cc:847
+#line 792 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 46:
-#line 245 "bopp.y" // lalr1.cc:847
+#line 246 "bopp.y" // lalr1.cc:847
     { // atomic section beginning
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ATOM);
  }
-#line 799 "bopp.tab.cc" // lalr1.cc:847
+#line 800 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 47:
-#line 248 "bopp.y" // lalr1.cc:847
+#line 249 "bopp.y" // lalr1.cc:847
     { // atomic section ending
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::EATM);
  }
-#line 807 "bopp.tab.cc" // lalr1.cc:847
+#line 808 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 48:
-#line 251 "bopp.y" // lalr1.cc:847
+#line 252 "bopp.y" // lalr1.cc:847
     { // broadcast statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::BCST);
  }
-#line 815 "bopp.tab.cc" // lalr1.cc:847
+#line 816 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 49:
-#line 254 "bopp.y" // lalr1.cc:847
+#line 255 "bopp.y" // lalr1.cc:847
     { // wait statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::WAIT);
  }
-#line 823 "bopp.tab.cc" // lalr1.cc:847
+#line 824 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 50:
-#line 259 "bopp.y" // lalr1.cc:847
+#line 260 "bopp.y" // lalr1.cc:847
     {
   string s((yystack_[0].value.t_str));
   if(s.back() == '$')
@@ -831,11 +832,11 @@ namespace yy {
   aide.assg_stmt_lhs.emplace_back(aide.encode(s));
   free((yystack_[0].value.t_str));
  }
-#line 835 "bopp.tab.cc" // lalr1.cc:847
+#line 836 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 51:
-#line 266 "bopp.y" // lalr1.cc:847
+#line 267 "bopp.y" // lalr1.cc:847
     {
   string s((yystack_[0].value.t_str));
   if(s.back() == '$')
@@ -843,120 +844,120 @@ namespace yy {
   aide.assg_stmt_lhs.emplace_back(aide.encode(s));
   free((yystack_[0].value.t_str)); 
   }
-#line 847 "bopp.tab.cc" // lalr1.cc:847
+#line 848 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 52:
-#line 275 "bopp.y" // lalr1.cc:847
+#line 276 "bopp.y" // lalr1.cc:847
     { 
   aide.assg_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear();
  }
-#line 856 "bopp.tab.cc" // lalr1.cc:847
+#line 857 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 53:
-#line 279 "bopp.y" // lalr1.cc:847
+#line 280 "bopp.y" // lalr1.cc:847
     { 
   aide.assg_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear(); 
   }
-#line 865 "bopp.tab.cc" // lalr1.cc:847
+#line 866 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 54:
-#line 285 "bopp.y" // lalr1.cc:847
+#line 286 "bopp.y" // lalr1.cc:847
     {
-  aide.succ_pc_set.emplace((yystack_[0].value.t_val));
+  aide.suc_pc_set.emplace((yystack_[0].value.t_val));
  }
-#line 873 "bopp.tab.cc" // lalr1.cc:847
+#line 874 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 55:
-#line 288 "bopp.y" // lalr1.cc:847
+#line 289 "bopp.y" // lalr1.cc:847
     {
-  aide.succ_pc_set.emplace((yystack_[0].value.t_val));
+  aide.suc_pc_set.emplace((yystack_[0].value.t_val));
   }
-#line 881 "bopp.tab.cc" // lalr1.cc:847
+#line 882 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 56:
-#line 294 "bopp.y" // lalr1.cc:847
+#line 295 "bopp.y" // lalr1.cc:847
     { }
-#line 887 "bopp.tab.cc" // lalr1.cc:847
+#line 888 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 57:
-#line 295 "bopp.y" // lalr1.cc:847
+#line 296 "bopp.y" // lalr1.cc:847
     { }
-#line 893 "bopp.tab.cc" // lalr1.cc:847
+#line 894 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 59:
-#line 299 "bopp.y" // lalr1.cc:847
+#line 300 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list(solver::OR); }
-#line 899 "bopp.tab.cc" // lalr1.cc:847
+#line 900 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 61:
-#line 303 "bopp.y" // lalr1.cc:847
+#line 304 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list(solver::XOR); }
-#line 905 "bopp.tab.cc" // lalr1.cc:847
+#line 906 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 63:
-#line 307 "bopp.y" // lalr1.cc:847
+#line 308 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list(solver::AND); }
-#line 911 "bopp.tab.cc" // lalr1.cc:847
+#line 912 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 65:
-#line 311 "bopp.y" // lalr1.cc:847
+#line 312 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list( solver::EQ); }
-#line 917 "bopp.tab.cc" // lalr1.cc:847
+#line 918 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 66:
-#line 312 "bopp.y" // lalr1.cc:847
+#line 313 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list(solver::NEQ); }
-#line 923 "bopp.tab.cc" // lalr1.cc:847
+#line 924 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 69:
-#line 319 "bopp.y" // lalr1.cc:847
+#line 320 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list(solver::NEG); }
-#line 929 "bopp.tab.cc" // lalr1.cc:847
+#line 930 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 70:
-#line 322 "bopp.y" // lalr1.cc:847
+#line 323 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list(solver::PAR); }
-#line 935 "bopp.tab.cc" // lalr1.cc:847
+#line 936 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 71:
-#line 323 "bopp.y" // lalr1.cc:847
+#line 324 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list(solver::CONST_N); }
-#line 941 "bopp.tab.cc" // lalr1.cc:847
+#line 942 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 72:
-#line 324 "bopp.y" // lalr1.cc:847
+#line 325 "bopp.y" // lalr1.cc:847
     { aide.add_to_expr_in_list((yystack_[0].value.t_val)); }
-#line 947 "bopp.tab.cc" // lalr1.cc:847
+#line 948 "bopp.tab.cc" // lalr1.cc:847
     break;
 
   case 73:
-#line 325 "bopp.y" // lalr1.cc:847
+#line 326 "bopp.y" // lalr1.cc:847
     { 
   aide.add_to_expr_in_list(aide.encode((yystack_[0].value.t_str)));
   free((yystack_[0].value.t_str));
   }
-#line 956 "bopp.tab.cc" // lalr1.cc:847
+#line 957 "bopp.tab.cc" // lalr1.cc:847
     break;
 
 
-#line 960 "bopp.tab.cc" // lalr1.cc:847
+#line 961 "bopp.tab.cc" // lalr1.cc:847
             default:
               break;
             }
@@ -1384,10 +1385,10 @@ namespace yy {
      118,   119,   122,   123,   124,   128,   129,   132,   135,   136,
      139,   143,   147,   154,   157,   158,   161,   165,   169,   177,
      181,   187,   187,   197,   198,   199,   202,   205,   205,   209,
-     215,   222,   226,   235,   239,   242,   245,   248,   251,   254,
-     259,   266,   275,   279,   285,   288,   294,   295,   298,   299,
-     302,   303,   306,   307,   310,   311,   312,   315,   318,   319,
-     322,   323,   324,   325
+     215,   222,   226,   236,   240,   243,   246,   249,   252,   255,
+     260,   267,   276,   280,   286,   289,   295,   296,   299,   300,
+     303,   304,   307,   308,   311,   312,   313,   316,   319,   320,
+     323,   324,   325,   326
   };
 
   // Print the state stack on the debug stream.
@@ -1471,8 +1472,8 @@ namespace yy {
 
 
 } // yy
-#line 1475 "bopp.tab.cc" // lalr1.cc:1155
-#line 330 "bopp.y" // lalr1.cc:1156
+#line 1476 "bopp.tab.cc" // lalr1.cc:1155
+#line 331 "bopp.y" // lalr1.cc:1156
 
 
 /*******************************************************************************

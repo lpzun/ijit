@@ -204,7 +204,7 @@ metastmt: T_SKIP ';' { // "skip" statement
  }
 | T_GOTO {} to_line_list ';' { // "goto" statement
   aide.add_edge(aide.ipc, type_stmt::GOTO);
-  aide.succ_pc_set.clear();
+  aide.suc_pc_set.clear();
  }
 | iden_list T_ASSIGN expr_list ';' {// "parallel assignment" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG);	
@@ -225,10 +225,11 @@ metastmt: T_SKIP ';' { // "skip" statement
  } 
 | T_ASSERT '(' expr ')' ';' { // "assert" statement
   /// negate the expression in assertions
-  expr_in_list.emplace_back(solver::PAR);
-  expr_in_list.emplace_back(solver::NEG);
-  /// store all of the PCs in  assertions
-  asse_pc_set.insert(src);
+  aide.expr_in_list.emplace_back(solver::PAR);
+  aide.expr_in_list.emplace_back(solver::NEG);
+  /// collect all of PCs w.r.t. assertions
+  aide.asse_pc_set.insert(aide.ipc);
+  
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE, true);		
   aide.expr_in_list.clear();
  }
@@ -283,10 +284,10 @@ expr_list: expr {
 ;
 
 to_line_list: T_INT  {
-  aide.succ_pc_set.emplace($1);
+  aide.suc_pc_set.emplace($1);
  }
 | to_line_list ',' T_INT {
-  aide.succ_pc_set.emplace($3);
+  aide.suc_pc_set.emplace($3);
   }
 ;
 
