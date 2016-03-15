@@ -224,9 +224,12 @@ metastmt: T_SKIP ';' { // "skip" statement
   aide.expr_in_list.clear();
  } 
 | T_ASSERT '(' expr ')' ';' { // "assert" statement
+  /// negate the expression in assertions
+  expr_in_list.emplace_back(solver::PAR);
+  expr_in_list.emplace_back(solver::NEG);
+  /// store all of the PCs in  assertions
+  asse_pc_set.insert(src);
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE, true);		
-  // aide.all_sat_solver(aide.expr_in_list, aide.ipc);
-  // aide.is_failed_assertion();
   aide.expr_in_list.clear();
  }
 | T_ASSUME '(' expr ')' ';' { // "assume" statement

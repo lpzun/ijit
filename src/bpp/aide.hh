@@ -102,7 +102,7 @@ public:
             const type_stmt& type, const bool& is_condition = false);
 
     /// expression
-    void add_to_expr_in_list(const symbol& s);
+    inline void add_to_expr_in_list(const symbol& s);
     string recov_expr_from_list(const deque<symbol>& sexpr);
     symbol encode(const string& var);
     pair<symbol, bool> decode(const symbol& idx);
@@ -117,6 +117,14 @@ private:
     mode m;
     assignment create_assignment();
 };
+
+/**
+ * @brief to add the expression symbols to a list
+ * @param symbol
+ */
+inline void paide::add_to_expr_in_list(const symbol& s) {
+    expr_in_list.emplace_back(s);
+}
 
 } /* namespace otf */
 #endif /* BPP_AIDE_HH_ */

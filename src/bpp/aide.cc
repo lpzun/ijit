@@ -97,31 +97,15 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
         const type_stmt& type, const bool& is_condition) {
     /// step 1: add edges to non-goto statements
     if (m == mode::POST) { /// postimage mode
-        if (!is_condition) {
+        if (!is_condition)
             cfg_G.add_edge(src, dest, type);
-        } else {
-            if (type == type_stmt::ASSE) {
-                /// negate the expression in assertions
-                expr_in_list.emplace_back(solver::PAR);
-                expr_in_list.emplace_back(solver::NEG);
-                /// store all of the PCs in  assertions
-                asse_pc_set.insert(src);
-            }
+        else
             cfg_G.add_edge(src, dest, type, expr(expr_in_list));
-        }
     } else if (m == mode::PREV) { /// preimage mode
-        if (!is_condition) {
+        if (!is_condition)
             cfg_G.add_edge(dest, src, type);
-        } else {
-            if (type == type_stmt::ASSE) {
-                /// negate the expression in assertions
-                expr_in_list.emplace_back(solver::PAR);
-                expr_in_list.emplace_back(solver::NEG);
-                /// store all of the PCs in  assertions
-                asse_pc_set.insert(src);
-            }
+        else
             cfg_G.add_edge(dest, src, type, expr(expr_in_list));
-        }
     }
 
     /// step 2: build expressions for parallel assignment
@@ -147,14 +131,6 @@ assignment paide::create_assignment() {
         ++il, ++ir;
     }
     return assg;
-}
-
-/**
- * @brief to add the expression symbols to a list
- * @param symbol
- */
-void paide::add_to_expr_in_list(const symbol& s) {
-    expr_in_list.emplace_back(s);
 }
 
 /**
