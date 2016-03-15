@@ -69,23 +69,27 @@ parser::~parser() {
  */
 pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
         const string& filename, const mode& m) {
+    /// step 0: set an istream point to a Boolean program
     FILE *bfile = fopen(filename.c_str(), "r");
     if (!bfile) {
         throw iotf_runtime_error(filename + " open failed!");
     }
-
+    /// step 1: set the input stream of the parser as bfile
     yyin = bfile;
 
     cout << "starting to parse Boolean program...\n";
+    /// step 2: instantiate a parser aide
     paide aide(m);
-    yy::bp parser(aide); /// build a parser
-    int result = parser.parse(); /// and run it
+    /// step 3: instantiate a parser
+    yy::bp parser(aide);
+    /// step 4: run the parser to parse the input BP
+    int result = parser.parse();
     if (result != 0) {
         throw iotf_runtime_error(
                 "Parser exit with exception: " + std::to_string(result));
     }
 
-    /// move the file point to the begin and print the total line number
+    /// step 5: output the parsing result...
     cout << "shared, local, line\n";
     refs::SV_NUM = aide.s_vars_num;
     refs::LV_NUM = aide.l_vars_num;
@@ -96,7 +100,7 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
     aide.print_control_flow_graph();
 #endif
 
-    /// step 2: setup the CFG in term of the parser's mode
+    /// step 6: setup the CFG in term of the parser's mode
     if (m == mode::PREV) {
         prev_G = aide.cfg_G;
     } else if (m == mode::POST) {
@@ -112,12 +116,18 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
     else if (m == mode::POST)
         cout << post_G << "\n";
 #endif
-    /// step 2: setup the initial and final states from the parser: this
+
+    cout << "I'm here...2........\n";
+    /// step 7: setup the initial and final states from the parser: this
     ///         step has nothing to do with mode
     /// build the initial states
     const auto& I = create_initl_state(aide.s_vars_init, aide.l_vars_init);
+
+    cout << "I'm here.....3......\n";
     /// build the final   states
-    const auto& Q = create_final_state(aide.asse_pc_set);
+    const auto& Q = create_final_state(m, aide.asse_pc_set);
+
+    cout << "I'm here.......4....\n";
     return std::make_pair(I, Q);
 }
 
@@ -178,13 +188,19 @@ deque<prog_thread> parser::create_initl_state(
 /**
  * @brief generate all final states for all assertions collected
  *        by their PCs
- * @param pcs
- * @return the list of final states
+ * @param m  : the forward or backward mode
+ * @param pcs: the list of PCs associating with assertions
+ * @return the deque of final states
  */
-deque<prog_thread> parser::create_final_state(const set<size_pc>& pcs) {
+deque<prog_thread> parser::create_final_state(const mode& m,
+        const set<size_pc>& pcs) {
     deque<prog_thread> fps;
-    for (const auto& pc : pcs) {
-        parser::create_final_state(pc, fps);
+    if (m == mode::PREV) {
+        for (const auto& pc : pcs)
+            parser::create_final_state(pc + 1, parser::prev_G, pc, fps);
+    } else {
+        for (const auto& pc : pcs)
+            parser::create_final_state(pc, parser::post_G, pc, fps);
     }
 #ifndef NDEBUG
     cout << __func__ << "\n";
@@ -198,42 +214,47 @@ deque<prog_thread> parser::create_final_state(const set<size_pc>& pcs) {
 /**
  * @brief generate all final states for all assertions collected
  *        by a particular PC <pc>
- * @param pc  : the particular pc
+ * @param pos : the indexing <pc> that we use to locate the edge
+ *        associating with a <pc>
+ * @param G   : control flow graph: could be forward or backward
+ *        based
+ * @param pc  : the real <pc> points to an assertion
  * @param fps : the deque to store final program state
  */
-void parser::create_final_state(const size_pc& pc, deque<prog_thread>& fps) {
-    const auto& predecessors = parser::get_post_G().get_A()[pc];
-    const auto& e = predecessors.front();
-    if (e.get_stmt().get_type() == type_stmt::ASSE) {
-        const auto& expressions = e.get_stmt().get_condition().get_splited();
-        for (const auto& exp : expressions) {
-            const auto& assgs = solver::all_sat_solve(exp);
-            for (const auto& assg : assgs) {
-                /// step 1: build shared BV via splitting *
-                deque<state_v> svs;        /// store shared BV
-                svs.emplace_back(state_v(0));
-                for (auto i = 0; i < assg.first.size(); ++i) {
-                    alg::split(assg.first[i], i, svs);
-                }
-
-                /// step 2: build local  BV via splitting *
-                deque<state_v> lvs;        /// store local  BV
-                lvs.emplace_back(state_v(0));
-                for (auto i = 0; i < assg.second.size(); ++i) {
-                    alg::split(assg.second[i], i, lvs);
-                }
-
-                /// step 3: build global states via shared
-                ///         BVs and local BVs
-                for (const auto& sv : svs) {
-                    for (const auto& lv : lvs) {
-                        fps.emplace_back(sv, pc, lv);
+void parser::create_final_state(const size_pc& pos, const cfg& G,
+        const size_pc& pc, deque<prog_thread>& fps) {
+    for (const auto& e : G.get_A()[pos])
+        if (e.get_stmt().get_type() == type_stmt::ASSE) {
+            const auto& expressions =
+                    e.get_stmt().get_condition().get_splited();
+            for (const auto& exp : expressions) {
+                const auto& assgs = solver::all_sat_solve(exp);
+                for (const auto& assg : assgs) {
+                    /// step 1: build shared BV via splitting *
+                    deque<state_v> svs;        /// store shared BV
+                    svs.emplace_back(state_v(0));
+                    for (auto i = 0; i < assg.first.size(); ++i) {
+                        alg::split(assg.first[i], i, svs);
                     }
+
+                    /// step 2: build local  BV via splitting *
+                    deque<state_v> lvs;        /// store local  BV
+                    lvs.emplace_back(state_v(0));
+                    for (auto i = 0; i < assg.second.size(); ++i) {
+                        alg::split(assg.second[i], i, lvs);
+                    }
+
+                    /// step 3: build global states via shared
+                    ///         BVs and local BVs
+                    for (const auto& sv : svs) {
+                        for (const auto& lv : lvs) {
+                            fps.emplace_back(sv, pc, lv);
+                        }
+                    }
+                    /// complete the final state for a satisfiable assignment
                 }
-                /// complete the final state for a satisfiable assignment
             }
         }
-    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

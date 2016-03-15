@@ -88,8 +88,10 @@ private:
             const map<ushort, sool>& s_vars_init,
             const map<ushort, sool>& l_vars_init, const size_pc& pc = 0);
 
-    static deque<prog_thread> create_final_state(const set<size_pc>& pcs);
-    static void create_final_state(const size_pc& pc, deque<prog_thread>& fps);
+    static deque<prog_thread> create_final_state(const mode& m,
+            const set<size_pc>& pcs);
+    static void create_final_state(const size_pc& pos, const cfg& G,
+            const size_pc& pc, deque<prog_thread>& fps);
 };
 
 /// system state in counter abstraction

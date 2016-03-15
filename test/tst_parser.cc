@@ -23,6 +23,7 @@ tst_parser::~tst_parser() {
  */
 void tst_parser::test_parser(const string& filename) {
     auto P = parser::parse(filename, mode::POST);
+    cout<<"I'm here.......1....\n";
     converter c;
     cout << __func__ << " initial states: " << "\n";
     for (const auto& its : P.first) {
@@ -42,7 +43,7 @@ void tst_parser::test_parser(const string& filename) {
  * @param filename
  */
 void tst_parser::test_images(const string& filename) {
-    auto P = parser::parse(filename, mode::POST);
+    auto P = parser::parse(filename, mode::PREV);
     converter c;
     cout << __func__ << " initial states: " << "\n";
     for (const auto& its : P.first) {
@@ -77,7 +78,7 @@ void tst_parser::test_images(const string& filename) {
 
     prog_state tau(s, locals);
     cout << tau << "\n";
-    post_image image;
+    pre_image image;
     auto _tau = image.step(tau);
     for (const auto& g : _tau)
         cout << g << endl;
