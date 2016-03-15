@@ -60,14 +60,6 @@ using prog_state = global_state;
 using prog_thread = thread_state;
 
 /**
- * @brief the mode of parser: probably compute prev-/post-images of a global
- *         state.
- */
-enum class mode {
-    PREV, POST
-};
-
-/**
  * @brief a parser: parse a Boolean program, build its control flow graph
  *        and extract its weakest preconditions/strongest postconditions
  */
@@ -77,8 +69,8 @@ public:
 
     ~parser();
 
-    static pair<deque<prog_thread>, deque<prog_thread>> parse(const string& filename,
-            const mode& m = mode::PREV);
+    static pair<deque<prog_thread>, deque<prog_thread>> parse(
+            const string& filename, const mode& m = mode::PREV);
 
     static const cfg& get_post_G() {
         return post_G;
@@ -89,17 +81,15 @@ public:
     }
 
 private:
-    static pair<deque<prog_thread>, deque<prog_thread>> parse_in_prev_mode(const string& filename);
-    static pair<deque<prog_thread>, deque<prog_thread>> parse_in_post_mode(const string& filename);
+    static cfg prev_G; /// control flow graph in PREV mode
+    static cfg post_G; /// control flow graph in POST mode
 
-    static deque<prog_thread> create_initl_state(const map<ushort, sool>& s_vars_init,
+    static deque<prog_thread> create_initl_state(
+            const map<ushort, sool>& s_vars_init,
             const map<ushort, sool>& l_vars_init, const size_pc& pc = 0);
 
     static deque<prog_thread> create_final_state(const set<size_pc>& pcs);
     static void create_final_state(const size_pc& pc, deque<prog_thread>& fps);
-
-    static cfg prev_G; /// control flow graph in PREV mode
-    static cfg post_G; /// control flow graph in POST mode
 };
 
 /// system state in counter abstraction

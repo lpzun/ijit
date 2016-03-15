@@ -53,12 +53,20 @@ using std::pair;
 namespace iotf {
 
 /**
+ * @brief the mode of parser: probably compute prev-/post-images of a global
+ *         state.
+ */
+enum class mode {
+    PREV, POST
+};
+
+/**
  * @brief this is auxiliary class for Boolean program parser
  *        paide: parser aide
  */
 class paide {
 public:
-    paide();
+    paide(const mode& m);
     ~paide();
 
     size_pc lineno; /// initialize the lineno
@@ -106,6 +114,7 @@ public:
 
 private:
     set<size_pc> all_pc_set; /// to determine if pc is unique or not
+    mode m;
     assignment create_assignment();
 };
 

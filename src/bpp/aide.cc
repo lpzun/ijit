@@ -12,11 +12,11 @@ namespace iotf {
 /**
  * @brief default constructor
  */
-paide::paide() :
+paide::paide(const mode& m) :
         lineno(0), ipc(0), s_vars_num(0), l_vars_num(0), ///
         s_vars_list(), l_vars_list(), s_vars_init(), l_vars_init(), ///
         suc_pc_set(), expr_in_list(), assg_stmt_lhs(), assg_stmt_rhs(), ///
-        asse_pc_set(), all_pc_set() {
+        asse_pc_set(), cfg_G(), all_pc_set(), m(m) {
 }
 
 /**
@@ -59,7 +59,8 @@ void paide::init_vars(const string& var, const sool& val) {
 }
 
 /**
- * @brief to determine if the pc is unique or not
+ * @brief to determine if the pc is unique or not.
+ *        This is a testing function. I will be removed in the future.
  * @param pc
  */
 bool paide::is_pc_unique(const size_pc& pc) {
@@ -76,8 +77,13 @@ bool paide::is_pc_unique(const size_pc& pc) {
  * @param sp
  */
 void paide::add_edge(const size_pc& src, const type_stmt& type) {
-    for (const auto& dest : suc_pc_set)
-        cfg_G.add_edge(src, dest, type);
+    if (m == mode::POST) {
+        for (const auto& dest : suc_pc_set)
+            cfg_G.add_edge(src, dest, type);
+    } else if (m == mode::PREV) {
+        for (const auto& dest : suc_pc_set)
+            cfg_G.add_edge(dest, src, type);
+    }
 }
 
 /**
@@ -89,21 +95,37 @@ void paide::add_edge(const size_pc& src, const type_stmt& type) {
  */
 void paide::add_edge(const size_pc& src, const size_pc& dest,
         const type_stmt& type, const bool& is_condition) {
-    if (!is_condition) {
-        cfg_G.add_edge(src, dest, type);
-    } else {
-        if (type == type_stmt::ASSE) {
-            /// negate the expression in assertions
-            expr_in_list.emplace_back(solver::PAR);
-            expr_in_list.emplace_back(solver::NEG);
-            /// store all of the PCs in  assertions
-            asse_pc_set.insert(src);
+    /// step 1: add edges to non-goto statements
+    if (m == mode::POST) { /// postimage mode
+        if (!is_condition) {
+            cfg_G.add_edge(src, dest, type);
+        } else {
+            if (type == type_stmt::ASSE) {
+                /// negate the expression in assertions
+                expr_in_list.emplace_back(solver::PAR);
+                expr_in_list.emplace_back(solver::NEG);
+                /// store all of the PCs in  assertions
+                asse_pc_set.insert(src);
+            }
+            cfg_G.add_edge(src, dest, type, expr(expr_in_list));
         }
-        cfg_G.add_edge(src, dest, type, expr(expr_in_list));
+    } else if (m == mode::PREV) { /// preimage mode
+        if (!is_condition) {
+            cfg_G.add_edge(dest, src, type);
+        } else {
+            if (type == type_stmt::ASSE) {
+                /// negate the expression in assertions
+                expr_in_list.emplace_back(solver::PAR);
+                expr_in_list.emplace_back(solver::NEG);
+                /// store all of the PCs in  assertions
+                asse_pc_set.insert(src);
+            }
+            cfg_G.add_edge(dest, src, type, expr(expr_in_list));
+        }
     }
 
+    /// step 2: build expressions for parallel assignment
     if (type == type_stmt::ASSG) {
-        /// build assignments
         cfg_G.add_assignment(src, create_assignment());
     }
 }

@@ -69,33 +69,6 @@ parser::~parser() {
  */
 pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
         const string& filename, const mode& m) {
-    if (m == mode::PREV) {
-        return parse_in_prev_mode(filename);
-    } else if (m == mode::POST) {
-        return parse_in_post_mode(filename);
-    } else {
-        throw iotf_runtime_error("there is no such mode!");
-    }
-}
-
-/**
- * @brief parse Boolean programs in  preimage mode
- * @param filename
- */
-pair<deque<prog_thread>, deque<prog_thread>> parser::parse_in_prev_mode(
-        const string& filename) {
-    paide aide;
-    const auto& I = create_initl_state(aide.l_vars_init, aide.s_vars_init);
-    const auto& Q = create_final_state(aide.asse_pc_set);
-    return std::make_pair(I, Q);
-}
-
-/**
- * @brief parse Boolean programs in postimage mode
- * @param filename
- */
-pair<deque<prog_thread>, deque<prog_thread>> parser::parse_in_post_mode(
-        const string& filename) {
     FILE *bfile = fopen(filename.c_str(), "r");
     if (!bfile) {
         throw iotf_runtime_error(filename + " open failed!");
@@ -104,7 +77,7 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse_in_post_mode(
     yyin = bfile;
 
     cout << "starting to parse Boolean program...\n";
-    paide aide;
+    paide aide(m);
     yy::bp parser(aide); /// build a parser
     int result = parser.parse(); /// and run it
     if (result != 0) {
@@ -118,15 +91,29 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse_in_post_mode(
     refs::LV_NUM = aide.l_vars_num;
     refs::PC_NUM = aide.lineno;
     cout << refs::SV_NUM << "," << refs::LV_NUM << "," << aide.lineno << "\n";
-#ifndef NDEBUG
+#ifdef NDEBUG
     DBG_LOG("for testing: before...\n")
     aide.print_control_flow_graph();
 #endif
-    post_G = aide.cfg_G;
-#ifndef NDEBUG
+
+    /// step 2: setup the CFG in term of the parser's mode
+    if (m == mode::PREV) {
+        prev_G = aide.cfg_G;
+    } else if (m == mode::POST) {
+        post_G = aide.cfg_G;
+    } else {
+        throw iotf_runtime_error("there is no such mode!");
+    }
+
+#ifdef NDEBUG
     DBG_LOG("for testing: after...\n")
-    cout << post_G << endl;
+    if (m == mode::PREV)
+        cout << prev_G << "\n";
+    else if (m == mode::POST)
+        cout << post_G << "\n";
 #endif
+    /// step 2: setup the initial and final states from the parser: this
+    ///         step has nothing to do with mode
     /// build the initial states
     const auto& I = create_initl_state(aide.s_vars_init, aide.l_vars_init);
     /// build the final   states
@@ -223,14 +210,14 @@ void parser::create_final_state(const size_pc& pc, deque<prog_thread>& fps) {
             const auto& assgs = solver::all_sat_solve(exp);
             for (const auto& assg : assgs) {
                 /// step 1: build shared BV via splitting *
-                deque<state_v> svs; /// store shared BV
+                deque<state_v> svs;        /// store shared BV
                 svs.emplace_back(state_v(0));
                 for (auto i = 0; i < assg.first.size(); ++i) {
                     alg::split(assg.first[i], i, svs);
                 }
 
                 /// step 2: build local  BV via splitting *
-                deque<state_v> lvs; /// store local  BV
+                deque<state_v> lvs;        /// store local  BV
                 lvs.emplace_back(state_v(0));
                 for (auto i = 0; i < assg.second.size(); ++i) {
                     alg::split(assg.second[i], i, lvs);

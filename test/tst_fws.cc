@@ -32,7 +32,7 @@ bool FWS::standard_FWS(const size_tc& n, const string& filename) {
 #endif
     /// Place 1: call the parser in API to parse Boolean programs.
     ///          It returns a pair of lists that store thread states
-    const auto& P = parser::parse(filename, mode::POST);
+    const auto& P = parser::parse(filename, mode::PREV);
     this->initl_TS = P.first;  /// the list of initial thread states
     this->final_TS = P.second; /// the list of final   thread states
 #ifndef NDEBUG
