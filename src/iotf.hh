@@ -286,6 +286,10 @@ private:
     void compute_pre_images(const prog_state& _tau, const local_state& _l,
             deque<prog_state>& images);
 
+    local_state compute_image_ifth_stmt(const local_state& l,
+            const size_pc& _pc);
+    local_state compute_image_else_stmt(const local_state& l);
+
     deque<local_state> compute_image_atom_sect(shared_state& s,
             const local_state& l);
     void compute_image_bcst_stmt(deque<local_state>& pw);

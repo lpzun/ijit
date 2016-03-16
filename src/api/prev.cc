@@ -107,8 +107,8 @@ void pre_image::compute_pre_images(const prog_state& _tau,
     for (auto ie = predecessors.cbegin(); ie != predecessors.cend(); ++ie) {
         const auto& e = *ie; /// get the edge by pc
         const auto& pc = e.get_dest();
-        cout << e << "\n";
-        cout << _pc << "->" << pc << "\n";
+//        cout << e << "\n";
+//        cout << _pc << "->" << pc << "\n";
         switch (e.get_stmt().get_type()) {
         case type_stmt::GOTO: {
             /// goto statement
@@ -151,10 +151,18 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             ///
             /// SEMANTIC:
             const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
-            if (cond != sool::F) {
-                //TODO
+            if (_pc != pc + 1) {
+                if (cond != sool::F) {
+                    const auto& l = this->compute_image_ifth_stmt(_l, pc);
+                    const auto& Z = alg::update_counters(l, _l, _Z);
+                    images.emplace_back(_s, Z);
+                }
             } else {
-                //TODO
+                if (cond != sool::T) {
+                    const auto& l = this->compute_image_else_stmt(_l);
+                    const auto& Z = alg::update_counters(l, _l, _Z);
+                    images.emplace_back(_s, Z);
+                }
             }
         }
             break;
@@ -179,6 +187,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             ///
             /// SEMANTIC: advance if expr is evaluated to be true;
             /// block otherwise.
+            cout << __func__ << " assume " << "\n";
             const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
             if (cond != sool::F) {
                 local_state l(pc, _lv);
@@ -341,6 +350,36 @@ void pre_image::compute_image_bcst_stmt(deque<local_state>& pw) {
     for (auto il = pw.begin(); il != pw.end(); ++il) {
         il->set_pc(il->get_pc() - 1);
     }
+}
+
+/**
+ * @brief this is the <if...then> branch of IFEL statement
+ * @note  the if statements in our benchmarks have the uniformed form:
+ *        if <expr> then goto pc; fi;
+ *        The expr is very limited into one of the following formats:
+ *          (1) 0
+ *          (2) *
+ *          (3) !(*)
+ *          (4) v
+ *          (5) !v
+ *        At this stage, we could assume that all of <if...else...> statements
+ *        follow the above form, and then extend to more general cases in the future.
+ *
+ * @param _l: current local state
+ * @return the predecessor local state, whose pc = ...
+ */
+local_state pre_image::compute_image_ifth_stmt(const local_state& _l,
+        const size_pc& pc) {
+    return local_state(pc, _l.get_vars());
+}
+
+/**
+ * @brief this is the <else> branch of IFEL statement
+ * @param _l: current local state
+ * @return the predecessor local state, whose pc = pc' - 1
+ */
+local_state pre_image::compute_image_else_stmt(const local_state& _l) {
+    return local_state(_l.get_pc() - 1, _l.get_vars());
 }
 
 /**

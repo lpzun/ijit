@@ -70,11 +70,14 @@ void tst_parser::test_post_image(const string& filename) {
 //    auto sls = c.convert_lps_to_lss(pc, lv);
 //    cout << sls << "\n";
 //    cout << "local state: " << sls << "\n";
-    local_state l(pc, lv);
-    cout << "local state: " << l << "\n";
+    local_state l1(pc, lv);
+    cout << "local state: " << l1 << "\n";
+    local_state l2(2, lv);
+    cout << "local state: " << l2 << "\n";
 
     ca_locals locals;
-    locals.emplace(l, 2);
+    locals.emplace(l1, 2);
+    locals.emplace(l2, 1);
 
     prog_state tau(s, locals);
     cout << tau << "\n";
@@ -110,18 +113,23 @@ void tst_parser::test_pre_image(const string& filename) {
     state_v lv(0);
     uint pc;
     cin >> pc;
-    local_state l(pc, lv);
-    cout << "local state: " << l << "\n";
+    local_state l1(pc, lv);
+    cout << "local state: " << l1 << "\n";
+    local_state l2(2, lv);
+    cout << "local state: " << l2 << "\n";
 
     ca_locals locals;
-    locals.emplace(l, 2);
+    locals.emplace(l1, 2);
+    locals.emplace(l2, 1);
 
     prog_state tau(s, locals);
     cout << tau << "\n";
+
     pre_image image;
     auto _tau = image.step(tau);
     for (const auto& g : _tau)
-        cout << g << endl;
+        cout << g << "\n";
+    cout << endl;
 }
 
 /**
@@ -145,8 +153,7 @@ void tst_solver::test_split() {
             cout << s << " ";
         cout << "\n";
     }
-
-    cout << "\n";
+    cout << endl;
 }
 
 /**

@@ -103,10 +103,14 @@ void paide::add_edge(const size_pc& src, const size_pc& dest,
         else
             cfg_G.add_edge(src, dest, type, expr(expr_in_list));
     } else if (m == mode::PREV) { /// preimage mode
-        if (!is_condition)
+        if (!is_condition) {
             cfg_G.add_edge(dest, src, type);
-        else
+        } else {
             cfg_G.add_edge(dest, src, type, expr(expr_in_list));
+            /// add the <else> branch into edges collection
+            if (type == type_stmt::IFEL)
+                cfg_G.add_edge(src + 1, src, type, expr(expr_in_list));
+        }
     }
 
     /// step 2: build expressions for parallel assignment
