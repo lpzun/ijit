@@ -29,7 +29,7 @@ public:
      * @param t_in
      * @param Z
      */
-    static void increment(const local_state& t_in, ca_locals& Z) {
+    static inline void increment(const local_state& t_in, ca_locals& Z) {
         auto ifind = Z.find(t_in);
         if (ifind != Z.end()) {
             ifind->second += 1;
@@ -43,10 +43,11 @@ public:
      * @param t_de
      * @param Z
      */
-    static void decrement(const local_state& t_de, ca_locals& Z) {
+    static inline void decrement(const local_state& t_de, ca_locals& Z) {
         auto ifind = Z.find(t_de);
         if (ifind != Z.end()) {
-            if (--ifind->second == 0)
+            ifind->second -= 1;
+            if (ifind->second == 0)
                 Z.erase(ifind);
         } else {
             throw;

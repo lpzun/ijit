@@ -13,7 +13,7 @@ namespace iotf {
  * @brief default constructor
  */
 cfg::cfg() :
-        A(adj_list(refs::PC_NUM)), assignments() {
+        A(adj_list(256, deque<edge>())), assignments() {
 }
 
 /**
@@ -30,8 +30,8 @@ cfg::cfg(const size_pc& size_A) :
  * @param E
  * @param assigns
  */
-cfg::cfg(const adj_list& A, const unordered_map<size_pc, assignment>& assigns) :
-        A(A), assignments(assigns) {
+cfg::cfg(const adj_list& A, const unordered_map<size_pc, assignment>& as) :
+        A(A), assignments(as) {
 
 }
 
@@ -47,10 +47,10 @@ cfg::~cfg() {
  */
 void cfg::add_edge(const size_pc& src, const size_pc& dest,
         const type_stmt& type) {
-    if (src < this->A.size())
-        A[src].emplace_back(src, dest, type);
-    else
-        A.emplace_back(deque<edge>(1, edge(src, dest, type)));
+    if (src >= this->A.size()) {
+        A.resize((src > dest ? src : dest) + 1, deque<edge>());
+    }
+    A[src].emplace_back(src, dest, type);
 }
 
 /**
@@ -59,10 +59,10 @@ void cfg::add_edge(const size_pc& src, const size_pc& dest,
  */
 void cfg::add_edge(const size_pc& src, const size_pc& dest,
         const type_stmt& type, const expr& condition) {
-    if (src < this->A.size())
-        A[src].emplace_back(src, dest, type, condition);
-    else
-        A.emplace_back(deque<edge>(1, edge(src, dest, type, condition)));
+    if (src >= this->A.size()) {
+        A.resize((src > dest ? src : dest) + 1, deque<edge>());
+    }
+    A[src].emplace_back(src, dest, type, condition);
 }
 
 /**

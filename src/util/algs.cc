@@ -56,8 +56,7 @@ ca_locals alg::update_counters(const deque<local_state>& T_in,
 
     auto ifind = _Z.find(t_de);
     if (ifind != _Z.end()) {
-        ifind->second -= 1;
-        if (ifind->second == 0)
+        if (--ifind->second == 0)
             _Z.erase(ifind);
     }
 
@@ -331,7 +330,8 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
     for (const auto& s : sexpr) {
         if (s > solver::CONST_N) {
             const auto& p = active_id.emplace(s, num);
-            if (p.second) ++num;
+            if (p.second)
+                ++num;
         }
     }
 

@@ -107,6 +107,8 @@ void pre_image::compute_pre_images(const prog_state& _tau,
     for (auto ie = predecessors.cbegin(); ie != predecessors.cend(); ++ie) {
         const auto& e = *ie; /// get the edge by pc
         const auto& pc = e.get_dest();
+        cout << e << "\n";
+        cout << _pc << "->" << pc << "\n";
         switch (e.get_stmt().get_type()) {
         case type_stmt::GOTO: {
             /// goto statement
@@ -116,6 +118,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             ///
             /// SEMANTIC: nondeterministic goto
             local_state l(pc, _lv);
+            cout << __func__ << " goto " << l << "\n";
             const auto& Z = alg::update_counters(l, _l, _Z);
             images.emplace_back(_s, Z);
         }
@@ -164,13 +167,9 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             /// The idea is that: if there is an assertion but we do NOT
             /// care about it in one specific verification, then we adv-
             /// ance the PC when the assertion is satisfiable.
-            const auto& cond = e.get_stmt().get_condition().eval(_s.get_vars(),
-                    _lv);
-            if (cond != sool::F) {
-                local_state l(pc, _lv);
-                const auto& Z = alg::update_counters(l, _l, _Z);
-                images.emplace_back(_s, Z);
-            }
+            local_state l(pc, _lv);
+            const auto& Z = alg::update_counters(l, _l, _Z);
+            images.emplace_back(_s, Z);
         }
             break;
         case type_stmt::ASSU: {
@@ -234,7 +233,9 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             /// i.e., has no successor state.
             ///
             /// We treat this as a skip statement
-
+            local_state l(pc, _lv);
+            const auto& Z = alg::update_counters(l, _l, _Z);
+            images.emplace_back(_s, Z);
         }
             break;
         case type_stmt::EATM: {
@@ -280,7 +281,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             ///                         (11, 21, 30, ...)
             auto Z(_Z);
             /// update post-broadcast thread
-            local_state l(pc, _l.get_vars());
+            local_state l(pc, _lv);
             Z = alg::update_counters(l, _l, Z);
             /// extract all post-wait threads
             for (auto iw = Z.begin(); iw != Z.end(); ++iw) {
@@ -304,7 +305,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             /// SEMANTIC: advance the pc to pc + 1
 
             /// successor local state: l'.pc = l.pc + 1
-            local_state l(pc, _l.get_vars());
+            local_state l(pc, _lv);
             const auto& Z = alg::update_counters(l, _l, _Z);
             images.emplace_back(_s, Z);
         }

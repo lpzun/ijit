@@ -73,8 +73,8 @@ int main(int argc, char *argv[]) {
 //        cout << "testing parser...\n";
 //        tst_parser::test_parser(filename);
 
-        cout << "testing images...\n";
-        tst_parser::test_images(filename);
+        cout << "testing preimages...\n";
+        tst_parser::test_pre_image(filename);
 
 //        FWS fws;
 //        const auto& is_reachable = fws.standard_FWS(std::stoi(sthread),

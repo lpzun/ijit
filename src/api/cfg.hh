@@ -250,7 +250,7 @@ class cfg {
 public:
     cfg();
     cfg(const size_pc& size_A);
-    cfg(const adj_list& A, const unordered_map<size_pc, assignment>& assigns);
+    cfg(const adj_list& A, const unordered_map<size_pc, assignment>& as);
     ~cfg();
 
     const adj_list& get_A() const {

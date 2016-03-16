@@ -23,7 +23,7 @@ tst_parser::~tst_parser() {
  */
 void tst_parser::test_parser(const string& filename) {
     auto P = parser::parse(filename, mode::POST);
-    cout<<"I'm here.......1....\n";
+    cout << "I'm here.......1....\n";
     converter c;
     cout << __func__ << " initial states: " << "\n";
     for (const auto& its : P.first) {
@@ -42,8 +42,8 @@ void tst_parser::test_parser(const string& filename) {
  * @brief test image computation
  * @param filename
  */
-void tst_parser::test_images(const string& filename) {
-    auto P = parser::parse(filename, mode::PREV);
+void tst_parser::test_post_image(const string& filename) {
+    auto P = parser::parse(filename, mode::POST);
     converter c;
     cout << __func__ << " initial states: " << "\n";
     for (const auto& its : P.first) {
@@ -70,6 +70,46 @@ void tst_parser::test_images(const string& filename) {
 //    auto sls = c.convert_lps_to_lss(pc, lv);
 //    cout << sls << "\n";
 //    cout << "local state: " << sls << "\n";
+    local_state l(pc, lv);
+    cout << "local state: " << l << "\n";
+
+    ca_locals locals;
+    locals.emplace(l, 2);
+
+    prog_state tau(s, locals);
+    cout << tau << "\n";
+    post_image image;
+    auto _tau = image.step(tau);
+    for (const auto& g : _tau)
+        cout << g << endl;
+}
+
+/**
+ * @brief test image computation
+ * @param filename
+ */
+void tst_parser::test_pre_image(const string& filename) {
+    auto P = parser::parse(filename, mode::PREV);
+    /// testing converter
+    cout << __func__ << " initial states: " << "\n";
+    for (const auto& its : P.first) {
+        cout << its << "\n";
+        //cout << c.convert(its) << "\n";
+    }
+
+    cout << __func__ << " final states: " << "\n";
+    for (const auto& ifs : P.second) {
+        cout << ifs << "\n";
+        //cout << c.convert(ifs) << "\n";
+    }
+
+    /// testing preimage computation
+    shared_state s(state_v(1));
+    cout << "shared state: " << s << "\n";
+
+    state_v lv(0);
+    uint pc;
+    cin >> pc;
     local_state l(pc, lv);
     cout << "local state: " << l << "\n";
 
