@@ -228,7 +228,9 @@ void parser::create_final_state(const size_pc& pos, const cfg& G,
             const auto& expressions =
                     e.get_stmt().get_condition().get_splited();
             for (const auto& exp : expressions) {
-                const auto& assgs = solver::all_sat_solve(exp);
+                ss_vars s_vars(refs::SV_NUM, sool::N);
+                sl_vars l_vars(refs::LV_NUM, sool::N);
+                const auto& assgs = solver::all_sat_solve(exp, s_vars, l_vars);
                 for (const auto& assg : assgs) {
                     /// step 1: build shared BV via splitting *
                     deque<state_v> svs;        /// store shared BV
@@ -262,19 +264,6 @@ void parser::create_final_state(const size_pc& pos, const cfg& G,
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief convert a list of system states (user-form global state) to a list of
- *        program states (our otf-form global state)
- * @param ss: a list of system states
- * @return    a list of program states
- */
-deque<prog_state> converter::convert(const deque<syst_state>& ss) {
-    deque<prog_state> ps;
-    for (const auto& s : ss)
-        ps.emplace_back(this->convert(s));
-    return ps;
-}
-
-/**
  * @brief convert a list of program states (user-form global state) to a list of
  *        system states (our otf-form global state)
  * @param ss: a list of program states
@@ -285,6 +274,23 @@ deque<syst_state> converter::convert(const deque<prog_state>& ps) {
     for (const auto& p : ps)
         ss.emplace_back(this->convert(p));
     return ss;
+}
+
+/**
+ * @brief convert a program state (our otf-form global state) to a system state
+ *        (user-form global state)
+ * @param gs
+ * @return a pair
+ */
+syst_state converter::convert(const prog_state& ps) {
+    const auto& sss = this->convert_sps_to_sss(ps.get_s().get_vars());
+    map<uint, ushort> Z;
+    for (const auto p : ps.get_locals()) {
+        const auto& l = p.first;
+        const auto& sls = this->convert_lps_to_lss(l.get_pc(), l.get_vars());
+        Z.emplace(sls, p.second);
+    }
+    return std::make_pair(sss, Z);
 }
 
 /**
@@ -305,20 +311,18 @@ prog_state converter::convert(const syst_state& ss) {
 }
 
 /**
- * @brief convert a program state (our otf-form global state) to a system state
- *        (user-form global state)
- * @param gs
- * @return a pair
+ * @brief This function is to convert a list of program thread states to
+ *        a list of system states
+ *
+ * @param ss: a list of program thread states
+ *
+ * @return a list of system thread states
  */
-syst_state converter::convert(const prog_state& ps) {
-    const auto& sss = this->convert_sps_to_sss(ps.get_s().get_vars());
-    map<uint, uint> Z;
-    for (const auto p : ps.get_locals()) {
-        const auto& l = p.first;
-        const auto& sls = this->convert_lps_to_lss(l.get_pc(), l.get_vars());
-        Z.emplace(sls, p.second);
-    }
-    return std::make_pair(sss, Z);
+deque<syst_thread> converter::convert(const deque<prog_thread>& pts) {
+    deque<syst_thread> stss;
+    for (const auto& pt : pts)
+        stss.emplace_back(this->convert(pt));
+    return stss;
 }
 
 /**
@@ -328,23 +332,24 @@ syst_state converter::convert(const prog_state& ps) {
  *
  * @return system thread state
  */
-syst_thread converter::convert(const prog_thread& pts) {
-    const auto& sts = this->convert_sps_to_sss(pts.get_s().get_vars());
-    const auto& stl = this->convert_lps_to_lss(pts.get_l().get_pc(),
-            pts.get_l().get_vars());
-    return std::make_pair(sts, stl);
+syst_thread converter::convert(const prog_thread& pt) {
+    const auto& sst = this->convert_sps_to_sss(pt.get_s().get_vars());
+    const auto& lst = this->convert_lps_to_lss(pt.get_l().get_pc(),
+            pt.get_l().get_vars());
+    return std::make_pair(sst, lst);
 }
 
 /**
- * @brief This function is to convert a system thread state to a program thread state
+ * @brief This function is to convert a system thread state to a program
+ *        thread state
  *
  * @param ss: system thread state
  *
  * @return program thread state
  */
-prog_thread converter::convert(const syst_thread& sts) {
-    const auto& sv = this->convert_sss_to_sps(sts.first);
-    const auto& p = this->convert_lss_to_lps(sts.second);
+prog_thread converter::convert(const syst_thread& st) {
+    const auto& sv = this->convert_sss_to_sps(st.first);
+    const auto& p = this->convert_lss_to_lps(st.second);
     return thread_state(sv, p.first, p.second);
 }
 

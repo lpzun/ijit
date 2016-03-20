@@ -68,9 +68,9 @@ public:
     static const symbol CONST_N = 2; /// constant nondeterminism
     static const symbol NEG = -1; /// !, negation
     static const symbol AND = -2; /// &, and
-    static const symbol OR = -3;  /// |, or
+    static const symbol OR  = -3;  /// |, or
     static const symbol XOR = -4; /// ^, exclusive or
-    static const symbol EQ = -5;  /// =, equal
+    static const symbol EQ  = -5;  /// =, equal
     static const symbol NEQ = -6; /// !=, not equal
     static const symbol IMP = -7; /// =>, implies
     static const symbol PAR = -8; /// parenthesis
@@ -83,10 +83,16 @@ public:
     static bool solve(const deque<symbol>& sexpr, const state_v& s,
             const state_v& l, const state_v& _s, const state_v& _l);
     static deque<pair<ss_vars, sl_vars>> all_sat_solve(
-            const deque<symbol>& sexpr);
+            const deque<symbol>& sexpr, const ss_vars& s_vars,
+            const sl_vars& l_vars);
 
     static deque<deque<symbol>> split(const deque<symbol>& sexpr);
     static deque<deque<sool>> split(const deque<sool>& vs);
+
+    static void substitute(deque<symbol>& sexpr, const symbol& var,
+            const symbol& ins);
+
+    static symbol encode(const symbol& idx, const bool& is_shared);
 
 private:
     static bool eval(const deque<symbol>& sexpr);

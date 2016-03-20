@@ -123,8 +123,15 @@ public:
         return sexpr;
     }
 
-    const bool is_valid() const {
-        return !sexpr.empty();
+    const bool is_empty() const {
+        return sexpr.empty();
+    }
+
+    const bool is_const() const {
+        for (const auto& s : sexpr)
+            if (s > solver::CONST_N)
+                return false;
+        return true;
     }
 
     const deque<deque<symbol> >& get_splited() const {

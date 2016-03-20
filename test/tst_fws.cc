@@ -36,15 +36,15 @@ bool FWS::standard_FWS(const size_tc& n, const string& filename) {
     this->initl_TS = P.first;  /// the list of initial thread states
     this->final_TS = P.second; /// the list of final   thread states
 #ifndef NDEBUG
-    cout << __func__ << " initial states: " << "\n";
-    for (const auto& its : this->initl_TS) {
-        cout << its << "\n";
-    }
+            cout << __func__ << " initial states: " << "\n";
+            for (const auto& its : this->initl_TS) {
+                cout << its << "\n";
+            }
 
-    cout << __func__ << " final states: " << "\n";
-    for (const auto& ifs : this->final_TS) {
-        cout << ifs << "\n";
-    }
+            cout << __func__ << " final states: " << "\n";
+            for (const auto& ifs : this->final_TS) {
+                cout << ifs << "\n";
+            }
 #endif
     antichain worklist;
     antichain explored;

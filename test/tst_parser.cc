@@ -162,11 +162,13 @@ void tst_solver::test_split() {
 void tst_solver::test_all_sat_solve() {
     refs::SV_NUM = 2;
     refs::LV_NUM = 2;
+    ss_vars s_vars(refs::SV_NUM, sool::N);
+    sl_vars l_vars(refs::LV_NUM, sool::N);
 /// se1: 0
     cout << "expression se1...\n";
     deque<symbol> se1;
     se1.emplace_back(0);
-    auto ret1 = solver::all_sat_solve(se1);
+    auto ret1 = solver::all_sat_solve(se1, s_vars, l_vars);
     tst_solver::print(ret1);
     cout << "\n";
 
@@ -174,7 +176,7 @@ void tst_solver::test_all_sat_solve() {
     cout << "expression se2...\n";
     deque<symbol> se2;
     se2.emplace_back(1);
-    auto ret2 = solver::all_sat_solve(se2);
+    auto ret2 = solver::all_sat_solve(se2, s_vars, l_vars);
     print(ret2);
     cout << "\n";
 
@@ -184,7 +186,7 @@ void tst_solver::test_all_sat_solve() {
     se3.emplace_back(0);
     se3.emplace_back(solver::PAR);
     se3.emplace_back(solver::NEG);
-    auto ret3 = solver::all_sat_solve(se3);
+    auto ret3 = solver::all_sat_solve(se3, s_vars, l_vars);
     print(ret3);
     cout << "\n";
 
@@ -194,7 +196,7 @@ void tst_solver::test_all_sat_solve() {
     se4.emplace_back(1);
     se4.emplace_back(solver::PAR);
     se4.emplace_back(solver::NEG);
-    auto ret4 = solver::all_sat_solve(se4);
+    auto ret4 = solver::all_sat_solve(se4, s_vars, l_vars);
     print(ret4);
     cout << "\n";
 
@@ -205,7 +207,7 @@ void tst_solver::test_all_sat_solve() {
     auto splited = solver::split(se5);
     deque<pair<ss_vars, sl_vars>> ret5;
     for (const auto& ex : splited) {
-        auto tmp = solver::all_sat_solve(ex);
+        auto tmp = solver::all_sat_solve(ex, s_vars, l_vars);
         ret5.insert(ret5.end(), tmp.begin(), tmp.end());
     }
     print(ret5);

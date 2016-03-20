@@ -36,7 +36,7 @@ deque<prog_state> pre_image::step(const prog_state& tau, const prev& p) {
 }
 
 /**
- * @brief
+ * @brief the
  * @param tau
  * @param l
  * @return
@@ -129,17 +129,19 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             ///
             /// SEMANTIC: assignment statement, postcondition of
             /// vars might have to satisfy the constraint
-            const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
-            if (cond != sool::F) {
-                /// compute all direct predecessors via weakest
-                /// precondition and SAT solvers
-                const auto& P = this->compute_image_assg_stmt(_sv, _lv);
-                for (auto ip = P.cbegin(); ip != P.cend(); ++ip) {
-                    shared_state s(ip->first);
-                    local_state l(pc, ip->second);
 
-                    const auto& Z = alg::update_counters(l, _l, _Z);
-                    images.emplace_back(s, Z);
+            /// compute all direct predecessors via weakest
+            /// precondition and SAT solvers
+            cout << __func__ << " parallel assignment " << pc << "\n";
+            const auto& wp = this->compute_image_assg_stmt(pc, _sv, _lv);
+            for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
+                const auto& cond = e.get_stmt().get_condition();
+                if (cond.is_empty()
+                        || (cond.eval(ip->first, ip->second, _sv, _lv)
+                                != sool::F)) {
+                    const auto& Z = alg::update_counters(
+                            local_state(pc, ip->second), _l, _Z);
+                    images.emplace_back(shared_state(ip->first), Z);
                 }
             }
         }
@@ -328,10 +330,10 @@ void pre_image::compute_pre_images(const prog_state& _tau,
  *        Be careful that an atomic section could contain various statements.
  *
  * @param s: shared state at the end of atomic section (atomic_end).
- *           It is also used to return the final shared state before the atomic
+ *           It is also used to return the final shared state before atomic
  *           section.
  * @param l: local state at the end of atomic section
- * @return preceding local states across atomic section
+ * @return predecessor local states across atomic section
  */
 deque<local_state> pre_image::compute_image_atom_sect(shared_state& s,
         const local_state& l) {
@@ -389,8 +391,109 @@ local_state pre_image::compute_image_else_stmt(const local_state& _l) {
  * @return a list of valuations for shared and local variables
  */
 deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
-        const state_v& _sv, const state_v& _lv) {
+        const size_pc& pc, const state_v& _sv, const state_v& _lv) {
     deque<pair<state_v, state_v>> result;
+
+    auto ifind = parser::get_prev_G().get_assignments().find(pc);
+    if (ifind != parser::get_prev_G().get_assignments().end()) {
+        /// step 0: preparations:
+        ///         (1) obtain assignments to shared variables
+        const auto& sh = ifind->second.sh;
+        ///         (2) obtain assignments to local  variables
+        const auto& lo = ifind->second.lo;
+
+        /// step 1: conjoin all expressions in RHS of parallel assignment
+        ///         together...
+        deque<symbol> sexpr;
+        for (auto i = 0; i < sh.size(); ++i) {
+            if (!sh[i].is_empty() && !sh[i].is_const()) {
+                sexpr.emplace_back(solver::PAR);
+                sexpr.insert(sexpr.end(), sh[i].get_sexpr().begin(),
+                        sh[i].get_sexpr().end());
+                sexpr.emplace_back(solver::PAR);
+                sexpr.emplace_back(solver::AND);
+            }
+        }
+
+        for (auto i = 0; i < lo.size(); ++i) {
+            if (!lo[i].is_empty() && !lo[i].is_const()) {
+                sexpr.emplace_back(solver::PAR);
+                sexpr.insert(sexpr.end(), lo[i].get_sexpr().begin(),
+                        lo[i].get_sexpr().end());
+                sexpr.emplace_back(solver::PAR);
+                sexpr.emplace_back(solver::AND);
+            }
+        }
+
+        ss_vars s_vars(refs::SV_NUM, sool::N);
+        sl_vars l_vars(refs::LV_NUM, sool::N);
+
+        /// step 2: collect all non-free variables...
+        for (auto i = 0; i < sh.size(); ++i) {
+            if (sh[i].is_empty()) {
+                solver::substitute(sexpr, solver::encode(i, true), _sv[i]);
+                s_vars[i] = _sv[i] ? sool::T : sool::F;
+            }
+        }
+
+        for (auto i = 0; i < lo.size(); ++i) {
+            if (lo[i].is_empty()) {
+                solver::substitute(sexpr, solver::encode(i, false), _lv[i]);
+                l_vars[i] = _lv[i] ? sool::T : sool::F;
+            }
+        }
+
+        cout << __func__ << " I am here... " << endl;
+        /// step 3: compute the weakest precondition for parallel assignment
+        const auto& assgs = solver::all_sat_solve(sexpr, s_vars, l_vars);
+        cout << __func__ << " I am here...0.5 " << endl;
+        for (const auto& assg : assgs) {
+            /// step 3.1: build shared BV via splitting *
+            state_v sv(0);
+            for (auto i = 0; i < assg.first.size(); ++i) {
+                if (assg.first[i] == sool::N)
+                    throw iotf_runtime_error(string(__func__) + ": N exists");
+                sv[i] = assg.first[i] == sool::T ? 1 : 0;
+            }
+            cout << __func__ << " I am here...1 " << endl;
+            /// step 3.2: build local  BV via splitting *
+            state_v lv(0);
+            for (auto i = 0; i < assg.second.size(); ++i) {
+                if (assg.second[i] == sool::N)
+                    throw iotf_runtime_error(string(__func__) + ": N exists");
+                lv[i] = assg.second[i] == sool::T ? 1 : 0;
+            }
+            cout << __func__ << " I am here...2 " << endl;
+            /// step 3.3: determine if sv and lv are valid
+            ///           preimages
+            bool is_valid = true;
+            for (auto i = 0; i < sh.size(); ++i) {
+                if (!sh[i].is_empty() && sh[i].eval(sv, lv) != sool::N)
+                    if ((_sv[i] && sh[i].eval(sv, lv) == sool::F)
+                            || (!_sv[i] && sh[i].eval(sv, lv) == sool::T)) {
+                        is_valid = false;
+                        break;
+                    }
+            }
+
+            if (is_valid) {
+                for (auto i = 0; i < lo.size(); ++i) {
+                    if (!lo[i].is_empty() && lo[i].eval(sv, lv) != sool::N)
+                        if ((_lv[i] && lo[i].eval(sv, lv) == sool::F)
+                                || (!_lv[i] && lo[i].eval(sv, lv) == sool::T)) {
+                            is_valid = false;
+                            break;
+                        }
+                }
+            }
+
+            /// step 4: the pais of (sv, lv) is a valid preimage, and store it
+            if (is_valid) {
+                result.emplace_back(sv, lv);
+            }
+        }
+    }
+
     return result;
 }
 

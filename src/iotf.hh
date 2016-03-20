@@ -95,7 +95,7 @@ private:
 };
 
 /// system state in counter abstraction
-using syst_state = pair<uint, map<uint, uint>>;
+using syst_state = pair<uint, map<uint, ushort>>;
 using syst_thread = pair<uint, uint>;
 
 ostream& operator <<(ostream& out, const syst_state& s);
@@ -130,31 +130,14 @@ public:
 //    using syst_state = pair<S, container_t<L ...>>;
 
     /**
-     * @brief This function is to convert a system state to a program state
+     * @brief This function is to convert a list of program states to a list
+     *        of system states
      *
-     * @param ss: system state
+     * @param ss: a list of program states
      *
-     * @return program state
+     * @return a list of system states
      */
-    virtual prog_state convert(const syst_state& ss);
-
-    /**
-     * @brief This function is to convert program thread state to a system state
-     *
-     * @param ss: program thread state
-     *
-     * @return system thread state
-     */
-    virtual syst_thread convert(const prog_thread& pts);
-
-    /**
-     * @brief This function is to convert a system thread state to a program thread state
-     *
-     * @param ss: system thread state
-     *
-     * @return program thread state
-     */
-    virtual prog_thread convert(const syst_thread& sts);
+    virtual deque<syst_state> convert(const deque<prog_state>& ps);
 
     /**
      * @brief This function is to convert program state to a system state
@@ -166,24 +149,43 @@ public:
     virtual syst_state convert(const prog_state& ps);
 
     /**
-     * @brief This function is to convert a list of system states to a list
-     *        of program states
+     * @brief This function is to convert a system state to a program state
      *
-     * @param ss: a list of system states
+     * @param ss: system state
      *
-     * @return a list of program states
+     * @return program state
      */
-    virtual deque<prog_state> convert(const deque<syst_state>& ss);
+    virtual prog_state convert(const syst_state& ss);
 
     /**
-     * @brief This function is to convert a list of program states to a list
-     *        of system states
+     * @brief This function is to convert a list of program thread states to
+     *        a list of system states
      *
-     * @param ss: a list of program states
+     * @param ss: a list of program thread states
      *
-     * @return a list of system states
+     * @return a list of system thread states
      */
-    virtual deque<syst_state> convert(const deque<prog_state>& ps);
+    virtual deque<syst_thread> convert(const deque<prog_thread>& pts);
+
+    /**
+     * @brief This function is to convert program thread state to a system
+     *        state
+     *
+     * @param ss: program thread state
+     *
+     * @return system thread state
+     */
+    virtual syst_thread convert(const prog_thread& pt);
+
+    /**
+     * @brief This function is to convert a system thread state to a program
+     *        thread state
+     *
+     * @param ss: system thread state
+     *
+     * @return program thread state
+     */
+    virtual prog_thread convert(const syst_thread& st);
 
 public:
     uint mask;
@@ -294,8 +296,8 @@ private:
             const local_state& l);
     void compute_image_bcst_stmt(deque<local_state>& pw);
 
-    deque<pair<state_v, state_v>> compute_image_assg_stmt(const state_v& _sv,
-            const state_v& _lv);
+    deque<pair<state_v, state_v>> compute_image_assg_stmt(const size_pc& pc,
+            const state_v& _sv, const state_v& _lv);
     deque<pair<state_v, state_v>> weakest_precondition(const state_v& _sv,
             const state_v& _lv);
 };

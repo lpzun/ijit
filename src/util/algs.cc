@@ -320,51 +320,50 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
  * @param sexpr
  * @return all of the valuations that satisfy sexpr
  */
-deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
-        const deque<symbol>& sexpr) {
+deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(const deque<symbol>& sexpr,
+        const ss_vars& s_vars, const sl_vars& l_vars) {
     deque<pair<ss_vars, sl_vars>> result;
-    /// step 1: collect the ids of Boolean variables:
+    /// step 1: collect ids of free Boolean variables:
     ///         this is a subset of all variables
-    map<symbol, ushort> active_id;
-    ushort num = 0; /// number of active variables
+    map<symbol, ushort> vfree_id;
+    ushort vfree = 0; /// the number of free variables
     for (const auto& s : sexpr) {
         if (s > solver::CONST_N) {
-            const auto& p = active_id.emplace(s, num);
+            const auto& p = vfree_id.emplace(s, vfree);
             if (p.second)
-                ++num;
+                ++vfree;
         }
     }
-
+    cout << __func__ << " I am here...6 " << endl;
     /// if the expression does not involve any variable, then
     /// evaluate the expression, and based on the result:
     /// (1) true : all assignments satisfy the expression,
     /// (2) false: no assignment satisfies the expression.
-    if (num == 0) {
-        if (solver::eval(sexpr)) {
-            result.emplace_back(
-                    /// the <expr> is true everywhere
-                    ss_vars(refs::SV_NUM, sool::N),
-                    sl_vars(refs::LV_NUM, sool::N));
+    if (vfree == 0) {
+        if (solver::eval(sexpr)) { /// <expr> is true everywhere
+            result.emplace_back(s_vars, l_vars);
         }
         return result;
     }
 
     /// step 2: enumerate over all possible valuations
     ///         of active Boolean variables
-    for (auto assg = 0; assg < pow(2, num); ++assg) {
+    for (auto assg = 0; assg < pow(2, vfree); ++assg) {
         /// step 3: build an assignment to active variables
-        const auto& bv = solver::to_binary(assg, num);
-        ss_vars s_tmp(refs::SV_NUM, sool::N);
-        sl_vars l_tmp(refs::LV_NUM, sool::N);
-
+        const auto& bv = solver::to_binary(assg, vfree);
+        ss_vars s_tmp(s_vars);
+        sl_vars l_tmp(l_vars);
+        cout << __func__ << " I am here...8 " << endl;
         /// step 4: replace Boolean variables by its values
         auto se = sexpr;
         for (auto i = 0; i < se.size(); ++i) {
             if (se[i] > solver::CONST_N) {
-                auto ifind = active_id.find(se[i]);
+                auto ifind = vfree_id.find(se[i]);
                 /// step 4.1: determine whether se[i] is shared or not
                 bool is_shared = false;
                 const auto& idx = solver::decode(se[i], is_shared);
+                cout << se[i] << " " << ifind->second << endl;
+                cout << __func__ << " I am here... idx =" << idx << endl;
                 if (is_shared) {
                     s_tmp[idx] = (bv[ifind->second] ? sool::T : sool::F);
                 } else {
@@ -375,6 +374,7 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(
             }
         }
 
+        cout << __func__ << " I am here...7 " << endl;
         /// step 5: evaluate the expression
         if (solver::eval(se)) {
             result.emplace_back(s_tmp, l_tmp);
@@ -420,6 +420,20 @@ deque<deque<symbol>> solver::split(const deque<symbol>& sexpr) {
 }
 
 /**
+ * @brief do substitution:
+ * @param sexpr:
+ * @param var  :
+ * @param ins  :
+ */
+void solver::substitute(deque<symbol>& sexpr, const symbol& var,
+        const symbol& ins) {
+    for (auto& s : sexpr) {
+        if (s == var)
+            s = ins;
+    }
+}
+
+/**
  * @brief split * into 0 and 1 during expression evaluation
  * @param sexpr: a expression with *
  * @return a list of expressions after splitting * into 0 and 1
@@ -447,13 +461,19 @@ deque<deque<sool>> solver::split(const deque<sool>& vsool) {
     return worklist;
 }
 
+symbol solver::encode(const symbol& idx, const bool& is_shared) {
+    if (is_shared)
+        return idx + 3;
+    else
+        return idx + 3 + refs::SV_NUM;
+}
+
 /**
  * @brief decode
  * @param idx
  * @param is_shared
  */
 symbol solver::decode(const symbol& idx, bool& is_shared) {
-    // cout <<__func__ << idx << endl;
     auto id = idx - 3;
     is_shared = true;
     if (id >= refs::SV_NUM)
