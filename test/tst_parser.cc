@@ -107,7 +107,7 @@ void tst_parser::test_pre_image(const string& filename) {
     }
 
     /// testing preimage computation
-    shared_state s(state_v(1));
+    shared_state s(state_v(3));
     cout << "shared state: " << s << "\n";
 
     state_v lv(0);

@@ -139,67 +139,6 @@ assignment paide::create_assignment() {
 }
 
 /**
- * @brief to restore the expression
- * @param symb_list
- * @param is_origi: this para is to generate the comments!!!!!!!
- * @return expression
- */
-string paide::recov_expr_from_list(const deque<symbol>& sexpr) {
-    stack<string> worklist;
-    string op1, op2;
-    for (const auto& ss : sexpr) {
-        switch (ss) {
-        case solver::AND:
-            op1 = worklist.top(), worklist.pop();
-            op2 = worklist.top(), worklist.pop();
-            worklist.emplace(op1 + " & " + op2);
-            break;
-        case solver::OR:
-            op1 = worklist.top(), worklist.pop();
-            op2 = worklist.top(), worklist.pop();
-            worklist.emplace(op1 + " | " + op2);
-            break;
-        case solver::XOR:
-            op1 = worklist.top(), worklist.pop();
-            op2 = worklist.top(), worklist.pop();
-            worklist.emplace(op1 + " ^ " + op2);
-            break;
-        case solver::EQ:
-            op1 = worklist.top(), worklist.pop();
-            op2 = worklist.top(), worklist.pop();
-            worklist.emplace(op1 + " = " + op2);
-            break;
-        case solver::NEQ:
-            op1 = worklist.top(), worklist.pop();
-            op2 = worklist.top(), worklist.pop();
-            worklist.emplace(op1 + " != " + op2);
-            break;
-        case solver::NEG:
-            op1 = worklist.top(), worklist.pop();
-            worklist.emplace("!" + op1);
-            break;
-        case solver::PAR:
-            op1 = worklist.top(), worklist.pop();
-            worklist.emplace("(" + op1 + ")");
-            break;
-        case solver::CONST_F:
-            worklist.emplace("0");
-            break;
-        case solver::CONST_T:
-            worklist.emplace("1");
-            break;
-        case solver::CONST_N:
-            worklist.emplace("*");
-            break;
-        default:
-            worklist.emplace(std::to_string(ss));
-            break;
-        }
-    }
-    return worklist.top();
-}
-
-/**
  * @brief look up the index of iden in the map of variables
  * @param iden
  * @return index if find var
@@ -267,7 +206,7 @@ void paide::print_parallel_assg_stmt() {
     while (i_iter != i_end && e_iter != e_end) {
         const auto& iden = *i_iter;
         const auto& expr = *e_iter;
-        cout << iden << ":=" << recov_expr_from_list(expr) << endl;
+        cout << iden << ":=" << solver::recov_expr_from_list(expr) << "\n";
         i_iter++, e_iter++;
     }
 }

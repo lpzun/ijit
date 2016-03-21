@@ -104,7 +104,6 @@ public:
 
     /// expression
     inline void add_to_expr_in_list(const symbol& s);
-    string recov_expr_from_list(const deque<symbol>& sexpr);
     symbol encode(const string& var);
     pair<symbol, bool> decode(const symbol& idx);
 

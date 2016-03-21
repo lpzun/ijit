@@ -55,6 +55,7 @@ public:
     }
 
     static void split(const sool& v, const size_t& i, deque<state_v>& svs);
+
 };
 
 /**
@@ -93,6 +94,9 @@ public:
             const symbol& ins);
 
     static symbol encode(const symbol& idx, const bool& is_shared);
+
+
+    static string recov_expr_from_list(const deque<symbol>& sexpr);
 
 private:
     static bool eval(const deque<symbol>& sexpr);

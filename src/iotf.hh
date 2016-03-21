@@ -298,8 +298,8 @@ private:
 
     deque<pair<state_v, state_v>> compute_image_assg_stmt(const size_pc& pc,
             const state_v& _sv, const state_v& _lv);
-    deque<pair<state_v, state_v>> weakest_precondition(const state_v& _sv,
-            const state_v& _lv);
+    void conjoin_equality(const bool& _v, const deque<symbol>& se,
+            deque<symbol>& app);
 };
 
 /**

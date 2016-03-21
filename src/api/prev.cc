@@ -392,7 +392,7 @@ local_state pre_image::compute_image_else_stmt(const local_state& _l) {
  */
 deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
         const size_pc& pc, const state_v& _sv, const state_v& _lv) {
-    deque<pair<state_v, state_v>> result;
+    deque<pair<state_v, state_v>> result; /// store the result
 
     auto ifind = parser::get_prev_G().get_assignments().find(pc);
     if (ifind != parser::get_prev_G().get_assignments().end()) {
@@ -402,111 +402,83 @@ deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
         ///         (2) obtain assignments to local  variables
         const auto& lo = ifind->second.lo;
 
-        /// step 1: conjoin all expressions in RHS of parallel assignment
-        ///         together...
+        /// step 1: conjoin all equalities in format v' = expr of parallel
+        ///         assignment together...
         deque<symbol> sexpr;
         for (auto i = 0; i < sh.size(); ++i) {
-            if (!sh[i].is_empty() && !sh[i].is_const()) {
-                sexpr.emplace_back(solver::PAR);
-                sexpr.insert(sexpr.end(), sh[i].get_sexpr().begin(),
-                        sh[i].get_sexpr().end());
-                sexpr.emplace_back(solver::PAR);
-                sexpr.emplace_back(solver::AND);
-            }
+            if (!sh[i].is_empty())
+                this->conjoin_equality(_sv[i], sh[i].get_sexpr(), sexpr);
         }
-
         for (auto i = 0; i < lo.size(); ++i) {
-            if (!lo[i].is_empty() && !lo[i].is_const()) {
-                sexpr.emplace_back(solver::PAR);
-                sexpr.insert(sexpr.end(), lo[i].get_sexpr().begin(),
-                        lo[i].get_sexpr().end());
-                sexpr.emplace_back(solver::PAR);
-                sexpr.emplace_back(solver::AND);
-            }
+            if (!lo[i].is_empty())
+                this->conjoin_equality(_lv[i], lo[i].get_sexpr(), sexpr);
         }
 
+        /// step 2: collect all non-free variables, and replace them with
+        ///         the past-parallel-assignment values
         ss_vars s_vars(refs::SV_NUM, sool::N);
         sl_vars l_vars(refs::LV_NUM, sool::N);
-
-        /// step 2: collect all non-free variables...
         for (auto i = 0; i < sh.size(); ++i) {
             if (sh[i].is_empty()) {
-                solver::substitute(sexpr, solver::encode(i, true), _sv[i]);
                 s_vars[i] = _sv[i] ? sool::T : sool::F;
+                solver::substitute(sexpr, solver::encode(i, true), _sv[i]);
             }
         }
-
         for (auto i = 0; i < lo.size(); ++i) {
             if (lo[i].is_empty()) {
-                solver::substitute(sexpr, solver::encode(i, false), _lv[i]);
                 l_vars[i] = _lv[i] ? sool::T : sool::F;
+                solver::substitute(sexpr, solver::encode(i, false), _lv[i]);
             }
         }
 
-        cout << __func__ << " I am here... " << endl;
-        /// step 3: compute the weakest precondition for parallel assignment
+        /// step 3: compute weakest preconditions for parallel assignment
         const auto& assgs = solver::all_sat_solve(sexpr, s_vars, l_vars);
-        cout << __func__ << " I am here...0.5 " << endl;
         for (const auto& assg : assgs) {
             /// step 3.1: build shared BV via splitting *
-            state_v sv(0);
+            deque<state_v> svs;        /// store shared BV
+            svs.emplace_back(state_v(0));
             for (auto i = 0; i < assg.first.size(); ++i) {
-                if (assg.first[i] == sool::N)
-                    throw iotf_runtime_error(string(__func__) + ": N exists");
-                sv[i] = assg.first[i] == sool::T ? 1 : 0;
+                alg::split(assg.first[i], i, svs);
             }
-            cout << __func__ << " I am here...1 " << endl;
+
             /// step 3.2: build local  BV via splitting *
-            state_v lv(0);
+            deque<state_v> lvs;        /// store local  BV
+            lvs.emplace_back(state_v(0));
             for (auto i = 0; i < assg.second.size(); ++i) {
-                if (assg.second[i] == sool::N)
-                    throw iotf_runtime_error(string(__func__) + ": N exists");
-                lv[i] = assg.second[i] == sool::T ? 1 : 0;
+                alg::split(assg.second[i], i, lvs);
             }
-            cout << __func__ << " I am here...2 " << endl;
+
             /// step 3.3: determine if sv and lv are valid
-            ///           preimages
-            bool is_valid = true;
-            for (auto i = 0; i < sh.size(); ++i) {
-                if (!sh[i].is_empty() && sh[i].eval(sv, lv) != sool::N)
-                    if ((_sv[i] && sh[i].eval(sv, lv) == sool::F)
-                            || (!_sv[i] && sh[i].eval(sv, lv) == sool::T)) {
-                        is_valid = false;
-                        break;
-                    }
-            }
-
-            if (is_valid) {
-                for (auto i = 0; i < lo.size(); ++i) {
-                    if (!lo[i].is_empty() && lo[i].eval(sv, lv) != sool::N)
-                        if ((_lv[i] && lo[i].eval(sv, lv) == sool::F)
-                                || (!_lv[i] && lo[i].eval(sv, lv) == sool::T)) {
-                            is_valid = false;
-                            break;
-                        }
-                }
-            }
-
-            /// step 4: the pais of (sv, lv) is a valid preimage, and store it
-            if (is_valid) {
-                result.emplace_back(sv, lv);
-            }
-        }
+            ///           preimages, and store it if true
+            for (const auto& sv : svs)
+                for (const auto& lv : lvs)
+                    result.emplace_back(sv, lv);
+        } /// ending of step 3
     }
-
     return result;
 }
 
 /**
- * @brief compute weakest precondition
- * @param _sv
- * @param _lv
- * @return a deque of pair<state_v, state_v>
+ * @brief conjoin all equalities that generated in parallel assignments
+ *        together, the format is (_v = se)
+ * @param _v
+ * @param se
+ * @param app: the expression to which (_v = se) appends
  */
-deque<pair<state_v, state_v>> pre_image::weakest_precondition(
-        const state_v& _sv, const state_v& _lv) {
-    deque<pair<state_v, state_v>> result;
-    return result;
+void pre_image::conjoin_equality(const bool& _v, const deque<symbol>& se,
+        deque<symbol>& app) {
+    if (app.empty()) {
+        app.emplace_back(_v);
+        app.insert(app.end(), se.begin(), se.end());
+        app.emplace_back(solver::EQ);
+        app.emplace_back(solver::PAR);
+    } else {
+        app.emplace_back(_v);
+        app.insert(app.end(), se.begin(), se.end());
+        app.emplace_back(solver::EQ);
+        app.emplace_back(solver::PAR);
+        app.emplace_back(solver::AND);
+    }
 }
 
 } /* namespace iotf */

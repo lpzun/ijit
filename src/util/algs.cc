@@ -137,6 +137,67 @@ void alg::split(const sool& v, const size_t& i, deque<state_v>& svs) {
     }
 }
 
+/**
+ * @brief to restore the expression
+ * @param symb_list
+ * @param is_origi: this para is to generate the comments!!!!!!!
+ * @return expression
+ */
+string solver::recov_expr_from_list(const deque<symbol>& sexpr) {
+    stack<string> worklist;
+    string op1, op2;
+    for (const auto& ss : sexpr) {
+        switch (ss) {
+        case solver::AND:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 + " & " + op2);
+            break;
+        case solver::OR:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 + " | " + op2);
+            break;
+        case solver::XOR:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 + " ^ " + op2);
+            break;
+        case solver::EQ:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 + " = " + op2);
+            break;
+        case solver::NEQ:
+            op1 = worklist.top(), worklist.pop();
+            op2 = worklist.top(), worklist.pop();
+            worklist.emplace(op1 + " != " + op2);
+            break;
+        case solver::NEG:
+            op1 = worklist.top(), worklist.pop();
+            worklist.emplace("!" + op1);
+            break;
+        case solver::PAR:
+            op1 = worklist.top(), worklist.pop();
+            worklist.emplace("(" + op1 + ")");
+            break;
+        case solver::CONST_F:
+            worklist.emplace("0");
+            break;
+        case solver::CONST_T:
+            worklist.emplace("1");
+            break;
+        case solver::CONST_N:
+            worklist.emplace("*");
+            break;
+        default:
+            worklist.emplace(std::to_string(ss));
+            break;
+        }
+    }
+    return worklist.top();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /// from here: class solver
 ///
@@ -322,30 +383,27 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
  */
 deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(const deque<symbol>& sexpr,
         const ss_vars& s_vars, const sl_vars& l_vars) {
+    cout << __func__ << recov_expr_from_list(sexpr) << "\n";
+
     deque<pair<ss_vars, sl_vars>> result;
     /// step 1: collect ids of free Boolean variables:
     ///         this is a subset of all variables
     map<symbol, ushort> vfree_id;
     ushort vfree = 0; /// the number of free variables
     for (const auto& s : sexpr) {
-        if (s > solver::CONST_N) {
-            const auto& p = vfree_id.emplace(s, vfree);
-            if (p.second)
-                ++vfree;
-        }
+        if (s > solver::CONST_N && vfree_id.emplace(s, vfree).second)
+            ++vfree;
     }
-    cout << __func__ << " I am here...6 " << endl;
     /// if the expression does not involve any variable, then
     /// evaluate the expression, and based on the result:
     /// (1) true : all assignments satisfy the expression,
     /// (2) false: no assignment satisfies the expression.
     if (vfree == 0) {
-        if (solver::eval(sexpr)) { /// <expr> is true everywhere
+        if (solver::eval(sexpr)) /// <expr> is true everywhere
             result.emplace_back(s_vars, l_vars);
-        }
         return result;
     }
-
+    //cout << __func__ << " " << vfree << endl;
     /// step 2: enumerate over all possible valuations
     ///         of active Boolean variables
     for (auto assg = 0; assg < pow(2, vfree); ++assg) {
@@ -353,7 +411,6 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(const deque<symbol>& sexpr,
         const auto& bv = solver::to_binary(assg, vfree);
         ss_vars s_tmp(s_vars);
         sl_vars l_tmp(l_vars);
-        cout << __func__ << " I am here...8 " << endl;
         /// step 4: replace Boolean variables by its values
         auto se = sexpr;
         for (auto i = 0; i < se.size(); ++i) {
@@ -362,8 +419,6 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(const deque<symbol>& sexpr,
                 /// step 4.1: determine whether se[i] is shared or not
                 bool is_shared = false;
                 const auto& idx = solver::decode(se[i], is_shared);
-                cout << se[i] << " " << ifind->second << endl;
-                cout << __func__ << " I am here... idx =" << idx << endl;
                 if (is_shared) {
                     s_tmp[idx] = (bv[ifind->second] ? sool::T : sool::F);
                 } else {
@@ -374,20 +429,21 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(const deque<symbol>& sexpr,
             }
         }
 
-        cout << __func__ << " I am here...7 " << endl;
         /// step 5: evaluate the expression
         if (solver::eval(se)) {
             result.emplace_back(s_tmp, l_tmp);
         }
     }
-//    cout<<__func__<<"====================\n";
-//    for (const auto& p : result) {
-//        for (const auto& s : p.first)
-//            cout << s;
-//        for (const auto& l : p.second)
-//            cout << l;
-//        cout << endl;
-//    }
+#ifndef NDEBUG
+    cout<<__func__<<"====================\n";
+    for (const auto& p : result) {
+        for (const auto& s : p.first)
+        cout << s;
+        for (const auto& l : p.second)
+        cout << l;
+        cout << endl;
+    }
+#endif /* end debug */
     return result;
 }
 
@@ -589,8 +645,9 @@ bool solver::eval(const deque<symbol>& sexpr) {
             break;
         }
     }
+    if (worklist.empty())
+        return false;
     return worklist.top();
-
 }
 
 } /* namespace otf */
