@@ -399,7 +399,7 @@ expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
     auto stmt = e.get_stmt().get_type();
 
     while (stmt != type_stmt::EATM) {
-        auto _pc = e.get_dest();
+        const auto& _pc = e.get_dest();
         switch (stmt) {
         case type_stmt::ASSU: {
             /// <assume> statement in atomic section:
@@ -429,7 +429,7 @@ expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
         default: {
             DBG_LOC()
             throw iotf_runtime_error(
-                    "atomic section appears unable-to-tackle statements");
+                    "atomic section contains unable-to-tackle statements");
         }
             break;
         }

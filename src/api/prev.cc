@@ -250,29 +250,30 @@ void pre_image::compute_pre_images(const prog_state& _tau,
         }
             break;
         case type_stmt::EATM: {
-            /// the ending statement of atomic section
+            /// ending statement of atomic section
             ///   pc: atomic_begin;
             ///   ...
             ///  pc': atomic_end;
             /// SEMANTIC: the atomic_end statement prevents the scheduler from
             /// a context switch to an other thread
-            /// NOTE    : the atomic_begin statement is not processed here, but
+            /// NOTE    : the atomic_begin statement is not processed here,but
             /// in the subroutine.
 
-            /// ns, i.e., new shared state, is to store the final shared state
-            /// after across atomic section
-            auto ns = _s;
-            const auto& T_in = this->compute_image_atom_sect(ns, _l);
-            const auto& Z = alg::update_counters(T_in, _l, _Z);
-            images.emplace_back(ns, Z);
+            auto _pc(pc); /// the copy of pc
+            const auto& wp = this->compute_image_atom_sect(_sv, _lv, _pc);
+            for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
+                const auto& Z = alg::update_counters(
+                        local_state(_pc, ip->second), _l, _Z);
+                images.emplace_back(shared_state(ip->first), Z);
+            }
         }
             break;
         case type_stmt::BCST: {
-            /// the broadcast statement
+            /// broadcast statement
             ///   pc: broadcast;
             /// pc+1: ...
-            /// SEMANTIC: advance the pc of active thread, and wake up all waiting
-            /// thread via advancing their pcs.
+            /// SEMANTIC: advance pc of active thread, and wake up all waiting
+            /// threads via advancing their pc's.
             ///
             /// An example of broadcast:
             ///      10: wait;
@@ -326,65 +327,6 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 }
 
 /**
- * @brief compute pre images across an atomic section:
- *        Be careful that an atomic section could contain various statements.
- *
- * @param s: shared state at the end of atomic section (atomic_end).
- *           It is also used to return the final shared state before atomic
- *           section.
- * @param l: local state at the end of atomic section
- * @return predecessor local states across atomic section
- */
-deque<local_state> pre_image::compute_image_atom_sect(shared_state& s,
-        const local_state& l) {
-    deque<local_state> locals;
-
-    return locals;
-}
-
-/**
- * @brief compute pre images for broadcast statement. It involves all post-wait
- *        threads
- *        TODO: this is not the final version.
- * @param pw
- */
-void pre_image::compute_image_bcst_stmt(deque<local_state>& pw) {
-    for (auto il = pw.begin(); il != pw.end(); ++il) {
-        il->set_pc(il->get_pc() - 1);
-    }
-}
-
-/**
- * @brief this is the <if...then> branch of IFEL statement
- * @note  the if statements in our benchmarks have the uniformed form:
- *        if <expr> then goto pc; fi;
- *        The expr is very limited into one of the following formats:
- *          (1) 0
- *          (2) *
- *          (3) !(*)
- *          (4) v
- *          (5) !v
- *        At this stage, we could assume that all of <if...else...> statements
- *        follow the above form, and then extend to more general cases in the future.
- *
- * @param _l: current local state
- * @return the predecessor local state, whose pc = ...
- */
-local_state pre_image::compute_image_ifth_stmt(const local_state& _l,
-        const size_pc& pc) {
-    return local_state(pc, _l.get_vars());
-}
-
-/**
- * @brief this is the <else> branch of IFEL statement
- * @param _l: current local state
- * @return the predecessor local state, whose pc = pc' - 1
- */
-local_state pre_image::compute_image_else_stmt(const local_state& _l) {
-    return local_state(_l.get_pc() - 1, _l.get_vars());
-}
-
-/**
  * @brief compute the pre images for an assignment statement
  * @param _sv
  * @param _lv
@@ -392,7 +334,7 @@ local_state pre_image::compute_image_else_stmt(const local_state& _l) {
  */
 deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
         const size_pc& pc, const state_v& _sv, const state_v& _lv) {
-    deque<pair<state_v, state_v>> result; /// store the result
+    deque<pair<state_v, state_v>> worklist; /// store the result
 
     auto ifind = parser::get_prev_G().get_assignments().find(pc);
     if (ifind != parser::get_prev_G().get_assignments().end()) {
@@ -452,10 +394,10 @@ deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
             ///           preimages, and store it if true
             for (const auto& sv : svs)
                 for (const auto& lv : lvs)
-                    result.emplace_back(sv, lv);
+                    worklist.emplace_back(sv, lv);
         } /// ending of step 3
     }
-    return result;
+    return worklist;
 }
 
 /**
@@ -478,6 +420,104 @@ void pre_image::conjoin_equality(const bool& _v, const deque<symbol>& se,
         app.emplace_back(solver::EQ);
         app.emplace_back(solver::PAR);
         app.emplace_back(solver::AND);
+    }
+}
+
+/**
+ * @brief this is the <if...then> branch of IFEL statement
+ * @note  the if statements in our benchmarks have the uniformed form:
+ *        if <expr> then goto pc; fi;
+ *        The expr is very limited into one of the following formats:
+ *          (1) 0
+ *          (2) *
+ *          (3) !(*)
+ *          (4) v
+ *          (5) !v
+ *        At this stage, we could assume that all of <if...else...>
+ *        statements follow the above form, and then extend to more
+ *        general cases in the future.
+ *
+ * @param _l: current local state
+ * @return the predecessor local state, whose pc = ...
+ */
+local_state pre_image::compute_image_ifth_stmt(const local_state& _l,
+        const size_pc& pc) {
+    return local_state(pc, _l.get_vars());
+}
+
+/**
+ * @brief this is the <else> branch of IFEL statement
+ * @param _l: current local state
+ * @return the predecessor local state, whose pc = pc' - 1
+ */
+local_state pre_image::compute_image_else_stmt(const local_state& _l) {
+    return local_state(_l.get_pc() - 1, _l.get_vars());
+}
+
+/**
+ * @brief compute pre images across an atomic section:
+ *        Remark that an atomic section could contain various statements
+ *
+ * @param s: shared state at the end of atomic section (atomic_end).
+ *           It is also used to return the final shared state before atomic
+ *           section.
+ * @param l: local state at the end of atomic section
+ * @return predecessor local states across atomic section
+ */
+deque<pair<state_v, state_v>> pre_image::compute_image_atom_sect(
+        const state_v& _sv, const state_v& _lv, size_pc& _pc) {
+    deque<pair<state_v, state_v>> result;
+
+    auto e = parser::get_prev_G().get_A()[_pc].front();
+    while (e.get_stmt().get_type() != type_stmt::ATOM) {
+        const auto& pc = e.get_dest();
+        switch (e.get_stmt().get_type()) {
+        case type_stmt::ASSU: {
+            for (auto ip = result.cbegin(); ip != result.cend(); ++ip) {
+                const auto& cond = e.get_stmt().get_condition();
+                if (cond.eval(ip->first, ip->second) == sool::F) /// UNSAT
+                    result.erase(ip);
+            }
+            _pc = pc;
+        }
+            break;
+        case type_stmt::SKIP: {
+            _pc = pc;
+        }
+            break;
+        case type_stmt::ASSG: {
+            const auto& wp = this->compute_image_assg_stmt(pc, _sv, _lv);
+            for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
+                const auto& cond = e.get_stmt().get_condition();
+                if (cond.is_empty()
+                        || (cond.eval(ip->first, ip->second, _sv, _lv)
+                                != sool::F))
+                    result.emplace_back(ip->first, ip->second);
+            }
+            _pc = pc;
+        }
+            break;
+        default: {
+            throw iotf_runtime_error(
+                    "atomic section contains unable-to-tackle statements");
+        }
+            break;
+        }
+
+        e = parser::get_prev_G().get_A()[_pc].front();
+    }
+    return result;
+}
+
+/**
+ * @brief compute pre images for broadcast statement. It involves all post-wait
+ *        threads
+ *        TODO: this is not the final version.
+ * @param pw
+ */
+void pre_image::compute_image_bcst_stmt(deque<local_state>& pw) {
+    for (auto il = pw.begin(); il != pw.end(); ++il) {
+        il->set_pc(il->get_pc() - 1);
     }
 }
 

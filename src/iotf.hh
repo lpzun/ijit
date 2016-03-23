@@ -288,18 +288,19 @@ private:
     void compute_pre_images(const prog_state& _tau, const local_state& _l,
             deque<prog_state>& images);
 
-    local_state compute_image_ifth_stmt(const local_state& l,
-            const size_pc& _pc);
-    local_state compute_image_else_stmt(const local_state& l);
-
-    deque<local_state> compute_image_atom_sect(shared_state& s,
-            const local_state& l);
-    void compute_image_bcst_stmt(deque<local_state>& pw);
-
     deque<pair<state_v, state_v>> compute_image_assg_stmt(const size_pc& pc,
             const state_v& _sv, const state_v& _lv);
     void conjoin_equality(const bool& _v, const deque<symbol>& se,
             deque<symbol>& app);
+
+    local_state compute_image_ifth_stmt(const local_state& l,
+            const size_pc& _pc);
+    local_state compute_image_else_stmt(const local_state& l);
+
+    deque<pair<state_v, state_v>> compute_image_atom_sect(const state_v& _sv,
+            const state_v& _lv, size_pc& _pc);
+
+    void compute_image_bcst_stmt(deque<local_state>& pw);
 };
 
 /**
