@@ -112,7 +112,8 @@ void tst_parser::test_pre_image(const string& filename) {
 
     state_v lv(0);
     uint pc;
-    cin >> pc;
+    cout << "Please assign the PC: ";
+    cin >> pc; /// input the pc
     local_state l1(pc, lv);
     cout << "local state: " << l1 << "\n";
     local_state l2(2, lv);

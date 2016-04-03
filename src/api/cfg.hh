@@ -123,7 +123,7 @@ public:
         return sexpr;
     }
 
-    const bool is_empty() const {
+    const bool is_void() const {
         return sexpr.empty();
     }
 

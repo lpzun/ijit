@@ -136,7 +136,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
             const auto& wp = this->compute_image_assg_stmt(pc, _sv, _lv);
             for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
                 const auto& cond = e.get_stmt().get_condition();
-                if (cond.is_empty()
+                if (cond.is_void()
                         || (cond.eval(ip->first, ip->second, _sv, _lv)
                                 != sool::F)) {
                     const auto& Z = alg::update_counters(
@@ -348,11 +348,11 @@ deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
         ///         assignment together...
         deque<symbol> sexpr;
         for (auto i = 0; i < sh.size(); ++i) {
-            if (!sh[i].is_empty())
+            if (!sh[i].is_void())
                 this->conjoin_equality(_sv[i], sh[i].get_sexpr(), sexpr);
         }
         for (auto i = 0; i < lo.size(); ++i) {
-            if (!lo[i].is_empty())
+            if (!lo[i].is_void())
                 this->conjoin_equality(_lv[i], lo[i].get_sexpr(), sexpr);
         }
 
@@ -361,13 +361,13 @@ deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
         ss_vars s_vars(refs::SV_NUM, sool::N);
         sl_vars l_vars(refs::LV_NUM, sool::N);
         for (auto i = 0; i < sh.size(); ++i) {
-            if (sh[i].is_empty()) {
+            if (sh[i].is_void()) {
                 s_vars[i] = _sv[i] ? sool::T : sool::F;
                 solver::substitute(sexpr, solver::encode(i, true), _sv[i]);
             }
         }
         for (auto i = 0; i < lo.size(); ++i) {
-            if (lo[i].is_empty()) {
+            if (lo[i].is_void()) {
                 l_vars[i] = _lv[i] ? sool::T : sool::F;
                 solver::substitute(sexpr, solver::encode(i, false), _lv[i]);
             }
@@ -489,7 +489,7 @@ deque<pair<state_v, state_v>> pre_image::compute_image_atom_sect(
             const auto& wp = this->compute_image_assg_stmt(pc, _sv, _lv);
             for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
                 const auto& cond = e.get_stmt().get_condition();
-                if (cond.is_empty()
+                if (cond.is_void()
                         || (cond.eval(ip->first, ip->second, _sv, _lv)
                                 != sool::F))
                     result.emplace_back(ip->first, ip->second);

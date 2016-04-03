@@ -99,10 +99,10 @@ ostream& operator <<(ostream& out, const cfg& g) {
  */
 ostream& operator <<(ostream& out, const assignment& s) {
     for (auto i = 0; i < s.sh.size(); ++i)
-        if (!s.sh[i].is_empty())
+        if (!s.sh[i].is_void())
             out << "s" << i << "=" << s.sh[i] << ";";
     for (auto i = 0; i < s.lo.size(); ++i)
-        if (!s.lo[i].is_empty())
+        if (!s.lo[i].is_void())
             out << "l" << i << "=" << s.lo[i] << ";";
     return out;
 }

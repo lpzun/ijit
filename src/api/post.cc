@@ -113,7 +113,7 @@ void post_image::compute_post_images(const prog_state& tau,
                 const auto& _Z = alg::update_counters(local_state(_pc, _lv), l,
                         Z);
                 for (const auto& _sv : svs)
-                    if (cond.is_empty()
+                    if (cond.is_void()
                             || (cond.eval(sv, lv, _sv, _lv) != sool::F))
                         images.emplace_back(shared_state(_sv), _Z);
             }
@@ -222,7 +222,7 @@ void post_image::compute_post_images(const prog_state& tau,
                 const auto& _Z = alg::update_counters(local_state(ppc, _lv), l,
                         Z);
                 for (const auto& _sv : nsv) ///then iterate over shared states
-                    if (cond.is_empty()
+                    if (cond.is_void()
                             || cond.eval(sv, lv, _sv, _lv) != sool::F)
                         images.emplace_back(shared_state(_sv), _Z);
             }
@@ -318,14 +318,14 @@ void post_image::compute_image_assg_stmt(const state_v& sv, const state_v& lv,
         /// step 1: deal with shared variables
         const auto& sh = ifind->second.sh;
         for (auto i = 0; i < sh.size(); ++i) {
-            if (!sh[i].is_empty())
+            if (!sh[i].is_void())
                 alg::split(sh[i].eval(sv, lv), i, svs); /// split * immediately
         }
 
         /// step 2: deal with local  variables
         const auto& lo = ifind->second.lo;
         for (auto i = 0; i < lo.size(); ++i) {
-            if (!lo[i].is_empty())
+            if (!lo[i].is_void())
                 alg::split(lo[i].eval(sv, lv), i, lvs); /// split * immediately
         }
     }
