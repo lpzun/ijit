@@ -134,10 +134,7 @@ inline ostream& operator <<(ostream& out, const sool& s) {
 using value_v = sool;
 
 /// symbolic valuation for shared variables
-using ss_vars = vector<sool>;
-
-/// symbolic valuation for local  variables
-using sl_vars = vector<sool>;
+using symbval = vector<sool>;
 
 /**
  * @brief define data structure shared state

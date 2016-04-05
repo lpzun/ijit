@@ -73,20 +73,23 @@ int main(int argc, char *argv[]) {
 //        cout << "testing parser...\n";
 //        tst_parser::test_parser(filename);
 
-        cout << "testing preimages...\n";
-        tst_parser::test_pre_image(filename);
+//        cout << "testing preimages...\n";
+//        tst_parser::test_pre_image(filename);
 
-//        FWS fws;
-//        const auto& is_reachable = fws.standard_FWS(std::stoi(sthread),
-//                filename);
-//        cout << "======================================================\n";
-//        cout << " final state ";
-//        if (is_reachable)
-//            cout << " is reachable: verification failed!\n";
-//        else
-//            cout << " is unreachable: verification successful!\n";
-//        cout << "======================================================"
-//                << endl;
+//        cout << "testing postimages...\n";
+//        tst_parser::test_post_image(filename);
+
+        FWS fws;
+        const auto& is_reachable = fws.standard_FWS(std::stoi(sthread),
+                filename);
+        cout << "======================================================\n";
+        cout << " final state ";
+        if (is_reachable)
+            cout << " is reachable: verification failed!\n";
+        else
+            cout << " is unreachable: verification successful!\n";
+        cout << "======================================================"
+                << endl;
 
         return 0;
     } catch (const iotf_runtime_error& e) {

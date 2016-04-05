@@ -83,9 +83,9 @@ public:
             const state_v& l);
     static bool solve(const deque<symbol>& sexpr, const state_v& s,
             const state_v& l, const state_v& _s, const state_v& _l);
-    static deque<pair<ss_vars, sl_vars>> all_sat_solve(
-            const deque<symbol>& sexpr, const ss_vars& s_vars,
-            const sl_vars& l_vars);
+    static deque<pair<symbval, symbval>> all_sat_solve(
+            const deque<symbol>& sexpr, const symbval& s_vars,
+            const symbval& l_vars);
 
     static deque<deque<symbol>> split(const deque<symbol>& sexpr);
     static deque<deque<sool>> split(const deque<sool>& vs);

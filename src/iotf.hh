@@ -278,12 +278,13 @@ public:
     deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
-    /// compute covering preimages
-    deque<prog_state> compute_cov_pre_images(const prog_state& _tau);
-    deque<prog_state> compute_exp_pre_images(const prog_state& _tau);
+    deque<local_state> cand_L; /// candidate local states for covering preimages
 
     /// compute direct   preimages
     deque<prog_state> compute_drc_pre_images(const prog_state& _tau);
+
+    /// compute covering preimages
+    deque<prog_state> compute_cov_pre_images(const prog_state& _tau);
 
     void compute_pre_images(const prog_state& _tau, const local_state& _l,
             deque<prog_state>& images);

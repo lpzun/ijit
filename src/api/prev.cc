@@ -10,7 +10,8 @@
 
 namespace iotf {
 
-pre_image::pre_image() {
+pre_image::pre_image() :
+        cand_L() {
 
 }
 
@@ -48,19 +49,6 @@ deque<prog_state> pre_image::step(const prog_state& tau, const local_state& l) {
 }
 
 /**
- * @brief compute cover predecessors of configuration tau
- * @param _tau
- * @param G
- * @return the set of cover predecessors
- */
-deque<prog_state> pre_image::compute_cov_pre_images(const prog_state& _tau) {
-    auto cov = this->compute_drc_pre_images(_tau); /// direct   predecessors
-    auto exp = this->compute_exp_pre_images(_tau); /// expanded predecessors
-    cov.insert(cov.end(), exp.begin(), exp.end()); /// combine them together
-    return cov;
-}
-
-/**
  * @brief compute direct predecessors
  * @param _tau
  * @return direct predecessors
@@ -68,20 +56,23 @@ deque<prog_state> pre_image::compute_cov_pre_images(const prog_state& _tau) {
  */
 deque<prog_state> pre_image::compute_drc_pre_images(const prog_state& _tau) {
     deque<prog_state> images;
-    for (const auto& _l : _tau.get_locals())
+    for (const auto& _l : _tau.get_locals()) {
         this->compute_pre_images(_tau, _l.first, images);
+    }
     return images;
 }
 
 /**
- * @brief compute the expanded cover predecessors
- * @param _tau
- * @param G
- * @return expanded cover predecessors
+ * @brief compute cover predecessors of configuration tau
+ * @param _tau:
+ * @param L   : candidate local states
+ * @return the set of cover predecessors
  */
-deque<prog_state> pre_image::compute_exp_pre_images(const prog_state& _tau) {
+deque<prog_state> pre_image::compute_cov_pre_images(const prog_state& _tau) {
     deque<prog_state> images;
-
+    for (const auto& _l : cand_L) {
+        this->compute_pre_images(_tau, _l, images); /// all predecessors
+    }
     return images;
 }
 
@@ -107,8 +98,6 @@ void pre_image::compute_pre_images(const prog_state& _tau,
     for (auto ie = predecessors.cbegin(); ie != predecessors.cend(); ++ie) {
         const auto& e = *ie; /// get the edge by pc
         const auto& pc = e.get_dest();
-//        cout << e << "\n";
-//        cout << _pc << "->" << pc << "\n";
         switch (e.get_stmt().get_type()) {
         case type_stmt::GOTO: {
             /// goto statement
@@ -331,6 +320,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
  * @param _sv
  * @param _lv
  * @return a list of valuations for shared and local variables
+ * @TODO: consider whether step 0 & 1 can be merged together...
  */
 deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
         const size_pc& pc, const state_v& _sv, const state_v& _lv) {
@@ -339,27 +329,30 @@ deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
     auto ifind = parser::get_prev_G().get_assignments().find(pc);
     if (ifind != parser::get_prev_G().get_assignments().end()) {
         /// step 0: preparations:
-        ///         (1) obtain assignments to shared variables
+        ///        0.1 obtain assignment expressions to shared variables
         const auto& sh = ifind->second.sh;
-        ///         (2) obtain assignments to local  variables
+        ///        0.2 obtain assignment expressions to local  variables
         const auto& lo = ifind->second.lo;
 
         /// step 1: conjoin all equalities in format v' = expr of parallel
         ///         assignment together...
         deque<symbol> sexpr;
+        ///         1.1 deal with shared part
         for (auto i = 0; i < sh.size(); ++i) {
             if (!sh[i].is_void())
                 this->conjoin_equality(_sv[i], sh[i].get_sexpr(), sexpr);
         }
+        ///         1.2 deal with local  part
         for (auto i = 0; i < lo.size(); ++i) {
             if (!lo[i].is_void())
                 this->conjoin_equality(_lv[i], lo[i].get_sexpr(), sexpr);
         }
 
+        symbval s_vars(refs::SV_NUM, sool::N);
+        symbval l_vars(refs::LV_NUM, sool::N);
+
         /// step 2: collect all non-free variables, and replace them with
-        ///         the past-parallel-assignment values
-        ss_vars s_vars(refs::SV_NUM, sool::N);
-        sl_vars l_vars(refs::LV_NUM, sool::N);
+        ///         the strongest postconditions, aka, post-assignments
         for (auto i = 0; i < sh.size(); ++i) {
             if (sh[i].is_void()) {
                 s_vars[i] = _sv[i] ? sool::T : sool::F;
@@ -377,14 +370,14 @@ deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
         const auto& assgs = solver::all_sat_solve(sexpr, s_vars, l_vars);
         for (const auto& assg : assgs) {
             /// step 3.1: build shared BV via splitting *
-            deque<state_v> svs;        /// store shared BV
+            deque<state_v> svs;       /// store shared BV
             svs.emplace_back(state_v(0));
             for (auto i = 0; i < assg.first.size(); ++i) {
                 alg::split(assg.first[i], i, svs);
             }
 
             /// step 3.2: build local  BV via splitting *
-            deque<state_v> lvs;        /// store local  BV
+            deque<state_v> lvs;       /// store local  BV
             lvs.emplace_back(state_v(0));
             for (auto i = 0; i < assg.second.size(); ++i) {
                 alg::split(assg.second[i], i, lvs);

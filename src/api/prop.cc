@@ -94,7 +94,7 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
     refs::SV_NUM = aide.s_vars_num;
     refs::LV_NUM = aide.l_vars_num;
     refs::PC_NUM = aide.lineno;
-    cout << refs::SV_NUM << "," << refs::LV_NUM << "," << aide.lineno << "\n";
+    cout << refs::SV_NUM << "," << refs::LV_NUM << "," << refs::PC_NUM << "\n";
 #ifdef NDEBUG
     DBG_LOG("for testing: before...\n")
     aide.print_control_flow_graph();
@@ -117,17 +117,14 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
         cout << post_G << "\n";
 #endif
 
-    cout << "I'm here...2........\n";
     /// step 7: setup the initial and final states from the parser: this
     ///         step has nothing to do with mode
     /// build the initial states
     const auto& I = create_initl_state(aide.s_vars_init, aide.l_vars_init);
 
-    cout << "I'm here.....3......\n";
     /// build the final   states
     const auto& Q = create_final_state(m, aide.asse_pc_set);
 
-    cout << "I'm here.......4....\n";
     return std::make_pair(I, Q);
 }
 
@@ -223,13 +220,13 @@ deque<prog_thread> parser::create_final_state(const mode& m,
  */
 void parser::create_final_state(const size_pc& pos, const cfg& G,
         const size_pc& pc, deque<prog_thread>& fps) {
-    for (const auto& e : G.get_A()[pos])
+    for (const auto& e : G.get_A()[pos]) {
         if (e.get_stmt().get_type() == type_stmt::ASSE) {
             const auto& expressions =
                     e.get_stmt().get_condition().get_splited();
             for (const auto& exp : expressions) {
-                ss_vars s_vars(refs::SV_NUM, sool::N);
-                sl_vars l_vars(refs::LV_NUM, sool::N);
+                symbval s_vars(refs::SV_NUM, sool::N);
+                symbval l_vars(refs::LV_NUM, sool::N);
                 const auto& assgs = solver::all_sat_solve(exp, s_vars, l_vars);
                 for (const auto& assg : assgs) {
                     /// step 1: build shared BV via splitting *
@@ -257,6 +254,7 @@ void parser::create_final_state(const size_pc& pos, const cfg& G,
                 }
             }
         }
+    } /// complete the iteration over all edges
 }
 
 ///////////////////////////////////////////////////////////////////////////////

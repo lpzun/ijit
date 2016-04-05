@@ -28,7 +28,7 @@ public:
     static void test_all_sat_solve();
 
 private:
-    static void print(const deque<pair<ss_vars, sl_vars>>& assgs);
+    static void print(const deque<pair<symbval, symbval>>& assgs);
 };
 
 } /* namespace iotf */

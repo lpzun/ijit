@@ -396,11 +396,9 @@ expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
     expr cond; /// constraint
 
     auto e = parser::get_post_G().get_A()[pc].front();
-    auto stmt = e.get_stmt().get_type();
-
-    while (stmt != type_stmt::EATM) {
+    while (e.get_stmt().get_type() != type_stmt::EATM) {
         const auto& _pc = e.get_dest();
-        switch (stmt) {
+        switch (e.get_stmt().get_type()) {
         case type_stmt::ASSU: {
             /// <assume> statement in atomic section:
             /// if expression is evaluated as false, then it blocks here,
@@ -433,8 +431,8 @@ expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
         }
             break;
         }
+
         e = parser::get_post_G().get_A()[pc].front();
-        stmt = e.get_stmt().get_type();
     }
 
     /// advance one more step on <atomic_end>

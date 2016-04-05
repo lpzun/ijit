@@ -28,6 +28,7 @@ ca_locals alg::update_counters(const local_state& t_in, const local_state& t_de,
         if (ifind->second == 0)
             _Z.erase(ifind);
     }
+
     ifind = _Z.find(t_in);
     if (ifind != _Z.end()) {
         ifind->second += 1;
@@ -381,11 +382,11 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
  * @param sexpr
  * @return all of the valuations that satisfy sexpr
  */
-deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(const deque<symbol>& sexpr,
-        const ss_vars& s_vars, const sl_vars& l_vars) {
+deque<pair<symbval, symbval>> solver::all_sat_solve(const deque<symbol>& sexpr,
+        const symbval& s_vars, const symbval& l_vars) {
     cout << __func__ << recov_expr_from_list(sexpr) << "\n";
 
-    deque<pair<ss_vars, sl_vars>> result;
+    deque<pair<symbval, symbval>> result;
     /// step 1: collect ids of free Boolean variables:
     ///         this is a subset of all variables
     map<symbol, ushort> vfree_id;
@@ -409,8 +410,8 @@ deque<pair<ss_vars, sl_vars>> solver::all_sat_solve(const deque<symbol>& sexpr,
     for (auto assg = 0; assg < pow(2, vfree); ++assg) {
         /// step 3: build an assignment to active variables
         const auto& bv = solver::to_binary(assg, vfree);
-        ss_vars s_tmp(s_vars);
-        sl_vars l_tmp(l_vars);
+        symbval s_tmp(s_vars);
+        symbval l_tmp(l_vars);
         /// step 4: replace Boolean variables by its values
         auto se = sexpr;
         for (auto i = 0; i < se.size(); ++i) {
@@ -533,7 +534,7 @@ symbol solver::decode(const symbol& idx, bool& is_shared) {
     auto id = idx - 3;
     is_shared = true;
     if (id >= refs::SV_NUM)
-        id -= refs::SV_NUM, is_shared = false;
+        is_shared = false, id -= refs::SV_NUM;
     return id;
 }
 
@@ -553,7 +554,7 @@ symbol solver::decode(const symbol& idx, bool& is_shared, bool& is_primed) {
         is_primed = true, is_shared = true;
         if (id >= 2 * refs::SV_NUM + refs::LV_NUM)
             is_shared = false, id -= refs::SV_NUM;
-        id -= refs::SV_NUM + refs::LV_NUM;
+        id = id - refs::SV_NUM - refs::LV_NUM;
     }
     return id;
 }

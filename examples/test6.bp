@@ -13,9 +13,9 @@ void main() begin
  8: s1,s2 := !s1,1;
  9: assert(!s2|!l);
 10: end_thread;
-11: if !s1&s2 then goto 8; fi;
+11: if s1&!s2 then goto 8; fi;
 12: atomic_begin;
-13: assume(s2);
+13: assume(!s2);
 14: s1,s2 := 1,* constrain s1; // skip;
 15: atomic_end;
 end

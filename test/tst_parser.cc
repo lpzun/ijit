@@ -48,28 +48,26 @@ void tst_parser::test_post_image(const string& filename) {
     cout << __func__ << " initial states: " << "\n";
     for (const auto& its : P.first) {
         cout << its << "\n";
-        //cout << c.convert(its) << "\n";
+        cout << c.convert(its) << "\n";
     }
 
     cout << __func__ << " final states: " << "\n";
     for (const auto& ifs : P.second) {
         cout << ifs << "\n";
-        //cout << c.convert(ifs) << "\n";
+        cout << c.convert(ifs) << "\n";
     }
 
     uint sss = 1;
     auto sv = c.convert_sss_to_sps(sss);
     shared_state s(sv);
-    cout << "shared bitset: " << sv << "\n";
-    cout << "shared state: " << s << "\n";
+//    cout << "shared bitset: " << sv << "\n";
+//    cout << "shared state: " << s << "\n";
 
     state_v lv(0);
-    cout << "local bitset: " << lv << "\n";
+//    cout << "local bitset: " << lv << "\n";
     uint pc;
+    cout << "Please assign the PC: ";
     cin >> pc;
-//    auto sls = c.convert_lps_to_lss(pc, lv);
-//    cout << sls << "\n";
-//    cout << "local state: " << sls << "\n";
     local_state l1(pc, lv);
     cout << "local state: " << l1 << "\n";
     local_state l2(2, lv);
@@ -77,14 +75,19 @@ void tst_parser::test_post_image(const string& filename) {
 
     ca_locals locals;
     locals.emplace(l1, 2);
-    locals.emplace(l2, 1);
+    auto p = locals.emplace(l2, 1);
+    if (!p.second)
+        p.first->second += 1;
 
     prog_state tau(s, locals);
     cout << tau << "\n";
     post_image image;
     auto _tau = image.step(tau);
-    for (const auto& g : _tau)
-        cout << g << endl;
+    cout << "Post images: \n";
+    for (const auto& g : _tau) {
+        cout << g << "\n";
+    }
+    cout << "=============================" << endl;
 }
 
 /**
@@ -163,8 +166,8 @@ void tst_solver::test_split() {
 void tst_solver::test_all_sat_solve() {
     refs::SV_NUM = 2;
     refs::LV_NUM = 2;
-    ss_vars s_vars(refs::SV_NUM, sool::N);
-    sl_vars l_vars(refs::LV_NUM, sool::N);
+    symbval s_vars(refs::SV_NUM, sool::N);
+    symbval l_vars(refs::LV_NUM, sool::N);
 /// se1: 0
     cout << "expression se1...\n";
     deque<symbol> se1;
@@ -206,7 +209,7 @@ void tst_solver::test_all_sat_solve() {
     deque<symbol> se5;
     se5.emplace_back(solver::CONST_N);
     auto splited = solver::split(se5);
-    deque<pair<ss_vars, sl_vars>> ret5;
+    deque<pair<symbval, symbval>> ret5;
     for (const auto& ex : splited) {
         auto tmp = solver::all_sat_solve(ex, s_vars, l_vars);
         ret5.insert(ret5.end(), tmp.begin(), tmp.end());
@@ -219,7 +222,7 @@ void tst_solver::test_all_sat_solve() {
  * @brief print
  * @param assgs
  */
-void tst_solver::print(const deque<pair<ss_vars, sl_vars>>& assgs) {
+void tst_solver::print(const deque<pair<symbval, symbval>>& assgs) {
     for (const auto& p : assgs) {
         for (const auto & s : p.first)
             cout << s << ",";
