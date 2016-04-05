@@ -381,8 +381,8 @@ private:
             const size_pc& _pc);
     local_state compute_image_else_stmt(const local_state& l);
 
-    expr compute_image_atom_sect(const state_v& sv, const state_v& lv,
-            size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs);
+    deque<pair<state_v, state_v>> compute_image_atom_sect(const state_v& sv,
+            const state_v& lv, size_pc& pc);
 };
 
 } /* namespace otf */

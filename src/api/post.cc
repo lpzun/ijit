@@ -210,21 +210,14 @@ void post_image::compute_post_images(const prog_state& tau,
 
             /// nss, i.e., new shared valuation, is to store the final shared
             /// states after across atomic section
-            deque<state_v> nsv;
             /// lss, i.e., new local  valuation, is to store the final local
             /// states after across atomic section
-            deque<state_v> nlv;
-
             auto ppc(_pc);
-            const auto& cond = this->compute_image_atom_sect(sv, lv, ppc, nsv,
-                    nlv);
-            for (const auto& _lv : nlv) { /// first iterate over local states
-                const auto& _Z = alg::update_counters(local_state(ppc, _lv), l,
-                        Z);
-                for (const auto& _sv : nsv) ///then iterate over shared states
-                    if (cond.is_void()
-                            || cond.eval(sv, lv, _sv, _lv) != sool::F)
-                        images.emplace_back(shared_state(_sv), _Z);
+            const auto& sp = this->compute_image_atom_sect(sv, lv, ppc);
+            for (const auto& p : sp) {
+                const auto& _Z = alg::update_counters(
+                        local_state(ppc, p.second), l, Z);
+                images.emplace_back(shared_state(p.first), _Z);
             }
         }
             break;
@@ -378,7 +371,7 @@ local_state post_image::compute_image_else_stmt(const local_state& l) {
  * @note  As in our benchmark, atomic section always follows the form:
  *         1: atomic_begin;
  *         2: assume(<expr>);
- *         3: <id>+ := <expr>+ constrain <expr>; || skip;
+ *         3: <id>+ := <expr>+ constrain <expr>; || skip || if ... fi; || goto;
  *         4: atomic_end;
  *         between <atomic_begin> and <atomic_end>, atomic section contains
  *         only three types of statement: <assume>, <skip> and parallel as-
@@ -387,31 +380,26 @@ local_state post_image::compute_image_else_stmt(const local_state& l) {
  * @param  sv: shared valuation at the beginning of atomic section
  * @param  lv: local  valuation at the beginning of atomic section
  * @param  pc: current pc
- * @param svs: shared valuations after executing atomic section
- * @param lvs: local  valuations after executing atomic section
- * @return the constraint following parallel assignment statement
+ * @return a list of pairs (svs, lvs)
+ *         svs: shared valuations after executing atomic section
+ *         lvs: local  valuations after executing atomic section
  */
-expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
-        size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs) {
-    expr cond; /// constraint
+deque<pair<state_v, state_v>> post_image::compute_image_atom_sect(
+        const state_v& sv, const state_v& lv, size_pc& pc) {
+    deque<pair<state_v, state_v>> result; /// constraint
+    result.emplace_back(sv, lv);
 
     auto e = parser::get_post_G().get_A()[pc].front();
     while (e.get_stmt().get_type() != type_stmt::EATM) {
         const auto& _pc = e.get_dest();
         switch (e.get_stmt().get_type()) {
-        case type_stmt::ASSU: {
-            /// <assume> statement in atomic section:
-            /// if expression is evaluated as false, then it blocks here,
-            /// i.e., it is locked in atomic section and waits for unlock
-            const auto& cond = e.get_stmt().get_condition();
-            if (cond.eval(sv, lv) == sool::F) /// unsatisfiable in assume
-                return cond;
-            pc = _pc;
-        }
-            break;
-        case type_stmt::SKIP: {
-            /// <skip> statement in atomic section:
-            /// this does nothing but updates pc
+        case type_stmt::GOTO: {
+            /// <goto> statement
+            ///   pc: goto <_pc>;
+            ///    ...
+            ///  _pc: ...
+            ///
+            /// SEMANTIC: nondeterministic goto
             pc = _pc;
         }
             break;
@@ -419,8 +407,54 @@ expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
             /// <parallel assignment> statement:
             /// SEMANTIC: assignment statement, postcondition of
             /// vars might have to satisfy the constraint
+
+            /// svs, i.e., new shared valuation,is to store the final shared
+            /// states after across atomic section
+            deque<state_v> svs;
+            /// sls, i.e., new local  valuation, is to store the final local
+            /// states after across atomic section
+            deque<state_v> lvs;
+
             this->compute_image_assg_stmt(sv, lv, pc, svs, lvs);
-            cond = e.get_stmt().get_condition();
+            const expr& cond = e.get_stmt().get_condition();
+            deque<pair<state_v, state_v>> temp;
+            for (const auto& _sv : svs)
+                for (const auto& _lv : lvs)
+                    if (cond.is_void()
+                            || (cond.eval(sv, lv, _sv, _lv) != sool::F))
+                        temp.emplace_back(_sv, _lv);
+            result.swap(temp);
+            pc = _pc;
+        }
+            break;
+        case type_stmt::IFEL: {
+            /// <if ... else ...> statement: conditional statement
+            ///   pc: if (<expr>) then <sseq> else <sseq>; fi;
+            /// pc+1: ...
+            ///
+            /// SEMANTIC:
+            const auto& cond = e.get_stmt().get_condition().eval(sv, lv);
+            if (cond != sool::F) {
+                pc = _pc;
+            } else {
+                pc = pc + 1;
+            }
+        }
+            break;
+        case type_stmt::ASSU: {
+            /// <assume> statement in atomic section:
+            /// if expression is evaluated as false, then it blocks here,
+            /// i.e., it is locked in atomic section and waits for unlock
+            const auto& cond = e.get_stmt().get_condition();
+            for (auto ip = result.begin(); ip != result.end(); ++ip)
+                if (cond.eval(ip->first, ip->second) == sool::F)
+                    result.erase(ip); /// remove unsatisfiable assignment
+            pc = _pc;
+        }
+            break;
+        case type_stmt::SKIP: {
+            /// <skip> statement in atomic section:
+            /// this does nothing but updates pc
             pc = _pc;
         }
             break;
@@ -438,14 +472,7 @@ expr post_image::compute_image_atom_sect(const state_v& sv, const state_v& lv,
     /// advance one more step on <atomic_end>
     pc = e.get_dest();
 
-    /// add sv back if no successor
-    if (svs.empty())
-        svs.emplace_back(sv);
-    /// add lv back if no successor
-    if (lvs.empty())
-        lvs.emplace_back(lv);
-
-    return cond;
+    return result;
 }
 
 } /* namespace otf */
