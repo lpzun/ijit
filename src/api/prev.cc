@@ -466,7 +466,7 @@ deque<pair<state_v, state_v>> pre_image::compute_image_atom_sect(
         const auto& pc = e.get_dest();
         switch (e.get_stmt().get_type()) {
         case type_stmt::ASSU: {
-            for (auto ip = result.cbegin(); ip != result.cend(); ++ip) {
+            for (auto ip = result.begin(); ip != result.end(); ++ip) {
                 const auto& cond = e.get_stmt().get_condition();
                 if (cond.eval(ip->first, ip->second) == sool::F) /// UNSAT
                     result.erase(ip);
