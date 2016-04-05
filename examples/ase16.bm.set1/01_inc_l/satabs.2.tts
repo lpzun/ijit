@@ -1,0 +1,1433 @@
+# error state is shared num 32 local num 70
+# local state num is pc*2+localstate
+# maximum pc is 34
+# shared state 0: m=0 ts=0 b0=0 b2=0 b3=0
+# shared state 16: m=1 ts=0 b0=0 b2=0 b3=0
+# local state 0: tts-pc=0 b1=0
+# shared state 4: m=0 ts=0 b0=1 b2=0 b3=0
+# shared state 20: m=1 ts=0 b0=1 b2=0 b3=0
+# shared state 2: m=0 ts=0 b0=0 b2=1 b3=0
+# shared state 18: m=1 ts=0 b0=0 b2=1 b3=0
+# shared state 6: m=0 ts=0 b0=1 b2=1 b3=0
+# shared state 22: m=1 ts=0 b0=1 b2=1 b3=0
+# shared state 1: m=0 ts=0 b0=0 b2=0 b3=1
+# shared state 17: m=1 ts=0 b0=0 b2=0 b3=1
+# shared state 5: m=0 ts=0 b0=1 b2=0 b3=1
+# shared state 21: m=1 ts=0 b0=1 b2=0 b3=1
+# shared state 3: m=0 ts=0 b0=0 b2=1 b3=1
+# shared state 19: m=1 ts=0 b0=0 b2=1 b3=1
+# shared state 7: m=0 ts=0 b0=1 b2=1 b3=1
+# shared state 23: m=1 ts=0 b0=1 b2=1 b3=1
+# local state 1: tts-pc=0 b1=1
+33 71
+# nondet init shared var 0
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=0 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=1 b1=0
+0 0 -> 0 2
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=0 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=1 b1=0
+4 0 -> 0 2
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=0 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=1 b1=0
+0 0 -> 4 2
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=0 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=1 b1=0
+4 0 -> 4 2
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=0 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=1 b1=0
+2 0 -> 2 2
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=0 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=1 b1=0
+6 0 -> 2 2
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=0 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=1 b1=0
+2 0 -> 6 2
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=0 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=1 b1=0
+6 0 -> 6 2
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=0 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=1 b1=0
+1 0 -> 1 2
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=0 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=1 b1=0
+5 0 -> 1 2
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=0 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=1 b1=0
+1 0 -> 5 2
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=0 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=1 b1=0
+5 0 -> 5 2
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=0 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=1 b1=0
+3 0 -> 3 2
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=0 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=1 b1=0
+7 0 -> 3 2
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=0 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=1 b1=0
+3 0 -> 7 2
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=0 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=1 b1=0
+7 0 -> 7 2
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=0 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=1 b1=1
+0 1 -> 0 3
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=0 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=1 b1=1
+4 1 -> 0 3
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=0 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=1 b1=1
+0 1 -> 4 3
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=0 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=1 b1=1
+4 1 -> 4 3
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=0 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=1 b1=1
+2 1 -> 2 3
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=0 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=1 b1=1
+6 1 -> 2 3
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=0 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=1 b1=1
+2 1 -> 6 3
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=0 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=1 b1=1
+6 1 -> 6 3
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=0 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=1 b1=1
+1 1 -> 1 3
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=0 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=1 b1=1
+5 1 -> 1 3
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=0 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=1 b1=1
+1 1 -> 5 3
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=0 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=1 b1=1
+5 1 -> 5 3
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=0 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=1 b1=1
+3 1 -> 3 3
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=0 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=1 b1=1
+7 1 -> 3 3
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=0 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=1 b1=1
+3 1 -> 7 3
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=0 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=1 b1=1
+7 1 -> 7 3
+# nondet init shared var 2
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=1 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=2 b1=0
+0 2 -> 0 4
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=1 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=2 b1=0
+2 2 -> 0 4
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=1 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=2 b1=0
+4 2 -> 4 4
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=1 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=2 b1=0
+6 2 -> 4 4
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=1 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=2 b1=0
+0 2 -> 2 4
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=1 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=2 b1=0
+2 2 -> 2 4
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=1 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=2 b1=0
+4 2 -> 6 4
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=1 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=2 b1=0
+6 2 -> 6 4
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=1 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=2 b1=0
+1 2 -> 1 4
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=1 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=2 b1=0
+3 2 -> 1 4
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=1 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=2 b1=0
+5 2 -> 5 4
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=1 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=2 b1=0
+7 2 -> 5 4
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=1 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=2 b1=0
+1 2 -> 3 4
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=1 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=2 b1=0
+3 2 -> 3 4
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=1 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=2 b1=0
+5 2 -> 7 4
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=1 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=2 b1=0
+7 2 -> 7 4
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=1 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=2 b1=1
+0 3 -> 0 5
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=1 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=2 b1=1
+2 3 -> 0 5
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=1 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=2 b1=1
+4 3 -> 4 5
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=1 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=2 b1=1
+6 3 -> 4 5
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=1 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=2 b1=1
+0 3 -> 2 5
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=1 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=2 b1=1
+2 3 -> 2 5
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=1 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=2 b1=1
+4 3 -> 6 5
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=1 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=2 b1=1
+6 3 -> 6 5
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=1 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=2 b1=1
+1 3 -> 1 5
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=1 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=2 b1=1
+3 3 -> 1 5
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=1 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=2 b1=1
+5 3 -> 5 5
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=1 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=2 b1=1
+7 3 -> 5 5
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=1 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=2 b1=1
+1 3 -> 3 5
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=1 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=2 b1=1
+3 3 -> 3 5
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=1 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=2 b1=1
+5 3 -> 7 5
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=1 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=2 b1=1
+7 3 -> 7 5
+# nondet init shared var 3
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=2 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=3 b1=0
+0 4 -> 0 6
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=2 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=3 b1=0
+1 4 -> 0 6
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=2 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=3 b1=0
+4 4 -> 4 6
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=2 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=3 b1=0
+5 4 -> 4 6
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=2 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=3 b1=0
+2 4 -> 2 6
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=2 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=3 b1=0
+3 4 -> 2 6
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=2 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=3 b1=0
+6 4 -> 6 6
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=2 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=3 b1=0
+7 4 -> 6 6
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=2 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=3 b1=0
+0 4 -> 1 6
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=2 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=3 b1=0
+1 4 -> 1 6
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=2 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=3 b1=0
+4 4 -> 5 6
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=2 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=3 b1=0
+5 4 -> 5 6
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=2 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=3 b1=0
+2 4 -> 3 6
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=2 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=3 b1=0
+3 4 -> 3 6
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=2 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=3 b1=0
+6 4 -> 7 6
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=2 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=3 b1=0
+7 4 -> 7 6
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=2 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=3 b1=1
+0 5 -> 0 7
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=2 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=3 b1=1
+1 5 -> 0 7
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=2 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=3 b1=1
+4 5 -> 4 7
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=2 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=3 b1=1
+5 5 -> 4 7
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=2 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=3 b1=1
+2 5 -> 2 7
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=2 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=3 b1=1
+3 5 -> 2 7
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=2 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=3 b1=1
+6 5 -> 6 7
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=2 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=3 b1=1
+7 5 -> 6 7
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=2 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=3 b1=1
+0 5 -> 1 7
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=2 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=3 b1=1
+1 5 -> 1 7
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=2 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=3 b1=1
+4 5 -> 5 7
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=2 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=3 b1=1
+5 5 -> 5 7
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=2 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=3 b1=1
+2 5 -> 3 7
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=2 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=3 b1=1
+3 5 -> 3 7
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=2 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=3 b1=1
+6 5 -> 7 7
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=2 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=3 b1=1
+7 5 -> 7 7
+# nondet init local var 1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=3 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=4 b1=0
+0 6 -> 0 8
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=3 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=4 b1=0
+0 7 -> 0 8
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=3 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=4 b1=0
+4 6 -> 4 8
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=3 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=4 b1=0
+4 7 -> 4 8
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=3 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=4 b1=0
+2 6 -> 2 8
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=3 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=4 b1=0
+2 7 -> 2 8
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=3 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=4 b1=0
+6 6 -> 6 8
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=3 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=4 b1=0
+6 7 -> 6 8
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=3 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=4 b1=0
+1 6 -> 1 8
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=3 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=4 b1=0
+1 7 -> 1 8
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=3 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=4 b1=0
+5 6 -> 5 8
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=3 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=4 b1=0
+5 7 -> 5 8
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=3 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=4 b1=0
+3 6 -> 3 8
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=3 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=4 b1=0
+3 7 -> 3 8
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=3 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=4 b1=0
+7 6 -> 7 8
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=3 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=4 b1=0
+7 7 -> 7 8
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=3 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=4 b1=1
+0 6 -> 0 9
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=3 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=4 b1=1
+0 7 -> 0 9
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=3 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=4 b1=1
+4 6 -> 4 9
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=3 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=4 b1=1
+4 7 -> 4 9
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=3 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=4 b1=1
+2 6 -> 2 9
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=3 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=4 b1=1
+2 7 -> 2 9
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=3 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=4 b1=1
+6 6 -> 6 9
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=3 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=4 b1=1
+6 7 -> 6 9
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=3 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=4 b1=1
+1 6 -> 1 9
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=3 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=4 b1=1
+1 7 -> 1 9
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=3 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=4 b1=1
+5 6 -> 5 9
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=3 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=4 b1=1
+5 7 -> 5 9
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=3 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=4 b1=1
+3 6 -> 3 9
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=3 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=4 b1=1
+3 7 -> 3 9
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=3 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=4 b1=1
+7 6 -> 7 9
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=3 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=4 b1=1
+7 7 -> 7 9
+# BP-PC4: ASSIGN at file ./cav16.bm/01_inc_l/main.c line 23
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=4 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=0
+0 8 -> 2 10
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=4 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=0
+2 8 -> 2 10
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=4 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=0
+1 8 -> 2 10
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=4 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=0
+3 8 -> 2 10
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=4 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=0
+4 8 -> 6 10
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=4 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=0
+6 8 -> 6 10
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=4 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=0
+5 8 -> 6 10
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=4 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=0
+7 8 -> 6 10
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=4 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=1
+0 9 -> 2 11
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=4 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=1
+2 9 -> 2 11
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=4 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=1
+1 9 -> 2 11
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=4 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=1
+3 9 -> 2 11
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=4 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=1
+4 9 -> 6 11
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=4 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=1
+6 9 -> 6 11
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=4 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=1
+5 9 -> 6 11
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=4 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=1
+7 9 -> 6 11
+# BP-PC5: ASSIGN at file ./cav16.bm/01_inc_l/main.c line 23
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=5 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=6 b1=0
+0 10 -> 0 12
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=5 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=6 b1=0
+4 10 -> 0 12
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=6 b1=0
+2 10 -> 2 12
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=6 b1=0
+6 10 -> 2 12
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=5 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=6 b1=0
+1 10 -> 1 12
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=5 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=6 b1=0
+5 10 -> 1 12
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=5 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=6 b1=0
+3 10 -> 3 12
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=5 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=6 b1=0
+7 10 -> 3 12
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=5 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=6 b1=1
+0 11 -> 0 13
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=5 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=6 b1=1
+4 11 -> 0 13
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=5 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=6 b1=1
+2 11 -> 2 13
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=5 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=6 b1=1
+6 11 -> 2 13
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=5 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=6 b1=1
+1 11 -> 1 13
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=5 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=6 b1=1
+5 11 -> 1 13
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=5 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=6 b1=1
+3 11 -> 3 13
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=5 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=6 b1=1
+7 11 -> 3 13
+# BP-PC8: GOTO at file ./cav16.bm/01_inc_l/main.c line 47 function main
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=6 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=7 b1=0
+0 12 -> 0 14
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=6 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=7 b1=0
+4 12 -> 4 14
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=6 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=7 b1=0
+2 12 -> 2 14
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=6 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=7 b1=0
+6 12 -> 6 14
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=6 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=7 b1=0
+1 12 -> 1 14
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=6 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=7 b1=0
+5 12 -> 5 14
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=6 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=7 b1=0
+3 12 -> 3 14
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=6 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=7 b1=0
+7 12 -> 7 14
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=6 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=7 b1=1
+0 13 -> 0 15
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=6 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=7 b1=1
+4 13 -> 4 15
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=6 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=7 b1=1
+2 13 -> 2 15
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=6 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=7 b1=1
+6 13 -> 6 15
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=6 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=7 b1=1
+1 13 -> 1 15
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=6 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=7 b1=1
+5 13 -> 5 15
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=6 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=7 b1=1
+3 13 -> 3 15
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=6 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=7 b1=1
+7 13 -> 7 15
+# BP-PC9: START_THREAD at file ./cav16.bm/01_inc_l/main.c line 47 function main
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=7 b1=0 --> m=0 ts=1 b0=0 b2=0 b3=0 tts-pc=8 b1=0
+0 14 +> 8 16
+# m=0 ts=1 b0=0 b2=0 b3=0 tts-pc=7 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=9 b1=0
+8 14 -> 0 18
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=7 b1=0 --> m=0 ts=1 b0=1 b2=0 b3=0 tts-pc=8 b1=0
+4 14 +> 12 16
+# m=0 ts=1 b0=1 b2=0 b3=0 tts-pc=7 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=9 b1=0
+12 14 -> 4 18
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=7 b1=0 --> m=0 ts=1 b0=0 b2=1 b3=0 tts-pc=8 b1=0
+2 14 +> 10 16
+# m=0 ts=1 b0=0 b2=1 b3=0 tts-pc=7 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=9 b1=0
+10 14 -> 2 18
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=7 b1=0 --> m=0 ts=1 b0=1 b2=1 b3=0 tts-pc=8 b1=0
+6 14 +> 14 16
+# m=0 ts=1 b0=1 b2=1 b3=0 tts-pc=7 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=9 b1=0
+14 14 -> 6 18
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=7 b1=0 --> m=0 ts=1 b0=0 b2=0 b3=1 tts-pc=8 b1=0
+1 14 +> 9 16
+# m=0 ts=1 b0=0 b2=0 b3=1 tts-pc=7 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=9 b1=0
+9 14 -> 1 18
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=7 b1=0 --> m=0 ts=1 b0=1 b2=0 b3=1 tts-pc=8 b1=0
+5 14 +> 13 16
+# m=0 ts=1 b0=1 b2=0 b3=1 tts-pc=7 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=9 b1=0
+13 14 -> 5 18
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=7 b1=0 --> m=0 ts=1 b0=0 b2=1 b3=1 tts-pc=8 b1=0
+3 14 +> 11 16
+# m=0 ts=1 b0=0 b2=1 b3=1 tts-pc=7 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=9 b1=0
+11 14 -> 3 18
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=7 b1=0 --> m=0 ts=1 b0=1 b2=1 b3=1 tts-pc=8 b1=0
+7 14 +> 15 16
+# m=0 ts=1 b0=1 b2=1 b3=1 tts-pc=7 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=9 b1=0
+15 14 -> 7 18
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=7 b1=1 --> m=0 ts=1 b0=0 b2=0 b3=0 tts-pc=8 b1=1
+0 15 +> 8 17
+# m=0 ts=1 b0=0 b2=0 b3=0 tts-pc=7 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=9 b1=1
+8 15 -> 0 19
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=7 b1=1 --> m=0 ts=1 b0=1 b2=0 b3=0 tts-pc=8 b1=1
+4 15 +> 12 17
+# m=0 ts=1 b0=1 b2=0 b3=0 tts-pc=7 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=9 b1=1
+12 15 -> 4 19
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=7 b1=1 --> m=0 ts=1 b0=0 b2=1 b3=0 tts-pc=8 b1=1
+2 15 +> 10 17
+# m=0 ts=1 b0=0 b2=1 b3=0 tts-pc=7 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=9 b1=1
+10 15 -> 2 19
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=7 b1=1 --> m=0 ts=1 b0=1 b2=1 b3=0 tts-pc=8 b1=1
+6 15 +> 14 17
+# m=0 ts=1 b0=1 b2=1 b3=0 tts-pc=7 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=9 b1=1
+14 15 -> 6 19
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=7 b1=1 --> m=0 ts=1 b0=0 b2=0 b3=1 tts-pc=8 b1=1
+1 15 +> 9 17
+# m=0 ts=1 b0=0 b2=0 b3=1 tts-pc=7 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=9 b1=1
+9 15 -> 1 19
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=7 b1=1 --> m=0 ts=1 b0=1 b2=0 b3=1 tts-pc=8 b1=1
+5 15 +> 13 17
+# m=0 ts=1 b0=1 b2=0 b3=1 tts-pc=7 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=9 b1=1
+13 15 -> 5 19
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=7 b1=1 --> m=0 ts=1 b0=0 b2=1 b3=1 tts-pc=8 b1=1
+3 15 +> 11 17
+# m=0 ts=1 b0=0 b2=1 b3=1 tts-pc=7 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=9 b1=1
+11 15 -> 3 19
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=7 b1=1 --> m=0 ts=1 b0=1 b2=1 b3=1 tts-pc=8 b1=1
+7 15 +> 15 17
+# m=0 ts=1 b0=1 b2=1 b3=1 tts-pc=7 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=9 b1=1
+15 15 -> 7 19
+# BP-PC10: GOTO at 
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=8 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=32 b1=0
+0 16 -> 0 64
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=8 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=32 b1=0
+4 16 -> 4 64
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=8 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=32 b1=0
+2 16 -> 2 64
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=8 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=32 b1=0
+6 16 -> 6 64
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=8 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=32 b1=0
+1 16 -> 1 64
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=8 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=32 b1=0
+5 16 -> 5 64
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=8 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=32 b1=0
+3 16 -> 3 64
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=8 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=32 b1=0
+7 16 -> 7 64
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=8 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=32 b1=1
+0 17 -> 0 65
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=8 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=32 b1=1
+4 17 -> 4 65
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=8 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=32 b1=1
+2 17 -> 2 65
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=8 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=32 b1=1
+6 17 -> 6 65
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=8 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=32 b1=1
+1 17 -> 1 65
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=8 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=32 b1=1
+5 17 -> 5 65
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=8 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=32 b1=1
+3 17 -> 3 65
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=8 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=32 b1=1
+7 17 -> 7 65
+# BP-PC11: LOCATION at file ./cav16.bm/01_inc_l/main.c line 47 function main
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=9 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=10 b1=0
+0 18 -> 0 20
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=9 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=10 b1=0
+4 18 -> 4 20
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=9 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=10 b1=0
+2 18 -> 2 20
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=9 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=10 b1=0
+6 18 -> 6 20
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=9 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=10 b1=0
+1 18 -> 1 20
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=9 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=10 b1=0
+5 18 -> 5 20
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=9 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=10 b1=0
+3 18 -> 3 20
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=9 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=10 b1=0
+7 18 -> 7 20
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=9 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=10 b1=1
+0 19 -> 0 21
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=9 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=10 b1=1
+4 19 -> 4 21
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=9 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=10 b1=1
+2 19 -> 2 21
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=9 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=10 b1=1
+6 19 -> 6 21
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=9 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=10 b1=1
+1 19 -> 1 21
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=9 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=10 b1=1
+5 19 -> 5 21
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=9 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=10 b1=1
+3 19 -> 3 21
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=9 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=10 b1=1
+7 19 -> 7 21
+# BP-PC12: DECL at file ./cav16.bm/01_inc_l/main.c line 26 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=10 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=11 b1=0
+0 20 -> 0 22
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=10 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=11 b1=0
+0 21 -> 0 22
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=10 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=11 b1=0
+4 20 -> 4 22
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=10 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=11 b1=0
+4 21 -> 4 22
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=10 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=11 b1=0
+2 20 -> 2 22
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=10 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=11 b1=0
+2 21 -> 2 22
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=10 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=11 b1=0
+6 20 -> 6 22
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=10 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=11 b1=0
+6 21 -> 6 22
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=10 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=11 b1=0
+1 20 -> 1 22
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=10 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=11 b1=0
+1 21 -> 1 22
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=10 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=11 b1=0
+5 20 -> 5 22
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=10 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=11 b1=0
+5 21 -> 5 22
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=10 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=11 b1=0
+3 20 -> 3 22
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=10 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=11 b1=0
+3 21 -> 3 22
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=10 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=11 b1=0
+7 20 -> 7 22
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=10 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=11 b1=0
+7 21 -> 7 22
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=10 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=11 b1=1
+0 20 -> 0 23
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=10 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=11 b1=1
+0 21 -> 0 23
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=10 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=11 b1=1
+4 20 -> 4 23
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=10 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=11 b1=1
+4 21 -> 4 23
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=10 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=11 b1=1
+2 20 -> 2 23
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=10 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=11 b1=1
+2 21 -> 2 23
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=10 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=11 b1=1
+6 20 -> 6 23
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=10 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=11 b1=1
+6 21 -> 6 23
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=10 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=11 b1=1
+1 20 -> 1 23
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=10 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=11 b1=1
+1 21 -> 1 23
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=10 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=11 b1=1
+5 20 -> 5 23
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=10 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=11 b1=1
+5 21 -> 5 23
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=10 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=11 b1=1
+3 20 -> 3 23
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=10 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=11 b1=1
+3 21 -> 3 23
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=10 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=11 b1=1
+7 20 -> 7 23
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=10 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=11 b1=1
+7 21 -> 7 23
+# BP-PC13: ASSIGN at file ./cav16.bm/01_inc_l/main.c line 26 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=11 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=12 b1=1
+0 22 -> 0 25
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=11 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=12 b1=1
+0 23 -> 0 25
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=11 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=12 b1=1
+4 22 -> 4 25
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=11 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=12 b1=1
+4 23 -> 4 25
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=11 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=12 b1=1
+2 22 -> 2 25
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=11 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=12 b1=1
+2 23 -> 2 25
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=11 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=12 b1=1
+6 22 -> 6 25
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=11 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=12 b1=1
+6 23 -> 6 25
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=11 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=12 b1=1
+1 22 -> 1 25
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=11 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=12 b1=1
+1 23 -> 1 25
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=11 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=12 b1=1
+5 22 -> 5 25
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=11 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=12 b1=1
+5 23 -> 5 25
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=11 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=12 b1=1
+3 22 -> 3 25
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=11 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=12 b1=1
+3 23 -> 3 25
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=11 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=12 b1=1
+7 22 -> 7 25
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=11 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=12 b1=1
+7 23 -> 7 25
+# BP-PC14: ATOMIC_BEGIN at file ./cav16.bm/01_inc_l/main.c line 28 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=12 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=13 b1=0
+0 24 -> 16 26
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=12 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=13 b1=0
+4 24 -> 20 26
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=12 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=13 b1=0
+2 24 -> 18 26
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=12 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=13 b1=0
+6 24 -> 22 26
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=12 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=13 b1=0
+1 24 -> 17 26
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=12 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=13 b1=0
+5 24 -> 21 26
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=12 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=13 b1=0
+3 24 -> 19 26
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=12 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=13 b1=0
+7 24 -> 23 26
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=12 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=13 b1=1
+0 25 -> 16 27
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=12 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=13 b1=1
+4 25 -> 20 27
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=12 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=13 b1=1
+2 25 -> 18 27
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=12 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=13 b1=1
+6 25 -> 22 27
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=12 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=13 b1=1
+1 25 -> 17 27
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=12 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=13 b1=1
+5 25 -> 21 27
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=12 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=13 b1=1
+3 25 -> 19 27
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=12 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=13 b1=1
+7 25 -> 23 27
+# BP-PC15: ASSUME at file ./cav16.bm/01_inc_l/main.c line 28 function thr1
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=13 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=14 b1=0
+16 26 -> 16 28
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=13 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=13 b1=0
+16 26 -> 16 26
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=13 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=14 b1=0
+20 26 -> 20 28
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=13 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=13 b1=0
+20 26 -> 20 26
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=13 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=14 b1=0
+18 26 -> 18 28
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=13 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=13 b1=0
+18 26 -> 18 26
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=13 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=14 b1=0
+22 26 -> 22 28
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=13 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=13 b1=0
+22 26 -> 22 26
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=13 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=14 b1=0
+17 26 -> 17 28
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=13 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=13 b1=0
+17 26 -> 17 26
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=13 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=14 b1=0
+21 26 -> 21 28
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=13 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=13 b1=0
+21 26 -> 21 26
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=13 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=14 b1=0
+19 26 -> 19 28
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=13 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=13 b1=0
+19 26 -> 19 26
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=13 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=14 b1=0
+23 26 -> 23 28
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=13 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=13 b1=0
+23 26 -> 23 26
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=13 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=14 b1=1
+16 27 -> 16 29
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=13 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=13 b1=1
+16 27 -> 16 27
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=13 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=14 b1=1
+20 27 -> 20 29
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=13 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=13 b1=1
+20 27 -> 20 27
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=13 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=14 b1=1
+18 27 -> 18 29
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=13 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=13 b1=1
+18 27 -> 18 27
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=13 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=14 b1=1
+22 27 -> 22 29
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=13 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=13 b1=1
+22 27 -> 22 27
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=13 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=14 b1=1
+17 27 -> 17 29
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=13 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=13 b1=1
+17 27 -> 17 27
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=13 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=14 b1=1
+21 27 -> 21 29
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=13 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=13 b1=1
+21 27 -> 21 27
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=13 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=14 b1=1
+19 27 -> 19 29
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=13 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=13 b1=1
+19 27 -> 19 27
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=13 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=14 b1=1
+23 27 -> 23 29
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=13 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=13 b1=1
+23 27 -> 23 27
+# BP-PC16: ASSIGN at file ./cav16.bm/01_inc_l/main.c line 28 function thr1
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=14 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=15 b1=0
+16 28 -> 20 30
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=14 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=15 b1=0
+20 28 -> 20 30
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=14 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=15 b1=0
+18 28 -> 22 30
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=14 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=15 b1=0
+22 28 -> 22 30
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=14 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=15 b1=0
+17 28 -> 21 30
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=14 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=15 b1=0
+21 28 -> 21 30
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=14 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=15 b1=0
+19 28 -> 23 30
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=14 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=15 b1=0
+23 28 -> 23 30
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=14 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=15 b1=1
+16 29 -> 20 31
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=14 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=15 b1=1
+20 29 -> 20 31
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=14 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=15 b1=1
+18 29 -> 22 31
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=14 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=15 b1=1
+22 29 -> 22 31
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=14 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=15 b1=1
+17 29 -> 21 31
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=14 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=15 b1=1
+21 29 -> 21 31
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=14 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=15 b1=1
+19 29 -> 23 31
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=14 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=15 b1=1
+23 29 -> 23 31
+# BP-PC17: ATOMIC_END at file ./cav16.bm/01_inc_l/main.c line 28 function thr1
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=15 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=16 b1=0
+16 30 -> 0 32
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=15 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=16 b1=0
+20 30 -> 4 32
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=15 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=16 b1=0
+18 30 -> 2 32
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=15 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=16 b1=0
+22 30 -> 6 32
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=15 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=16 b1=0
+17 30 -> 1 32
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=15 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=16 b1=0
+21 30 -> 5 32
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=15 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=16 b1=0
+19 30 -> 3 32
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=15 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=16 b1=0
+23 30 -> 7 32
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=15 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=16 b1=1
+16 31 -> 0 33
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=15 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=16 b1=1
+20 31 -> 4 33
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=15 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=16 b1=1
+18 31 -> 2 33
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=15 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=16 b1=1
+22 31 -> 6 33
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=15 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=16 b1=1
+17 31 -> 1 33
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=15 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=16 b1=1
+21 31 -> 5 33
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=15 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=16 b1=1
+19 31 -> 3 33
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=15 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=16 b1=1
+23 31 -> 7 33
+# BP-PC18: GOTO at file ./cav16.bm/01_inc_l/main.c line 29 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=16 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=22 b1=0
+0 32 -> 0 44
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=16 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=22 b1=0
+4 32 -> 4 44
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=16 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=22 b1=0
+2 32 -> 2 44
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=16 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=22 b1=0
+6 32 -> 6 44
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=16 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=17 b1=0
+1 32 -> 1 34
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=16 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=17 b1=0
+5 32 -> 5 34
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=16 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=17 b1=0
+3 32 -> 3 34
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=16 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=17 b1=0
+7 32 -> 7 34
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=16 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=22 b1=1
+0 33 -> 0 45
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=16 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=22 b1=1
+4 33 -> 4 45
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=16 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=22 b1=1
+2 33 -> 2 45
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=16 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=22 b1=1
+6 33 -> 6 45
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=16 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=17 b1=1
+1 33 -> 1 35
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=16 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=17 b1=1
+5 33 -> 5 35
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=16 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=17 b1=1
+3 33 -> 3 35
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=16 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=17 b1=1
+7 33 -> 7 35
+# BP-PC19: ATOMIC_BEGIN at file ./cav16.bm/01_inc_l/main.c line 30 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=17 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=18 b1=0
+0 34 -> 16 36
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=17 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=18 b1=0
+4 34 -> 20 36
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=17 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=18 b1=0
+2 34 -> 18 36
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=17 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=18 b1=0
+6 34 -> 22 36
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=17 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=18 b1=0
+1 34 -> 17 36
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=17 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=18 b1=0
+5 34 -> 21 36
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=17 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=18 b1=0
+3 34 -> 19 36
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=17 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=18 b1=0
+7 34 -> 23 36
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=17 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=18 b1=1
+0 35 -> 16 37
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=17 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=18 b1=1
+4 35 -> 20 37
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=17 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=18 b1=1
+2 35 -> 18 37
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=17 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=18 b1=1
+6 35 -> 22 37
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=17 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=18 b1=1
+1 35 -> 17 37
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=17 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=18 b1=1
+5 35 -> 21 37
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=17 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=18 b1=1
+3 35 -> 19 37
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=17 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=18 b1=1
+7 35 -> 23 37
+# BP-PC20: ASSUME at file ./cav16.bm/01_inc_l/main.c line 30 function thr1
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=18 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=19 b1=0
+20 36 -> 20 38
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=18 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=19 b1=0
+22 36 -> 22 38
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=18 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=19 b1=0
+21 36 -> 21 38
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=18 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=19 b1=0
+23 36 -> 23 38
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=18 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=19 b1=1
+20 37 -> 20 39
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=18 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=19 b1=1
+22 37 -> 22 39
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=18 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=19 b1=1
+21 37 -> 21 39
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=18 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=19 b1=1
+23 37 -> 23 39
+# BP-PC21: ASSIGN at file ./cav16.bm/01_inc_l/main.c line 30 function thr1
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=19 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=20 b1=0
+16 38 -> 16 40
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=19 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=20 b1=0
+20 38 -> 16 40
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=19 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=20 b1=0
+18 38 -> 18 40
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=19 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=20 b1=0
+22 38 -> 18 40
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=19 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=20 b1=0
+17 38 -> 17 40
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=19 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=20 b1=0
+21 38 -> 17 40
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=19 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=20 b1=0
+19 38 -> 19 40
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=19 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=20 b1=0
+23 38 -> 19 40
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=19 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=20 b1=1
+16 39 -> 16 41
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=19 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=20 b1=1
+20 39 -> 16 41
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=19 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=20 b1=1
+18 39 -> 18 41
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=19 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=20 b1=1
+22 39 -> 18 41
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=19 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=20 b1=1
+17 39 -> 17 41
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=19 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=20 b1=1
+21 39 -> 17 41
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=19 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=20 b1=1
+19 39 -> 19 41
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=19 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=20 b1=1
+23 39 -> 19 41
+# BP-PC22: ATOMIC_END at file ./cav16.bm/01_inc_l/main.c line 30 function thr1
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=20 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=21 b1=0
+16 40 -> 0 42
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=20 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=21 b1=0
+20 40 -> 4 42
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=20 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=21 b1=0
+18 40 -> 2 42
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=20 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=21 b1=0
+22 40 -> 6 42
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=20 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=21 b1=0
+17 40 -> 1 42
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=20 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=21 b1=0
+21 40 -> 5 42
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=20 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=21 b1=0
+19 40 -> 3 42
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=20 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=21 b1=0
+23 40 -> 7 42
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=20 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=21 b1=1
+16 41 -> 0 43
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=20 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=21 b1=1
+20 41 -> 4 43
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=20 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=21 b1=1
+18 41 -> 2 43
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=20 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=21 b1=1
+22 41 -> 6 43
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=20 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=21 b1=1
+17 41 -> 1 43
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=20 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=21 b1=1
+21 41 -> 5 43
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=20 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=21 b1=1
+19 41 -> 3 43
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=20 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=21 b1=1
+23 41 -> 7 43
+# BP-PC24: GOTO at file ./cav16.bm/01_inc_l/main.c line 32 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=21 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=30 b1=0
+0 42 -> 0 60
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=21 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=30 b1=0
+4 42 -> 4 60
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=21 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=30 b1=0
+2 42 -> 2 60
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=21 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=30 b1=0
+6 42 -> 6 60
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=21 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=30 b1=0
+1 42 -> 1 60
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=21 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=30 b1=0
+5 42 -> 5 60
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=21 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=30 b1=0
+3 42 -> 3 60
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=21 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=30 b1=0
+7 42 -> 7 60
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=21 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=30 b1=1
+0 43 -> 0 61
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=21 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=30 b1=1
+4 43 -> 4 61
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=21 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=30 b1=1
+2 43 -> 2 61
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=21 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=30 b1=1
+6 43 -> 6 61
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=21 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=30 b1=1
+1 43 -> 1 61
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=21 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=30 b1=1
+5 43 -> 5 61
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=21 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=30 b1=1
+3 43 -> 3 61
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=21 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=30 b1=1
+7 43 -> 7 61
+# BP-PC25: ASSIGN at file ./cav16.bm/01_inc_l/main.c line 35 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=22 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=0
+0 44 -> 0 46
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=22 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=0
+0 45 -> 0 46
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=22 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=0
+4 44 -> 4 46
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=22 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=0
+4 45 -> 4 46
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=22 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=0
+1 44 -> 1 46
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=22 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=0
+1 45 -> 1 46
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=22 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=0
+5 44 -> 5 46
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=22 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=0
+5 45 -> 5 46
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=22 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=1
+2 44 -> 2 47
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=22 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=1
+2 45 -> 2 47
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=22 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=1
+6 44 -> 6 47
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=22 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=1
+6 45 -> 6 47
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=22 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=1
+3 44 -> 3 47
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=22 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=1
+3 45 -> 3 47
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=22 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=1
+7 44 -> 7 47
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=22 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=1
+7 45 -> 7 47
+# BP-PC26: ASSIGN at file ./cav16.bm/01_inc_l/main.c line 36 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=0
+0 46 -> 0 48
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=0
+2 46 -> 0 48
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=0
+1 46 -> 0 48
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=0
+3 46 -> 0 48
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=0
+4 46 -> 4 48
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=0
+6 46 -> 4 48
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=0
+5 46 -> 4 48
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=0
+7 46 -> 4 48
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=0
+0 46 -> 2 48
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=0
+2 46 -> 2 48
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=0
+1 46 -> 2 48
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=0
+3 46 -> 2 48
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=0
+4 46 -> 6 48
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=0
+6 46 -> 6 48
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=0
+5 46 -> 6 48
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=0
+7 46 -> 6 48
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=0
+0 46 -> 1 48
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=0
+2 46 -> 1 48
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=0
+1 46 -> 1 48
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=0
+3 46 -> 1 48
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=0
+4 46 -> 5 48
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=0
+6 46 -> 5 48
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=0
+5 46 -> 5 48
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=0
+7 46 -> 5 48
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=0
+0 46 -> 3 48
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=0
+2 46 -> 3 48
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=0
+1 46 -> 3 48
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=0
+3 46 -> 3 48
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=0
+4 46 -> 7 48
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=0
+6 46 -> 7 48
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=0
+5 46 -> 7 48
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=0
+7 46 -> 7 48
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=1
+0 47 -> 0 49
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=1
+2 47 -> 0 49
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=1
+1 47 -> 0 49
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=1
+3 47 -> 0 49
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=1
+4 47 -> 4 49
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=1
+6 47 -> 4 49
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=1
+5 47 -> 4 49
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=1
+7 47 -> 4 49
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=1
+0 47 -> 2 49
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=1
+2 47 -> 2 49
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=1
+1 47 -> 2 49
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=1
+3 47 -> 2 49
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=1
+4 47 -> 6 49
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=1
+6 47 -> 6 49
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=1
+5 47 -> 6 49
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=1
+7 47 -> 6 49
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=1
+0 47 -> 1 49
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=1
+2 47 -> 1 49
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=1
+1 47 -> 1 49
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=1
+3 47 -> 1 49
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=1
+4 47 -> 5 49
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=1
+6 47 -> 5 49
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=1
+5 47 -> 5 49
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=1
+7 47 -> 5 49
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=1
+0 47 -> 3 49
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=1
+2 47 -> 3 49
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=1
+1 47 -> 3 49
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=1
+3 47 -> 3 49
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=1
+4 47 -> 7 49
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=1
+6 47 -> 7 49
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=1
+5 47 -> 7 49
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=23 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=1
+7 47 -> 7 49
+# BP-PC27: ATOMIC_BEGIN at file ./cav16.bm/01_inc_l/main.c line 37 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=25 b1=0
+0 48 -> 16 50
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=25 b1=0
+4 48 -> 20 50
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=25 b1=0
+2 48 -> 18 50
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=25 b1=0
+6 48 -> 22 50
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=25 b1=0
+1 48 -> 17 50
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=25 b1=0
+5 48 -> 21 50
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=25 b1=0
+3 48 -> 19 50
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=25 b1=0
+7 48 -> 23 50
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=24 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=25 b1=1
+0 49 -> 16 51
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=24 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=25 b1=1
+4 49 -> 20 51
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=24 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=25 b1=1
+2 49 -> 18 51
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=24 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=25 b1=1
+6 49 -> 22 51
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=24 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=25 b1=1
+1 49 -> 17 51
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=24 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=25 b1=1
+5 49 -> 21 51
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=24 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=25 b1=1
+3 49 -> 19 51
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=24 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=25 b1=1
+7 49 -> 23 51
+# BP-PC28: ASSUME at file ./cav16.bm/01_inc_l/main.c line 37 function thr1
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=25 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=26 b1=0
+20 50 -> 20 52
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=25 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=26 b1=0
+22 50 -> 22 52
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=25 b1=0 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=26 b1=0
+21 50 -> 21 52
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=25 b1=0 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=26 b1=0
+23 50 -> 23 52
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=25 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=26 b1=1
+20 51 -> 20 53
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=25 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=26 b1=1
+22 51 -> 22 53
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=25 b1=1 --> m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=26 b1=1
+21 51 -> 21 53
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=25 b1=1 --> m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=26 b1=1
+23 51 -> 23 53
+# BP-PC29: ASSIGN at file ./cav16.bm/01_inc_l/main.c line 37 function thr1
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=26 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=27 b1=0
+16 52 -> 16 54
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=26 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=27 b1=0
+20 52 -> 16 54
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=26 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=27 b1=0
+18 52 -> 18 54
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=26 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=27 b1=0
+22 52 -> 18 54
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=26 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=27 b1=0
+17 52 -> 17 54
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=26 b1=0 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=27 b1=0
+21 52 -> 17 54
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=26 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=27 b1=0
+19 52 -> 19 54
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=26 b1=0 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=27 b1=0
+23 52 -> 19 54
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=26 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=27 b1=1
+16 53 -> 16 55
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=26 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=27 b1=1
+20 53 -> 16 55
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=26 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=27 b1=1
+18 53 -> 18 55
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=26 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=27 b1=1
+22 53 -> 18 55
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=26 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=27 b1=1
+17 53 -> 17 55
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=26 b1=1 --> m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=27 b1=1
+21 53 -> 17 55
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=26 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=27 b1=1
+19 53 -> 19 55
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=26 b1=1 --> m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=27 b1=1
+23 53 -> 19 55
+# BP-PC30: ATOMIC_END at file ./cav16.bm/01_inc_l/main.c line 37 function thr1
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=27 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=28 b1=0
+16 54 -> 0 56
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=27 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=28 b1=0
+20 54 -> 4 56
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=27 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=28 b1=0
+18 54 -> 2 56
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=27 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=28 b1=0
+22 54 -> 6 56
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=27 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=28 b1=0
+17 54 -> 1 56
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=27 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=28 b1=0
+21 54 -> 5 56
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=27 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=28 b1=0
+19 54 -> 3 56
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=27 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=28 b1=0
+23 54 -> 7 56
+# m=1 ts=0 b0=0 b2=0 b3=0 tts-pc=27 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=28 b1=1
+16 55 -> 0 57
+# m=1 ts=0 b0=1 b2=0 b3=0 tts-pc=27 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=28 b1=1
+20 55 -> 4 57
+# m=1 ts=0 b0=0 b2=1 b3=0 tts-pc=27 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=28 b1=1
+18 55 -> 2 57
+# m=1 ts=0 b0=1 b2=1 b3=0 tts-pc=27 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=28 b1=1
+22 55 -> 6 57
+# m=1 ts=0 b0=0 b2=0 b3=1 tts-pc=27 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=28 b1=1
+17 55 -> 1 57
+# m=1 ts=0 b0=1 b2=0 b3=1 tts-pc=27 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=28 b1=1
+21 55 -> 5 57
+# m=1 ts=0 b0=0 b2=1 b3=1 tts-pc=27 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=28 b1=1
+19 55 -> 3 57
+# m=1 ts=0 b0=1 b2=1 b3=1 tts-pc=27 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=28 b1=1
+23 55 -> 7 57
+# BP-PC31: ASSERT at file ./cav16.bm/01_inc_l/main.c line 39 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=28 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=29 b1=0
+0 56 -> 0 58
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=28 b1=0 --> error error
+0 56 -> 32 70
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=28 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=29 b1=0
+4 56 -> 4 58
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=28 b1=0 --> error error
+4 56 -> 32 70
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=28 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=29 b1=0
+2 56 -> 2 58
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=28 b1=0 --> error error
+2 56 -> 32 70
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=28 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=29 b1=0
+6 56 -> 6 58
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=28 b1=0 --> error error
+6 56 -> 32 70
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=28 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=29 b1=0
+1 56 -> 1 58
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=28 b1=0 --> error error
+1 56 -> 32 70
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=28 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=29 b1=0
+5 56 -> 5 58
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=28 b1=0 --> error error
+5 56 -> 32 70
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=28 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=29 b1=0
+3 56 -> 3 58
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=28 b1=0 --> error error
+3 56 -> 32 70
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=28 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=29 b1=0
+7 56 -> 7 58
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=28 b1=0 --> error error
+7 56 -> 32 70
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=28 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=29 b1=1
+0 57 -> 0 59
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=28 b1=1 --> error error
+0 57 -> 32 70
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=28 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=29 b1=1
+4 57 -> 4 59
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=28 b1=1 --> error error
+4 57 -> 32 70
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=28 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=29 b1=1
+2 57 -> 2 59
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=28 b1=1 --> error error
+2 57 -> 32 70
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=28 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=29 b1=1
+6 57 -> 6 59
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=28 b1=1 --> error error
+6 57 -> 32 70
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=28 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=29 b1=1
+1 57 -> 1 59
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=28 b1=1 --> error error
+1 57 -> 32 70
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=28 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=29 b1=1
+5 57 -> 5 59
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=28 b1=1 --> error error
+5 57 -> 32 70
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=28 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=29 b1=1
+3 57 -> 3 59
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=28 b1=1 --> error error
+3 57 -> 32 70
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=28 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=29 b1=1
+7 57 -> 7 59
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=28 b1=1 --> error error
+7 57 -> 32 70
+# BP-PC33: GOTO at file ./cav16.bm/01_inc_l/main.c line 41 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=29 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=30 b1=0
+0 58 -> 0 60
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=29 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=30 b1=0
+4 58 -> 4 60
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=29 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=30 b1=0
+2 58 -> 2 60
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=29 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=30 b1=0
+6 58 -> 6 60
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=29 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=30 b1=0
+1 58 -> 1 60
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=29 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=30 b1=0
+5 58 -> 5 60
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=29 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=30 b1=0
+3 58 -> 3 60
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=29 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=30 b1=0
+7 58 -> 7 60
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=29 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=30 b1=1
+0 59 -> 0 61
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=29 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=30 b1=1
+4 59 -> 4 61
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=29 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=30 b1=1
+2 59 -> 2 61
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=29 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=30 b1=1
+6 59 -> 6 61
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=29 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=30 b1=1
+1 59 -> 1 61
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=29 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=30 b1=1
+5 59 -> 5 61
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=29 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=30 b1=1
+3 59 -> 3 61
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=29 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=30 b1=1
+7 59 -> 7 61
+# BP-PC34: LOCATION at file ./cav16.bm/01_inc_l/main.c line 43 function thr1
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=30 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=31 b1=0
+0 60 -> 0 62
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=30 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=31 b1=0
+4 60 -> 4 62
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=30 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=31 b1=0
+2 60 -> 2 62
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=30 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=31 b1=0
+6 60 -> 6 62
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=30 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=31 b1=0
+1 60 -> 1 62
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=30 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=31 b1=0
+5 60 -> 5 62
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=30 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=31 b1=0
+3 60 -> 3 62
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=30 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=31 b1=0
+7 60 -> 7 62
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=30 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=31 b1=1
+0 61 -> 0 63
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=30 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=31 b1=1
+4 61 -> 4 63
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=30 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=31 b1=1
+2 61 -> 2 63
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=30 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=31 b1=1
+6 61 -> 6 63
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=30 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=31 b1=1
+1 61 -> 1 63
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=30 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=31 b1=1
+5 61 -> 5 63
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=30 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=31 b1=1
+3 61 -> 3 63
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=30 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=31 b1=1
+7 61 -> 7 63
+# BP-PC35: END_THREAD at file ./cav16.bm/01_inc_l/main.c line 47 function main
+# BP-PC36: GOTO at file ./cav16.bm/01_inc_l/main.c line 47 function main
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=32 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=6 b1=0
+0 64 -> 0 12
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=32 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=6 b1=0
+4 64 -> 4 12
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=32 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=6 b1=0
+2 64 -> 2 12
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=32 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=6 b1=0
+6 64 -> 6 12
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=32 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=6 b1=0
+1 64 -> 1 12
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=32 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=6 b1=0
+5 64 -> 5 12
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=32 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=6 b1=0
+3 64 -> 3 12
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=32 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=6 b1=0
+7 64 -> 7 12
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=32 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=6 b1=1
+0 65 -> 0 13
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=32 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=6 b1=1
+4 65 -> 4 13
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=32 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=6 b1=1
+2 65 -> 2 13
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=32 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=6 b1=1
+6 65 -> 6 13
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=32 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=6 b1=1
+1 65 -> 1 13
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=32 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=6 b1=1
+5 65 -> 5 13
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=32 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=6 b1=1
+3 65 -> 3 13
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=32 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=6 b1=1
+7 65 -> 7 13
+# BP-PC37: OTHER at file ./cav16.bm/01_inc_l/main.c line 48 function main
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=33 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=34 b1=0
+0 66 -> 0 68
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=33 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=34 b1=0
+4 66 -> 4 68
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=33 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=34 b1=0
+2 66 -> 2 68
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=33 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=34 b1=0
+6 66 -> 6 68
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=33 b1=0 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=34 b1=0
+1 66 -> 1 68
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=33 b1=0 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=34 b1=0
+5 66 -> 5 68
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=33 b1=0 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=34 b1=0
+3 66 -> 3 68
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=33 b1=0 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=34 b1=0
+7 66 -> 7 68
+# m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=33 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=0 tts-pc=34 b1=1
+0 67 -> 0 69
+# m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=33 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=0 tts-pc=34 b1=1
+4 67 -> 4 69
+# m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=33 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=0 tts-pc=34 b1=1
+2 67 -> 2 69
+# m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=33 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=0 tts-pc=34 b1=1
+6 67 -> 6 69
+# m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=33 b1=1 --> m=0 ts=0 b0=0 b2=0 b3=1 tts-pc=34 b1=1
+1 67 -> 1 69
+# m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=33 b1=1 --> m=0 ts=0 b0=1 b2=0 b3=1 tts-pc=34 b1=1
+5 67 -> 5 69
+# m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=33 b1=1 --> m=0 ts=0 b0=0 b2=1 b3=1 tts-pc=34 b1=1
+3 67 -> 3 69
+# m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=33 b1=1 --> m=0 ts=0 b0=1 b2=1 b3=1 tts-pc=34 b1=1
+7 67 -> 7 69
+# BP-PC39: END_FUNCTION at 

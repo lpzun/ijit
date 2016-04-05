@@ -1,0 +1,1345 @@
+# error state is shared num 8 local num 200
+# local state num is pc*1+localstate
+# maximum pc is 199
+# shared state 0: m=0 ts=0 b0=0
+# shared state 4: m=1 ts=0 b0=0
+# local state 0: tts-pc=0
+# shared state 1: m=0 ts=0 b0=1
+# shared state 5: m=1 ts=0 b0=1
+9 201
+# nondet init shared var 0
+# m=0 ts=0 b0=0 tts-pc=0 --> m=0 ts=0 b0=0 tts-pc=1
+0 0 -> 0 1
+# m=0 ts=0 b0=1 tts-pc=0 --> m=0 ts=0 b0=0 tts-pc=1
+1 0 -> 0 1
+# m=0 ts=0 b0=0 tts-pc=0 --> m=0 ts=0 b0=1 tts-pc=1
+0 0 -> 1 1
+# m=0 ts=0 b0=1 tts-pc=0 --> m=0 ts=0 b0=1 tts-pc=1
+1 0 -> 1 1
+# BP-PC9: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 13
+# m=0 ts=0 b0=0 tts-pc=1 --> m=0 ts=0 b0=0 tts-pc=2
+0 1 -> 0 2
+# m=0 ts=0 b0=1 tts-pc=1 --> m=0 ts=0 b0=0 tts-pc=2
+1 1 -> 0 2
+# BP-PC15: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 227 function main
+# m=0 ts=0 b0=0 tts-pc=2 --> m=0 ts=0 b0=0 tts-pc=3
+0 2 -> 0 3
+# m=0 ts=0 b0=1 tts-pc=2 --> m=0 ts=0 b0=1 tts-pc=3
+1 2 -> 1 3
+# BP-PC16: START_THREAD at file ./cav16.bm/17_QRCU-4/main.c line 228 function main
+# m=0 ts=0 b0=0 tts-pc=3 --> m=0 ts=1 b0=0 tts-pc=4
+0 3 +> 2 4
+# m=0 ts=1 b0=0 tts-pc=3 --> m=0 ts=0 b0=0 tts-pc=5
+2 3 -> 0 5
+# m=0 ts=0 b0=1 tts-pc=3 --> m=0 ts=1 b0=1 tts-pc=4
+1 3 +> 3 4
+# m=0 ts=1 b0=1 tts-pc=3 --> m=0 ts=0 b0=1 tts-pc=5
+3 3 -> 1 5
+# BP-PC17: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=4 --> m=0 ts=0 b0=0 tts-pc=48
+0 4 -> 0 48
+# m=0 ts=0 b0=1 tts-pc=4 --> m=0 ts=0 b0=1 tts-pc=48
+1 4 -> 1 48
+# BP-PC18: LOCATION at file ./cav16.bm/17_QRCU-4/main.c line 228 function main
+# m=0 ts=0 b0=0 tts-pc=5 --> m=0 ts=0 b0=0 tts-pc=6
+0 5 -> 0 6
+# m=0 ts=0 b0=1 tts-pc=5 --> m=0 ts=0 b0=1 tts-pc=6
+1 5 -> 1 6
+# BP-PC20: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 25 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=6 --> m=0 ts=0 b0=0 tts-pc=7
+0 6 -> 0 7
+# m=0 ts=0 b0=1 tts-pc=6 --> m=0 ts=0 b0=1 tts-pc=7
+1 6 -> 1 7
+# BP-PC22: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 27 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=7 --> m=0 ts=0 b0=0 tts-pc=20
+0 7 -> 0 20
+# m=0 ts=0 b0=0 tts-pc=7 --> m=0 ts=0 b0=0 tts-pc=8
+0 7 -> 0 8
+# m=0 ts=0 b0=1 tts-pc=7 --> m=0 ts=0 b0=1 tts-pc=20
+1 7 -> 1 20
+# m=0 ts=0 b0=1 tts-pc=7 --> m=0 ts=0 b0=1 tts-pc=8
+1 7 -> 1 8
+# BP-PC23: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 29 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=8 --> m=1 ts=0 b0=0 tts-pc=9
+0 8 -> 4 9
+# m=0 ts=0 b0=1 tts-pc=8 --> m=1 ts=0 b0=1 tts-pc=9
+1 8 -> 5 9
+# BP-PC24: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 29 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=9 --> m=1 ts=0 b0=0 tts-pc=10
+4 9 -> 4 10
+# m=1 ts=0 b0=0 tts-pc=9 --> m=1 ts=0 b0=0 tts-pc=9
+4 9 -> 4 9
+# m=1 ts=0 b0=1 tts-pc=9 --> m=1 ts=0 b0=1 tts-pc=10
+5 9 -> 5 10
+# m=1 ts=0 b0=1 tts-pc=9 --> m=1 ts=0 b0=1 tts-pc=9
+5 9 -> 5 9
+# BP-PC25: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 29 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=10 --> m=1 ts=0 b0=0 tts-pc=11
+4 10 -> 4 11
+# m=1 ts=0 b0=1 tts-pc=10 --> m=1 ts=0 b0=0 tts-pc=11
+5 10 -> 4 11
+# m=1 ts=0 b0=0 tts-pc=10 --> m=1 ts=0 b0=1 tts-pc=11
+4 10 -> 5 11
+# m=1 ts=0 b0=1 tts-pc=10 --> m=1 ts=0 b0=1 tts-pc=11
+5 10 -> 5 11
+# BP-PC26: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 29 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=11 --> m=0 ts=0 b0=0 tts-pc=12
+4 11 -> 0 12
+# m=1 ts=0 b0=1 tts-pc=11 --> m=0 ts=0 b0=1 tts-pc=12
+5 11 -> 1 12
+# BP-PC27: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 29 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=12 --> error error
+0 12 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=12 --> m=0 ts=0 b0=1 tts-pc=13
+1 12 -> 1 13
+# BP-PC28: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 30 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=13 --> m=0 ts=0 b0=0 tts-pc=14
+0 13 -> 0 14
+# m=0 ts=0 b0=0 tts-pc=13 --> m=0 ts=0 b0=0 tts-pc=13
+0 13 -> 0 13
+# m=0 ts=0 b0=1 tts-pc=13 --> m=0 ts=0 b0=1 tts-pc=14
+1 13 -> 1 14
+# m=0 ts=0 b0=1 tts-pc=13 --> m=0 ts=0 b0=1 tts-pc=13
+1 13 -> 1 13
+# BP-PC29: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 31 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=14 --> m=0 ts=0 b0=0 tts-pc=15
+0 14 -> 0 15
+# m=0 ts=0 b0=0 tts-pc=14 --> m=0 ts=0 b0=0 tts-pc=14
+0 14 -> 0 14
+# m=0 ts=0 b0=1 tts-pc=14 --> m=0 ts=0 b0=1 tts-pc=15
+1 14 -> 1 15
+# m=0 ts=0 b0=1 tts-pc=14 --> m=0 ts=0 b0=1 tts-pc=14
+1 14 -> 1 14
+# BP-PC31: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 33 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=15 --> m=1 ts=0 b0=0 tts-pc=16
+0 15 -> 4 16
+# m=0 ts=0 b0=1 tts-pc=15 --> m=1 ts=0 b0=1 tts-pc=16
+1 15 -> 5 16
+# BP-PC32: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 33 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=16 --> m=1 ts=0 b0=0 tts-pc=17
+4 16 -> 4 17
+# m=1 ts=0 b0=0 tts-pc=16 --> m=1 ts=0 b0=0 tts-pc=16
+4 16 -> 4 16
+# m=1 ts=0 b0=1 tts-pc=16 --> m=1 ts=0 b0=1 tts-pc=17
+5 16 -> 5 17
+# m=1 ts=0 b0=1 tts-pc=16 --> m=1 ts=0 b0=1 tts-pc=16
+5 16 -> 5 16
+# BP-PC33: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 33 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=17 --> m=1 ts=0 b0=0 tts-pc=18
+4 17 -> 4 18
+# m=1 ts=0 b0=1 tts-pc=17 --> m=1 ts=0 b0=0 tts-pc=18
+5 17 -> 4 18
+# m=1 ts=0 b0=0 tts-pc=17 --> m=1 ts=0 b0=1 tts-pc=18
+4 17 -> 5 18
+# m=1 ts=0 b0=1 tts-pc=17 --> m=1 ts=0 b0=1 tts-pc=18
+5 17 -> 5 18
+# BP-PC34: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 33 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=18 --> m=0 ts=0 b0=0 tts-pc=19
+4 18 -> 0 19
+# m=1 ts=0 b0=1 tts-pc=18 --> m=0 ts=0 b0=1 tts-pc=19
+5 18 -> 1 19
+# BP-PC35: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 35 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=19 --> m=0 ts=0 b0=0 tts-pc=34
+0 19 -> 0 34
+# m=0 ts=0 b0=1 tts-pc=19 --> m=0 ts=0 b0=1 tts-pc=34
+1 19 -> 1 34
+# BP-PC36: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 37 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=20 --> m=0 ts=0 b0=0 tts-pc=33
+0 20 -> 0 33
+# m=0 ts=0 b0=0 tts-pc=20 --> m=0 ts=0 b0=0 tts-pc=21
+0 20 -> 0 21
+# m=0 ts=0 b0=1 tts-pc=20 --> m=0 ts=0 b0=1 tts-pc=33
+1 20 -> 1 33
+# m=0 ts=0 b0=1 tts-pc=20 --> m=0 ts=0 b0=1 tts-pc=21
+1 20 -> 1 21
+# BP-PC37: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 39 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=21 --> m=1 ts=0 b0=0 tts-pc=22
+0 21 -> 4 22
+# m=0 ts=0 b0=1 tts-pc=21 --> m=1 ts=0 b0=1 tts-pc=22
+1 21 -> 5 22
+# BP-PC38: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 39 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=22 --> m=1 ts=0 b0=0 tts-pc=23
+4 22 -> 4 23
+# m=1 ts=0 b0=0 tts-pc=22 --> m=1 ts=0 b0=0 tts-pc=22
+4 22 -> 4 22
+# m=1 ts=0 b0=1 tts-pc=22 --> m=1 ts=0 b0=1 tts-pc=23
+5 22 -> 5 23
+# m=1 ts=0 b0=1 tts-pc=22 --> m=1 ts=0 b0=1 tts-pc=22
+5 22 -> 5 22
+# BP-PC39: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 39 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=23 --> m=1 ts=0 b0=0 tts-pc=24
+4 23 -> 4 24
+# m=1 ts=0 b0=1 tts-pc=23 --> m=1 ts=0 b0=0 tts-pc=24
+5 23 -> 4 24
+# m=1 ts=0 b0=0 tts-pc=23 --> m=1 ts=0 b0=1 tts-pc=24
+4 23 -> 5 24
+# m=1 ts=0 b0=1 tts-pc=23 --> m=1 ts=0 b0=1 tts-pc=24
+5 23 -> 5 24
+# BP-PC40: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 39 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=24 --> m=0 ts=0 b0=0 tts-pc=25
+4 24 -> 0 25
+# m=1 ts=0 b0=1 tts-pc=24 --> m=0 ts=0 b0=1 tts-pc=25
+5 24 -> 1 25
+# BP-PC41: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 39 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=25 --> error error
+0 25 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=25 --> m=0 ts=0 b0=1 tts-pc=26
+1 25 -> 1 26
+# BP-PC42: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 40 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=26 --> m=0 ts=0 b0=0 tts-pc=27
+0 26 -> 0 27
+# m=0 ts=0 b0=0 tts-pc=26 --> m=0 ts=0 b0=0 tts-pc=26
+0 26 -> 0 26
+# m=0 ts=0 b0=1 tts-pc=26 --> m=0 ts=0 b0=1 tts-pc=27
+1 26 -> 1 27
+# m=0 ts=0 b0=1 tts-pc=26 --> m=0 ts=0 b0=1 tts-pc=26
+1 26 -> 1 26
+# BP-PC43: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 41 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=27 --> m=0 ts=0 b0=0 tts-pc=28
+0 27 -> 0 28
+# m=0 ts=0 b0=0 tts-pc=27 --> m=0 ts=0 b0=0 tts-pc=27
+0 27 -> 0 27
+# m=0 ts=0 b0=1 tts-pc=27 --> m=0 ts=0 b0=1 tts-pc=28
+1 27 -> 1 28
+# m=0 ts=0 b0=1 tts-pc=27 --> m=0 ts=0 b0=1 tts-pc=27
+1 27 -> 1 27
+# BP-PC45: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 43 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=28 --> m=1 ts=0 b0=0 tts-pc=29
+0 28 -> 4 29
+# m=0 ts=0 b0=1 tts-pc=28 --> m=1 ts=0 b0=1 tts-pc=29
+1 28 -> 5 29
+# BP-PC46: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 43 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=29 --> m=1 ts=0 b0=0 tts-pc=30
+4 29 -> 4 30
+# m=1 ts=0 b0=0 tts-pc=29 --> m=1 ts=0 b0=0 tts-pc=29
+4 29 -> 4 29
+# m=1 ts=0 b0=1 tts-pc=29 --> m=1 ts=0 b0=1 tts-pc=30
+5 29 -> 5 30
+# m=1 ts=0 b0=1 tts-pc=29 --> m=1 ts=0 b0=1 tts-pc=29
+5 29 -> 5 29
+# BP-PC47: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 43 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=30 --> m=1 ts=0 b0=0 tts-pc=31
+4 30 -> 4 31
+# m=1 ts=0 b0=1 tts-pc=30 --> m=1 ts=0 b0=0 tts-pc=31
+5 30 -> 4 31
+# m=1 ts=0 b0=0 tts-pc=30 --> m=1 ts=0 b0=1 tts-pc=31
+4 30 -> 5 31
+# m=1 ts=0 b0=1 tts-pc=30 --> m=1 ts=0 b0=1 tts-pc=31
+5 30 -> 5 31
+# BP-PC48: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 43 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=31 --> m=0 ts=0 b0=0 tts-pc=32
+4 31 -> 0 32
+# m=1 ts=0 b0=1 tts-pc=31 --> m=0 ts=0 b0=1 tts-pc=32
+5 31 -> 1 32
+# BP-PC49: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 45 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=32 --> m=0 ts=0 b0=0 tts-pc=34
+0 32 -> 0 34
+# m=0 ts=0 b0=1 tts-pc=32 --> m=0 ts=0 b0=1 tts-pc=34
+1 32 -> 1 34
+# BP-PC50: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 25 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=33 --> m=0 ts=0 b0=0 tts-pc=6
+0 33 -> 0 6
+# m=0 ts=0 b0=1 tts-pc=33 --> m=0 ts=0 b0=1 tts-pc=6
+1 33 -> 1 6
+# BP-PC51: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 50 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=34 --> m=0 ts=0 b0=0 tts-pc=35
+0 34 -> 0 35
+# m=0 ts=0 b0=1 tts-pc=34 --> m=0 ts=0 b0=1 tts-pc=35
+1 34 -> 1 35
+# BP-PC53: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 55 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=35 --> m=1 ts=0 b0=0 tts-pc=36
+0 35 -> 4 36
+# m=0 ts=0 b0=1 tts-pc=35 --> m=1 ts=0 b0=1 tts-pc=36
+1 35 -> 5 36
+# BP-PC54: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 55 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=36 --> m=1 ts=0 b0=0 tts-pc=37
+4 36 -> 4 37
+# m=1 ts=0 b0=0 tts-pc=36 --> m=1 ts=0 b0=0 tts-pc=36
+4 36 -> 4 36
+# m=1 ts=0 b0=1 tts-pc=36 --> m=1 ts=0 b0=1 tts-pc=37
+5 36 -> 5 37
+# m=1 ts=0 b0=1 tts-pc=36 --> m=1 ts=0 b0=1 tts-pc=36
+5 36 -> 5 36
+# BP-PC55: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 55 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=37 --> m=1 ts=0 b0=0 tts-pc=38
+4 37 -> 4 38
+# m=1 ts=0 b0=1 tts-pc=37 --> m=1 ts=0 b0=0 tts-pc=38
+5 37 -> 4 38
+# m=1 ts=0 b0=0 tts-pc=37 --> m=1 ts=0 b0=1 tts-pc=38
+4 37 -> 5 38
+# m=1 ts=0 b0=1 tts-pc=37 --> m=1 ts=0 b0=1 tts-pc=38
+5 37 -> 5 38
+# BP-PC56: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 55 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=38 --> m=0 ts=0 b0=0 tts-pc=39
+4 38 -> 0 39
+# m=1 ts=0 b0=1 tts-pc=38 --> m=0 ts=0 b0=1 tts-pc=39
+5 38 -> 1 39
+# BP-PC57: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 55 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=39 --> error error
+0 39 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=39 --> m=0 ts=0 b0=1 tts-pc=40
+1 39 -> 1 40
+# BP-PC58: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 56 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=40 --> m=0 ts=0 b0=0 tts-pc=42
+0 40 -> 0 42
+# m=0 ts=0 b0=0 tts-pc=40 --> m=0 ts=0 b0=0 tts-pc=41
+0 40 -> 0 41
+# m=0 ts=0 b0=1 tts-pc=40 --> m=0 ts=0 b0=1 tts-pc=42
+1 40 -> 1 42
+# m=0 ts=0 b0=1 tts-pc=40 --> m=0 ts=0 b0=1 tts-pc=41
+1 40 -> 1 41
+# BP-PC60: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=41 --> m=0 ts=0 b0=0 tts-pc=43
+0 41 -> 0 43
+# m=0 ts=0 b0=1 tts-pc=41 --> m=0 ts=0 b0=1 tts-pc=43
+1 41 -> 1 43
+# BP-PC61: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 57 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=42 --> m=0 ts=0 b0=0 tts-pc=43
+0 42 -> 0 43
+# m=0 ts=0 b0=1 tts-pc=42 --> m=0 ts=0 b0=1 tts-pc=43
+1 42 -> 1 43
+# BP-PC62: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 58 function qrcu_reader1
+# m=0 ts=0 b0=0 tts-pc=43 --> m=1 ts=0 b0=0 tts-pc=44
+0 43 -> 4 44
+# m=0 ts=0 b0=1 tts-pc=43 --> m=1 ts=0 b0=1 tts-pc=44
+1 43 -> 5 44
+# BP-PC63: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 58 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=44 --> m=1 ts=0 b0=0 tts-pc=45
+4 44 -> 4 45
+# m=1 ts=0 b0=0 tts-pc=44 --> m=1 ts=0 b0=0 tts-pc=44
+4 44 -> 4 44
+# m=1 ts=0 b0=1 tts-pc=44 --> m=1 ts=0 b0=1 tts-pc=45
+5 44 -> 5 45
+# m=1 ts=0 b0=1 tts-pc=44 --> m=1 ts=0 b0=1 tts-pc=44
+5 44 -> 5 44
+# BP-PC64: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 58 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=45 --> m=1 ts=0 b0=0 tts-pc=46
+4 45 -> 4 46
+# m=1 ts=0 b0=1 tts-pc=45 --> m=1 ts=0 b0=0 tts-pc=46
+5 45 -> 4 46
+# m=1 ts=0 b0=0 tts-pc=45 --> m=1 ts=0 b0=1 tts-pc=46
+4 45 -> 5 46
+# m=1 ts=0 b0=1 tts-pc=45 --> m=1 ts=0 b0=1 tts-pc=46
+5 45 -> 5 46
+# BP-PC65: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 58 function qrcu_reader1
+# m=1 ts=0 b0=0 tts-pc=46 --> m=0 ts=0 b0=0 tts-pc=47
+4 46 -> 0 47
+# m=1 ts=0 b0=1 tts-pc=46 --> m=0 ts=0 b0=1 tts-pc=47
+5 46 -> 1 47
+# BP-PC68: END_THREAD at file ./cav16.bm/17_QRCU-4/main.c line 228 function main
+# BP-PC69: START_THREAD at file ./cav16.bm/17_QRCU-4/main.c line 229 function main
+# m=0 ts=0 b0=0 tts-pc=48 --> m=0 ts=1 b0=0 tts-pc=49
+0 48 +> 2 49
+# m=0 ts=1 b0=0 tts-pc=48 --> m=0 ts=0 b0=0 tts-pc=50
+2 48 -> 0 50
+# m=0 ts=0 b0=1 tts-pc=48 --> m=0 ts=1 b0=1 tts-pc=49
+1 48 +> 3 49
+# m=0 ts=1 b0=1 tts-pc=48 --> m=0 ts=0 b0=1 tts-pc=50
+3 48 -> 1 50
+# BP-PC70: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=49 --> m=0 ts=0 b0=0 tts-pc=93
+0 49 -> 0 93
+# m=0 ts=0 b0=1 tts-pc=49 --> m=0 ts=0 b0=1 tts-pc=93
+1 49 -> 1 93
+# BP-PC71: LOCATION at file ./cav16.bm/17_QRCU-4/main.c line 229 function main
+# m=0 ts=0 b0=0 tts-pc=50 --> m=0 ts=0 b0=0 tts-pc=51
+0 50 -> 0 51
+# m=0 ts=0 b0=1 tts-pc=50 --> m=0 ts=0 b0=1 tts-pc=51
+1 50 -> 1 51
+# BP-PC73: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 135 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=51 --> m=0 ts=0 b0=0 tts-pc=52
+0 51 -> 0 52
+# m=0 ts=0 b0=1 tts-pc=51 --> m=0 ts=0 b0=1 tts-pc=52
+1 51 -> 1 52
+# BP-PC75: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 137 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=52 --> m=0 ts=0 b0=0 tts-pc=65
+0 52 -> 0 65
+# m=0 ts=0 b0=0 tts-pc=52 --> m=0 ts=0 b0=0 tts-pc=53
+0 52 -> 0 53
+# m=0 ts=0 b0=1 tts-pc=52 --> m=0 ts=0 b0=1 tts-pc=65
+1 52 -> 1 65
+# m=0 ts=0 b0=1 tts-pc=52 --> m=0 ts=0 b0=1 tts-pc=53
+1 52 -> 1 53
+# BP-PC76: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 139 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=53 --> m=1 ts=0 b0=0 tts-pc=54
+0 53 -> 4 54
+# m=0 ts=0 b0=1 tts-pc=53 --> m=1 ts=0 b0=1 tts-pc=54
+1 53 -> 5 54
+# BP-PC77: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 139 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=54 --> m=1 ts=0 b0=0 tts-pc=55
+4 54 -> 4 55
+# m=1 ts=0 b0=0 tts-pc=54 --> m=1 ts=0 b0=0 tts-pc=54
+4 54 -> 4 54
+# m=1 ts=0 b0=1 tts-pc=54 --> m=1 ts=0 b0=1 tts-pc=55
+5 54 -> 5 55
+# m=1 ts=0 b0=1 tts-pc=54 --> m=1 ts=0 b0=1 tts-pc=54
+5 54 -> 5 54
+# BP-PC78: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 139 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=55 --> m=1 ts=0 b0=0 tts-pc=56
+4 55 -> 4 56
+# m=1 ts=0 b0=1 tts-pc=55 --> m=1 ts=0 b0=0 tts-pc=56
+5 55 -> 4 56
+# m=1 ts=0 b0=0 tts-pc=55 --> m=1 ts=0 b0=1 tts-pc=56
+4 55 -> 5 56
+# m=1 ts=0 b0=1 tts-pc=55 --> m=1 ts=0 b0=1 tts-pc=56
+5 55 -> 5 56
+# BP-PC79: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 139 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=56 --> m=0 ts=0 b0=0 tts-pc=57
+4 56 -> 0 57
+# m=1 ts=0 b0=1 tts-pc=56 --> m=0 ts=0 b0=1 tts-pc=57
+5 56 -> 1 57
+# BP-PC80: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 139 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=57 --> error error
+0 57 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=57 --> m=0 ts=0 b0=1 tts-pc=58
+1 57 -> 1 58
+# BP-PC81: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 140 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=58 --> m=0 ts=0 b0=0 tts-pc=59
+0 58 -> 0 59
+# m=0 ts=0 b0=0 tts-pc=58 --> m=0 ts=0 b0=0 tts-pc=58
+0 58 -> 0 58
+# m=0 ts=0 b0=1 tts-pc=58 --> m=0 ts=0 b0=1 tts-pc=59
+1 58 -> 1 59
+# m=0 ts=0 b0=1 tts-pc=58 --> m=0 ts=0 b0=1 tts-pc=58
+1 58 -> 1 58
+# BP-PC82: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 141 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=59 --> m=0 ts=0 b0=0 tts-pc=60
+0 59 -> 0 60
+# m=0 ts=0 b0=0 tts-pc=59 --> m=0 ts=0 b0=0 tts-pc=59
+0 59 -> 0 59
+# m=0 ts=0 b0=1 tts-pc=59 --> m=0 ts=0 b0=1 tts-pc=60
+1 59 -> 1 60
+# m=0 ts=0 b0=1 tts-pc=59 --> m=0 ts=0 b0=1 tts-pc=59
+1 59 -> 1 59
+# BP-PC84: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 143 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=60 --> m=1 ts=0 b0=0 tts-pc=61
+0 60 -> 4 61
+# m=0 ts=0 b0=1 tts-pc=60 --> m=1 ts=0 b0=1 tts-pc=61
+1 60 -> 5 61
+# BP-PC85: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 143 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=61 --> m=1 ts=0 b0=0 tts-pc=62
+4 61 -> 4 62
+# m=1 ts=0 b0=0 tts-pc=61 --> m=1 ts=0 b0=0 tts-pc=61
+4 61 -> 4 61
+# m=1 ts=0 b0=1 tts-pc=61 --> m=1 ts=0 b0=1 tts-pc=62
+5 61 -> 5 62
+# m=1 ts=0 b0=1 tts-pc=61 --> m=1 ts=0 b0=1 tts-pc=61
+5 61 -> 5 61
+# BP-PC86: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 143 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=62 --> m=1 ts=0 b0=0 tts-pc=63
+4 62 -> 4 63
+# m=1 ts=0 b0=1 tts-pc=62 --> m=1 ts=0 b0=0 tts-pc=63
+5 62 -> 4 63
+# m=1 ts=0 b0=0 tts-pc=62 --> m=1 ts=0 b0=1 tts-pc=63
+4 62 -> 5 63
+# m=1 ts=0 b0=1 tts-pc=62 --> m=1 ts=0 b0=1 tts-pc=63
+5 62 -> 5 63
+# BP-PC87: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 143 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=63 --> m=0 ts=0 b0=0 tts-pc=64
+4 63 -> 0 64
+# m=1 ts=0 b0=1 tts-pc=63 --> m=0 ts=0 b0=1 tts-pc=64
+5 63 -> 1 64
+# BP-PC88: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 145 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=64 --> m=0 ts=0 b0=0 tts-pc=79
+0 64 -> 0 79
+# m=0 ts=0 b0=1 tts-pc=64 --> m=0 ts=0 b0=1 tts-pc=79
+1 64 -> 1 79
+# BP-PC89: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 147 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=65 --> m=0 ts=0 b0=0 tts-pc=78
+0 65 -> 0 78
+# m=0 ts=0 b0=0 tts-pc=65 --> m=0 ts=0 b0=0 tts-pc=66
+0 65 -> 0 66
+# m=0 ts=0 b0=1 tts-pc=65 --> m=0 ts=0 b0=1 tts-pc=78
+1 65 -> 1 78
+# m=0 ts=0 b0=1 tts-pc=65 --> m=0 ts=0 b0=1 tts-pc=66
+1 65 -> 1 66
+# BP-PC90: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 149 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=66 --> m=1 ts=0 b0=0 tts-pc=67
+0 66 -> 4 67
+# m=0 ts=0 b0=1 tts-pc=66 --> m=1 ts=0 b0=1 tts-pc=67
+1 66 -> 5 67
+# BP-PC91: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 149 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=67 --> m=1 ts=0 b0=0 tts-pc=68
+4 67 -> 4 68
+# m=1 ts=0 b0=0 tts-pc=67 --> m=1 ts=0 b0=0 tts-pc=67
+4 67 -> 4 67
+# m=1 ts=0 b0=1 tts-pc=67 --> m=1 ts=0 b0=1 tts-pc=68
+5 67 -> 5 68
+# m=1 ts=0 b0=1 tts-pc=67 --> m=1 ts=0 b0=1 tts-pc=67
+5 67 -> 5 67
+# BP-PC92: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 149 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=68 --> m=1 ts=0 b0=0 tts-pc=69
+4 68 -> 4 69
+# m=1 ts=0 b0=1 tts-pc=68 --> m=1 ts=0 b0=0 tts-pc=69
+5 68 -> 4 69
+# m=1 ts=0 b0=0 tts-pc=68 --> m=1 ts=0 b0=1 tts-pc=69
+4 68 -> 5 69
+# m=1 ts=0 b0=1 tts-pc=68 --> m=1 ts=0 b0=1 tts-pc=69
+5 68 -> 5 69
+# BP-PC93: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 149 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=69 --> m=0 ts=0 b0=0 tts-pc=70
+4 69 -> 0 70
+# m=1 ts=0 b0=1 tts-pc=69 --> m=0 ts=0 b0=1 tts-pc=70
+5 69 -> 1 70
+# BP-PC94: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 149 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=70 --> error error
+0 70 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=70 --> m=0 ts=0 b0=1 tts-pc=71
+1 70 -> 1 71
+# BP-PC95: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 150 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=71 --> m=0 ts=0 b0=0 tts-pc=72
+0 71 -> 0 72
+# m=0 ts=0 b0=0 tts-pc=71 --> m=0 ts=0 b0=0 tts-pc=71
+0 71 -> 0 71
+# m=0 ts=0 b0=1 tts-pc=71 --> m=0 ts=0 b0=1 tts-pc=72
+1 71 -> 1 72
+# m=0 ts=0 b0=1 tts-pc=71 --> m=0 ts=0 b0=1 tts-pc=71
+1 71 -> 1 71
+# BP-PC96: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 151 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=72 --> m=0 ts=0 b0=0 tts-pc=73
+0 72 -> 0 73
+# m=0 ts=0 b0=0 tts-pc=72 --> m=0 ts=0 b0=0 tts-pc=72
+0 72 -> 0 72
+# m=0 ts=0 b0=1 tts-pc=72 --> m=0 ts=0 b0=1 tts-pc=73
+1 72 -> 1 73
+# m=0 ts=0 b0=1 tts-pc=72 --> m=0 ts=0 b0=1 tts-pc=72
+1 72 -> 1 72
+# BP-PC98: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 153 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=73 --> m=1 ts=0 b0=0 tts-pc=74
+0 73 -> 4 74
+# m=0 ts=0 b0=1 tts-pc=73 --> m=1 ts=0 b0=1 tts-pc=74
+1 73 -> 5 74
+# BP-PC99: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 153 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=74 --> m=1 ts=0 b0=0 tts-pc=75
+4 74 -> 4 75
+# m=1 ts=0 b0=0 tts-pc=74 --> m=1 ts=0 b0=0 tts-pc=74
+4 74 -> 4 74
+# m=1 ts=0 b0=1 tts-pc=74 --> m=1 ts=0 b0=1 tts-pc=75
+5 74 -> 5 75
+# m=1 ts=0 b0=1 tts-pc=74 --> m=1 ts=0 b0=1 tts-pc=74
+5 74 -> 5 74
+# BP-PC100: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 153 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=75 --> m=1 ts=0 b0=0 tts-pc=76
+4 75 -> 4 76
+# m=1 ts=0 b0=1 tts-pc=75 --> m=1 ts=0 b0=0 tts-pc=76
+5 75 -> 4 76
+# m=1 ts=0 b0=0 tts-pc=75 --> m=1 ts=0 b0=1 tts-pc=76
+4 75 -> 5 76
+# m=1 ts=0 b0=1 tts-pc=75 --> m=1 ts=0 b0=1 tts-pc=76
+5 75 -> 5 76
+# BP-PC101: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 153 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=76 --> m=0 ts=0 b0=0 tts-pc=77
+4 76 -> 0 77
+# m=1 ts=0 b0=1 tts-pc=76 --> m=0 ts=0 b0=1 tts-pc=77
+5 76 -> 1 77
+# BP-PC102: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 155 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=77 --> m=0 ts=0 b0=0 tts-pc=79
+0 77 -> 0 79
+# m=0 ts=0 b0=1 tts-pc=77 --> m=0 ts=0 b0=1 tts-pc=79
+1 77 -> 1 79
+# BP-PC103: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 135 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=78 --> m=0 ts=0 b0=0 tts-pc=51
+0 78 -> 0 51
+# m=0 ts=0 b0=1 tts-pc=78 --> m=0 ts=0 b0=1 tts-pc=51
+1 78 -> 1 51
+# BP-PC104: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 160 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=79 --> m=0 ts=0 b0=0 tts-pc=80
+0 79 -> 0 80
+# m=0 ts=0 b0=1 tts-pc=79 --> m=0 ts=0 b0=1 tts-pc=80
+1 79 -> 1 80
+# BP-PC106: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 164 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=80 --> m=1 ts=0 b0=0 tts-pc=81
+0 80 -> 4 81
+# m=0 ts=0 b0=1 tts-pc=80 --> m=1 ts=0 b0=1 tts-pc=81
+1 80 -> 5 81
+# BP-PC107: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 164 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=81 --> m=1 ts=0 b0=0 tts-pc=82
+4 81 -> 4 82
+# m=1 ts=0 b0=0 tts-pc=81 --> m=1 ts=0 b0=0 tts-pc=81
+4 81 -> 4 81
+# m=1 ts=0 b0=1 tts-pc=81 --> m=1 ts=0 b0=1 tts-pc=82
+5 81 -> 5 82
+# m=1 ts=0 b0=1 tts-pc=81 --> m=1 ts=0 b0=1 tts-pc=81
+5 81 -> 5 81
+# BP-PC108: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 164 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=82 --> m=1 ts=0 b0=0 tts-pc=83
+4 82 -> 4 83
+# m=1 ts=0 b0=1 tts-pc=82 --> m=1 ts=0 b0=0 tts-pc=83
+5 82 -> 4 83
+# m=1 ts=0 b0=0 tts-pc=82 --> m=1 ts=0 b0=1 tts-pc=83
+4 82 -> 5 83
+# m=1 ts=0 b0=1 tts-pc=82 --> m=1 ts=0 b0=1 tts-pc=83
+5 82 -> 5 83
+# BP-PC109: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 164 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=83 --> m=0 ts=0 b0=0 tts-pc=84
+4 83 -> 0 84
+# m=1 ts=0 b0=1 tts-pc=83 --> m=0 ts=0 b0=1 tts-pc=84
+5 83 -> 1 84
+# BP-PC110: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 164 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=84 --> error error
+0 84 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=84 --> m=0 ts=0 b0=1 tts-pc=85
+1 84 -> 1 85
+# BP-PC111: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 165 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=85 --> m=0 ts=0 b0=0 tts-pc=87
+0 85 -> 0 87
+# m=0 ts=0 b0=0 tts-pc=85 --> m=0 ts=0 b0=0 tts-pc=86
+0 85 -> 0 86
+# m=0 ts=0 b0=1 tts-pc=85 --> m=0 ts=0 b0=1 tts-pc=87
+1 85 -> 1 87
+# m=0 ts=0 b0=1 tts-pc=85 --> m=0 ts=0 b0=1 tts-pc=86
+1 85 -> 1 86
+# BP-PC113: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=86 --> m=0 ts=0 b0=0 tts-pc=88
+0 86 -> 0 88
+# m=0 ts=0 b0=1 tts-pc=86 --> m=0 ts=0 b0=1 tts-pc=88
+1 86 -> 1 88
+# BP-PC114: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 166 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=87 --> m=0 ts=0 b0=0 tts-pc=88
+0 87 -> 0 88
+# m=0 ts=0 b0=1 tts-pc=87 --> m=0 ts=0 b0=1 tts-pc=88
+1 87 -> 1 88
+# BP-PC115: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 167 function qrcu_reader2
+# m=0 ts=0 b0=0 tts-pc=88 --> m=1 ts=0 b0=0 tts-pc=89
+0 88 -> 4 89
+# m=0 ts=0 b0=1 tts-pc=88 --> m=1 ts=0 b0=1 tts-pc=89
+1 88 -> 5 89
+# BP-PC116: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 167 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=89 --> m=1 ts=0 b0=0 tts-pc=90
+4 89 -> 4 90
+# m=1 ts=0 b0=0 tts-pc=89 --> m=1 ts=0 b0=0 tts-pc=89
+4 89 -> 4 89
+# m=1 ts=0 b0=1 tts-pc=89 --> m=1 ts=0 b0=1 tts-pc=90
+5 89 -> 5 90
+# m=1 ts=0 b0=1 tts-pc=89 --> m=1 ts=0 b0=1 tts-pc=89
+5 89 -> 5 89
+# BP-PC117: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 167 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=90 --> m=1 ts=0 b0=0 tts-pc=91
+4 90 -> 4 91
+# m=1 ts=0 b0=1 tts-pc=90 --> m=1 ts=0 b0=0 tts-pc=91
+5 90 -> 4 91
+# m=1 ts=0 b0=0 tts-pc=90 --> m=1 ts=0 b0=1 tts-pc=91
+4 90 -> 5 91
+# m=1 ts=0 b0=1 tts-pc=90 --> m=1 ts=0 b0=1 tts-pc=91
+5 90 -> 5 91
+# BP-PC118: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 167 function qrcu_reader2
+# m=1 ts=0 b0=0 tts-pc=91 --> m=0 ts=0 b0=0 tts-pc=92
+4 91 -> 0 92
+# m=1 ts=0 b0=1 tts-pc=91 --> m=0 ts=0 b0=1 tts-pc=92
+5 91 -> 1 92
+# BP-PC121: END_THREAD at file ./cav16.bm/17_QRCU-4/main.c line 229 function main
+# BP-PC122: START_THREAD at file ./cav16.bm/17_QRCU-4/main.c line 230 function main
+# m=0 ts=0 b0=0 tts-pc=93 --> m=0 ts=1 b0=0 tts-pc=94
+0 93 +> 2 94
+# m=0 ts=1 b0=0 tts-pc=93 --> m=0 ts=0 b0=0 tts-pc=95
+2 93 -> 0 95
+# m=0 ts=0 b0=1 tts-pc=93 --> m=0 ts=1 b0=1 tts-pc=94
+1 93 +> 3 94
+# m=0 ts=1 b0=1 tts-pc=93 --> m=0 ts=0 b0=1 tts-pc=95
+3 93 -> 1 95
+# BP-PC123: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=94 --> m=0 ts=0 b0=0 tts-pc=138
+0 94 -> 0 138
+# m=0 ts=0 b0=1 tts-pc=94 --> m=0 ts=0 b0=1 tts-pc=138
+1 94 -> 1 138
+# BP-PC124: LOCATION at file ./cav16.bm/17_QRCU-4/main.c line 230 function main
+# m=0 ts=0 b0=0 tts-pc=95 --> m=0 ts=0 b0=0 tts-pc=96
+0 95 -> 0 96
+# m=0 ts=0 b0=1 tts-pc=95 --> m=0 ts=0 b0=1 tts-pc=96
+1 95 -> 1 96
+# BP-PC126: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 175 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=96 --> m=0 ts=0 b0=0 tts-pc=97
+0 96 -> 0 97
+# m=0 ts=0 b0=1 tts-pc=96 --> m=0 ts=0 b0=1 tts-pc=97
+1 96 -> 1 97
+# BP-PC128: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 177 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=97 --> m=0 ts=0 b0=0 tts-pc=110
+0 97 -> 0 110
+# m=0 ts=0 b0=0 tts-pc=97 --> m=0 ts=0 b0=0 tts-pc=98
+0 97 -> 0 98
+# m=0 ts=0 b0=1 tts-pc=97 --> m=0 ts=0 b0=1 tts-pc=110
+1 97 -> 1 110
+# m=0 ts=0 b0=1 tts-pc=97 --> m=0 ts=0 b0=1 tts-pc=98
+1 97 -> 1 98
+# BP-PC129: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 179 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=98 --> m=1 ts=0 b0=0 tts-pc=99
+0 98 -> 4 99
+# m=0 ts=0 b0=1 tts-pc=98 --> m=1 ts=0 b0=1 tts-pc=99
+1 98 -> 5 99
+# BP-PC130: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 179 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=99 --> m=1 ts=0 b0=0 tts-pc=100
+4 99 -> 4 100
+# m=1 ts=0 b0=0 tts-pc=99 --> m=1 ts=0 b0=0 tts-pc=99
+4 99 -> 4 99
+# m=1 ts=0 b0=1 tts-pc=99 --> m=1 ts=0 b0=1 tts-pc=100
+5 99 -> 5 100
+# m=1 ts=0 b0=1 tts-pc=99 --> m=1 ts=0 b0=1 tts-pc=99
+5 99 -> 5 99
+# BP-PC131: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 179 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=100 --> m=1 ts=0 b0=0 tts-pc=101
+4 100 -> 4 101
+# m=1 ts=0 b0=1 tts-pc=100 --> m=1 ts=0 b0=0 tts-pc=101
+5 100 -> 4 101
+# m=1 ts=0 b0=0 tts-pc=100 --> m=1 ts=0 b0=1 tts-pc=101
+4 100 -> 5 101
+# m=1 ts=0 b0=1 tts-pc=100 --> m=1 ts=0 b0=1 tts-pc=101
+5 100 -> 5 101
+# BP-PC132: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 179 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=101 --> m=0 ts=0 b0=0 tts-pc=102
+4 101 -> 0 102
+# m=1 ts=0 b0=1 tts-pc=101 --> m=0 ts=0 b0=1 tts-pc=102
+5 101 -> 1 102
+# BP-PC133: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 179 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=102 --> error error
+0 102 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=102 --> m=0 ts=0 b0=1 tts-pc=103
+1 102 -> 1 103
+# BP-PC134: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 180 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=103 --> m=0 ts=0 b0=0 tts-pc=104
+0 103 -> 0 104
+# m=0 ts=0 b0=0 tts-pc=103 --> m=0 ts=0 b0=0 tts-pc=103
+0 103 -> 0 103
+# m=0 ts=0 b0=1 tts-pc=103 --> m=0 ts=0 b0=1 tts-pc=104
+1 103 -> 1 104
+# m=0 ts=0 b0=1 tts-pc=103 --> m=0 ts=0 b0=1 tts-pc=103
+1 103 -> 1 103
+# BP-PC135: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 181 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=104 --> m=0 ts=0 b0=0 tts-pc=105
+0 104 -> 0 105
+# m=0 ts=0 b0=0 tts-pc=104 --> m=0 ts=0 b0=0 tts-pc=104
+0 104 -> 0 104
+# m=0 ts=0 b0=1 tts-pc=104 --> m=0 ts=0 b0=1 tts-pc=105
+1 104 -> 1 105
+# m=0 ts=0 b0=1 tts-pc=104 --> m=0 ts=0 b0=1 tts-pc=104
+1 104 -> 1 104
+# BP-PC137: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 183 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=105 --> m=1 ts=0 b0=0 tts-pc=106
+0 105 -> 4 106
+# m=0 ts=0 b0=1 tts-pc=105 --> m=1 ts=0 b0=1 tts-pc=106
+1 105 -> 5 106
+# BP-PC138: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 183 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=106 --> m=1 ts=0 b0=0 tts-pc=107
+4 106 -> 4 107
+# m=1 ts=0 b0=0 tts-pc=106 --> m=1 ts=0 b0=0 tts-pc=106
+4 106 -> 4 106
+# m=1 ts=0 b0=1 tts-pc=106 --> m=1 ts=0 b0=1 tts-pc=107
+5 106 -> 5 107
+# m=1 ts=0 b0=1 tts-pc=106 --> m=1 ts=0 b0=1 tts-pc=106
+5 106 -> 5 106
+# BP-PC139: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 183 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=107 --> m=1 ts=0 b0=0 tts-pc=108
+4 107 -> 4 108
+# m=1 ts=0 b0=1 tts-pc=107 --> m=1 ts=0 b0=0 tts-pc=108
+5 107 -> 4 108
+# m=1 ts=0 b0=0 tts-pc=107 --> m=1 ts=0 b0=1 tts-pc=108
+4 107 -> 5 108
+# m=1 ts=0 b0=1 tts-pc=107 --> m=1 ts=0 b0=1 tts-pc=108
+5 107 -> 5 108
+# BP-PC140: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 183 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=108 --> m=0 ts=0 b0=0 tts-pc=109
+4 108 -> 0 109
+# m=1 ts=0 b0=1 tts-pc=108 --> m=0 ts=0 b0=1 tts-pc=109
+5 108 -> 1 109
+# BP-PC141: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 185 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=109 --> m=0 ts=0 b0=0 tts-pc=124
+0 109 -> 0 124
+# m=0 ts=0 b0=1 tts-pc=109 --> m=0 ts=0 b0=1 tts-pc=124
+1 109 -> 1 124
+# BP-PC142: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 187 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=110 --> m=0 ts=0 b0=0 tts-pc=123
+0 110 -> 0 123
+# m=0 ts=0 b0=0 tts-pc=110 --> m=0 ts=0 b0=0 tts-pc=111
+0 110 -> 0 111
+# m=0 ts=0 b0=1 tts-pc=110 --> m=0 ts=0 b0=1 tts-pc=123
+1 110 -> 1 123
+# m=0 ts=0 b0=1 tts-pc=110 --> m=0 ts=0 b0=1 tts-pc=111
+1 110 -> 1 111
+# BP-PC143: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 189 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=111 --> m=1 ts=0 b0=0 tts-pc=112
+0 111 -> 4 112
+# m=0 ts=0 b0=1 tts-pc=111 --> m=1 ts=0 b0=1 tts-pc=112
+1 111 -> 5 112
+# BP-PC144: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 189 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=112 --> m=1 ts=0 b0=0 tts-pc=113
+4 112 -> 4 113
+# m=1 ts=0 b0=0 tts-pc=112 --> m=1 ts=0 b0=0 tts-pc=112
+4 112 -> 4 112
+# m=1 ts=0 b0=1 tts-pc=112 --> m=1 ts=0 b0=1 tts-pc=113
+5 112 -> 5 113
+# m=1 ts=0 b0=1 tts-pc=112 --> m=1 ts=0 b0=1 tts-pc=112
+5 112 -> 5 112
+# BP-PC145: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 189 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=113 --> m=1 ts=0 b0=0 tts-pc=114
+4 113 -> 4 114
+# m=1 ts=0 b0=1 tts-pc=113 --> m=1 ts=0 b0=0 tts-pc=114
+5 113 -> 4 114
+# m=1 ts=0 b0=0 tts-pc=113 --> m=1 ts=0 b0=1 tts-pc=114
+4 113 -> 5 114
+# m=1 ts=0 b0=1 tts-pc=113 --> m=1 ts=0 b0=1 tts-pc=114
+5 113 -> 5 114
+# BP-PC146: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 189 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=114 --> m=0 ts=0 b0=0 tts-pc=115
+4 114 -> 0 115
+# m=1 ts=0 b0=1 tts-pc=114 --> m=0 ts=0 b0=1 tts-pc=115
+5 114 -> 1 115
+# BP-PC147: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 189 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=115 --> error error
+0 115 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=115 --> m=0 ts=0 b0=1 tts-pc=116
+1 115 -> 1 116
+# BP-PC148: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 190 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=116 --> m=0 ts=0 b0=0 tts-pc=117
+0 116 -> 0 117
+# m=0 ts=0 b0=0 tts-pc=116 --> m=0 ts=0 b0=0 tts-pc=116
+0 116 -> 0 116
+# m=0 ts=0 b0=1 tts-pc=116 --> m=0 ts=0 b0=1 tts-pc=117
+1 116 -> 1 117
+# m=0 ts=0 b0=1 tts-pc=116 --> m=0 ts=0 b0=1 tts-pc=116
+1 116 -> 1 116
+# BP-PC149: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 191 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=117 --> m=0 ts=0 b0=0 tts-pc=118
+0 117 -> 0 118
+# m=0 ts=0 b0=0 tts-pc=117 --> m=0 ts=0 b0=0 tts-pc=117
+0 117 -> 0 117
+# m=0 ts=0 b0=1 tts-pc=117 --> m=0 ts=0 b0=1 tts-pc=118
+1 117 -> 1 118
+# m=0 ts=0 b0=1 tts-pc=117 --> m=0 ts=0 b0=1 tts-pc=117
+1 117 -> 1 117
+# BP-PC151: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 193 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=118 --> m=1 ts=0 b0=0 tts-pc=119
+0 118 -> 4 119
+# m=0 ts=0 b0=1 tts-pc=118 --> m=1 ts=0 b0=1 tts-pc=119
+1 118 -> 5 119
+# BP-PC152: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 193 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=119 --> m=1 ts=0 b0=0 tts-pc=120
+4 119 -> 4 120
+# m=1 ts=0 b0=0 tts-pc=119 --> m=1 ts=0 b0=0 tts-pc=119
+4 119 -> 4 119
+# m=1 ts=0 b0=1 tts-pc=119 --> m=1 ts=0 b0=1 tts-pc=120
+5 119 -> 5 120
+# m=1 ts=0 b0=1 tts-pc=119 --> m=1 ts=0 b0=1 tts-pc=119
+5 119 -> 5 119
+# BP-PC153: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 193 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=120 --> m=1 ts=0 b0=0 tts-pc=121
+4 120 -> 4 121
+# m=1 ts=0 b0=1 tts-pc=120 --> m=1 ts=0 b0=0 tts-pc=121
+5 120 -> 4 121
+# m=1 ts=0 b0=0 tts-pc=120 --> m=1 ts=0 b0=1 tts-pc=121
+4 120 -> 5 121
+# m=1 ts=0 b0=1 tts-pc=120 --> m=1 ts=0 b0=1 tts-pc=121
+5 120 -> 5 121
+# BP-PC154: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 193 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=121 --> m=0 ts=0 b0=0 tts-pc=122
+4 121 -> 0 122
+# m=1 ts=0 b0=1 tts-pc=121 --> m=0 ts=0 b0=1 tts-pc=122
+5 121 -> 1 122
+# BP-PC155: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 195 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=122 --> m=0 ts=0 b0=0 tts-pc=124
+0 122 -> 0 124
+# m=0 ts=0 b0=1 tts-pc=122 --> m=0 ts=0 b0=1 tts-pc=124
+1 122 -> 1 124
+# BP-PC156: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 175 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=123 --> m=0 ts=0 b0=0 tts-pc=96
+0 123 -> 0 96
+# m=0 ts=0 b0=1 tts-pc=123 --> m=0 ts=0 b0=1 tts-pc=96
+1 123 -> 1 96
+# BP-PC157: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 200 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=124 --> m=0 ts=0 b0=0 tts-pc=125
+0 124 -> 0 125
+# m=0 ts=0 b0=1 tts-pc=124 --> m=0 ts=0 b0=1 tts-pc=125
+1 124 -> 1 125
+# BP-PC159: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 205 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=125 --> m=1 ts=0 b0=0 tts-pc=126
+0 125 -> 4 126
+# m=0 ts=0 b0=1 tts-pc=125 --> m=1 ts=0 b0=1 tts-pc=126
+1 125 -> 5 126
+# BP-PC160: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 205 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=126 --> m=1 ts=0 b0=0 tts-pc=127
+4 126 -> 4 127
+# m=1 ts=0 b0=0 tts-pc=126 --> m=1 ts=0 b0=0 tts-pc=126
+4 126 -> 4 126
+# m=1 ts=0 b0=1 tts-pc=126 --> m=1 ts=0 b0=1 tts-pc=127
+5 126 -> 5 127
+# m=1 ts=0 b0=1 tts-pc=126 --> m=1 ts=0 b0=1 tts-pc=126
+5 126 -> 5 126
+# BP-PC161: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 205 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=127 --> m=1 ts=0 b0=0 tts-pc=128
+4 127 -> 4 128
+# m=1 ts=0 b0=1 tts-pc=127 --> m=1 ts=0 b0=0 tts-pc=128
+5 127 -> 4 128
+# m=1 ts=0 b0=0 tts-pc=127 --> m=1 ts=0 b0=1 tts-pc=128
+4 127 -> 5 128
+# m=1 ts=0 b0=1 tts-pc=127 --> m=1 ts=0 b0=1 tts-pc=128
+5 127 -> 5 128
+# BP-PC162: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 205 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=128 --> m=0 ts=0 b0=0 tts-pc=129
+4 128 -> 0 129
+# m=1 ts=0 b0=1 tts-pc=128 --> m=0 ts=0 b0=1 tts-pc=129
+5 128 -> 1 129
+# BP-PC163: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 205 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=129 --> error error
+0 129 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=129 --> m=0 ts=0 b0=1 tts-pc=130
+1 129 -> 1 130
+# BP-PC164: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 206 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=130 --> m=0 ts=0 b0=0 tts-pc=132
+0 130 -> 0 132
+# m=0 ts=0 b0=0 tts-pc=130 --> m=0 ts=0 b0=0 tts-pc=131
+0 130 -> 0 131
+# m=0 ts=0 b0=1 tts-pc=130 --> m=0 ts=0 b0=1 tts-pc=132
+1 130 -> 1 132
+# m=0 ts=0 b0=1 tts-pc=130 --> m=0 ts=0 b0=1 tts-pc=131
+1 130 -> 1 131
+# BP-PC166: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=131 --> m=0 ts=0 b0=0 tts-pc=133
+0 131 -> 0 133
+# m=0 ts=0 b0=1 tts-pc=131 --> m=0 ts=0 b0=1 tts-pc=133
+1 131 -> 1 133
+# BP-PC167: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 207 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=132 --> m=0 ts=0 b0=0 tts-pc=133
+0 132 -> 0 133
+# m=0 ts=0 b0=1 tts-pc=132 --> m=0 ts=0 b0=1 tts-pc=133
+1 132 -> 1 133
+# BP-PC168: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 208 function qrcu_reader3
+# m=0 ts=0 b0=0 tts-pc=133 --> m=1 ts=0 b0=0 tts-pc=134
+0 133 -> 4 134
+# m=0 ts=0 b0=1 tts-pc=133 --> m=1 ts=0 b0=1 tts-pc=134
+1 133 -> 5 134
+# BP-PC169: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 208 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=134 --> m=1 ts=0 b0=0 tts-pc=135
+4 134 -> 4 135
+# m=1 ts=0 b0=0 tts-pc=134 --> m=1 ts=0 b0=0 tts-pc=134
+4 134 -> 4 134
+# m=1 ts=0 b0=1 tts-pc=134 --> m=1 ts=0 b0=1 tts-pc=135
+5 134 -> 5 135
+# m=1 ts=0 b0=1 tts-pc=134 --> m=1 ts=0 b0=1 tts-pc=134
+5 134 -> 5 134
+# BP-PC170: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 208 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=135 --> m=1 ts=0 b0=0 tts-pc=136
+4 135 -> 4 136
+# m=1 ts=0 b0=1 tts-pc=135 --> m=1 ts=0 b0=0 tts-pc=136
+5 135 -> 4 136
+# m=1 ts=0 b0=0 tts-pc=135 --> m=1 ts=0 b0=1 tts-pc=136
+4 135 -> 5 136
+# m=1 ts=0 b0=1 tts-pc=135 --> m=1 ts=0 b0=1 tts-pc=136
+5 135 -> 5 136
+# BP-PC171: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 208 function qrcu_reader3
+# m=1 ts=0 b0=0 tts-pc=136 --> m=0 ts=0 b0=0 tts-pc=137
+4 136 -> 0 137
+# m=1 ts=0 b0=1 tts-pc=136 --> m=0 ts=0 b0=1 tts-pc=137
+5 136 -> 1 137
+# BP-PC174: END_THREAD at file ./cav16.bm/17_QRCU-4/main.c line 230 function main
+# BP-PC175: START_THREAD at file ./cav16.bm/17_QRCU-4/main.c line 231 function main
+# m=0 ts=0 b0=0 tts-pc=138 --> m=0 ts=1 b0=0 tts-pc=139
+0 138 +> 2 139
+# m=0 ts=1 b0=0 tts-pc=138 --> m=0 ts=0 b0=0 tts-pc=140
+2 138 -> 0 140
+# m=0 ts=0 b0=1 tts-pc=138 --> m=0 ts=1 b0=1 tts-pc=139
+1 138 +> 3 139
+# m=0 ts=1 b0=1 tts-pc=138 --> m=0 ts=0 b0=1 tts-pc=140
+3 138 -> 1 140
+# BP-PC176: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=139 --> m=0 ts=0 b0=0 tts-pc=197
+0 139 -> 0 197
+# m=0 ts=0 b0=1 tts-pc=139 --> m=0 ts=0 b0=1 tts-pc=197
+1 139 -> 1 197
+# BP-PC177: LOCATION at file ./cav16.bm/17_QRCU-4/main.c line 231 function main
+# m=0 ts=0 b0=0 tts-pc=140 --> m=0 ts=0 b0=0 tts-pc=141
+0 140 -> 0 141
+# m=0 ts=0 b0=1 tts-pc=140 --> m=0 ts=0 b0=1 tts-pc=141
+1 140 -> 1 141
+# BP-PC197: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 89 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=141 --> m=1 ts=0 b0=0 tts-pc=142
+0 141 -> 4 142
+# m=0 ts=0 b0=1 tts-pc=141 --> m=1 ts=0 b0=1 tts-pc=142
+1 141 -> 5 142
+# BP-PC198: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 89 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=142 --> m=1 ts=0 b0=0 tts-pc=143
+4 142 -> 4 143
+# m=1 ts=0 b0=0 tts-pc=142 --> m=1 ts=0 b0=0 tts-pc=142
+4 142 -> 4 142
+# m=1 ts=0 b0=1 tts-pc=142 --> m=1 ts=0 b0=1 tts-pc=143
+5 142 -> 5 143
+# m=1 ts=0 b0=1 tts-pc=142 --> m=1 ts=0 b0=1 tts-pc=142
+5 142 -> 5 142
+# BP-PC199: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 89 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=143 --> m=1 ts=0 b0=0 tts-pc=144
+4 143 -> 4 144
+# m=1 ts=0 b0=1 tts-pc=143 --> m=1 ts=0 b0=0 tts-pc=144
+5 143 -> 4 144
+# m=1 ts=0 b0=0 tts-pc=143 --> m=1 ts=0 b0=1 tts-pc=144
+4 143 -> 5 144
+# m=1 ts=0 b0=1 tts-pc=143 --> m=1 ts=0 b0=1 tts-pc=144
+5 143 -> 5 144
+# BP-PC200: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 89 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=144 --> m=0 ts=0 b0=0 tts-pc=145
+4 144 -> 0 145
+# m=1 ts=0 b0=1 tts-pc=144 --> m=0 ts=0 b0=1 tts-pc=145
+5 144 -> 1 145
+# BP-PC201: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 89 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=145 --> error error
+0 145 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=145 --> m=0 ts=0 b0=1 tts-pc=146
+1 145 -> 1 146
+# BP-PC205: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 93 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=146 --> m=1 ts=0 b0=0 tts-pc=147
+0 146 -> 4 147
+# m=0 ts=0 b0=1 tts-pc=146 --> m=1 ts=0 b0=1 tts-pc=147
+1 146 -> 5 147
+# BP-PC206: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 93 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=147 --> m=1 ts=0 b0=0 tts-pc=148
+4 147 -> 4 148
+# m=1 ts=0 b0=0 tts-pc=147 --> m=1 ts=0 b0=0 tts-pc=147
+4 147 -> 4 147
+# m=1 ts=0 b0=1 tts-pc=147 --> m=1 ts=0 b0=1 tts-pc=148
+5 147 -> 5 148
+# m=1 ts=0 b0=1 tts-pc=147 --> m=1 ts=0 b0=1 tts-pc=147
+5 147 -> 5 147
+# BP-PC207: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 93 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=148 --> m=1 ts=0 b0=0 tts-pc=149
+4 148 -> 4 149
+# m=1 ts=0 b0=1 tts-pc=148 --> m=1 ts=0 b0=0 tts-pc=149
+5 148 -> 4 149
+# m=1 ts=0 b0=0 tts-pc=148 --> m=1 ts=0 b0=1 tts-pc=149
+4 148 -> 5 149
+# m=1 ts=0 b0=1 tts-pc=148 --> m=1 ts=0 b0=1 tts-pc=149
+5 148 -> 5 149
+# BP-PC208: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 93 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=149 --> m=0 ts=0 b0=0 tts-pc=150
+4 149 -> 0 150
+# m=1 ts=0 b0=1 tts-pc=149 --> m=0 ts=0 b0=1 tts-pc=150
+5 149 -> 1 150
+# BP-PC209: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 96 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=150 --> m=0 ts=0 b0=0 tts-pc=152
+0 150 -> 0 152
+# m=0 ts=0 b0=0 tts-pc=150 --> m=0 ts=0 b0=0 tts-pc=151
+0 150 -> 0 151
+# m=0 ts=0 b0=1 tts-pc=150 --> m=0 ts=0 b0=1 tts-pc=152
+1 150 -> 1 152
+# m=0 ts=0 b0=1 tts-pc=150 --> m=0 ts=0 b0=1 tts-pc=151
+1 150 -> 1 151
+# BP-PC212: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=151 --> m=0 ts=0 b0=0 tts-pc=153
+0 151 -> 0 153
+# m=0 ts=0 b0=1 tts-pc=151 --> m=0 ts=0 b0=1 tts-pc=153
+1 151 -> 1 153
+# BP-PC213: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 96 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=152 --> m=0 ts=0 b0=0 tts-pc=153
+0 152 -> 0 153
+# m=0 ts=0 b0=1 tts-pc=152 --> m=0 ts=0 b0=1 tts-pc=153
+1 152 -> 1 153
+# BP-PC215: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 97 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=153 --> m=0 ts=0 b0=0 tts-pc=157
+0 153 -> 0 157
+# m=0 ts=0 b0=0 tts-pc=153 --> m=0 ts=0 b0=0 tts-pc=154
+0 153 -> 0 154
+# m=0 ts=0 b0=1 tts-pc=153 --> m=0 ts=0 b0=1 tts-pc=157
+1 153 -> 1 157
+# m=0 ts=0 b0=1 tts-pc=153 --> m=0 ts=0 b0=1 tts-pc=154
+1 153 -> 1 154
+# BP-PC216: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 97 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=154 --> m=0 ts=0 b0=0 tts-pc=156
+0 154 -> 0 156
+# m=0 ts=0 b0=0 tts-pc=154 --> m=0 ts=0 b0=0 tts-pc=155
+0 154 -> 0 155
+# m=0 ts=0 b0=1 tts-pc=154 --> m=0 ts=0 b0=1 tts-pc=156
+1 154 -> 1 156
+# m=0 ts=0 b0=1 tts-pc=154 --> m=0 ts=0 b0=1 tts-pc=155
+1 154 -> 1 155
+# BP-PC219: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=155 --> m=0 ts=0 b0=0 tts-pc=157
+0 155 -> 0 157
+# m=0 ts=0 b0=1 tts-pc=155 --> m=0 ts=0 b0=1 tts-pc=157
+1 155 -> 1 157
+# BP-PC220: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 97 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=156 --> m=0 ts=0 b0=0 tts-pc=157
+0 156 -> 0 157
+# m=0 ts=0 b0=1 tts-pc=156 --> m=0 ts=0 b0=1 tts-pc=157
+1 156 -> 1 157
+# BP-PC222: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 98 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=157 --> m=0 ts=0 b0=0 tts-pc=173
+0 157 -> 0 173
+# m=0 ts=0 b0=0 tts-pc=157 --> m=0 ts=0 b0=0 tts-pc=158
+0 157 -> 0 158
+# m=0 ts=0 b0=1 tts-pc=157 --> m=0 ts=0 b0=1 tts-pc=173
+1 157 -> 1 173
+# m=0 ts=0 b0=1 tts-pc=157 --> m=0 ts=0 b0=1 tts-pc=158
+1 157 -> 1 158
+# BP-PC223: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 99 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=158 --> m=1 ts=0 b0=0 tts-pc=159
+0 158 -> 4 159
+# m=0 ts=0 b0=1 tts-pc=158 --> m=1 ts=0 b0=1 tts-pc=159
+1 158 -> 5 159
+# BP-PC224: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 99 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=159 --> m=1 ts=0 b0=0 tts-pc=160
+4 159 -> 4 160
+# m=1 ts=0 b0=0 tts-pc=159 --> m=1 ts=0 b0=0 tts-pc=159
+4 159 -> 4 159
+# m=1 ts=0 b0=1 tts-pc=159 --> m=1 ts=0 b0=1 tts-pc=160
+5 159 -> 5 160
+# m=1 ts=0 b0=1 tts-pc=159 --> m=1 ts=0 b0=1 tts-pc=159
+5 159 -> 5 159
+# BP-PC226: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 99 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=160 --> m=0 ts=0 b0=0 tts-pc=161
+4 160 -> 0 161
+# m=1 ts=0 b0=1 tts-pc=160 --> m=0 ts=0 b0=1 tts-pc=161
+5 160 -> 1 161
+# BP-PC227: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 100 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=161 --> m=0 ts=0 b0=0 tts-pc=163
+0 161 -> 0 163
+# m=0 ts=0 b0=0 tts-pc=161 --> m=0 ts=0 b0=0 tts-pc=162
+0 161 -> 0 162
+# m=0 ts=0 b0=1 tts-pc=161 --> m=0 ts=0 b0=1 tts-pc=163
+1 161 -> 1 163
+# m=0 ts=0 b0=1 tts-pc=161 --> m=0 ts=0 b0=1 tts-pc=162
+1 161 -> 1 162
+# BP-PC231: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=162 --> m=0 ts=0 b0=0 tts-pc=164
+0 162 -> 0 164
+# m=0 ts=0 b0=1 tts-pc=162 --> m=0 ts=0 b0=1 tts-pc=164
+1 162 -> 1 164
+# BP-PC232: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 101 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=163 --> m=0 ts=0 b0=0 tts-pc=164
+0 163 -> 0 164
+# m=0 ts=0 b0=1 tts-pc=163 --> m=0 ts=0 b0=1 tts-pc=164
+1 163 -> 1 164
+# BP-PC235: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 102 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=164 --> m=0 ts=0 b0=0 tts-pc=168
+0 164 -> 0 168
+# m=0 ts=0 b0=0 tts-pc=164 --> m=0 ts=0 b0=0 tts-pc=165
+0 164 -> 0 165
+# m=0 ts=0 b0=1 tts-pc=164 --> m=0 ts=0 b0=1 tts-pc=168
+1 164 -> 1 168
+# m=0 ts=0 b0=1 tts-pc=164 --> m=0 ts=0 b0=1 tts-pc=165
+1 164 -> 1 165
+# BP-PC236: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 102 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=165 --> m=0 ts=0 b0=0 tts-pc=167
+0 165 -> 0 167
+# m=0 ts=0 b0=0 tts-pc=165 --> m=0 ts=0 b0=0 tts-pc=166
+0 165 -> 0 166
+# m=0 ts=0 b0=1 tts-pc=165 --> m=0 ts=0 b0=1 tts-pc=167
+1 165 -> 1 167
+# m=0 ts=0 b0=1 tts-pc=165 --> m=0 ts=0 b0=1 tts-pc=166
+1 165 -> 1 166
+# BP-PC237: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 102 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=166 --> m=0 ts=0 b0=0 tts-pc=165
+0 166 -> 0 165
+# m=0 ts=0 b0=1 tts-pc=166 --> m=0 ts=0 b0=1 tts-pc=165
+1 166 -> 1 165
+# BP-PC238: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=167 --> m=0 ts=0 b0=0 tts-pc=170
+0 167 -> 0 170
+# m=0 ts=0 b0=1 tts-pc=167 --> m=0 ts=0 b0=1 tts-pc=170
+1 167 -> 1 170
+# BP-PC239: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 103 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=168 --> m=0 ts=0 b0=0 tts-pc=170
+0 168 -> 0 170
+# m=0 ts=0 b0=0 tts-pc=168 --> m=0 ts=0 b0=0 tts-pc=169
+0 168 -> 0 169
+# m=0 ts=0 b0=1 tts-pc=168 --> m=0 ts=0 b0=1 tts-pc=170
+1 168 -> 1 170
+# m=0 ts=0 b0=1 tts-pc=168 --> m=0 ts=0 b0=1 tts-pc=169
+1 168 -> 1 169
+# BP-PC240: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 103 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=169 --> m=0 ts=0 b0=0 tts-pc=168
+0 169 -> 0 168
+# m=0 ts=0 b0=1 tts-pc=169 --> m=0 ts=0 b0=1 tts-pc=168
+1 169 -> 1 168
+# BP-PC241: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 104 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=170 --> m=1 ts=0 b0=0 tts-pc=171
+0 170 -> 4 171
+# m=0 ts=0 b0=1 tts-pc=170 --> m=1 ts=0 b0=1 tts-pc=171
+1 170 -> 5 171
+# BP-PC242: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 104 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=171 --> m=1 ts=0 b0=0 tts-pc=172
+4 171 -> 4 172
+# m=1 ts=0 b0=0 tts-pc=171 --> m=1 ts=0 b0=0 tts-pc=171
+4 171 -> 4 171
+# m=1 ts=0 b0=1 tts-pc=171 --> m=1 ts=0 b0=1 tts-pc=172
+5 171 -> 5 172
+# m=1 ts=0 b0=1 tts-pc=171 --> m=1 ts=0 b0=1 tts-pc=171
+5 171 -> 5 171
+# BP-PC244: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 104 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=172 --> m=0 ts=0 b0=0 tts-pc=173
+4 172 -> 0 173
+# m=1 ts=0 b0=1 tts-pc=172 --> m=0 ts=0 b0=1 tts-pc=173
+5 172 -> 1 173
+# BP-PC245: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 109 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=173 --> m=1 ts=0 b0=0 tts-pc=174
+0 173 -> 4 174
+# m=0 ts=0 b0=1 tts-pc=173 --> m=1 ts=0 b0=1 tts-pc=174
+1 173 -> 5 174
+# BP-PC246: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 109 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=174 --> m=1 ts=0 b0=0 tts-pc=175
+4 174 -> 4 175
+# m=1 ts=0 b0=0 tts-pc=174 --> m=1 ts=0 b0=0 tts-pc=174
+4 174 -> 4 174
+# m=1 ts=0 b0=1 tts-pc=174 --> m=1 ts=0 b0=1 tts-pc=175
+5 174 -> 5 175
+# m=1 ts=0 b0=1 tts-pc=174 --> m=1 ts=0 b0=1 tts-pc=174
+5 174 -> 5 174
+# BP-PC247: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 109 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=175 --> m=1 ts=0 b0=0 tts-pc=176
+4 175 -> 4 176
+# m=1 ts=0 b0=1 tts-pc=175 --> m=1 ts=0 b0=0 tts-pc=176
+5 175 -> 4 176
+# m=1 ts=0 b0=0 tts-pc=175 --> m=1 ts=0 b0=1 tts-pc=176
+4 175 -> 5 176
+# m=1 ts=0 b0=1 tts-pc=175 --> m=1 ts=0 b0=1 tts-pc=176
+5 175 -> 5 176
+# BP-PC248: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 109 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=176 --> m=0 ts=0 b0=0 tts-pc=177
+4 176 -> 0 177
+# m=1 ts=0 b0=1 tts-pc=176 --> m=0 ts=0 b0=1 tts-pc=177
+5 176 -> 1 177
+# BP-PC249: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 109 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=177 --> error error
+0 177 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=177 --> m=0 ts=0 b0=1 tts-pc=178
+1 177 -> 1 178
+# BP-PC250: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 110 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=178 --> m=0 ts=0 b0=0 tts-pc=183
+0 178 -> 0 183
+# m=0 ts=0 b0=0 tts-pc=178 --> m=0 ts=0 b0=0 tts-pc=179
+0 178 -> 0 179
+# m=0 ts=0 b0=1 tts-pc=178 --> m=0 ts=0 b0=1 tts-pc=183
+1 178 -> 1 183
+# m=0 ts=0 b0=1 tts-pc=178 --> m=0 ts=0 b0=1 tts-pc=179
+1 178 -> 1 179
+# BP-PC251: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 111 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=179 --> m=0 ts=0 b0=0 tts-pc=180
+0 179 -> 0 180
+# m=0 ts=0 b0=0 tts-pc=179 --> m=0 ts=0 b0=0 tts-pc=179
+0 179 -> 0 179
+# m=0 ts=0 b0=1 tts-pc=179 --> m=0 ts=0 b0=1 tts-pc=180
+1 179 -> 1 180
+# m=0 ts=0 b0=1 tts-pc=179 --> m=0 ts=0 b0=1 tts-pc=179
+1 179 -> 1 179
+# BP-PC252: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 112 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=180 --> m=0 ts=0 b0=0 tts-pc=181
+0 180 -> 0 181
+# m=0 ts=0 b0=0 tts-pc=180 --> m=0 ts=0 b0=0 tts-pc=180
+0 180 -> 0 180
+# m=0 ts=0 b0=1 tts-pc=180 --> m=0 ts=0 b0=1 tts-pc=181
+1 180 -> 1 181
+# m=0 ts=0 b0=1 tts-pc=180 --> m=0 ts=0 b0=1 tts-pc=180
+1 180 -> 1 180
+# BP-PC253: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 113 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=181 --> error error
+0 181 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=181 --> error error
+1 181 -> 8 200
+# BP-PC254: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=182 --> m=0 ts=0 b0=0 tts-pc=192
+0 182 -> 0 192
+# m=0 ts=0 b0=1 tts-pc=182 --> m=0 ts=0 b0=1 tts-pc=192
+1 182 -> 1 192
+# BP-PC255: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 115 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=183 --> m=0 ts=0 b0=0 tts-pc=188
+0 183 -> 0 188
+# m=0 ts=0 b0=0 tts-pc=183 --> m=0 ts=0 b0=0 tts-pc=184
+0 183 -> 0 184
+# m=0 ts=0 b0=1 tts-pc=183 --> m=0 ts=0 b0=1 tts-pc=188
+1 183 -> 1 188
+# m=0 ts=0 b0=1 tts-pc=183 --> m=0 ts=0 b0=1 tts-pc=184
+1 183 -> 1 184
+# BP-PC256: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 116 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=184 --> m=0 ts=0 b0=0 tts-pc=185
+0 184 -> 0 185
+# m=0 ts=0 b0=0 tts-pc=184 --> m=0 ts=0 b0=0 tts-pc=184
+0 184 -> 0 184
+# m=0 ts=0 b0=1 tts-pc=184 --> m=0 ts=0 b0=1 tts-pc=185
+1 184 -> 1 185
+# m=0 ts=0 b0=1 tts-pc=184 --> m=0 ts=0 b0=1 tts-pc=184
+1 184 -> 1 184
+# BP-PC257: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 117 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=185 --> m=0 ts=0 b0=0 tts-pc=186
+0 185 -> 0 186
+# m=0 ts=0 b0=0 tts-pc=185 --> m=0 ts=0 b0=0 tts-pc=185
+0 185 -> 0 185
+# m=0 ts=0 b0=1 tts-pc=185 --> m=0 ts=0 b0=1 tts-pc=186
+1 185 -> 1 186
+# m=0 ts=0 b0=1 tts-pc=185 --> m=0 ts=0 b0=1 tts-pc=185
+1 185 -> 1 185
+# BP-PC258: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 118 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=186 --> error error
+0 186 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=186 --> error error
+1 186 -> 8 200
+# BP-PC259: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=187 --> m=0 ts=0 b0=0 tts-pc=192
+0 187 -> 0 192
+# m=0 ts=0 b0=1 tts-pc=187 --> m=0 ts=0 b0=1 tts-pc=192
+1 187 -> 1 192
+# BP-PC260: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 120 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=188 --> m=0 ts=0 b0=0 tts-pc=192
+0 188 -> 0 192
+# m=0 ts=0 b0=0 tts-pc=188 --> m=0 ts=0 b0=0 tts-pc=189
+0 188 -> 0 189
+# m=0 ts=0 b0=1 tts-pc=188 --> m=0 ts=0 b0=1 tts-pc=192
+1 188 -> 1 192
+# m=0 ts=0 b0=1 tts-pc=188 --> m=0 ts=0 b0=1 tts-pc=189
+1 188 -> 1 189
+# BP-PC261: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 121 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=189 --> m=0 ts=0 b0=0 tts-pc=190
+0 189 -> 0 190
+# m=0 ts=0 b0=0 tts-pc=189 --> m=0 ts=0 b0=0 tts-pc=189
+0 189 -> 0 189
+# m=0 ts=0 b0=1 tts-pc=189 --> m=0 ts=0 b0=1 tts-pc=190
+1 189 -> 1 190
+# m=0 ts=0 b0=1 tts-pc=189 --> m=0 ts=0 b0=1 tts-pc=189
+1 189 -> 1 189
+# BP-PC262: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 122 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=190 --> m=0 ts=0 b0=0 tts-pc=191
+0 190 -> 0 191
+# m=0 ts=0 b0=0 tts-pc=190 --> m=0 ts=0 b0=0 tts-pc=190
+0 190 -> 0 190
+# m=0 ts=0 b0=1 tts-pc=190 --> m=0 ts=0 b0=1 tts-pc=191
+1 190 -> 1 191
+# m=0 ts=0 b0=1 tts-pc=190 --> m=0 ts=0 b0=1 tts-pc=190
+1 190 -> 1 190
+# BP-PC263: ASSERT at file ./cav16.bm/17_QRCU-4/main.c line 123 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=191 --> error error
+0 191 -> 8 200
+# m=0 ts=0 b0=1 tts-pc=191 --> error error
+1 191 -> 8 200
+# BP-PC264: ATOMIC_BEGIN at file ./cav16.bm/17_QRCU-4/main.c line 127 function qrcu_updater
+# m=0 ts=0 b0=0 tts-pc=192 --> m=1 ts=0 b0=0 tts-pc=193
+0 192 -> 4 193
+# m=0 ts=0 b0=1 tts-pc=192 --> m=1 ts=0 b0=1 tts-pc=193
+1 192 -> 5 193
+# BP-PC265: ASSUME at file ./cav16.bm/17_QRCU-4/main.c line 127 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=193 --> m=1 ts=0 b0=0 tts-pc=194
+4 193 -> 4 194
+# m=1 ts=0 b0=0 tts-pc=193 --> m=1 ts=0 b0=0 tts-pc=193
+4 193 -> 4 193
+# m=1 ts=0 b0=1 tts-pc=193 --> m=1 ts=0 b0=1 tts-pc=194
+5 193 -> 5 194
+# m=1 ts=0 b0=1 tts-pc=193 --> m=1 ts=0 b0=1 tts-pc=193
+5 193 -> 5 193
+# BP-PC266: ASSIGN at file ./cav16.bm/17_QRCU-4/main.c line 127 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=194 --> m=1 ts=0 b0=0 tts-pc=195
+4 194 -> 4 195
+# m=1 ts=0 b0=1 tts-pc=194 --> m=1 ts=0 b0=0 tts-pc=195
+5 194 -> 4 195
+# m=1 ts=0 b0=0 tts-pc=194 --> m=1 ts=0 b0=1 tts-pc=195
+4 194 -> 5 195
+# m=1 ts=0 b0=1 tts-pc=194 --> m=1 ts=0 b0=1 tts-pc=195
+5 194 -> 5 195
+# BP-PC267: ATOMIC_END at file ./cav16.bm/17_QRCU-4/main.c line 127 function qrcu_updater
+# m=1 ts=0 b0=0 tts-pc=195 --> m=0 ts=0 b0=0 tts-pc=196
+4 195 -> 0 196
+# m=1 ts=0 b0=1 tts-pc=195 --> m=0 ts=0 b0=1 tts-pc=196
+5 195 -> 1 196
+# BP-PC270: END_THREAD at file ./cav16.bm/17_QRCU-4/main.c line 231 function main
+# BP-PC271: GOTO at file ./cav16.bm/17_QRCU-4/main.c line 227 function main
+# m=0 ts=0 b0=0 tts-pc=197 --> m=0 ts=0 b0=0 tts-pc=2
+0 197 -> 0 2
+# m=0 ts=0 b0=1 tts-pc=197 --> m=0 ts=0 b0=1 tts-pc=2
+1 197 -> 1 2
+# BP-PC272: OTHER at file ./cav16.bm/17_QRCU-4/main.c line 234 function main
+# m=0 ts=0 b0=0 tts-pc=198 --> m=0 ts=0 b0=0 tts-pc=199
+0 198 -> 0 199
+# m=0 ts=0 b0=1 tts-pc=198 --> m=0 ts=0 b0=1 tts-pc=199
+1 198 -> 1 199
+# BP-PC274: END_FUNCTION at 

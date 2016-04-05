@@ -1,0 +1,147 @@
+# error state is shared num 8 local num 24
+# local state num is pc*1+localstate
+# maximum pc is 23
+# shared state 0: m=0 ts=0 b0=0
+# shared state 4: m=1 ts=0 b0=0
+# local state 0: tts-pc=0
+# shared state 1: m=0 ts=0 b0=1
+# shared state 5: m=1 ts=0 b0=1
+9 25
+# nondet init shared var 0
+# m=0 ts=0 b0=0 tts-pc=0 --> m=0 ts=0 b0=0 tts-pc=1
+0 0 -> 0 1
+# m=0 ts=0 b0=1 tts-pc=0 --> m=0 ts=0 b0=0 tts-pc=1
+1 0 -> 0 1
+# m=0 ts=0 b0=0 tts-pc=0 --> m=0 ts=0 b0=1 tts-pc=1
+0 0 -> 1 1
+# m=0 ts=0 b0=1 tts-pc=0 --> m=0 ts=0 b0=1 tts-pc=1
+1 0 -> 1 1
+# BP-PC5: ASSIGN at file ./cav16.bm/05_maxsim_l/main.c line 23
+# m=0 ts=0 b0=0 tts-pc=1 --> m=0 ts=0 b0=0 tts-pc=2
+0 1 -> 0 2
+# m=0 ts=0 b0=1 tts-pc=1 --> m=0 ts=0 b0=0 tts-pc=2
+1 1 -> 0 2
+# BP-PC9: GOTO at file ./cav16.bm/05_maxsim_l/main.c line 60 function main
+# m=0 ts=0 b0=0 tts-pc=2 --> m=0 ts=0 b0=0 tts-pc=3
+0 2 -> 0 3
+# m=0 ts=0 b0=1 tts-pc=2 --> m=0 ts=0 b0=1 tts-pc=3
+1 2 -> 1 3
+# BP-PC10: START_THREAD at file ./cav16.bm/05_maxsim_l/main.c line 60 function main
+# m=0 ts=0 b0=0 tts-pc=3 --> m=0 ts=1 b0=0 tts-pc=4
+0 3 +> 2 4
+# m=0 ts=1 b0=0 tts-pc=3 --> m=0 ts=0 b0=0 tts-pc=5
+2 3 -> 0 5
+# m=0 ts=0 b0=1 tts-pc=3 --> m=0 ts=1 b0=1 tts-pc=4
+1 3 +> 3 4
+# m=0 ts=1 b0=1 tts-pc=3 --> m=0 ts=0 b0=1 tts-pc=5
+3 3 -> 1 5
+# BP-PC11: GOTO at 
+# m=0 ts=0 b0=0 tts-pc=4 --> m=0 ts=0 b0=0 tts-pc=21
+0 4 -> 0 21
+# m=0 ts=0 b0=1 tts-pc=4 --> m=0 ts=0 b0=1 tts-pc=21
+1 4 -> 1 21
+# BP-PC12: LOCATION at file ./cav16.bm/05_maxsim_l/main.c line 60 function main
+# m=0 ts=0 b0=0 tts-pc=5 --> m=0 ts=0 b0=0 tts-pc=6
+0 5 -> 0 6
+# m=0 ts=0 b0=1 tts-pc=5 --> m=0 ts=0 b0=1 tts-pc=6
+1 5 -> 1 6
+# BP-PC14: ASSUME at file ./cav16.bm/05_maxsim_l/main.c line 50 function thr1
+# m=0 ts=0 b0=0 tts-pc=6 --> m=0 ts=0 b0=0 tts-pc=7
+0 6 -> 0 7
+# m=0 ts=0 b0=0 tts-pc=6 --> m=0 ts=0 b0=0 tts-pc=6
+0 6 -> 0 6
+# m=0 ts=0 b0=1 tts-pc=6 --> m=0 ts=0 b0=1 tts-pc=7
+1 6 -> 1 7
+# m=0 ts=0 b0=1 tts-pc=6 --> m=0 ts=0 b0=1 tts-pc=6
+1 6 -> 1 6
+# BP-PC21: GOTO at file ./cav16.bm/05_maxsim_l/main.c line 32 function findMax
+# m=0 ts=0 b0=0 tts-pc=7 --> m=0 ts=0 b0=0 tts-pc=19
+0 7 -> 0 19
+# m=0 ts=0 b0=0 tts-pc=7 --> m=0 ts=0 b0=0 tts-pc=8
+0 7 -> 0 8
+# m=0 ts=0 b0=1 tts-pc=7 --> m=0 ts=0 b0=1 tts-pc=19
+1 7 -> 1 19
+# m=0 ts=0 b0=1 tts-pc=7 --> m=0 ts=0 b0=1 tts-pc=8
+1 7 -> 1 8
+# BP-PC23: ATOMIC_BEGIN at file ./cav16.bm/05_maxsim_l/main.c line 35 function findMax
+# m=0 ts=0 b0=0 tts-pc=8 --> m=1 ts=0 b0=0 tts-pc=9
+0 8 -> 4 9
+# m=0 ts=0 b0=1 tts-pc=8 --> m=1 ts=0 b0=1 tts-pc=9
+1 8 -> 5 9
+# BP-PC24: ASSUME at file ./cav16.bm/05_maxsim_l/main.c line 35 function findMax
+# m=1 ts=0 b0=0 tts-pc=9 --> m=1 ts=0 b0=0 tts-pc=10
+4 9 -> 4 10
+# m=1 ts=0 b0=0 tts-pc=9 --> m=1 ts=0 b0=0 tts-pc=9
+4 9 -> 4 9
+# m=1 ts=0 b0=1 tts-pc=9 --> m=1 ts=0 b0=1 tts-pc=10
+5 9 -> 5 10
+# m=1 ts=0 b0=1 tts-pc=9 --> m=1 ts=0 b0=1 tts-pc=9
+5 9 -> 5 9
+# BP-PC25: ASSIGN at file ./cav16.bm/05_maxsim_l/main.c line 35 function findMax
+# m=1 ts=0 b0=0 tts-pc=10 --> m=1 ts=0 b0=1 tts-pc=11
+4 10 -> 5 11
+# m=1 ts=0 b0=1 tts-pc=10 --> m=1 ts=0 b0=1 tts-pc=11
+5 10 -> 5 11
+# BP-PC26: ATOMIC_END at file ./cav16.bm/05_maxsim_l/main.c line 35 function findMax
+# m=1 ts=0 b0=0 tts-pc=11 --> m=0 ts=0 b0=0 tts-pc=12
+4 11 -> 0 12
+# m=1 ts=0 b0=1 tts-pc=11 --> m=0 ts=0 b0=1 tts-pc=12
+5 11 -> 1 12
+# BP-PC27: GOTO at file ./cav16.bm/05_maxsim_l/main.c line 37 function findMax
+# m=0 ts=0 b0=0 tts-pc=12 --> m=0 ts=0 b0=0 tts-pc=13
+0 12 -> 0 13
+# m=0 ts=0 b0=0 tts-pc=12 --> m=0 ts=0 b0=0 tts-pc=13
+0 12 -> 0 13
+# m=0 ts=0 b0=1 tts-pc=12 --> m=0 ts=0 b0=1 tts-pc=13
+1 12 -> 1 13
+# m=0 ts=0 b0=1 tts-pc=12 --> m=0 ts=0 b0=1 tts-pc=13
+1 12 -> 1 13
+# BP-PC29: ATOMIC_BEGIN at file ./cav16.bm/05_maxsim_l/main.c line 41 function findMax
+# m=0 ts=0 b0=0 tts-pc=13 --> m=1 ts=0 b0=0 tts-pc=14
+0 13 -> 4 14
+# m=0 ts=0 b0=1 tts-pc=13 --> m=1 ts=0 b0=1 tts-pc=14
+1 13 -> 5 14
+# BP-PC30: ASSUME at file ./cav16.bm/05_maxsim_l/main.c line 41 function findMax
+# m=1 ts=0 b0=1 tts-pc=14 --> m=1 ts=0 b0=1 tts-pc=15
+5 14 -> 5 15
+# BP-PC31: ASSIGN at file ./cav16.bm/05_maxsim_l/main.c line 41 function findMax
+# m=1 ts=0 b0=0 tts-pc=15 --> m=1 ts=0 b0=0 tts-pc=16
+4 15 -> 4 16
+# m=1 ts=0 b0=1 tts-pc=15 --> m=1 ts=0 b0=0 tts-pc=16
+5 15 -> 4 16
+# BP-PC32: ATOMIC_END at file ./cav16.bm/05_maxsim_l/main.c line 41 function findMax
+# m=1 ts=0 b0=0 tts-pc=16 --> m=0 ts=0 b0=0 tts-pc=17
+4 16 -> 0 17
+# m=1 ts=0 b0=1 tts-pc=16 --> m=0 ts=0 b0=1 tts-pc=17
+5 16 -> 1 17
+# BP-PC33: ASSERT at file ./cav16.bm/05_maxsim_l/main.c line 42 function findMax
+# m=0 ts=0 b0=0 tts-pc=17 --> m=0 ts=0 b0=0 tts-pc=18
+0 17 -> 0 18
+# m=0 ts=0 b0=0 tts-pc=17 --> error error
+0 17 -> 8 24
+# m=0 ts=0 b0=1 tts-pc=17 --> m=0 ts=0 b0=1 tts-pc=18
+1 17 -> 1 18
+# m=0 ts=0 b0=1 tts-pc=17 --> error error
+1 17 -> 8 24
+# BP-PC35: GOTO at file ./cav16.bm/05_maxsim_l/main.c line 32 function findMax
+# m=0 ts=0 b0=0 tts-pc=18 --> m=0 ts=0 b0=0 tts-pc=7
+0 18 -> 0 7
+# m=0 ts=0 b0=1 tts-pc=18 --> m=0 ts=0 b0=1 tts-pc=7
+1 18 -> 1 7
+# BP-PC36: LOCATION at file ./cav16.bm/05_maxsim_l/main.c line 44 function findMax
+# m=0 ts=0 b0=0 tts-pc=19 --> m=0 ts=0 b0=0 tts-pc=20
+0 19 -> 0 20
+# m=0 ts=0 b0=1 tts-pc=19 --> m=0 ts=0 b0=1 tts-pc=20
+1 19 -> 1 20
+# BP-PC38: END_THREAD at file ./cav16.bm/05_maxsim_l/main.c line 60 function main
+# BP-PC39: GOTO at file ./cav16.bm/05_maxsim_l/main.c line 60 function main
+# m=0 ts=0 b0=0 tts-pc=21 --> m=0 ts=0 b0=0 tts-pc=2
+0 21 -> 0 2
+# m=0 ts=0 b0=1 tts-pc=21 --> m=0 ts=0 b0=1 tts-pc=2
+1 21 -> 1 2
+# BP-PC40: OTHER at file ./cav16.bm/05_maxsim_l/main.c line 61 function main
+# m=0 ts=0 b0=0 tts-pc=22 --> m=0 ts=0 b0=0 tts-pc=23
+0 22 -> 0 23
+# m=0 ts=0 b0=1 tts-pc=22 --> m=0 ts=0 b0=1 tts-pc=23
+1 22 -> 1 23
+# BP-PC42: END_FUNCTION at 
