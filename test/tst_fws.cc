@@ -35,7 +35,7 @@ bool FWS::standard_FWS(const size_tc& n, const string& filename) {
     const auto& P = parser::parse(filename, mode::POST);
     this->initl_TS = P.first;  /// the list of initial thread states
     this->final_TS = P.second; /// the list of final   thread states
-#ifndef NDEBUG
+//#ifndef NDEBUG
             cout << __func__ << " initial states: " << "\n";
             for (const auto& its : this->initl_TS) {
                 cout << its << "\n";
@@ -45,7 +45,7 @@ bool FWS::standard_FWS(const size_tc& n, const string& filename) {
             for (const auto& ifs : this->final_TS) {
                 cout << ifs << "\n";
             }
-#endif
+//#endif
     antichain worklist;
     antichain explored;
 
@@ -67,6 +67,7 @@ bool FWS::standard_FWS(const size_tc& n, const string& filename) {
         /// Place 3: call the <step> in the instance <image>
         const auto& images = image.step(tau);
         for (const auto& _tau : images) {
+        	//cout<<_tau<<"\n";
             /// return true if _tau covers final state
             if (this->is_reached(_tau))
                 return true;
