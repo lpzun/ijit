@@ -6,9 +6,9 @@
  * @author Peizun Liu
  */
 
-#include "../iotf.hh"
+#include "../ijit.hh"
 
-namespace iotf {
+namespace ijit {
 
 pre_image::pre_image() :
         cand_L() {

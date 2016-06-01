@@ -10,7 +10,7 @@
 
 #include "state.hh"
 
-namespace iotf {
+namespace ijit {
 class alg {
 public:
     static ca_locals update_counters(const local_state& t_in,

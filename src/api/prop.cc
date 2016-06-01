@@ -11,13 +11,13 @@
  * @author Peizun Liu
  */
 
-#include "../iotf.hh"
+#include "../ijit.hh"
 
 /// declare yyin to let parser read from file
 /// NOTE: this is not an elegant way to do this
 extern FILE * yyin;
 
-namespace iotf {
+namespace ijit {
 
 /**
  * @brief override operator << for system state

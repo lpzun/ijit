@@ -18,7 +18,7 @@
 #include "../util/excp.hh"
 #include "../util/algs.hh"
 
-namespace iotf {
+namespace ijit {
 
 /**
  * @brief data structure <type_stmt>: all of statement types

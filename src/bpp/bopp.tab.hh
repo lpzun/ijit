@@ -43,7 +43,7 @@
 #line 21 "bopp.y" // lalr1.cc:387
 
 # include "aide.hh"
-  using namespace iotf;
+  using namespace ijit;
 
 #line 49 "bopp.tab.hh" // lalr1.cc:387
 

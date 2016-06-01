@@ -16,7 +16,7 @@
 
 #include "head.hh"
 
-namespace iotf {
+namespace ijit {
 
 class refs {
 public:

@@ -50,7 +50,7 @@ using std::vector;
 using std::stack;
 using std::pair;
 
-namespace iotf {
+namespace ijit {
 
 /**
  * @brief the mode of parser: probably compute prev-/post-images of a global

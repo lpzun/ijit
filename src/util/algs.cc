@@ -7,7 +7,7 @@
 
 #include "algs.hh"
 
-namespace iotf {
+namespace ijit {
 /**
  * @brief This function is used to increment/decrement the counters for all
  * 		  local states in T_in/T_de.

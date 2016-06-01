@@ -7,7 +7,7 @@
 
 #include "../test/tst_convert.hh"
 
-namespace iotf {
+namespace ijit {
 
 tst_convert::tst_convert() {
     // TODO Auto-generated constructor stub

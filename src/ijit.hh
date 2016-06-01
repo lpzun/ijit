@@ -38,15 +38,15 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-#ifndef IOTF_HH_
-#define IOTF_HH_
+#ifndef IJIT_HH_
+#define IJIT_HH_
 
 #include "util/algs.hh"
 #include "util/excp.hh"
 #include "api/cfg.hh"
 #include "bpp/bopp.tab.hh"
 
-namespace iotf {
+namespace ijit {
 /**
  * @brief a program state has two different representation in our API:
  *        (1) Counter Abstraction Representation:
@@ -387,4 +387,4 @@ private:
 
 } /* namespace otf */
 
-#endif /* IOTF_HH_ */
+#endif /* IJIT_HH_ */

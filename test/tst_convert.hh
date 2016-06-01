@@ -8,9 +8,9 @@
 #ifndef TST_CONVERT_HH_
 #define TST_CONVERT_HH_
 
-#include "../src/iotf.hh"
+#include "../src/ijit.hh"
 
-namespace iotf {
+namespace ijit {
 
 class tst_convert {
 public:

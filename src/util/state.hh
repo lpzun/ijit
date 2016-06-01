@@ -21,7 +21,7 @@
 #include "head.hh"
 #include "refs.hh"
 
-namespace iotf {
+namespace ijit {
 
 template<std::size_t N>
 bool operator <(const std::bitset<N>& x, const std::bitset<N>& y) {

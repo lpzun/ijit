@@ -10,7 +10,7 @@
 
 #include "../src/iotf.hh"
 
-namespace iotf {
+namespace ijit {
 
 class tst_parser {
 public:

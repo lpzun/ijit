@@ -7,7 +7,7 @@
 
 #include "refs.hh"
 
-namespace iotf {
+namespace ijit {
 
 /// the number of shared variables
 ushort refs::SV_NUM = 0;

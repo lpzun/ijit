@@ -8,7 +8,7 @@
 #ifndef UTIL_LOG_HH_
 #define UTIL_LOG_HH_
 
-namespace iotf {
+namespace ijit {
 
 #define NDEBUG
 

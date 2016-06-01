@@ -7,7 +7,7 @@
 
 #include "../test/tst_parser.hh"
 
-namespace iotf {
+namespace ijit {
 
 tst_parser::tst_parser() {
 

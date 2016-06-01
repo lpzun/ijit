@@ -7,7 +7,7 @@
 
 #include "cfg.hh"
 
-namespace iotf {
+namespace ijit {
 
 /**
  * @brief default constructor

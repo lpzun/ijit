@@ -10,7 +10,7 @@
 
 /// Place 0: include the header and namespace
 #include "../src/iotf.hh"
-using namespace iotf;
+using namespace ijit;
 
 namespace fws {
 
