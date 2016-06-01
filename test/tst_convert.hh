@@ -20,6 +20,6 @@ public:
     static void test_converter();
 };
 
-} /* namespace iotf */
+} /* namespace ijit */
 
 #endif /* TST_CONVERT_HH_ */
