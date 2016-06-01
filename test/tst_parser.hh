@@ -8,7 +8,7 @@
 #ifndef TST_PARSER_HH_
 #define TST_PARSER_HH_
 
-#include "../src/iotf.hh"
+#include "../src/ijit.hh"
 
 namespace ijit {
 

@@ -11,12 +11,13 @@ namespace ijit {
 
 /**
  * @brief default constructor
+ * @param m
  */
 paide::paide(const mode& m) :
-        lineno(0), ipc(0), s_vars_num(0), l_vars_num(0), ///
-        s_vars_list(), l_vars_list(), s_vars_init(), l_vars_init(), ///
-        suc_pc_set(), expr_in_list(), assg_stmt_lhs(), assg_stmt_rhs(), ///
-        asse_pc_set(), cfg_G(), all_pc_set(), m(m) {
+        lineno(0), ipc(0), s_vars_num(0), l_vars_num(0), s_vars_list(),  ///
+        l_vars_list(), s_vars_init(), l_vars_init(), suc_pc_set(),       ///
+        expr_in_list(), assg_stmt_lhs(), assg_stmt_rhs(), asse_pc_set(), ///
+        cfg_G(), all_pc_set(), m(m) {
 }
 
 /**

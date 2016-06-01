@@ -9,7 +9,7 @@
 #define TST_FWS_HH_
 
 /// Place 0: include the header and namespace
-#include "../src/iotf.hh"
+#include "../src/ijit.hh"
 using namespace ijit;
 
 namespace fws {
