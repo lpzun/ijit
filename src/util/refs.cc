@@ -37,5 +37,7 @@ const string refs::IMPLIES = "=>";
 /// parentheses ()
 const string refs::PAREN_L = "(";
 const string refs::PAREN_R = ")";
+
+const ushort refs::omega = std::numeric_limits<ushort>::max();
 }
 /* namespace otf */

@@ -9,8 +9,8 @@
 
 namespace iotf {
 /**
- * @brief This function is used to increment/decrement the counters for
- * 		  all local states in T_in/T_de.
+ * @brief This function is used to increment/decrement the counters for all
+ * 		  local states in T_in/T_de.
  * @param t_in
  * @param t_de
  * @param Z
@@ -22,16 +22,17 @@ ca_locals alg::update_counters(const local_state& t_in, const local_state& t_de,
         return Z;
 
     auto _Z = Z;
-    auto ifind = _Z.find(t_de);
-    if (ifind != _Z.end()) {
-        ifind->second -= 1;
-        if (ifind->second == 0)
-            _Z.erase(ifind);
+
+    auto ide = _Z.find(t_de);
+    if (ide != _Z.end()) {
+        ide->second -= 1;
+        if (ide->second == 0)
+            _Z.erase(ide);
     }
 
-    ifind = _Z.find(t_in);
-    if (ifind != _Z.end()) {
-        ifind->second += 1;
+    auto iin = _Z.find(t_in);
+    if (iin != _Z.end()) {
+        iin->second += 1;
     } else {
         _Z.emplace(t_in, 1);
     }
@@ -40,72 +41,115 @@ ca_locals alg::update_counters(const local_state& t_in, const local_state& t_de,
 }
 
 /**
- * @brief This function is used to increment/decrement the counters for
- * 		  all local states in T_in/T_de.
- * @param T_in
+ * @brief increment the counter of t_in by one
+ * @param t_in
+ * @param Z
+ */
+void alg::increment(const local_state& t_in, ca_locals& Z) {
+    auto ifind = Z.find(t_in);
+    if (ifind != Z.end()) {
+        ifind->second += 1;
+    } else {
+        Z.emplace(t_in, 1);
+    }
+}
+
+/**
+ * @brief decrement the counter of t_de by one
  * @param t_de
  * @param Z
- * @return
  */
-ca_locals alg::update_counters(const deque<local_state>& T_in,
-        const local_state& t_de, const ca_locals& Z) {
-    auto _Z = Z;
+void alg::decrement(const local_state& t_de, ca_locals& Z) {
+    auto ifind = Z.find(t_de);
+    if (ifind != Z.end()) {
+        ifind->second -= 1;
+        if (ifind->second == 0)
+            Z.erase(ifind);
+    } else {
+        throw iotf_runtime_error(std::string(__func__) + ": t_de unfounded!");
+    }
+}
 
-    for (const auto& t_in : T_in) {
-        merge(t_in, 1, _Z);
+/**
+ * @brief update counters for normal transitions with acceleration
+ * @param t_in
+ * @param t_de
+ * @param Z
+ * @param same if the shared states are same
+ * @return local state part
+ */
+ca_locals alg::update_counter(const local_state& t_in, const local_state& t_de,
+        const ca_locals& Z, const bool& same) {
+    if (t_in == t_de)
+        return Z;
+
+    auto _Z = Z;
+    /// step 1: update or eliminate the pair for the decremental local state
+    ///         skip update if its counter is w as w - 1 = w
+    auto ide = _Z.find(t_in);
+    if (ide != _Z.end() && ide->second != refs::omega) {
+        ide->second -= 1;
+        if (ide->second == 0) /// remove it if a counter ever becomes zero
+            _Z.erase(ide);
     }
 
-    auto ifind = _Z.find(t_de);
-    if (ifind != _Z.end()) {
-        if (--ifind->second == 0)
-            _Z.erase(ifind);
+    /// step 2: update or add pair for the incremental local state
+    auto iin = _Z.find(t_de);
+    if (iin != _Z.end()) {
+        if (iin->second != refs::omega) {
+            if (ide->second == refs::omega && same) {
+                /// add with w if transition can be re-taken
+                iin->second = refs::omega;
+            } else {
+                /// otherwise, plus one
+                iin->second += 1;
+            }
+        } /// skip its update if the counter is w as w + 1 = w
+    } else if (ide->second == refs::omega && same) {
+        /// add with w if transition can be re-taken
+        _Z.emplace(t_de, refs::omega);
+    } else {
+        /// create a new pair if exists no such pair in previous
+        _Z.emplace(t_de, 1);
     }
 
     return _Z;
 }
 
 /**
- * @brief This function is used to increment/decrement the counters for
- * 			  all local states in T_in/T_de. It calls function merge.
- * @param T_in: local states whose counter is to be incremented
- * @param T_de: local states whose counter is to to be decremented
- * @param Z: thread counter, represented in counter-abstracted form
- * @return thread counter, represented in counter-abstracted form
- */
-ca_locals alg::update_counters(const deque<local_state>& T_in,
-        const deque<local_state>& T_de, const ca_locals& Z) {
-    auto _Z = Z;
-
-    for (const auto& t_in : T_in) {
-        merge(t_in, 1, _Z);
-    }
-
-    for (const auto& t_de : T_de) {
-        auto ifind = _Z.find(t_de);
-        if (ifind != _Z.end()) {
-            ifind->second -= 1;
-            if (ifind->second == 0)
-                _Z.erase(ifind);
-        }
-    }
-
-    return _Z;
-}
-
-/**
- * @brief This function is used to update local's counter:
- * 			  (1) add n to current counter if exists local in Z, or
- * 			  (2) create a item (local, n) if exists no local in Z
- * @param local
- * @param n
+ * @brief increment the counter of t_in by one
+ * @param t_in
  * @param Z
  */
-void alg::merge(const local_state& local, const ushort& n, ca_locals& Z) {
-    auto ifind = Z.find(local);
+void alg::increment(const local_state& t_in, ca_locals& Z, const bool& same) {
+    auto ifind = Z.find(t_in);
     if (ifind != Z.end()) {
-        ifind->second += n;
+        if (ifind->second != refs::omega) {
+            if (same)
+                ifind->second = refs::omega;
+            else
+                ifind->second += 1;
+        }
     } else {
-        Z.emplace(local, n);
+        Z.emplace(t_in, 1);
+    }
+}
+
+/**
+ * @brief decrement the counter of t_de by one
+ * @param t_de
+ * @param Z
+ */
+void alg::decrement(const local_state& t_de, ca_locals& Z, const bool& same) {
+    auto ifind = Z.find(t_de);
+    if (ifind != Z.end()) {
+        if (ifind->second != refs::omega) {
+            ifind->second -= 1;
+            if (ifind->second == 0)
+                Z.erase(ifind);
+        }
+    } else {
+        throw iotf_runtime_error(std::string(__func__) + ": t_de unfounded!");
     }
 }
 

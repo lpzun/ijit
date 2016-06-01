@@ -48,6 +48,8 @@ public:
     /// parentheses "()"
     static const string PAREN_L;
     static const string PAREN_R;
+
+    static const ushort omega;
 };
 
 } /* namespace otf */
