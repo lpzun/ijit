@@ -1,9 +1,13 @@
 var annotated_dup =
 [
-    [ "ijit", null, [
-      [ "converter", "classijit_1_1converter.html", "classijit_1_1converter" ],
-      [ "parser", "classijit_1_1parser.html", "classijit_1_1parser" ],
-      [ "post_image", "classijit_1_1post__image.html", "classijit_1_1post__image" ],
-      [ "pre_image", "classijit_1_1pre__image.html", "classijit_1_1pre__image" ]
-    ] ]
+    [ "ijit", "namespaceijit.html", "namespaceijit" ],
+    [ "yy", null, [
+      [ "bp", "classyy_1_1bp.html", "classyy_1_1bp" ],
+      [ "location", "classyy_1_1location.html", "classyy_1_1location" ],
+      [ "position", "classyy_1_1position.html", "classyy_1_1position" ],
+      [ "slice", "classyy_1_1slice.html", "classyy_1_1slice" ],
+      [ "stack", "classyy_1_1stack.html", "classyy_1_1stack" ]
+    ] ],
+    [ "yy_buffer_state", "structyy__buffer__state.html", "structyy__buffer__state" ],
+    [ "yy_trans_info", "structyy__trans__info.html", "structyy__trans__info" ]
 ];
