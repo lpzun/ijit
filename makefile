@@ -15,7 +15,7 @@
 # See an example in EXAMPLES/makefile-local-vars.                         #
 ###########################################################################
 # Override these variables (or add new ones) locally
-APP	         = iotf # the name of application
+APP	         = ijit # the name of application
 SATDIR       =# /usr/local/Z3#                                             # config your z3 include here
 ILIBS        =# -L $(SATDIR)/lib -lz3#                                  -lm
 IINCLUDE     =# -I $(SATDIR)/include/#                                      
@@ -25,7 +25,8 @@ ISTD	     = -std=c++11
 
 BINDIR       = bin
 OBJDIR       = obj
-SRCDIR       = src test
+LIBDIR       = lib
+SRCDIR       = src# test
 SRCDIRS      = $(shell find $(SRCDIR) -name '*.$(CSUFF)' -exec dirname {} \; | uniq)
 
 CSUFF        = cc
@@ -104,7 +105,9 @@ $(DEFAULT): $(OBJECTS) #robjects
 	$(CCOMP) $(LFLAGS) $(OBJECTS) $(LIBS) -o $@
 	
 static: $(OBJECTS)
-	ar rcs libiotf.a $^
+	ar rcs libijit.dylib $^
+	mkdir -p $(LIBDIR)
+	cp -p libijit.dylib $(LIBDIR)
 
 $(OBJECTS): %.o: %.$(CSUFF) $(HEADERS)
 	$(CCOMP) $(CFLAGS) $< -c -o $@
@@ -117,18 +120,16 @@ robjects:
 # Targets Region (do not change) #
 ##################################
 
-
-
 ##################################
 # Cleaning (do not change)       #
 ##################################
 
 clean: 	CLEANOBJS
-	#rm -f $(BASES)
 	rm -f *.o a.out
 
 distclean: clean CLEANOBJS
 	rm -rf $(BINDIR)
+	rm -rf $(LIBDIR)
 	rm -f *~
 	$(foreach DIR,$(RDIRS),$(MAKE) -C $(DIR) $(EXPORT) distclean || $(DERROR);)
 	$(DISTCLEAN)
