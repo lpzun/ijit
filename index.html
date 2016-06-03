@@ -1,25 +1,34 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>IJIT  by lpzun</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">IJIT </h1>
-      <h2 class="project-tagline">Interface for Just-In-Time translation from Boolean programs</h2>
-      <a href="https://github.com/lpzun/ijit" class="btn">View on GitHub</a>
-      <a href="https://github.com/lpzun/ijit/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/lpzun/ijit/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <section class="main-content">
-      <h3>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>IJIT  by lpzun</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>IJIT </h1>
+        <h2>Interface for Just-In-Time translation from Boolean programs</h2>
+        <a href="https://github.com/lpzun/ijit" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h3>
 <a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h3>
 
 <p>IJIT (<strong>I</strong>nterface for <strong>J</strong>ust-<strong>I</strong>n-<strong>T</strong>ime translation) is an API which helps users to transform their [transition-system] based algorithms to a version that can operate directly on [Boolean Programs]. Said an API avoids converting a Boolean program to a transition system up front, as up-front conversion usually incurs state space blowup.</p>
@@ -29,83 +38,39 @@
 
 <p>Assuming you have downloaded () API [IJIT], we will now guided you through the process of using IJIT to transform your [transition-system] based algorithms to Boolean program based algorithm with little programing effort.</p>
 
-<p>`
-/**</p>
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h2>
 
-<ul>
-<li>
-<a href="https://github.com/brief" class="user-mention">@brief</a> this is based on breadth-first search</li>
-<li>
-<a href="https://github.com/param" class="user-mention">@param</a> n : the number of initial threads</li>
-<li>
-<a href="https://github.com/param" class="user-mention">@param</a> s : the number of spawn   threads</li>
-<li>
-<a href="https://github.com/return" class="user-mention">@return</a> bool</li>
-<li>        true : if final state is reachable under n threads and s spawns</li>
-<li>
-<pre><code>    false: otherwise
-</code></pre>
-
-<p>*/
-bool GKM::standard_FWS(const size_p&amp; n, const size_p&amp; s) {
-auto spw = s;       /// the upper bound of spawns that can be fired
-antichain worklist;
-antichain explored;</p>
-
-<p>for (const auto&amp; initl : initl_TS)
-    worklist.emplace_back(initl, n);</p>
-
-<p>while (!worklist.empty()) {
-    const auto tau = worklist.front();
-    worklist.pop_front();
-    /// step 1: if upward(tau) is already explored, then
-    ///         discard it
-    if (!this-&gt;is_maximal(tau, explored))
-        continue;</p>
-
-<pre><code>/// step 2: compute all post images; check if final
-///         state is coverable; maximize &lt;worklist&gt;
-const auto&amp; images = this-&gt;step(tau, spw);
-for (const auto&amp; _tau : images) {
-    /// return true if _tau covers final state
-    if (this-&gt;is_reached(_tau))
-        return true;
-    /// if upward(_tau) already exists, then discard it
-    if (!this-&gt;is_maximal(_tau, worklist))
-        continue;
-    /// maximize &lt;worklist&gt; in term of _tau
-    this-&gt;maximize(_tau, worklist);
-    worklist.emplace_back(_tau); /// insert into worklist
-}
-/// maximize &lt;explored&gt; in term of tau
-this-&gt;maximize(tau, explored);
-explored.emplace_back(tau); /// insert into explored
-</code></pre>
-
-<p>}
-return false;
-}
-`</p>
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
 <p>Peizun Liu (<a href="https://github.com/lpzun" class="user-mention">@lpzun</a>) and <a href="http://www.ccs.neu.edu/home/wahl/">Thomas Wahl</a> are the main contributors. Peizun Liu is the main developer. </p>
-</li>
-</ul>
 
 <h3>
 <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
 
 <p>Having trouble with Pages? Check out our <a href="http://www.ccs.neu.edu/home/lpzun/ijit/doc">documentation</a> or <a href="http://www.ccs.neu.edu/home/lpzun/">contact support</a> and we’ll help you sort it out.</p>
+        </section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/lpzun/ijit">IJIT </a> is maintained by <a href="https://github.com/lpzun">lpzun</a>.</span>
+        <aside id="sidebar">
+          <a href="https://github.com/lpzun/ijit/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/lpzun/ijit/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
+          <p class="repo-owner"><a href="https://github.com/lpzun/ijit"></a> is maintained by <a href="https://github.com/lpzun">lpzun</a>.</p>
 
-    </section>
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
 
   
   </body>
