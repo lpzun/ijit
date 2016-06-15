@@ -2,7 +2,7 @@
 ## CMAKE setting 
 ########################################################################
 # Enforce some CMake policies
-cmake_minimum_required(VERSION 3.0.1)
+cmake_minimum_required(VERSION 2.8.12)
 
 # Set project name
 set (PROJECT_NAME ijit)
@@ -37,7 +37,7 @@ file(GLOB SOURCES
           ${PROJECT_SOURCE_DIR}/util/*.cc)
 
 # Set the compiler flags (specifically the c++11 one)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 
 # Generate the shared library from the SOURCES
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
@@ -51,3 +51,5 @@ set (PACKAGE_LIB_DESTINATION usr/local/ijit/lib)
 set (PACKAGE_INC_DESTINATION usr/local/ijit/include)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${PACKAGE_LIB_DESTINATION})
+install(DIRECTORY PROJECT_SOURCE_DIR DESTINATION ./include
+          FILES_MATCHING PATTERN "*.hh")
