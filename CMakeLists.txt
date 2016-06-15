@@ -50,12 +50,29 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 # Set the location for library installation -- i.e., /usr/local/ijit/lib 
 # Use "sudo make install" to apply if necessary.
 ########################################################################
-set (PACKAGE_LIB_DESTINATION /usr/local/ijit/lib)
-set (PACKAGE_INC_DESTINATION /usr/local/ijit/include)
+set (DEFAULT_INSTALL_PATH ijit)
+
+set (PACKAGE_LIB_DESTINATION ${DEFAULT_INSTALL_PATH}/lib)
+set (PACKAGE_INC_DESTINATION ${DEFAULT_INSTALL_PATH}/include)
 
 # install library
-install(TARGETS ${PROJECT_NAME} DESTINATION ${PACKAGE_LIB_DESTINATION})
+install(TARGETS ${PROJECT_NAME} 
+        DESTINATION ${PACKAGE_LIB_DESTINATION})
 # install library
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/ 
         DESTINATION ${PACKAGE_INC_DESTINATION}
         FILES_MATCHING PATTERN "*.${HSUFF}")
+        
+########################################################################
+## uninstallation
+########################################################################     
+# uninstall target
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    @ONLY)
+
+add_custom_target(uninstall
+    COMMAND 
+    ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+    COMMENT "Uninstalling...")
