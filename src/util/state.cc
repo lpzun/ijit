@@ -14,7 +14,7 @@ namespace ijit {
  * @brief default constructor
  */
 shared_state::shared_state() :
-        vars() {
+		vars() {
 }
 
 /**
@@ -22,8 +22,13 @@ shared_state::shared_state() :
  * @param vars
  */
 shared_state::shared_state(const state_v& vars) :
-        vars(vars) {
-    // cout << __func__ << " constructor: " << vars << "\n";
+		vars(vars) {
+	// cout << __func__ << " constructor: " << vars << "\n";
+}
+
+shared_state::shared_state(const uint v) :
+		vars(v) {
+
 }
 
 /**
@@ -41,18 +46,18 @@ shared_state::~shared_state() {
  *         print shared state
  */
 ostream& operator <<(ostream& out, const shared_state& s) {
-    if (s.get_vars().size() > 0) {
-        for (auto i = 0; i < refs::SV_NUM; ++i)
-            out << s.get_vars()[i];
-    }
-    return out;
+	if (s.get_vars().size() > 0) {
+		for (auto i = 0; i < refs::SV_NUM; ++i)
+			out << s.get_vars()[i];
+	}
+	return out;
 }
 
 /**
  * @brief constructor
  */
 local_state::local_state() :
-        pc(0), vars() {
+		pc(0), vars() {
 
 }
 
@@ -62,8 +67,12 @@ local_state::local_state() :
  * @param vars
  */
 local_state::local_state(const size_pc& pc, const state_v& vars) :
-        pc(pc), vars(vars) {
-    //cout << __func__ << " constructor : " << vars << "\n";
+		pc(pc), vars(vars) {
+	// cout << __func__ << " constructor : " << vars << "\n";
+}
+
+local_state::local_state(const size_pc& pc, const uint v) :
+		pc(pc), vars(v) {
 
 }
 
@@ -82,17 +91,17 @@ local_state::~local_state() {
  *         print local state
  */
 ostream& operator <<(ostream& out, const local_state& l) {
-    out << l.get_pc();
-    for (auto i = 0; i < refs::LV_NUM; ++i)
-        out << l.get_vars()[i];
-    return out;
+	out << l.get_pc() << (refs::LV_NUM > 0 ? "." : "");
+	for (auto i = 0; i < refs::LV_NUM; ++i)
+		out << l.get_vars()[i];
+	return out;
 }
 
 /**
  * @brief default constructor
  */
 thread_state::thread_state() :
-        s(shared_state()), l(local_state()) {
+		s(shared_state()), l(local_state()) {
 
 }
 
@@ -102,7 +111,7 @@ thread_state::thread_state() :
  * @param l
  */
 thread_state::thread_state(const shared_state& s, const local_state& l) :
-        s(s), l(l) {
+		s(s), l(l) {
 
 }
 
@@ -113,8 +122,8 @@ thread_state::thread_state(const shared_state& s, const local_state& l) :
  * @param lv
  */
 thread_state::thread_state(const state_v& sv, const size_pc& pc,
-        const state_v& lv) :
-        s(sv), l(pc, lv) {
+		const state_v& lv) :
+		s(sv), l(pc, lv) {
 
 }
 
@@ -123,7 +132,7 @@ thread_state::thread_state(const state_v& sv, const size_pc& pc,
  * @param t
  */
 thread_state::thread_state(const thread_state& t) :
-        s(t.get_s()), l(t.get_l()) {
+		s(t.get_s()), l(t.get_l()) {
 
 }
 
@@ -142,15 +151,15 @@ thread_state::~thread_state() {
  *         print thread state
  */
 ostream& operator <<(ostream& out, const thread_state& t) {
-    out << "(" << t.get_s() << "|" << t.get_l() << ")";
-    return out;
+	out << "(" << t.get_s() << "|" << t.get_l() << ")";
+	return out;
 }
 
 /**
  * @brief default constructor
  */
 global_state::global_state() :
-        s(shared_state()), locals() {
+		s(shared_state()), locals() {
 
 }
 
@@ -160,8 +169,8 @@ global_state::global_state() :
  * @param l
  */
 global_state::global_state(const shared_state& s, const local_state& l) :
-        s(s), locals() {
-    locals.emplace(l, 1);
+		s(s), locals() {
+	locals.emplace(l, 1);
 }
 
 /**
@@ -171,9 +180,9 @@ global_state::global_state(const shared_state& s, const local_state& l) :
  * @param n
  */
 global_state::global_state(const shared_state& s, const local_state& l,
-        const size_tc& n) :
-        s(s), locals() {
-    locals.emplace(l, n);
+		const size_tc& n) :
+		s(s), locals() {
+	locals.emplace(l, n);
 }
 
 /**
@@ -182,7 +191,7 @@ global_state::global_state(const shared_state& s, const local_state& l,
  * @param locals
  */
 global_state::global_state(const shared_state& s, const ca_locals& locals) :
-        s(s), locals(locals) {
+		s(s), locals(locals) {
 
 }
 
@@ -191,7 +200,7 @@ global_state::global_state(const shared_state& s, const ca_locals& locals) :
  * @param g
  */
 global_state::global_state(const global_state& g) :
-        s(g.get_s()), locals(g.get_locals()) {
+		s(g.get_s()), locals(g.get_locals()) {
 
 }
 
@@ -210,11 +219,11 @@ global_state::~global_state() {
  *         print global state
  */
 ostream& operator <<(ostream& out, const global_state& g) {
-    out << "<" << g.get_s() << "|";
-    for (auto il = g.get_locals().begin(); il != g.get_locals().end(); ++il)
-        out << "(" << il->first << "," << il->second << ")";
-    out << ">";
-    return out;
+	out << "<" << g.get_s() << "|";
+	for (auto il = g.get_locals().begin(); il != g.get_locals().end(); ++il)
+		out << "(" << il->first << "," << il->second << ")";
+	out << ">";
+	return out;
 }
 
 } /* namespace ucob */

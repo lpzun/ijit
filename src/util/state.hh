@@ -25,22 +25,22 @@ namespace ijit {
 
 template<std::size_t N>
 bool operator <(const std::bitset<N>& x, const std::bitset<N>& y) {
-    DBG_LOC()
-    for (int i = N - 1; i >= 0; i--) {
-        if (x[i] ^ y[i])
-            return y[i];
-    }
-    return false;
+	DBG_LOC()
+	for (int i = N - 1; i >= 0; i--) {
+		if (x[i] ^ y[i])
+			return y[i];
+	}
+	return false;
 }
 
 template<std::size_t N>
 bool operator ==(const std::bitset<N>& x, const std::bitset<N>& y) {
-    DBG_LOC()
-    for (int i = N - 1; i >= 0; i--) {
-        if (x[i] ^ y[i])
-            return false;
-    }
-    return true;
+	DBG_LOC()
+	for (int i = N - 1; i >= 0; i--) {
+		if (x[i] ^ y[i])
+			return false;
+	}
+	return true;
 }
 
 /// define the data structure to store the valuation for
@@ -61,15 +61,15 @@ using symbol = short;
  * @brief sool = symbolic boolean variables
  */
 enum class sool {
-    F = 0, T = 1, N = 2
+	F = 0, T = 1, N = 2
 };
 
 inline sool operator !(const sool& v) {
-    if (v == sool::F)
-        return sool::T;
-    if (v == sool::T)
-        return sool::F;
-    return sool::N;
+	if (v == sool::F)
+		return sool::T;
+	if (v == sool::T)
+		return sool::F;
+	return sool::N;
 }
 
 /**
@@ -82,11 +82,11 @@ inline sool operator !(const sool& v) {
  * @return see above table
  */
 inline sool operator &(const sool& v1, const sool& v2) {
-    if (v1 == sool::F || v2 == sool::F)
-        return sool::F;
-    if (v1 == sool::T && v2 == sool::T)
-        return sool::T;
-    return sool::N;
+	if (v1 == sool::F || v2 == sool::F)
+		return sool::F;
+	if (v1 == sool::T && v2 == sool::T)
+		return sool::T;
+	return sool::N;
 }
 
 /**
@@ -99,11 +99,11 @@ inline sool operator &(const sool& v1, const sool& v2) {
  * @return see above table
  */
 inline sool operator |(const sool& s1, const sool& s2) {
-    if (s1 == sool::N || s2 == sool::N)
-        return sool::N;
-    if (s1 == sool::F && s2 == sool::F)
-        return sool::F;
-    return sool::T;
+	if (s1 == sool::N || s2 == sool::N)
+		return sool::N;
+	if (s1 == sool::F && s2 == sool::F)
+		return sool::F;
+	return sool::T;
 }
 
 /**
@@ -114,21 +114,21 @@ inline sool operator |(const sool& s1, const sool& s2) {
  *         print an edge in cfg
  */
 inline ostream& operator <<(ostream& out, const sool& s) {
-    switch (s) {
-    case sool::F:
-        out << 0;
-        break;
-    case sool::T:
-        out << 1;
-        break;
-    case sool::N:
-        out << 2;
-        break;
-    default:
-        throw iotf_runtime_error("unknown value for Boolean variable");
-        break;
-    }
-    return out;
+	switch (s) {
+	case sool::F:
+		out << 0;
+		break;
+	case sool::T:
+		out << 1;
+		break;
+	case sool::N:
+		out << 2;
+		break;
+	default:
+		throw iotf_runtime_error("unknown value for Boolean variable");
+		break;
+	}
+	return out;
 }
 /// define the value of variables in Boolean programs
 using value_v = sool;
@@ -142,22 +142,23 @@ using symbval = vector<sool>;
  */
 class shared_state {
 public:
-    shared_state();
-    shared_state(const state_v& vars);
-    ~shared_state();
+	shared_state();
+	shared_state(const state_v& vars);
+	shared_state(const uint v);
+	~shared_state();
 
-    const state_v& get_vars() const {
-        return vars;
-    }
+	const state_v& get_vars() const {
+		return vars;
+	}
 
-    void set_vars(const state_v& vars) {
-        this->vars = vars;
-    }
+	void set_vars(const state_v& vars) {
+		this->vars = vars;
+	}
 
 private:
-    state_v vars;
+	state_v vars;
 
-    friend ostream& operator <<(ostream& out, const shared_state& s);
+	friend ostream& operator <<(ostream& out, const shared_state& s);
 };
 
 /**
@@ -175,10 +176,10 @@ private:
  *         false: otherwise
  */
 inline bool operator <(const shared_state& s1, const shared_state& s2) {
-    for (int i = refs::SV_NUM - 1; i >= 0; i--)
-        if (s1.get_vars()[i] ^ s2.get_vars()[i])
-            return s2.get_vars()[i];
-    return false;
+	for (int i = refs::SV_NUM - 1; i >= 0; i--)
+		if (s1.get_vars()[i] ^ s2.get_vars()[i])
+			return s2.get_vars()[i];
+	return false;
 }
 
 /**
@@ -190,7 +191,7 @@ inline bool operator <(const shared_state& s1, const shared_state& s2) {
  *         false: otherwise
  */
 inline bool operator >(const shared_state& s1, const shared_state& s2) {
-    return s2 < s1;
+	return s2 < s1;
 }
 
 /**
@@ -202,10 +203,10 @@ inline bool operator >(const shared_state& s1, const shared_state& s2) {
  *         false: otherwise
  */
 inline bool operator ==(const shared_state& s1, const shared_state& s2) {
-    for (int i = refs::SV_NUM - 1; i >= 0; i--)
-        if (s1.get_vars()[i] ^ s2.get_vars()[i])
-            return false;
-    return true;
+	for (int i = refs::SV_NUM - 1; i >= 0; i--)
+		if (s1.get_vars()[i] ^ s2.get_vars()[i])
+			return false;
+	return true;
 }
 
 /**
@@ -217,7 +218,7 @@ inline bool operator ==(const shared_state& s1, const shared_state& s2) {
  *         false: otherwise
  */
 inline bool operator !=(const shared_state& s1, const shared_state& s2) {
-    return !(s1 == s2);
+	return !(s1 == s2);
 }
 
 /**
@@ -227,31 +228,32 @@ inline bool operator !=(const shared_state& s1, const shared_state& s2) {
  */
 class local_state {
 public:
-    local_state();
-    local_state(const size_pc& pc, const state_v& vars);
-    ~local_state();
+	local_state();
+	local_state(const size_pc& pc, const state_v& vars);
+	local_state(const size_pc& pc, const uint v);
+	~local_state();
 
-    size_pc get_pc() const {
-        return pc;
-    }
+	size_pc get_pc() const {
+		return pc;
+	}
 
-    void set_pc(const size_pc& pc) {
-        this->pc = pc;
-    }
+	void set_pc(const size_pc& pc) {
+		this->pc = pc;
+	}
 
-    const state_v& get_vars() const {
-        return vars;
-    }
+	const state_v& get_vars() const {
+		return vars;
+	}
 
-    void set_vars(const state_v& vars) {
-        this->vars = vars;
-    }
+	void set_vars(const state_v& vars) {
+		this->vars = vars;
+	}
 
 private:
-    size_pc pc;
-    state_v vars;
+	size_pc pc;
+	state_v vars;
 
-    friend ostream& operator <<(ostream& out, const local_state& l);
+	friend ostream& operator <<(ostream& out, const local_state& l);
 };
 
 /**
@@ -268,13 +270,13 @@ private:
  *         false: otherwise
  */
 inline bool operator <(const local_state& l1, const local_state& l2) {
-    if (l1.get_pc() == l2.get_pc()) {
-        for (int i = refs::LV_NUM - 1; i >= 0; i--)
-            if (l1.get_vars()[i] ^ l2.get_vars()[i])
-                return l2.get_vars()[i];
-        return false;
-    }
-    return l1.get_pc() < l2.get_pc();
+	if (l1.get_pc() == l2.get_pc()) {
+		for (int i = refs::LV_NUM - 1; i >= 0; i--)
+			if (l1.get_vars()[i] ^ l2.get_vars()[i])
+				return l2.get_vars()[i];
+		return false;
+	}
+	return l1.get_pc() < l2.get_pc();
 }
 
 /**
@@ -286,7 +288,7 @@ inline bool operator <(const local_state& l1, const local_state& l2) {
  *         false: otherwise
  */
 inline bool operator >(const local_state& l1, const local_state& l2) {
-    return l2 < l1;
+	return l2 < l1;
 }
 
 /**
@@ -298,13 +300,13 @@ inline bool operator >(const local_state& l1, const local_state& l2) {
  *         false: otherwise
  */
 inline bool operator ==(const local_state& l1, const local_state& l2) {
-    if (l1.get_pc() == l2.get_pc()) {
-        for (int i = refs::LV_NUM - 1; i >= 0; i--)
-            if (l1.get_vars()[i] ^ l2.get_vars()[i])
-                return false;
-        return true;
-    }
-    return false;
+	if (l1.get_pc() == l2.get_pc()) {
+		for (int i = refs::LV_NUM - 1; i >= 0; i--)
+			if (l1.get_vars()[i] ^ l2.get_vars()[i])
+				return false;
+		return true;
+	}
+	return false;
 }
 
 /**
@@ -316,7 +318,7 @@ inline bool operator ==(const local_state& l1, const local_state& l2) {
  *         false: otherwise
  */
 inline bool operator !=(const local_state& l1, const local_state& l2) {
-    return !(l1 == l2);
+	return !(l1 == l2);
 }
 
 /**
@@ -326,33 +328,33 @@ inline bool operator !=(const local_state& l1, const local_state& l2) {
  */
 class thread_state {
 public:
-    thread_state();
-    thread_state(const shared_state& s, const local_state& l);
-    thread_state(const state_v& sv, const size_pc& pc, const state_v& lv);
-    thread_state(const thread_state& t);
-    ~thread_state();
+	thread_state();
+	thread_state(const shared_state& s, const local_state& l);
+	thread_state(const state_v& sv, const size_pc& pc, const state_v& lv);
+	thread_state(const thread_state& t);
+	~thread_state();
 
-    const local_state& get_l() const {
-        return l;
-    }
+	const local_state& get_l() const {
+		return l;
+	}
 
-    void set_local(const local_state& l) {
-        this->l = l;
-    }
+	void set_local(const local_state& l) {
+		this->l = l;
+	}
 
-    const shared_state& get_s() const {
-        return s;
-    }
+	const shared_state& get_s() const {
+		return s;
+	}
 
-    void set_s(const shared_state& s) {
-        this->s = s;
-    }
+	void set_s(const shared_state& s) {
+		this->s = s;
+	}
 
 private:
-    shared_state s;
-    local_state l;
+	shared_state s;
+	local_state l;
 
-    friend ostream& operator <<(ostream& out, const thread_state& t);
+	friend ostream& operator <<(ostream& out, const thread_state& t);
 };
 
 /**
@@ -364,9 +366,9 @@ private:
  *         false: otherwise
  */
 inline bool operator <(const thread_state& t1, const thread_state& t2) {
-    if (t1.get_s() == t2.get_s())
-        return t1.get_l() < t2.get_l();
-    return t1.get_s() < t2.get_s();
+	if (t1.get_s() == t2.get_s())
+		return t1.get_l() < t2.get_l();
+	return t1.get_s() < t2.get_s();
 }
 
 /**
@@ -378,7 +380,7 @@ inline bool operator <(const thread_state& t1, const thread_state& t2) {
  *         false: otherwise
  */
 inline bool operator >(const thread_state& t1, const thread_state& t2) {
-    return t2 < t1;
+	return t2 < t1;
 }
 
 /**
@@ -390,7 +392,7 @@ inline bool operator >(const thread_state& t1, const thread_state& t2) {
  *         false: otherwise
  */
 inline bool operator ==(const thread_state& t1, const thread_state& t2) {
-    return t1.get_s() == t2.get_s() && t1.get_l() == t2.get_l();
+	return t1.get_s() == t2.get_s() && t1.get_l() == t2.get_l();
 }
 
 /**
@@ -402,7 +404,7 @@ inline bool operator ==(const thread_state& t1, const thread_state& t2) {
  *         false: otherwise
  */
 inline bool operator !=(const thread_state& t1, const thread_state& t2) {
-    return !(t1 == t2);
+	return !(t1 == t2);
 }
 
 /**
@@ -423,34 +425,34 @@ using ca_locals = map<local_state, size_tc>;
  */
 class global_state {
 public:
-    global_state();
-    global_state(const shared_state& s, const local_state& l);
-    global_state(const shared_state& s, const local_state& l, const size_tc& n);
-    global_state(const shared_state& s, const ca_locals& locals);
-    global_state(const global_state& g);
-    ~global_state();
+	global_state();
+	global_state(const shared_state& s, const local_state& l);
+	global_state(const shared_state& s, const local_state& l, const size_tc& n);
+	global_state(const shared_state& s, const ca_locals& locals);
+	global_state(const global_state& g);
+	~global_state();
 
-    const ca_locals& get_locals() const {
-        return locals;
-    }
+	const ca_locals& get_locals() const {
+		return locals;
+	}
 
-    void set_locals(const ca_locals& locals) {
-        this->locals = locals;
-    }
+	void set_locals(const ca_locals& locals) {
+		this->locals = locals;
+	}
 
-    const shared_state& get_s() const {
-        return s;
-    }
+	const shared_state& get_s() const {
+		return s;
+	}
 
-    void set_s(const shared_state& s) {
-        this->s = s;
-    }
+	void set_s(const shared_state& s) {
+		this->s = s;
+	}
 
 private:
-    shared_state s;
-    ca_locals locals;
+	shared_state s;
+	ca_locals locals;
 
-    friend ostream& operator <<(ostream& out, const global_state& g);
+	friend ostream& operator <<(ostream& out, const global_state& g);
 };
 
 /**
@@ -466,12 +468,12 @@ private:
  *         false: otherwise
  */
 inline bool operator <(const global_state& g1, const global_state& g2) {
-    if (g1.get_s() == g2.get_s()) {
-        if (g1.get_locals().size() == g2.get_locals().size())
-            return g1.get_locals() < g2.get_locals();
-        return g1.get_locals().size() < g2.get_locals().size();
-    }
-    return g1.get_s() < g2.get_s();
+	if (g1.get_s() == g2.get_s()) {
+		if (g1.get_locals().size() == g2.get_locals().size())
+			return g1.get_locals() < g2.get_locals();
+		return g1.get_locals().size() < g2.get_locals().size();
+	}
+	return g1.get_s() < g2.get_s();
 }
 
 /**
@@ -483,7 +485,7 @@ inline bool operator <(const global_state& g1, const global_state& g2) {
  *         false: otherwise
  */
 inline bool operator >(const global_state& g1, const global_state& g2) {
-    return g2 < g1;
+	return g2 < g1;
 }
 
 /**
@@ -496,13 +498,13 @@ inline bool operator >(const global_state& g1, const global_state& g2) {
  *         false: otherwise
  */
 inline bool operator ==(const global_state& g1, const global_state& g2) {
-    if (g1.get_s() == g2.get_s()) {
-        const auto& locals1 = g1.get_locals();
-        const auto& locals2 = g2.get_locals();
-        return locals1.size() == locals2.size()
-                && std::equal(locals1.begin(), locals1.end(), locals2.begin());
-    }
-    return false;
+	if (g1.get_s() == g2.get_s()) {
+		const auto& locals1 = g1.get_locals();
+		const auto& locals2 = g2.get_locals();
+		return locals1.size() == locals2.size()
+				&& std::equal(locals1.begin(), locals1.end(), locals2.begin());
+	}
+	return false;
 }
 
 /**
@@ -514,7 +516,7 @@ inline bool operator ==(const global_state& g1, const global_state& g2) {
  *         false: otherwise
  */
 inline bool operator !=(const global_state& g1, const global_state& g2) {
-    return !(g1 == g2);
+	return !(g1 == g2);
 }
 
 } /* namespace iotf */

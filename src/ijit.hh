@@ -1,7 +1,7 @@
 /******************************************************************************
- * Synopsis	    [OTF: an On-The-Fly API: from Boolean Program to TTS on demand]
+ * Synopsis	 [IJIT: An API for Boolean Program Analysis with JIT Translation]
  *
- * Author       [Peizun Liu]
+ * Developer     [Peizun Liu]
  *
  * (C) 2015 - 2018 Peizun Liu, Northeastern University, United States
  *
@@ -279,6 +279,8 @@ public:
 
 private:
     deque<local_state> cand_L; /// candidate local states for covering preimages
+
+    void init_cand_L();
 
     /// compute direct   preimages
     deque<prog_state> compute_drc_pre_images(const prog_state& _tau);

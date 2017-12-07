@@ -10,9 +10,9 @@
 
 namespace ijit {
 
-#define NDEBUG
+//#define DEBUG
 
-#ifndef NDEBUG
+#ifdef DEBUG
 #  define DBG_LOG(x) std::cerr << x <<"\n";
 #  define DBG_STD(x) x;
 #  define DBG_LOC() std::cerr \

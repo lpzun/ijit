@@ -332,7 +332,7 @@ void post_image::compute_image_assg_stmt(const state_v& sv, const state_v& lv,
                 alg::split(lo[i].eval(sv, lv), i, lvs); /// split * immediately
         }
     }
-#ifndef NDEBUG
+#ifdef DEBUG
     cout << __func__ << "\n";
     cout << "shared...\n";
     for (const auto& s : svs)

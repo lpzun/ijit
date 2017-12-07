@@ -94,8 +94,8 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
     refs::SV_NUM = aide.s_vars_num;
     refs::LV_NUM = aide.l_vars_num;
     refs::PC_NUM = aide.lineno;
+#ifdef DEBUG
     cout << refs::SV_NUM << "," << refs::LV_NUM << "," << refs::PC_NUM << "\n";
-#ifdef NDEBUG
     DBG_LOG("for testing: before...\n")
     aide.print_control_flow_graph();
 #endif
@@ -109,7 +109,7 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
         throw iotf_runtime_error("there is no such mode!");
     }
 
-#ifdef NDEBUG
+#ifdef DEBUG
     DBG_LOG("for testing: after...\n")
     if (m == mode::PREV)
         cout << prev_G << "\n";
@@ -138,7 +138,7 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
 deque<prog_thread> parser::create_initl_state(
         const map<ushort, sool>& s_vars_init,
         const map<ushort, sool>& l_vars_init, const size_pc& pc) {
-#ifndef NDEBUG
+#ifdef DEBUG
     cout << "output initial values stored in maps...\n";
     cout << "(";
     for (const auto& p : s_vars_init)
@@ -173,7 +173,7 @@ deque<prog_thread> parser::create_initl_state(
         }
     }
 
-#ifndef NDEBUG
+#ifdef DEBUG
     cout << __func__ << "\n";
     for (const auto& g : ips)
     cout << g << endl;
@@ -199,7 +199,7 @@ deque<prog_thread> parser::create_final_state(const mode& m,
         for (const auto& pc : pcs)
             parser::create_final_state(pc, parser::post_G, pc, fps);
     }
-#ifndef NDEBUG
+#ifdef DEBUG
     cout << __func__ << "\n";
     for (const auto& g : fps)
     cout << g << endl;
