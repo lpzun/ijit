@@ -41,7 +41,7 @@ Run the following command to uninstall the library:
 
 
 ## Contribute
-[Peizun Liu](https://github.com/lpzun) and [Thomas Wahl] (http://www.ccs.neu.edu/home/wahl/) are the main contributors. Peizun Liu is the main developer. 
+[Peizun Liu](https://github.com/lpzun) and [Thomas Wahl](http://www.ccs.neu.edu/home/wahl/) are the main contributors. Peizun Liu is the main developer. 
 
 ## License
 The IJIT downloads on this site are available from [github](https://github.com/lpzun/ijit) under the [MIT license](https://github.com/lpzun/ijit/blob/master/LICENSE).
