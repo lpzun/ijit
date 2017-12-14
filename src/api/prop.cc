@@ -202,8 +202,7 @@ deque<prog_thread> parser::create_final_state(const mode& m,
 #ifdef DEBUG
     cout << __func__ << "\n";
     for (const auto& g : fps)
-    cout << g << endl;
-    cout << __func__ << "-----------------\n";
+        cout << g << endl;
 #endif
     return fps;
 }

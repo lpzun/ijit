@@ -10,22 +10,46 @@
 
 namespace ijit {
 
+/**
+ * constructor for pre_image
+ */
 pre_image::pre_image() :
 		cand_L() {
 	init_cand_L();
 }
 
+/**
+ * destructor for pre_image
+ */
 pre_image::~pre_image() {
 
 }
 
+/**
+ * Compute candidate local states: using the heuristic approach presented in
+ * the Liu and Wahl's FMCAD'14 paper.
+ */
 void pre_image::init_cand_L() {
 	DBG_STD(cout << __func__ << " " << refs::PC_NUM << " " << refs::LV_NUM << " "
 			<< (1 << refs::LV_NUM) << endl;)
+	set<size_pc> cand_PC;
 	for (ushort pc = 0; pc < refs::PC_NUM; ++pc) {
-		for (uint i = 0; i < (1 << refs::LV_NUM); ++i) {
-			cand_L.emplace_back(pc, i);
-		}
+		const auto& predecessors = parser::get_prev_G().get_A()[pc];
+		for (const auto& e : predecessors)
+			switch (e.get_stmt().get_type()) {
+			case type_stmt::ASSG:
+			case type_stmt::EATM:
+				//case type_stmt::IFEL:
+				//case type_stmt::ASSU:
+				cand_PC.emplace(pc);
+				break;
+			default:
+				break;
+			}
+	}
+	for (const auto pc : cand_PC) {
+		for (uint i = 0; i < (1 << refs::LV_NUM); ++i)
+			cand_L.emplace(pc, i);
 	}
 #ifdef DEBUG
 	for (const auto& l : cand_L) {
@@ -88,6 +112,12 @@ deque<prog_state> pre_image::compute_cov_pre_images(const prog_state& _tau) {
 	for (const auto& _l : cand_L) {
 		this->compute_pre_images(_tau, _l, images); /// all predecessors
 	}
+	for (const auto& _p : _tau.get_locals()) {
+		const auto& _l = _p.first;
+		if (cand_L.find(_l) == cand_L.end())
+			this->compute_pre_images(_tau, _l, images); /// all predecessors
+
+	}
 	return images;
 }
 
@@ -122,7 +152,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 			///
 			/// SEMANTIC: nondeterministic goto
 			local_state l(pc, _lv);
-			//cout << __func__ << " goto " << l << "\n";
+			// cout << __func__ << " goto " << l << "\n";
 			const auto& Z = alg::update_counters(l, _l, _Z);
 			images.emplace_back(_s, Z);
 		}
@@ -237,6 +267,12 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 					alg::decrement(sl, Z);
 					images.emplace_back(_s, Z);
 				}
+			} else {
+				/// increment the source local state and decrement _l
+				local_state l(pc, _lv);
+				auto Z = alg::update_counters(l, _l, _Z);
+				DBG_STD(cout << "start_thread goto " << l << " " << sl << " ";)
+				images.emplace_back(_s, Z);
 			}
 		}
 			break;
@@ -260,12 +296,13 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 			///   ...
 			///  pc': atomic_end;
 			/// SEMANTIC: the atomic_end statement prevents the scheduler from
-			/// a context switch to an other thread
+			/// a context switch to another thread
 			/// NOTE    : the atomic_begin statement is not processed here,but
 			/// in the subroutine.
-
+			//cout << "I'm here..........atomic section...\n";
 			auto _pc(pc); /// the copy of pc
 			const auto& wp = this->compute_image_atom_sect(_sv, _lv, _pc);
+			//cout << _pc << __func__ << endl;
 			for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
 				const auto& Z = alg::update_counters(
 						local_state(_pc, ip->second), _l, _Z);
@@ -329,6 +366,10 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 			break;
 		}
 	}
+#ifdef DEBUG
+	if (images.size())
+	cout << *images.rbegin() << endl;
+#endif
 }
 
 /**
@@ -476,10 +517,13 @@ local_state pre_image::compute_image_else_stmt(const local_state& _l) {
 deque<pair<state_v, state_v>> pre_image::compute_image_atom_sect(
 		const state_v& _sv, const state_v& _lv, size_pc& _pc) {
 	deque<pair<state_v, state_v>> result;
+	result.emplace_back(_sv, _lv);
 
 	auto e = parser::get_prev_G().get_A()[_pc].front();
 	while (e.get_stmt().get_type() != type_stmt::ATOM) {
 		const auto& pc = e.get_dest();
+
+		//cout << __func__ << "===================" << _pc << "->" << pc << endl;
 		switch (e.get_stmt().get_type()) {
 		case type_stmt::ASSU: {
 			for (auto ip = result.begin(); ip != result.end(); ++ip) {
@@ -515,6 +559,11 @@ deque<pair<state_v, state_v>> pre_image::compute_image_atom_sect(
 
 		e = parser::get_prev_G().get_A()[_pc].front();
 	}
+	if (_pc > 0)
+		--_pc;
+//	cout << e.get_stmt().get_type() << endl;
+//	cout << _pc << endl;
+//	cout << result.size() << endl;
 	return result;
 }
 

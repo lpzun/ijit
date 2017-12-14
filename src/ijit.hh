@@ -278,7 +278,7 @@ public:
     deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
-    deque<local_state> cand_L; /// candidate local states for covering preimages
+    set<local_state> cand_L; /// candidate local states for covering preimages
 
     void init_cand_L();
 
