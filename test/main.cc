@@ -54,12 +54,12 @@ int main(int argc, char *argv[]) {
 
         const string filename(getCmdOption(argv, argv + argc, "-f"));
         if (filename.length() == 0) {
-            throw iotf_runtime_error("Please specify filename!");
+            throw ijit_runtime_error("Please specify filename!");
         }
 
         const string sthread(getCmdOption(argv, argv + argc, "-n"));
         if (sthread.length() == 0) {
-            throw iotf_runtime_error("Please specify # of threads!");
+            throw ijit_runtime_error("Please specify # of threads!");
         }
 
         cout << filename << " " << sthread << "\n";
@@ -92,9 +92,9 @@ int main(int argc, char *argv[]) {
                 << endl;
 
         return 0;
-    } catch (const iotf_runtime_error& e) {
+    } catch (const ijit_runtime_error& e) {
         cerr << e.what() << endl;
-    } catch (const iotf_exception& e) {
+    } catch (const ijit_exception& e) {
         cerr << e.what() << endl;
     } catch (const std::runtime_error& e) {
         cerr << e.what() << endl;

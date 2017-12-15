@@ -72,7 +72,7 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
     /// step 0: set an istream point to a Boolean program
     FILE *bfile = fopen(filename.c_str(), "r");
     if (!bfile) {
-        throw iotf_runtime_error(filename + " open failed!");
+        throw ijit_runtime_error(filename + " open failed!");
     }
     /// step 1: set the input stream of the parser as bfile
     yyin = bfile;
@@ -85,7 +85,7 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
     /// step 4: run the parser to parse the input BP
     int result = parser.parse();
     if (result != 0) {
-        throw iotf_runtime_error(
+        throw ijit_runtime_error(
                 "Parser exit with exception: " + std::to_string(result));
     }
 
@@ -106,7 +106,7 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
     } else if (m == mode::POST) {
         post_G = aide.cfg_G;
     } else {
-        throw iotf_runtime_error("there is no such mode!");
+        throw ijit_runtime_error("there is no such mode!");
     }
 
 #ifdef DEBUG

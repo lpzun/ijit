@@ -102,7 +102,7 @@ inline ostream& operator <<(ostream& out, const type_stmt& t) {
         break;
     default:
         //out << (-14);
-        throw iotf_runtime_error("unknown statement");
+        throw ijit_runtime_error("unknown statement");
         break;
     }
     return out;

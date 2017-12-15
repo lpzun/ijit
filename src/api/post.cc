@@ -472,7 +472,7 @@ deque<pair<state_v, state_v>> post_image::compute_image_atom_sect(
             break;
         default: {
             DBG_LOC()
-            throw iotf_runtime_error(
+            throw ijit_runtime_error(
                     "atomic section contains unable-to-tackle statements");
         }
             break;

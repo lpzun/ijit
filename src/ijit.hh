@@ -65,33 +65,33 @@ using prog_thread = thread_state;
  */
 class parser {
 public:
-    parser();
+	parser();
 
-    ~parser();
+	~parser();
 
-    static pair<deque<prog_thread>, deque<prog_thread>> parse(
-            const string& filename, const mode& m = mode::PREV);
+	static pair<deque<prog_thread>, deque<prog_thread>> parse(
+			const string& filename, const mode& m = mode::PREV);
 
-    static const cfg& get_post_G() {
-        return post_G;
-    }
+	static const cfg& get_post_G() {
+		return post_G;
+	}
 
-    static const cfg& get_prev_G() {
-        return prev_G;
-    }
+	static const cfg& get_prev_G() {
+		return prev_G;
+	}
 
 private:
-    static cfg prev_G; /// control flow graph in PREV mode
-    static cfg post_G; /// control flow graph in POST mode
+	static cfg prev_G; /// control flow graph in PREV mode
+	static cfg post_G; /// control flow graph in POST mode
 
-    static deque<prog_thread> create_initl_state(
-            const map<ushort, sool>& s_vars_init,
-            const map<ushort, sool>& l_vars_init, const size_pc& pc = 0);
+	static deque<prog_thread> create_initl_state(
+			const map<ushort, sool>& s_vars_init,
+			const map<ushort, sool>& l_vars_init, const size_pc& pc = 0);
 
-    static deque<prog_thread> create_final_state(const mode& m,
-            const set<size_pc>& pcs);
-    static void create_final_state(const size_pc& pos, const cfg& G,
-            const size_pc& pc, deque<prog_thread>& fps);
+	static deque<prog_thread> create_final_state(const mode& m,
+			const set<size_pc>& pcs);
+	static void create_final_state(const size_pc& pos, const cfg& G,
+			const size_pc& pc, deque<prog_thread>& fps);
 };
 
 /// system state in counter abstraction
@@ -120,80 +120,80 @@ ostream& operator <<(ostream& out, const syst_thread& s);
  */
 class converter {
 public:
-    converter() :
-            mask(std::numeric_limits<size_pc>::max()) {
-    }
+	converter() :
+			mask(std::numeric_limits<size_pc>::max()) {
+	}
 
-    virtual ~converter() {
-    }
-    /// aliasing system state
+	virtual ~converter() {
+	}
+	/// aliasing system state
 //    using syst_state = pair<S, container_t<L ...>>;
 
-    /**
-     * @brief This function is to convert a list of program states to a list
-     *        of system states
-     *
-     * @param ss: a list of program states
-     *
-     * @return a list of system states
-     */
-    virtual deque<syst_state> convert(const deque<prog_state>& ps);
+	/**
+	 * @brief This function is to convert a list of program states to a list
+	 *        of system states
+	 *
+	 * @param ss: a list of program states
+	 *
+	 * @return a list of system states
+	 */
+	virtual deque<syst_state> convert(const deque<prog_state>& ps);
 
-    /**
-     * @brief This function is to convert program state to a system state
-     *
-     * @param ss: program state
-     *
-     * @return system state
-     */
-    virtual syst_state convert(const prog_state& ps);
+	/**
+	 * @brief This function is to convert program state to a system state
+	 *
+	 * @param ss: program state
+	 *
+	 * @return system state
+	 */
+	virtual syst_state convert(const prog_state& ps);
 
-    /**
-     * @brief This function is to convert a system state to a program state
-     *
-     * @param ss: system state
-     *
-     * @return program state
-     */
-    virtual prog_state convert(const syst_state& ss);
+	/**
+	 * @brief This function is to convert a system state to a program state
+	 *
+	 * @param ss: system state
+	 *
+	 * @return program state
+	 */
+	virtual prog_state convert(const syst_state& ss);
 
-    /**
-     * @brief This function is to convert a list of program thread states to
-     *        a list of system states
-     *
-     * @param ss: a list of program thread states
-     *
-     * @return a list of system thread states
-     */
-    virtual deque<syst_thread> convert(const deque<prog_thread>& pts);
+	/**
+	 * @brief This function is to convert a list of program thread states to
+	 *        a list of system states
+	 *
+	 * @param ss: a list of program thread states
+	 *
+	 * @return a list of system thread states
+	 */
+	virtual deque<syst_thread> convert(const deque<prog_thread>& pts);
 
-    /**
-     * @brief This function is to convert program thread state to a system
-     *        state
-     *
-     * @param ss: program thread state
-     *
-     * @return system thread state
-     */
-    virtual syst_thread convert(const prog_thread& pt);
+	/**
+	 * @brief This function is to convert program thread state to a system
+	 *        state
+	 *
+	 * @param ss: program thread state
+	 *
+	 * @return system thread state
+	 */
+	virtual syst_thread convert(const prog_thread& pt);
 
-    /**
-     * @brief This function is to convert a system thread state to a program
-     *        thread state
-     *
-     * @param ss: system thread state
-     *
-     * @return program thread state
-     */
-    virtual prog_thread convert(const syst_thread& st);
+	/**
+	 * @brief This function is to convert a system thread state to a program
+	 *        thread state
+	 *
+	 * @param ss: system thread state
+	 *
+	 * @return program thread state
+	 */
+	virtual prog_thread convert(const syst_thread& st);
 
 public:
-    uint mask;
-    state_v convert_sss_to_sps(const uint& ss);
-    uint convert_sps_to_sss(const state_v& ps);
+	uint mask;
+	state_v convert_sss_to_sps(const uint& ss);
+	uint convert_sps_to_sss(const state_v& ps);
 
-    pair<size_pc, state_v> convert_lss_to_lps(const uint& ss);
-    uint convert_lps_to_lss(const size_pc& pc, const state_v& ps);
+	pair<size_pc, state_v> convert_lss_to_lps(const uint& ss);
+	uint convert_lps_to_lss(const size_pc& pc, const state_v& ps);
 };
 
 /**
@@ -202,7 +202,7 @@ public:
  *        COV: covering preimages
  */
 enum class prev {
-    DRC, COV
+	DRC, COV
 };
 
 /**
@@ -233,77 +233,78 @@ enum class prev {
  */
 class pre_image {
 public:
-    pre_image();
-    ~pre_image();
+	pre_image();
+	~pre_image();
 
-    /**
-     * @brief This function is to compute all preimages of global state tau.
-     *        It iterates over all threads, i.e., each thread is used as the
-     *        active thread.
-     *
-     * @param tau: the global program state
-     * @param p  : the type of preimages: the default is to compute direct
-     *             preimages.
-     *
-     * @return a list of direct (covering) preimages.
-     */
-    deque<prog_state> step(const prog_state& tau, const prev& p = prev::DRC);
+	/**
+	 * @brief This function is to compute all preimages of global state tau.
+	 *        It iterates over all threads, i.e., each thread is used as the
+	 *        active thread.
+	 *
+	 * @param tau: the global program state
+	 * @param p  : the type of preimages: the default is to compute direct
+	 *             preimages.
+	 *
+	 * @return a list of direct (covering) preimages.
+	 */
+	deque<prog_state> step(const prog_state& tau, const prev& p = prev::DRC);
 
-    /**
-     * @brief This function is to compute all DIRECT preimages of global state
-     *         tau w.r.t. a active thread that is identified by thread_id.
-     *
-     * @note  This implementation is always associated with non-counter abstr-
-     *        action representation.
-     *
-     * @param tau      : the global program state
-     * @param thread_id: the identifier of active thread
-     *
-     * @return a list of direct preimages.
-     */
-    deque<prog_state> step(const prog_state& tau, const size_tc& thread_id);
+	/**
+	 * @brief This function is to compute all DIRECT preimages of global state
+	 *         tau w.r.t. a active thread that is identified by thread_id.
+	 *
+	 * @note  This implementation is always associated with non-counter abstr-
+	 *        action representation.
+	 *
+	 * @param tau      : the global program state
+	 * @param thread_id: the identifier of active thread
+	 *
+	 * @return a list of direct preimages.
+	 */
+	deque<prog_state> step(const prog_state& tau, const size_tc& thread_id);
 
-    /**
-     * @brief This function is to compute all DIRECT preimages of global state
-     *         tau w.r.t. a active thread that is identified by local state l.
-     *
-     * @note  We still have not found a potential meaningful application of this
-     *        function.
-     *
-     * @param tau: the global program state
-     * @param l  : the identifier of active thread
-     *
-     * @return a list of direct preimages.
-     */
-    deque<prog_state> step(const prog_state& tau, const local_state& l);
+	/**
+	 * @brief This function is to compute all DIRECT preimages of global state
+	 *         tau w.r.t. a active thread that is identified by local state l.
+	 *
+	 * @note  We still have not found a potential meaningful application of this
+	 *        function.
+	 *
+	 * @param tau: the global program state
+	 * @param l  : the identifier of active thread
+	 *
+	 * @return a list of direct preimages.
+	 */
+	deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
-    set<local_state> cand_L; /// candidate local states for covering preimages
+	set<local_state> cand_L; /// candidate local states for covering preimages
 
-    void init_cand_L();
+	void init_cand_L();
 
-    /// compute direct   preimages
-    deque<prog_state> compute_drc_pre_images(const prog_state& _tau);
+	/// compute direct   preimages
+	deque<prog_state> compute_drc_pre_images(const prog_state& _tau);
 
-    /// compute covering preimages
-    deque<prog_state> compute_cov_pre_images(const prog_state& _tau);
+	/// compute covering preimages
+	deque<prog_state> compute_cov_pre_images(const prog_state& _tau);
 
-    void compute_pre_images(const prog_state& _tau, const local_state& _l,
-            deque<prog_state>& images);
+	void compute_pre_images(const prog_state& _tau, const local_state& _l,
+			deque<prog_state>& images);
 
-    deque<pair<state_v, state_v>> compute_image_assg_stmt(const size_pc& pc,
-            const state_v& _sv, const state_v& _lv);
-    void conjoin_equality(const bool& _v, const deque<symbol>& se,
-            deque<symbol>& app);
+	deque<pair<state_v, state_v>> compute_image_assg_stmt(const size_pc pc,
+			const state_v _sv, const state_v _lv);
+	void conjoin_equality(const bool& _v, const deque<symbol>& se,
+			deque<symbol>& app);
 
-    local_state compute_image_ifth_stmt(const local_state& l,
-            const size_pc& _pc);
-    local_state compute_image_else_stmt(const local_state& l);
+	local_state compute_image_ifth_stmt(const local_state& l,
+			const size_pc _pc);
+	local_state compute_image_else_stmt(const local_state& l);
 
-    deque<pair<state_v, state_v>> compute_image_atom_sect(const state_v& _sv,
-            const state_v& _lv, size_pc& _pc);
 
-    void compute_image_bcst_stmt(deque<local_state>& pw);
+	deque<prog_thread> compute_image_atom_sect(const size_pc _pc,
+			const state_v _sv, const state_v _lv);
+
+	void compute_image_bcst_stmt(deque<local_state>& pw);
 };
 
 /**
@@ -330,61 +331,61 @@ private:
  */
 class post_image {
 public:
-    post_image();
-    ~post_image();
+	post_image();
+	~post_image();
 
-    /**
-     * @brief This function is to compute all postimages of global state tau.
-     *        It iterates over all threads, i.e., each thread is used as the
-     *        active thread.
-     *
-     * @param tau: the global program state
-     *
-     * @return a list of postimages.
-     */
-    deque<prog_state> step(const prog_state& tau);
+	/**
+	 * @brief This function is to compute all postimages of global state tau.
+	 *        It iterates over all threads, i.e., each thread is used as the
+	 *        active thread.
+	 *
+	 * @param tau: the global program state
+	 *
+	 * @return a list of postimages.
+	 */
+	deque<prog_state> step(const prog_state& tau);
 
-    /**
-     * @brief This function is to compute all postimages of global state tau
-     *        w.r.t. a active thread that is identified by thread_id.
-     *
-     * @note  This implementation is always associated with non-counter abstr-
-     *        action representation.
-     *
-     * @param tau      : the global program state
-     * @param thread_id: the identifier of active thread
-     *
-     * @return a list of postimages.
-     */
-    deque<prog_state> step(const prog_state& tau, const size_tc& thread_id);
+	/**
+	 * @brief This function is to compute all postimages of global state tau
+	 *        w.r.t. a active thread that is identified by thread_id.
+	 *
+	 * @note  This implementation is always associated with non-counter abstr-
+	 *        action representation.
+	 *
+	 * @param tau      : the global program state
+	 * @param thread_id: the identifier of active thread
+	 *
+	 * @return a list of postimages.
+	 */
+	deque<prog_state> step(const prog_state& tau, const size_tc& thread_id);
 
-    /**
-     * @brief This function is to compute all postimages of global state tau
-     *        w.r.t. a active thread that is identified by local state l.
-     *
-     * @note  We still have not found a potential meaningful application of this
-     *        function.
-     *
-     * @param tau: the global program state
-     * @param l  : the identifier of active thread
-     *
-     * @return a list of postimages.
-     */
-    deque<prog_state> step(const prog_state& tau, const local_state& l);
+	/**
+	 * @brief This function is to compute all postimages of global state tau
+	 *        w.r.t. a active thread that is identified by local state l.
+	 *
+	 * @note  We still have not found a potential meaningful application of this
+	 *        function.
+	 *
+	 * @param tau: the global program state
+	 * @param l  : the identifier of active thread
+	 *
+	 * @return a list of postimages.
+	 */
+	deque<prog_state> step(const prog_state& tau, const local_state& l);
 
 private:
-    void compute_post_images(const prog_state& tau, const local_state& l,
-            deque<prog_state>& images);
+	void compute_post_images(const prog_state& tau, const local_state& l,
+			deque<prog_state>& images);
 
-    void compute_image_assg_stmt(const state_v& sv, const state_v& lv,
-            const size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs);
+	void compute_image_assg_stmt(const state_v& sv, const state_v& lv,
+			const size_pc& pc, deque<state_v>& svs, deque<state_v>& lvs);
 
-    local_state compute_image_ifth_stmt(const local_state& l,
-            const size_pc& _pc);
-    local_state compute_image_else_stmt(const local_state& l);
+	local_state compute_image_ifth_stmt(const local_state& l,
+			const size_pc& _pc);
+	local_state compute_image_else_stmt(const local_state& l);
 
-    deque<pair<state_v, state_v>> compute_image_atom_sect(const state_v& sv,
-            const state_v& lv, size_pc& pc);
+	deque<pair<state_v, state_v>> compute_image_atom_sect(const state_v& sv,
+			const state_v& lv, size_pc& pc);
 };
 
 } /* namespace otf */

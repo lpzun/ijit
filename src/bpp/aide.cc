@@ -57,7 +57,7 @@ void paide::init_vars(const string& var, const sool& val) {
 	else if ((ifind = l_vars_list.find(var)) != l_vars_list.end())
 		l_vars_init[ifind->second] = val;
 	else
-		throw iotf_runtime_error("No such a variable named " + var);
+		throw ijit_runtime_error("No such a variable named " + var);
 }
 
 /**
@@ -68,7 +68,7 @@ void paide::init_vars(const string& var, const sool& val) {
 bool paide::is_pc_unique(const size_pc& pc) {
 	const auto& result = all_pc_set.emplace(pc);
 	if (!result.second)
-		throw iotf_runtime_error(
+		throw ijit_runtime_error(
 				"Parser: pc " + std::to_string(pc) + " duplicates.");
 	return true;
 }
@@ -154,7 +154,7 @@ symbol paide::encode(const string& var) {
 			if (ifind != l_vars_list.end())
 				idx += s_vars_num;
 			else
-				throw iotf_runtime_error(var + "is missed!");
+				throw ijit_runtime_error(var + "is missed!");
 		}
 		idx += ifind->second;
 	} else {
@@ -164,7 +164,7 @@ symbol paide::encode(const string& var) {
 			if (ifind != l_vars_list.end())
 				idx += s_vars_num;
 			else
-				throw iotf_runtime_error(var + "is missed!");
+				throw ijit_runtime_error(var + "is missed!");
 		}
 		idx += ifind->second + s_vars_num + l_vars_num;
 	}
@@ -205,9 +205,7 @@ void paide::print_parallel_assg_stmt() {
 	auto i_iter = assg_stmt_lhs.begin(), i_end = assg_stmt_lhs.end();
 	auto e_iter = assg_stmt_rhs.begin(), e_end = assg_stmt_rhs.end();
 	while (i_iter != i_end && e_iter != e_end) {
-		const auto& iden = *i_iter;
-		const auto& expr = *e_iter;
-		DBG_STD(cout << iden << ":=" << solver::recov_expr_from_list(expr) << "\n";)
+		cout << *i_iter << ":=" << solver::recov_expr_from_list(*e_iter) << "\n";
 		i_iter++, e_iter++;
 	}
 }

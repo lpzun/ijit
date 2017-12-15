@@ -125,7 +125,7 @@ inline ostream& operator <<(ostream& out, const sool& s) {
 		out << 2;
 		break;
 	default:
-		throw iotf_runtime_error("unknown value for Boolean variable");
+		throw ijit_runtime_error("unknown value for Boolean variable");
 		break;
 	}
 	return out;

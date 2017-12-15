@@ -67,7 +67,7 @@ void alg::decrement(const local_state& t_de, ca_locals& Z) {
 			Z.erase(ifind);
 	} else {
 		cerr << __func__ << " " << t_de;
-		throw iotf_runtime_error(" unfounded!");
+		throw ijit_runtime_error(" unfounded!");
 	}
 }
 
@@ -150,7 +150,7 @@ void alg::decrement(const local_state& t_de, ca_locals& Z, const bool& same) {
 				Z.erase(ifind);
 		}
 	} else {
-		throw iotf_runtime_error(std::string(__func__) + ": t_de unfounded!");
+		throw ijit_runtime_error(std::string(__func__) + ": t_de unfounded!");
 	}
 }
 
@@ -323,7 +323,7 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
 			worklist.emplace(true);
 			break;
 		case solver::CONST_N:
-			throw iotf_runtime_error(string(__func__) + ": * is not splitted");
+			throw ijit_runtime_error(string(__func__) + ": * is not splitted");
 			break;
 		default: {
 			bool is_shared = false;
@@ -396,7 +396,7 @@ bool solver::solve(const deque<symbol>& sexpr, const state_v& s,
 			worklist.emplace(true);
 			break;
 		case solver::CONST_N:
-			throw iotf_runtime_error(string(__func__) + ": * is not splitted");
+			throw ijit_runtime_error(string(__func__) + ": * is not splitted");
 			break;
 		default: {
 			bool is_shared = false, is_primed = false;
@@ -697,7 +697,7 @@ bool solver::eval(const deque<symbol>& sexpr) {
 			worklist.emplace(true);
 			break;
 		case solver::CONST_N:
-			throw iotf_runtime_error(string(__func__) + ": * is not splitted");
+			throw ijit_runtime_error(string(__func__) + ": * is not splitted");
 			break;
 		default:
 			throw("A variable appears in solver::eval()");
