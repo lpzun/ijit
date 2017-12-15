@@ -13,7 +13,7 @@
 #define SIZE_B 16
 #else
 #endif
-
+#include <limits>
 #include "head.hh"
 
 namespace ijit {
