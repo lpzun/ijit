@@ -141,9 +141,8 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 	/// iterate over all preceding statements via <parser::prev_G>
 	const auto& predecessors = parser::get_prev_G().get_A()[_pc];
 	for (auto ie = predecessors.cbegin(); ie != predecessors.cend(); ++ie) {
-		const auto& e = *ie; /// get the edge by pc
-		const auto& pc = e.get_dest();
-		switch (e.get_stmt().get_type()) {
+		const auto& pc = ie->get_dest();
+		switch (ie->get_stmt().get_type()) {
 		case type_stmt::GOTO: {
 			/// goto statement
 			///   pc: goto <_pc>;
@@ -169,7 +168,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 			//cout << __func__ << " parallel assignment " << pc << "\n";
 			const auto& wp = this->compute_image_assg_stmt(pc, _sv, _lv);
 			for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
-				const auto& cond = e.get_stmt().get_condition();
+				const auto& cond = ie->get_stmt().get_condition();
 				if (cond.is_void()
 						|| (cond.eval(ip->first, ip->second, _sv, _lv)
 								!= sool::F)) {
@@ -186,7 +185,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 			/// pc+1: ...
 			///
 			/// SEMANTIC:
-			const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
+			const auto& cond = ie->get_stmt().get_condition().eval(_sv, _lv);
 			if (_pc != pc + 1) {
 				if (cond != sool::F) {
 					const auto& l = this->compute_image_ifth_stmt(_l, pc);
@@ -224,7 +223,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 			/// SEMANTIC: advance if expr is evaluated to be true;
 			/// block otherwise.
 			//cout << __func__ << " assume " << "\n";
-			const auto& cond = e.get_stmt().get_condition().eval(_sv, _lv);
+			const auto& cond = ie->get_stmt().get_condition().eval(_sv, _lv);
 			if (cond != sool::F) {
 				local_state l(pc, _lv);
 				const auto& Z = alg::update_counters(l, _l, _Z);
@@ -299,14 +298,11 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 			/// a context switch to another thread
 			/// NOTE    : the atomic_begin statement is not processed here,but
 			/// in the subroutine.
-			//cout << "I'm here..........atomic section...\n";
 			auto _pc(pc); /// the copy of pc
-			const auto& wp = this->compute_image_atom_sect(_sv, _lv, _pc);
-			//cout << _pc << __func__ << endl;
+			const auto& wp = this->compute_image_atom_sect(_pc, _sv, _lv);
 			for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
-				const auto& Z = alg::update_counters(
-						local_state(_pc, ip->second), _l, _Z);
-				images.emplace_back(shared_state(ip->first), Z);
+				const auto& Z = alg::update_counters(ip->get_l(), _l, _Z);
+				images.emplace_back(ip->get_s(), Z);
 			}
 		}
 			break;
@@ -380,7 +376,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
  * @TODO: consider whether step 0 & 1 can be merged together...
  */
 deque<pair<state_v, state_v>> pre_image::compute_image_assg_stmt(
-		const size_pc& pc, const state_v& _sv, const state_v& _lv) {
+		const size_pc pc, const state_v _sv, const state_v _lv) {
 	deque<pair<state_v, state_v>> worklist; /// store the result
 
 	auto ifind = parser::get_prev_G().get_assignments().find(pc);
@@ -491,7 +487,7 @@ void pre_image::conjoin_equality(const bool& _v, const deque<symbol>& se,
  * @return the predecessor local state, whose pc = ...
  */
 local_state pre_image::compute_image_ifth_stmt(const local_state& _l,
-		const size_pc& pc) {
+		const size_pc pc) {
 	return local_state(pc, _l.get_vars());
 }
 
@@ -508,62 +504,124 @@ local_state pre_image::compute_image_else_stmt(const local_state& _l) {
  * @brief compute pre images across an atomic section:
  *        Remark that an atomic section could contain various statements
  *
- * @param s: shared state at the end of atomic section (atomic_end).
- *           It is also used to return the final shared state before atomic
- *           section.
- * @param l: local state at the end of atomic section
+ *        ASSUMPTION:
+ *         assume atomic section contains only FIVE types of statements:
+ *           1. assume
+ *           2. skip
+ *           3. assignment
+ *           4. if ... fi
+ *           5. goto
+ *
+ * @param  s: shared state at the end of atomic section (atomic_end).
+ *         It is also used to return the final shared state before atomic
+ *         section.
+ * @param  l: local state at the end of atomic section
  * @return predecessor local states across atomic section
  */
-deque<pair<state_v, state_v>> pre_image::compute_image_atom_sect(
-		const state_v& _sv, const state_v& _lv, size_pc& _pc) {
-	deque<pair<state_v, state_v>> result;
-	result.emplace_back(_sv, _lv);
+deque<prog_thread> pre_image::compute_image_atom_sect(const size_pc p,
+		const state_v sv, const state_v lv) {
+	deque<prog_thread> result;
+	queue<prog_thread> worklist;
+	set<prog_thread> explored;
+	worklist.emplace(sv, p, lv);
+	while (!worklist.empty()) {
+		const auto _t = worklist.front();
+		worklist.pop();
+		if (explored.find(_t) != explored.end()) {
+			cout << _t << " has seen before...\n";
+			continue;
+		}
+		explored.emplace(_t);
+		auto _sv = _t.get_s().get_vars();
+		auto _lv = _t.get_l().get_vars();
+		auto _pc = _t.get_l().get_pc();
 
-	auto e = parser::get_prev_G().get_A()[_pc].front();
-	while (e.get_stmt().get_type() != type_stmt::ATOM) {
-		const auto& pc = e.get_dest();
-
-		//cout << __func__ << "===================" << _pc << "->" << pc << endl;
-		switch (e.get_stmt().get_type()) {
-		case type_stmt::ASSU: {
-			for (auto ip = result.begin(); ip != result.end(); ++ip) {
-				const auto& cond = e.get_stmt().get_condition();
-				if (cond.eval(ip->first, ip->second) == sool::F) /// UNSAT
-					result.erase(ip);
+		/// iterate over all preceding statements via <parser::prev_G>
+		const auto& predecessors = parser::get_prev_G().get_A()[_pc];
+		for (auto ie = predecessors.cbegin(); ie != predecessors.cend(); ++ie) {
+			const auto& pc = ie->get_dest();
+			switch (ie->get_stmt().get_type()) {
+			case type_stmt::ATOM: {
+				result.emplace_back(_sv, pc, _lv);
 			}
-			_pc = pc;
-		}
-			break;
-		case type_stmt::SKIP: {
-			_pc = pc;
-		}
-			break;
-		case type_stmt::ASSG: {
-			const auto& wp = this->compute_image_assg_stmt(pc, _sv, _lv);
-			for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
-				const auto& cond = e.get_stmt().get_condition();
-				if (cond.is_void()
-						|| (cond.eval(ip->first, ip->second, _sv, _lv)
-								!= sool::F))
-					result.emplace_back(ip->first, ip->second);
+				break;
+			case type_stmt::GOTO: {
+				/// goto statement
+				///   pc: goto <_pc>;
+				///    ...
+				///  _pc: ...
+				///
+				/// SEMANTIC: nondeterministic goto
+				worklist.emplace(_sv, pc, _lv);
 			}
-			_pc = pc;
-		}
-			break;
-		default: {
-			throw iotf_runtime_error(
-					"atomic section contains unable-to-handle statements");
-		}
-			break;
-		}
+				break;
+			case type_stmt::SKIP: {
+				worklist.emplace(_sv, pc, _lv);
+			}
+				break;
+			case type_stmt::ASSG: {
+				/// parallel statement
+				///   pc: <id>+ := <expr>+ constrain <expr>;
+				///
+				/// SEMANTIC: assignment statement, postcondition of
+				/// vars might have to satisfy the constraint
 
-		e = parser::get_prev_G().get_A()[_pc].front();
+				/// compute all direct predecessors via weakest
+				/// precondition and SAT solvers
+				const auto& wp = this->compute_image_assg_stmt(pc, _sv, _lv);
+				for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
+					const auto& cond = ie->get_stmt().get_condition();
+					if (cond.is_void()
+							|| (cond.eval(ip->first, ip->second, _sv, _lv)
+									!= sool::F))
+						worklist.emplace(ip->first, pc, ip->second);
+				}
+			}
+				break;
+			case type_stmt::IFEL: {
+				/// if ... else ... statement: conditional statement
+				///   pc: if (<expr>) then <sseq> else <sseq>; fi;
+				/// pc+1: ...
+				///
+				/// SEMANTIC:
+				const auto& cond = ie->get_stmt().get_condition().eval(_sv,
+						_lv);
+				if (_pc != pc + 1) {
+					if (cond != sool::F) {
+						const auto& l = this->compute_image_ifth_stmt(
+								_t.get_l(), pc);
+						worklist.emplace(_sv, l.get_pc(), l.get_vars());
+					}
+				} else {
+					if (cond != sool::T) {
+						const auto& l = this->compute_image_else_stmt(
+								_t.get_l());
+						worklist.emplace(_sv, l.get_pc(), l.get_vars());
+					}
+				}
+			}
+				break;
+			case type_stmt::ASSU: {
+				/// assume statement: conditional statement
+				///   pc: assume ( <expr> );
+				/// pc+1: ...
+				///
+				/// SEMANTIC: advance if expr is evaluated to be true;
+				/// block otherwise.
+				const auto& cond = ie->get_stmt().get_condition().eval(_sv,
+						_lv);
+				if (cond != sool::F)
+					worklist.emplace(_sv, pc, _lv);
+			}
+				break;
+			default: {
+				throw ijit_runtime_error(
+						"atomic section contains unable-to-handle statements");
+			}
+				break;
+			}
+		}
 	}
-	if (_pc > 0)
-		--_pc;
-//	cout << e.get_stmt().get_type() << endl;
-//	cout << _pc << endl;
-//	cout << result.size() << endl;
 	return result;
 }
 
