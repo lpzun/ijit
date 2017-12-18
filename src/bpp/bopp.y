@@ -20,7 +20,7 @@
 %code requires
 {
 # include "aide.hh"
-  using namespace iotf;
+  using namespace ijit;
 }
 
  // tell Bison that yyparse should take an extra parameter paide
@@ -190,7 +190,7 @@ labelstmt: T_INT {
   if(!aide.is_pc_unique($1)) // pc's uniqueness
     YYABORT; 
  } ':' statement {
-   cout << "TEST:: I am in statement " << $1 <<endl;
+   // cout << "TEST:: I am in statement " << $1 <<endl;
    }
 ;
 

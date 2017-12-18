@@ -1,8 +1,8 @@
-// A Bison parser, made by GNU Bison 3.0.2.
+// A Bison parser, made by GNU Bison 3.0.4.
 
 // Skeleton implementation for Bison LALR(1) parsers in C++
 
-// Copyright (C) 2002-2013 Free Software Foundation, Inc.
+// Copyright (C) 2002-2015 Free Software Foundation, Inc.
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,10 +32,10 @@
 
 
 // First part of user declarations.
-#line 30 "bopp.y" // lalr1.cc:399
+#line 30 "bopp.y" // lalr1.cc:404
 
 
-#line 39 "bopp.tab.cc" // lalr1.cc:399
+#line 39 "bopp.tab.cc" // lalr1.cc:404
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -48,11 +48,11 @@
 #include "bopp.tab.hh"
 
 // User implementation prologue.
-#line 77 "bopp.y" // lalr1.cc:407
+#line 77 "bopp.y" // lalr1.cc:412
 
   extern int yylex(yy::bp::semantic_type *yylval, yy::bp::location_type* yylloc);
 
-#line 56 "bopp.tab.cc" // lalr1.cc:407
+#line 56 "bopp.tab.cc" // lalr1.cc:412
 
 
 #ifndef YY_
@@ -129,7 +129,7 @@
 #endif // !YYDEBUG
 
 #define yyerrok         (yyerrstatus_ = 0)
-#define yyclearin       (yyempty = true)
+#define yyclearin       (yyla.clear ())
 
 #define YYACCEPT        goto yyacceptlab
 #define YYABORT         goto yyabortlab
@@ -138,7 +138,7 @@
 
 
 namespace yy {
-#line 142 "bopp.tab.cc" // lalr1.cc:474
+#line 142 "bopp.tab.cc" // lalr1.cc:479
 
   /* Return YYSTR after stripping away unnecessary quotes and
      backslashes, so that it's suitable for yyerror.  The heuristic is
@@ -242,6 +242,23 @@ namespace yy {
   inline
   bp::basic_symbol<Base>::~basic_symbol ()
   {
+    clear ();
+  }
+
+  template <typename Base>
+  inline
+  void
+  bp::basic_symbol<Base>::clear ()
+  {
+    Base::clear ();
+  }
+
+  template <typename Base>
+  inline
+  bool
+  bp::basic_symbol<Base>::empty () const
+  {
+    return Base::type_get () == empty_symbol;
   }
 
   template <typename Base>
@@ -257,7 +274,7 @@ namespace yy {
   // by_type.
   inline
   bp::by_type::by_type ()
-     : type (empty)
+    : type (empty_symbol)
   {}
 
   inline
@@ -272,10 +289,17 @@ namespace yy {
 
   inline
   void
+  bp::by_type::clear ()
+  {
+    type = empty_symbol;
+  }
+
+  inline
+  void
   bp::by_type::move (by_type& that)
   {
     type = that.type;
-    that.type = empty;
+    that.clear ();
   }
 
   inline
@@ -289,7 +313,7 @@ namespace yy {
   // by_state.
   inline
   bp::by_state::by_state ()
-    : state (empty)
+    : state (empty_state)
   {}
 
   inline
@@ -299,10 +323,17 @@ namespace yy {
 
   inline
   void
+  bp::by_state::clear ()
+  {
+    state = empty_state;
+  }
+
+  inline
+  void
   bp::by_state::move (by_state& that)
   {
     state = that.state;
-    that.state = empty;
+    that.clear ();
   }
 
   inline
@@ -314,7 +345,10 @@ namespace yy {
   bp::symbol_number_type
   bp::by_state::type_get () const
   {
-    return state == empty ? 0 : yystos_[state];
+    if (state == empty_state)
+      return empty_symbol;
+    else
+      return yystos_[state];
   }
 
   inline
@@ -328,7 +362,7 @@ namespace yy {
   {
     value = that.value;
     // that is emptied.
-    that.type = empty;
+    that.type = empty_symbol;
   }
 
   inline
@@ -363,6 +397,10 @@ namespace yy {
     std::ostream& yyoutput = yyo;
     YYUSE (yyoutput);
     symbol_number_type yytype = yysym.type_get ();
+    // Avoid a (spurious) G++ 4.8 warning about "array subscript is
+    // below array bounds".
+    if (yysym.empty ())
+      std::abort ();
     yyo << (yytype < yyntokens_ ? "token" : "nterm")
         << ' ' << yytname_[yytype] << " ("
         << yysym.location << ": ";
@@ -447,9 +485,6 @@ namespace yy {
   int
   bp::parse ()
   {
-    /// Whether yyla contains a lookahead.
-    bool yyempty = true;
-
     // State.
     int yyn;
     /// Length of the RHS of the rule being reduced.
@@ -476,13 +511,13 @@ namespace yy {
 
 
     // User initialization code.
-    #line 81 "bopp.y" // lalr1.cc:729
+    #line 81 "bopp.y" // lalr1.cc:745
 {
   // add filename to location info here
   yyla.location.begin.filename = yyla.location.end.filename = new std::string("stdin");
  }
 
-#line 486 "bopp.tab.cc" // lalr1.cc:729
+#line 521 "bopp.tab.cc" // lalr1.cc:745
 
     /* Initialize the stack.  The initial state will be set in
        yynewstate, since the latter expects the semantical and the
@@ -510,7 +545,7 @@ namespace yy {
       goto yydefault;
 
     // Read a lookahead token.
-    if (yyempty)
+    if (yyla.empty ())
       {
         YYCDEBUG << "Reading a token: ";
         try
@@ -522,7 +557,6 @@ namespace yy {
             error (yyexc);
             goto yyerrlab1;
           }
-        yyempty = false;
       }
     YY_SYMBOL_PRINT ("Next token is", yyla);
 
@@ -541,9 +575,6 @@ namespace yy {
         yyn = -yyn;
         goto yyreduce;
       }
-
-    // Discard the token being shifted.
-    yyempty = true;
 
     // Count tokens shifted since error; after three, turn off error status.
     if (yyerrstatus_)
@@ -594,144 +625,144 @@ namespace yy {
           switch (yyn)
             {
   case 20:
-#line 139 "bopp.y" // lalr1.cc:847
+#line 139 "bopp.y" // lalr1.cc:859
     {
   aide.add_vars((yystack_[0].value.t_str), sool::N, true);
   free((yystack_[0].value.t_str)); // free it to avoid storage leaks
  }
-#line 603 "bopp.tab.cc" // lalr1.cc:847
+#line 634 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 21:
-#line 143 "bopp.y" // lalr1.cc:847
+#line 143 "bopp.y" // lalr1.cc:859
     {
   aide.add_vars((yystack_[2].value.t_str), sool::N, true);
   free((yystack_[2].value.t_str)); // free it to avoid storage leaks
  }
-#line 612 "bopp.tab.cc" // lalr1.cc:847
+#line 643 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 22:
-#line 147 "bopp.y" // lalr1.cc:847
+#line 147 "bopp.y" // lalr1.cc:859
     {
   aide.add_vars((yystack_[2].value.t_str), (yystack_[0].value.t_val) == 0 ? sool::F : sool::N, true);
   free((yystack_[2].value.t_str)); // free it to avoid storage leaks
  }
-#line 621 "bopp.tab.cc" // lalr1.cc:847
+#line 652 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 23:
-#line 154 "bopp.y" // lalr1.cc:847
+#line 154 "bopp.y" // lalr1.cc:859
     { }
-#line 627 "bopp.tab.cc" // lalr1.cc:847
+#line 658 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 25:
-#line 158 "bopp.y" // lalr1.cc:847
+#line 158 "bopp.y" // lalr1.cc:859
     {}
-#line 633 "bopp.tab.cc" // lalr1.cc:847
+#line 664 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 26:
-#line 161 "bopp.y" // lalr1.cc:847
+#line 161 "bopp.y" // lalr1.cc:859
     {
   aide.add_vars((yystack_[0].value.t_str), sool::N, false);
   free((yystack_[0].value.t_str));
  }
-#line 642 "bopp.tab.cc" // lalr1.cc:847
+#line 673 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 27:
-#line 165 "bopp.y" // lalr1.cc:847
+#line 165 "bopp.y" // lalr1.cc:859
     {
   aide.add_vars((yystack_[2].value.t_str), sool::N, false);
   free((yystack_[2].value.t_str));
  }
-#line 651 "bopp.tab.cc" // lalr1.cc:847
+#line 682 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 28:
-#line 169 "bopp.y" // lalr1.cc:847
+#line 169 "bopp.y" // lalr1.cc:859
     {
   aide.add_vars((yystack_[2].value.t_str), (yystack_[0].value.t_val) == 0 ? sool::F : sool::N, false);
   free((yystack_[2].value.t_str));
  }
-#line 660 "bopp.tab.cc" // lalr1.cc:847
+#line 691 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 29:
-#line 177 "bopp.y" // lalr1.cc:847
+#line 177 "bopp.y" // lalr1.cc:859
     {
   aide.init_vars((yystack_[3].value.t_str), sool::N);
   free((yystack_[3].value.t_str));
  }
-#line 669 "bopp.tab.cc" // lalr1.cc:847
+#line 700 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 30:
-#line 181 "bopp.y" // lalr1.cc:847
+#line 181 "bopp.y" // lalr1.cc:859
     {
   aide.init_vars((yystack_[3].value.t_str), (yystack_[1].value.t_val) == 0 ? sool::F : sool::N);
   free((yystack_[3].value.t_str));
  }
-#line 678 "bopp.tab.cc" // lalr1.cc:847
+#line 709 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 31:
-#line 187 "bopp.y" // lalr1.cc:847
+#line 187 "bopp.y" // lalr1.cc:859
     { 
   ++aide.lineno; // counting the program counters
   aide.ipc = (int)((yystack_[0].value.t_val)); // obtain current pc
   if(!aide.is_pc_unique((yystack_[0].value.t_val))) // pc's uniqueness
     YYABORT; 
  }
-#line 689 "bopp.tab.cc" // lalr1.cc:847
+#line 720 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 32:
-#line 192 "bopp.y" // lalr1.cc:847
+#line 192 "bopp.y" // lalr1.cc:859
     {
-   cout << "TEST:: I am in statement " << (yystack_[3].value.t_val) <<endl;
+   // cout << "TEST:: I am in statement " << $1 <<endl;
    }
-#line 697 "bopp.tab.cc" // lalr1.cc:847
+#line 728 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 36:
-#line 202 "bopp.y" // lalr1.cc:847
+#line 202 "bopp.y" // lalr1.cc:859
     { // "skip" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::SKIP);	
  }
-#line 705 "bopp.tab.cc" // lalr1.cc:847
+#line 736 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 37:
-#line 205 "bopp.y" // lalr1.cc:847
+#line 205 "bopp.y" // lalr1.cc:859
     {}
-#line 711 "bopp.tab.cc" // lalr1.cc:847
+#line 742 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 38:
-#line 205 "bopp.y" // lalr1.cc:847
+#line 205 "bopp.y" // lalr1.cc:859
     { // "goto" statement
   aide.add_edge(aide.ipc, type_stmt::GOTO);
   aide.suc_pc_set.clear();
  }
-#line 720 "bopp.tab.cc" // lalr1.cc:847
+#line 751 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 39:
-#line 209 "bopp.y" // lalr1.cc:847
+#line 209 "bopp.y" // lalr1.cc:859
     {// "parallel assignment" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG);	
   // reset containers
   aide.assg_stmt_lhs.clear();
   aide.assg_stmt_rhs.clear();
  }
-#line 731 "bopp.tab.cc" // lalr1.cc:847
+#line 762 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 40:
-#line 215 "bopp.y" // lalr1.cc:847
+#line 215 "bopp.y" // lalr1.cc:859
     {// "PA with constrain" 
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSG, true);
   // reset containers
@@ -739,20 +770,20 @@ namespace yy {
   aide.assg_stmt_lhs.clear();
   aide.assg_stmt_rhs.clear();
  }
-#line 743 "bopp.tab.cc" // lalr1.cc:847
+#line 774 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 41:
-#line 222 "bopp.y" // lalr1.cc:847
+#line 222 "bopp.y" // lalr1.cc:859
     { // "if...then goto..." statement
   aide.add_edge(aide.ipc, (yystack_[3].value.t_val), type_stmt::IFEL, true);
   aide.expr_in_list.clear();
  }
-#line 752 "bopp.tab.cc" // lalr1.cc:847
+#line 783 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 42:
-#line 226 "bopp.y" // lalr1.cc:847
+#line 226 "bopp.y" // lalr1.cc:859
     { // "assert" statement
   /// negate the expression in assertions
   aide.expr_in_list.emplace_back(solver::PAR);
@@ -763,68 +794,68 @@ namespace yy {
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSE, true);		
   aide.expr_in_list.clear();
  }
-#line 767 "bopp.tab.cc" // lalr1.cc:847
+#line 798 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 43:
-#line 236 "bopp.y" // lalr1.cc:847
+#line 236 "bopp.y" // lalr1.cc:859
     { // "assume" statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ASSU, true);
   aide.expr_in_list.clear();
  }
-#line 776 "bopp.tab.cc" // lalr1.cc:847
+#line 807 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 44:
-#line 240 "bopp.y" // lalr1.cc:847
+#line 240 "bopp.y" // lalr1.cc:859
     { // "thread creation" statement
   aide.add_edge(aide.ipc, (yystack_[1].value.t_val), type_stmt::NTHR);
  }
-#line 784 "bopp.tab.cc" // lalr1.cc:847
+#line 815 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 45:
-#line 243 "bopp.y" // lalr1.cc:847
+#line 243 "bopp.y" // lalr1.cc:859
     { // thread termination statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ETHR);
  }
-#line 792 "bopp.tab.cc" // lalr1.cc:847
+#line 823 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 46:
-#line 246 "bopp.y" // lalr1.cc:847
+#line 246 "bopp.y" // lalr1.cc:859
     { // atomic section beginning
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::ATOM);
  }
-#line 800 "bopp.tab.cc" // lalr1.cc:847
+#line 831 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 47:
-#line 249 "bopp.y" // lalr1.cc:847
+#line 249 "bopp.y" // lalr1.cc:859
     { // atomic section ending
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::EATM);
  }
-#line 808 "bopp.tab.cc" // lalr1.cc:847
+#line 839 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 48:
-#line 252 "bopp.y" // lalr1.cc:847
+#line 252 "bopp.y" // lalr1.cc:859
     { // broadcast statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::BCST);
  }
-#line 816 "bopp.tab.cc" // lalr1.cc:847
+#line 847 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 49:
-#line 255 "bopp.y" // lalr1.cc:847
+#line 255 "bopp.y" // lalr1.cc:859
     { // wait statement
   aide.add_edge(aide.ipc, aide.ipc+1, type_stmt::WAIT);
  }
-#line 824 "bopp.tab.cc" // lalr1.cc:847
+#line 855 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 50:
-#line 260 "bopp.y" // lalr1.cc:847
+#line 260 "bopp.y" // lalr1.cc:859
     {
   string s((yystack_[0].value.t_str));
   if(s.back() == '$')
@@ -832,11 +863,11 @@ namespace yy {
   aide.assg_stmt_lhs.emplace_back(aide.encode(s));
   free((yystack_[0].value.t_str));
  }
-#line 836 "bopp.tab.cc" // lalr1.cc:847
+#line 867 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 51:
-#line 267 "bopp.y" // lalr1.cc:847
+#line 267 "bopp.y" // lalr1.cc:859
     {
   string s((yystack_[0].value.t_str));
   if(s.back() == '$')
@@ -844,120 +875,120 @@ namespace yy {
   aide.assg_stmt_lhs.emplace_back(aide.encode(s));
   free((yystack_[0].value.t_str)); 
   }
-#line 848 "bopp.tab.cc" // lalr1.cc:847
+#line 879 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 52:
-#line 276 "bopp.y" // lalr1.cc:847
+#line 276 "bopp.y" // lalr1.cc:859
     { 
   aide.assg_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear();
  }
-#line 857 "bopp.tab.cc" // lalr1.cc:847
+#line 888 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 53:
-#line 280 "bopp.y" // lalr1.cc:847
+#line 280 "bopp.y" // lalr1.cc:859
     { 
   aide.assg_stmt_rhs.emplace_back(aide.expr_in_list); 
   aide.expr_in_list.clear(); 
   }
-#line 866 "bopp.tab.cc" // lalr1.cc:847
+#line 897 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 54:
-#line 286 "bopp.y" // lalr1.cc:847
+#line 286 "bopp.y" // lalr1.cc:859
     {
   aide.suc_pc_set.emplace((yystack_[0].value.t_val));
  }
-#line 874 "bopp.tab.cc" // lalr1.cc:847
+#line 905 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 55:
-#line 289 "bopp.y" // lalr1.cc:847
+#line 289 "bopp.y" // lalr1.cc:859
     {
   aide.suc_pc_set.emplace((yystack_[0].value.t_val));
   }
-#line 882 "bopp.tab.cc" // lalr1.cc:847
+#line 913 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 56:
-#line 295 "bopp.y" // lalr1.cc:847
+#line 295 "bopp.y" // lalr1.cc:859
     { }
-#line 888 "bopp.tab.cc" // lalr1.cc:847
+#line 919 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 57:
-#line 296 "bopp.y" // lalr1.cc:847
+#line 296 "bopp.y" // lalr1.cc:859
     { }
-#line 894 "bopp.tab.cc" // lalr1.cc:847
+#line 925 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 59:
-#line 300 "bopp.y" // lalr1.cc:847
+#line 300 "bopp.y" // lalr1.cc:859
     { aide.add_to_expr_in_list(solver::OR); }
-#line 900 "bopp.tab.cc" // lalr1.cc:847
+#line 931 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 61:
-#line 304 "bopp.y" // lalr1.cc:847
+#line 304 "bopp.y" // lalr1.cc:859
     { aide.add_to_expr_in_list(solver::XOR); }
-#line 906 "bopp.tab.cc" // lalr1.cc:847
+#line 937 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 63:
-#line 308 "bopp.y" // lalr1.cc:847
+#line 308 "bopp.y" // lalr1.cc:859
     { aide.add_to_expr_in_list(solver::AND); }
-#line 912 "bopp.tab.cc" // lalr1.cc:847
+#line 943 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 65:
-#line 312 "bopp.y" // lalr1.cc:847
+#line 312 "bopp.y" // lalr1.cc:859
     { aide.add_to_expr_in_list( solver::EQ); }
-#line 918 "bopp.tab.cc" // lalr1.cc:847
+#line 949 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 66:
-#line 313 "bopp.y" // lalr1.cc:847
+#line 313 "bopp.y" // lalr1.cc:859
     { aide.add_to_expr_in_list(solver::NEQ); }
-#line 924 "bopp.tab.cc" // lalr1.cc:847
+#line 955 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 69:
-#line 320 "bopp.y" // lalr1.cc:847
+#line 320 "bopp.y" // lalr1.cc:859
     { aide.add_to_expr_in_list(solver::NEG); }
-#line 930 "bopp.tab.cc" // lalr1.cc:847
+#line 961 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 70:
-#line 323 "bopp.y" // lalr1.cc:847
+#line 323 "bopp.y" // lalr1.cc:859
     { aide.add_to_expr_in_list(solver::PAR); }
-#line 936 "bopp.tab.cc" // lalr1.cc:847
+#line 967 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 71:
-#line 324 "bopp.y" // lalr1.cc:847
+#line 324 "bopp.y" // lalr1.cc:859
     { aide.add_to_expr_in_list(solver::CONST_N); }
-#line 942 "bopp.tab.cc" // lalr1.cc:847
+#line 973 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 72:
-#line 325 "bopp.y" // lalr1.cc:847
+#line 325 "bopp.y" // lalr1.cc:859
     { aide.add_to_expr_in_list((yystack_[0].value.t_val)); }
-#line 948 "bopp.tab.cc" // lalr1.cc:847
+#line 979 "bopp.tab.cc" // lalr1.cc:859
     break;
 
   case 73:
-#line 326 "bopp.y" // lalr1.cc:847
+#line 326 "bopp.y" // lalr1.cc:859
     { 
   aide.add_to_expr_in_list(aide.encode((yystack_[0].value.t_str)));
   free((yystack_[0].value.t_str));
   }
-#line 957 "bopp.tab.cc" // lalr1.cc:847
+#line 988 "bopp.tab.cc" // lalr1.cc:859
     break;
 
 
-#line 961 "bopp.tab.cc" // lalr1.cc:847
+#line 992 "bopp.tab.cc" // lalr1.cc:859
             default:
               break;
             }
@@ -985,8 +1016,7 @@ namespace yy {
     if (!yyerrstatus_)
       {
         ++yynerrs_;
-        error (yyla.location, yysyntax_error_ (yystack_[0].state,
-                                           yyempty ? yyempty_ : yyla.type_get ()));
+        error (yyla.location, yysyntax_error_ (yystack_[0].state, yyla));
       }
 
 
@@ -999,10 +1029,10 @@ namespace yy {
         // Return failure if at end of input.
         if (yyla.type_get () == yyeof_)
           YYABORT;
-        else if (!yyempty)
+        else if (!yyla.empty ())
           {
             yy_destroy_ ("Error: discarding", yyla);
-            yyempty = true;
+            yyla.clear ();
           }
       }
 
@@ -1078,7 +1108,7 @@ namespace yy {
     goto yyreturn;
 
   yyreturn:
-    if (!yyempty)
+    if (!yyla.empty ())
       yy_destroy_ ("Cleanup: discarding lookahead", yyla);
 
     /* Do not reclaim the symbols of the rule whose action triggered
@@ -1098,7 +1128,7 @@ namespace yy {
                  << std::endl;
         // Do not try to display the values of the reclaimed symbols,
         // as their printer might throw an exception.
-        if (!yyempty)
+        if (!yyla.empty ())
           yy_destroy_ (YY_NULLPTR, yyla);
 
         while (1 < yystack_.size ())
@@ -1118,9 +1148,8 @@ namespace yy {
 
   // Generate an error message.
   std::string
-  bp::yysyntax_error_ (state_type yystate, symbol_number_type yytoken) const
+  bp::yysyntax_error_ (state_type yystate, const symbol_type& yyla) const
   {
-    std::string yyres;
     // Number of reported tokens (one for the "unexpected", one per
     // "expected").
     size_t yycount = 0;
@@ -1134,7 +1163,7 @@ namespace yy {
          the only way this function was invoked is if the default action
          is an error action.  In that case, don't check for expected
          tokens because there are none.
-       - The only way there can be no lookahead present (in yytoken) is
+       - The only way there can be no lookahead present (in yyla) is
          if this state is a consistent state with a default action.
          Thus, detecting the absence of a lookahead is sufficient to
          determine that there is no unexpected or expected token to
@@ -1154,8 +1183,9 @@ namespace yy {
          token that will not be accepted due to an error action in a
          later state.
     */
-    if (yytoken != yyempty_)
+    if (!yyla.empty ())
       {
+        int yytoken = yyla.type_get ();
         yyarg[yycount++] = yytname_[yytoken];
         int yyn = yypact_[yystate];
         if (!yy_pact_value_is_default_ (yyn))
@@ -1198,6 +1228,7 @@ namespace yy {
 #undef YYCASE_
       }
 
+    std::string yyres;
     // Argument number.
     size_t yyi = 0;
     for (char const* yyp = yyformat; *yyp; ++yyp)
@@ -1472,8 +1503,8 @@ namespace yy {
 
 
 } // yy
-#line 1476 "bopp.tab.cc" // lalr1.cc:1155
-#line 331 "bopp.y" // lalr1.cc:1156
+#line 1507 "bopp.tab.cc" // lalr1.cc:1167
+#line 331 "bopp.y" // lalr1.cc:1168
 
 
 /*******************************************************************************
