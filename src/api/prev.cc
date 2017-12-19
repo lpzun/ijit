@@ -39,8 +39,8 @@ void pre_image::init_cand_L() {
 			switch (e.get_stmt().get_type()) {
 			case type_stmt::ASSG:
 			case type_stmt::EATM:
-				//case type_stmt::IFEL:
-				//case type_stmt::ASSU:
+				// case type_stmt::IFEL:
+				// case type_stmt::ASSU:
 				cand_PC.emplace(pc);
 				break;
 			default:
@@ -299,7 +299,7 @@ void pre_image::compute_pre_images(const prog_state& _tau,
 			/// NOTE    : the atomic_begin statement is not processed here,but
 			/// in the subroutine.
 			auto _pc(pc); /// the copy of pc
-			const auto& wp = this->compute_image_atom_sect(_pc, _sv, _lv);
+			const auto& wp = this->compute_image_atom_sect(_sv, _pc, _lv);
 			for (auto ip = wp.cbegin(); ip != wp.cend(); ++ip) {
 				const auto& Z = alg::update_counters(ip->get_l(), _l, _Z);
 				images.emplace_back(ip->get_s(), Z);
@@ -518,8 +518,8 @@ local_state pre_image::compute_image_else_stmt(const local_state& _l) {
  * @param  l: local state at the end of atomic section
  * @return predecessor local states across atomic section
  */
-deque<prog_thread> pre_image::compute_image_atom_sect(const size_pc p,
-		const state_v sv, const state_v lv) {
+deque<prog_thread> pre_image::compute_image_atom_sect(const state_v sv,
+		const size_pc p, const state_v lv) {
 	deque<prog_thread> result;
 	queue<prog_thread> worklist;
 	set<prog_thread> explored;

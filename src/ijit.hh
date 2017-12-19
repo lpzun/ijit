@@ -300,9 +300,8 @@ private:
 			const size_pc _pc);
 	local_state compute_image_else_stmt(const local_state& l);
 
-
-	deque<prog_thread> compute_image_atom_sect(const size_pc _pc,
-			const state_v _sv, const state_v _lv);
+	deque<prog_thread> compute_image_atom_sect(const state_v _sv,
+			const size_pc _pc, const state_v _lv);
 
 	void compute_image_bcst_stmt(deque<local_state>& pw);
 };
@@ -384,8 +383,8 @@ private:
 			const size_pc& _pc);
 	local_state compute_image_else_stmt(const local_state& l);
 
-	deque<pair<state_v, state_v>> compute_image_atom_sect(const state_v& sv,
-			const state_v& lv, size_pc& pc);
+	deque<prog_thread> compute_image_atom_sect(const state_v sv,
+			const size_pc p, const state_v lv);
 };
 
 } /* namespace otf */

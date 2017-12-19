@@ -90,12 +90,12 @@ pair<deque<prog_thread>, deque<prog_thread>> parser::parse(
     }
 
     /// step 5: output the parsing result...
-    cout << "shared, local, line\n";
     refs::SV_NUM = aide.s_vars_num;
     refs::LV_NUM = aide.l_vars_num;
     refs::PC_NUM = aide.lineno;
-#ifdef DEBUG
+    cout << "shared, local, line\n";
     cout << refs::SV_NUM << "," << refs::LV_NUM << "," << refs::PC_NUM << "\n";
+#ifdef DEBUG
     DBG_LOG("for testing: before...\n")
     aide.print_control_flow_graph();
 #endif
